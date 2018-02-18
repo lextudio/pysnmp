@@ -123,6 +123,11 @@ class Des3(base.AbstractEncryptionService):
 
     # 5.1.1.2
     def encryptData(self, encryptKey, privParameters, dataToEncrypt):
+        if des3 is None:
+            raise error.StatusInformation(
+                errorIndication=errind.encryptionError
+            )
+
         snmpEngineBoots, snmpEngineTime, salt = privParameters
 
         des3Key, salt, iv = self._getEncryptionKey(
@@ -131,21 +136,24 @@ class Des3(base.AbstractEncryptionService):
 
         privParameters = univ.OctetString(salt)
 
-        plaintext = dataToEncrypt
-        plaintext += univ.OctetString(
-            (0,) * (8 - len(dataToEncrypt) % 8)).asOctets()
+        plaintext = dataToEncrypt + univ.OctetString((0,) * (8 - len(dataToEncrypt) % 8)).asOctets()
 
         try:
             ciphertext = des3.encrypt(plaintext, des3Key, iv)
 
         except PysnmpCryptoError:
             raise error.StatusInformation(
-                errorIndication=errind.unsupportedPrivProtocol)
+                errorIndication=errind.unsupportedPrivProtocol
+            )
 
         return univ.OctetString(ciphertext), privParameters
 
     # 5.1.1.3
     def decryptData(self, decryptKey, privParameters, encryptedData):
+        if des3 is None:
+            raise error.StatusInformation(
+                errorIndication=errind.decryptionError
+            )
         snmpEngineBoots, snmpEngineTime, salt = privParameters
 
         if len(salt) != 8:
@@ -156,7 +164,8 @@ class Des3(base.AbstractEncryptionService):
 
         if len(encryptedData) % 8 != 0:
             raise error.StatusInformation(
-                errorIndication=errind.decryptionError)
+                errorIndication=errind.decryptionError
+            )
 
         ciphertext = encryptedData.asOctets()
 
@@ -165,6 +174,7 @@ class Des3(base.AbstractEncryptionService):
 
         except PysnmpCryptoError:
             raise error.StatusInformation(
-                errorIndication=errind.unsupportedPrivProtocol)
+                errorIndication=errind.unsupportedPrivProtocol
+            )
 
         return plaintext

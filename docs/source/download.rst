@@ -51,8 +51,6 @@ operational:
 
 Optional, but recommended:
 
-* `PyCryptodomex <https://pypi.python.org/pypi/pycryptodomex/>`_,
-  used by SNMPv3 crypto features
 * `PySMI <https://pypi.python.org/pypi/pysmi-lextudio/>`_ for automatic
   MIB download and compilation. That helps visualizing more SNMP objects
 

@@ -27,9 +27,9 @@ include = ["docs", "tests", "examples"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-pysmi-lextudio = "^1.0.4"
 pyasn1 = ">=0.4.8, <0.5.0"
-pycryptodomex = "^3.11.0"
+pysnmpcrypto = "^0.0.4"
+pysmi-lextudio = "^1.0.4"
 
 [tool.poetry.dev-dependencies]
 Sphinx = "^4.3.0"
@@ -38,6 +38,10 @@ codecov = "^2.1.13"
 pytest-codecov = "^0.4.0"
 
 [tool.poetry_bumpversion.file."pysnmp/__init__.py"]
+
+[tool.poetry_bumpversion.file."docs/source/conf.py"]
+search = "release = '{current_version}'"
+replace = "release = '{new_version}'"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

@@ -1,3 +1,13 @@
+Revision 5.0.27, released 2023-04-28
+------------------------------------
+
+- SNMPv3 crypto operations that require external dependencies
+  made dependent on the optional external
+  package -- pysnmpcrypto.
+- By switching to pysnmpcrypto, pysnmp effectively migrates from
+  PyCryptodomex to pyca/cryptography whenever available on the
+  platform.
+
 Revision 5.0.26, released 2023-04-21
 ------------------------------------
 

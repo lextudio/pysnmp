@@ -24,6 +24,20 @@ from pysnmp.proto.secmod.rfc3414 import localkey
 from pysnmp.proto import errind
 from pysnmp.proto import error
 
+try:
+    from pysnmpcrypto import aes, PysnmpCryptoError
+
+except ImportError:
+    PysnmpCryptoError = AttributeError
+    aes = None
+
+from pyasn1.type import univ
+from pysnmp.proto.secmod.rfc3414.priv import base
+from pysnmp.proto.secmod.rfc3414.auth import hmacmd5, hmacsha
+from pysnmp.proto.secmod.rfc7860.auth import hmacsha2
+from pysnmp.proto.secmod.rfc3414 import localkey
+from pysnmp.proto import errind, error
+
 random.seed()
 
 
@@ -121,6 +135,11 @@ class Aes(base.AbstractEncryptionService):
 
     # 3.2.4.1
     def encryptData(self, encryptKey, privParameters, dataToEncrypt):
+        if aes is None:
+            raise error.StatusInformation(
+                errorIndication=errind.encryptionError
+            )
+
         snmpEngineBoots, snmpEngineTime, salt = privParameters
 
         # 3.3.1.1
@@ -128,19 +147,24 @@ class Aes(base.AbstractEncryptionService):
             encryptKey, snmpEngineBoots, snmpEngineTime)
 
         # 3.3.1.3
-
         try:
-            ciphertext = aes.encrypt(dataToEncrypt.asOctets(), aesKey, iv)
+            ciphertext = aes.encrypt(dataToEncrypt, aesKey, iv)
 
         except PysnmpCryptoError:
             raise error.StatusInformation(
-                errorIndication=errind.unsupportedPrivProtocol)
+                errorIndication=errind.unsupportedPrivProtocol
+            )
 
         # 3.3.1.4
         return univ.OctetString(ciphertext), univ.OctetString(salt)
 
     # 3.2.4.2
     def decryptData(self, decryptKey, privParameters, encryptedData):
+        if aes is None:
+            raise error.StatusInformation(
+                errorIndication=errind.decryptionError
+            )
+
         snmpEngineBoots, snmpEngineTime, salt = privParameters
 
         # 3.3.2.1
@@ -158,4 +182,5 @@ class Aes(base.AbstractEncryptionService):
 
         except PysnmpCryptoError:
             raise error.StatusInformation(
-                errorIndication=errind.unsupportedPrivProtocol)
+                errorIndication=errind.unsupportedPrivProtocol
+            )
