@@ -851,14 +851,14 @@ class MibScalarInstance(MibTree):
     def readTest(self, varBind, **context):
         name, val = varBind
 
-        if name != self.name:
+        if name != self.name or not self.syntax.isValue:
             raise error.NoSuchInstanceError(name=name, idx=context.get("idx"))
 
     def readGet(self, varBind, **context):
         name, val = varBind
 
         # Return current variable (name, value)
-        if name == self.name:
+        if name == self.name and self.syntax.isValue:
             debug.logger & debug.FLAG_INS and debug.logger(
                 f"readGet: {self.name}={self.syntax!r}"
             )
@@ -871,7 +871,7 @@ class MibScalarInstance(MibTree):
 
         oName = context.get("oName")
 
-        if name != self.name or name <= oName:
+        if name != self.name or name <= oName or not self.syntax.isValue:
             raise error.NoSuchInstanceError(name=name, idx=context.get("idx"))
 
     def readGetNext(self, varBind, **context):
@@ -879,12 +879,11 @@ class MibScalarInstance(MibTree):
 
         oName = context.get("oName")
 
-        if name == self.name and name > oName:
+        if name == self.name and name > oName and self.syntax.isValue:
             debug.logger & debug.FLAG_INS and debug.logger(
                 f"readGetNext: {self.name}={self.syntax!r}"
             )
             return self.readGet(varBind, **context)
-
         else:
             raise error.NoSuchInstanceError(name=name, idx=context.get("idx"))
 
