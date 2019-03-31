@@ -142,6 +142,8 @@ Revision 4.4.10, released 2019-07-29
   initializer.
 - Fixed crash on uninitialized component serialization left out in
   SNMP v1 TRAP PDU to SNMPv2/3 TRAP PDU proxy translation routine.
+- Fix to update call interval of the existing periodic dispatcher jobs
+  on interval change (via .setTimerResolution())
 
 Revision 4.4.9, released 2019-02-09
 -----------------------------------
