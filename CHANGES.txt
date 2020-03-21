@@ -99,6 +99,15 @@ Revision 5.0.0, released 2019-09-XX
   * Global constants turned UPPER_CASED
   * Long lines wrapped by more or less 80 chars
 
+Revision 4.4.13, released 2020-03-XX
+------------------------------------
+
+- Copyright notice extended to the year 2020
+- Fixed `genErr` handing in Command Responder when mapping
+  MIB instrumentation exception onto SNMP errors. Prior to
+  this fix, `genErr` would never be reported back to SNMP
+  manager.
+
 Revision 4.4.12, released 2019-09-24
 ------------------------------------
 

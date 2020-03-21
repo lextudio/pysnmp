@@ -1,7 +1,7 @@
 #
 # This file is part of pysnmp software.
 #
-# Copyright (c) 2005-2019, Ilya Etingof <etingof@gmail.com>
+# Copyright (c) 2005-2020, Ilya Etingof <etingof@gmail.com>
 # License: http://snmplabs.com/pysnmp/license.html
 #
 # ASN.1 source http://mibs.snmplabs.com:80/asn1/SNMP-USM-AES-MIB
