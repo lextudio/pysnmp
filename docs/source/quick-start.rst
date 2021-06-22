@@ -20,13 +20,13 @@ initialize a folder for us,
 
 .. code-block:: bash
 
-   cd ~
-   mkdir test-field
-   cd test-field
-   pyenv local 3.12
-   pip install pipenv
-   pipenv install pysnmp-lextudio
-   pipenv run pip list
+   $ cd ~
+   $ mkdir test-field
+   $ cd test-field
+   $ pyenv local 3.12
+   $ pip install pipenv
+   $ pipenv install pysnmp-lextudio
+   $ pipenv run pip list
 
 Here we created a virtual environment using ``pipenv`` for this folder, and
 installed ``pysnmp-lextudio`` so that you can move on with the following
@@ -44,7 +44,7 @@ see ``pysnmp-lextudio`` version 5.0+ there.
 
    .. code-block:: bash
 
-      pipenv --rm
+      $ pipenv --rm
 
    It is common that you use another virtual environment tool, such as venv,
    poetry, or conda. Just make sure you use the equivalent commands to set up the
@@ -67,17 +67,12 @@ Next, let's write some test script and play with PySNMP manager side operations.
 
    :download:`Download</../../examples/hlapi/asyncio/manager/cmdgen/v1-get.py>` script.
 
-#. Execute this script.
+#. Execute this script. If everything works as it should you will get the following on your
+   console:
 
    .. code-block:: bash
 
-      pipenv run python v1-get.py
-
-   If everything works as it should you will get the following on your
-   console:
-
-   .. code-block:: python
-
+      $ pipenv run python v1-get.py
       ...
       SNMPv2-MIB::sysDescr."0" = SunOS zeus.pysnmp.com 4.1.3_U1 1 sun4m
       >>>
@@ -107,7 +102,7 @@ Similarly we can perform agent side operations with PySNMP.
 
    .. code-block:: bash
 
-      pipenv run python default-v1-trap.py
+      $ pipenv run python default-v1-trap.py
 
 Because this sends out an SNMP v1 TRAP message, we know that no response will be
 received.
@@ -117,7 +112,10 @@ The notification receiver the receives this message is hosted at
 
 References
 ----------
+References
+----------
 
+- `Support Options`_
 - :doc:`/examples/index`
 - :doc:`/troubleshooting`
 - :doc:`/docs/api-reference`

@@ -160,7 +160,7 @@ by high-level SMI construct called *OBJECT-TYPE*. Here is an example MIB
 object definition for *sysUpTime* with OID ...mgmt.mib-2.system.3
 and value type *TimeTicks*.
 
-.. code-block:: bash
+.. code-block:: asn1
 
    sysUpTime OBJECT-TYPE
        SYNTAX      TimeTicks
@@ -266,7 +266,7 @@ out, response is awaited, received and parsed.
 
    >>> from pysnmp.hlapi import *
    >>>
-   >>> g = await getCmd(SnmpEngine(),
+   >>> g = getCmd(SnmpEngine(),
    ...            CommunityData('public'),
    ...            UdpTransportTarget(('demo.pysnmp.com', 161)),
    ...            ContextData(),
@@ -292,7 +292,7 @@ to work with indices comfortably, SNMP management applications rely on
 DISPLAY-HINT clause for automatic indices conversion between their
 OID and SNMP type-specific, human-friendly representation.
 
-.. code-block:: bash
+.. code-block:: asn1
 
    ifEntry OBJECT-TYPE
        SYNTAX      IfEntry
@@ -327,7 +327,7 @@ MIB object OID.
 From semantic standpoint, each index reflects an important and
 distinct property of a MIB object.
 
-.. code-block:: bash
+.. code-block:: asn1
 
    tcpConnectionEntry OBJECT-TYPE
        SYNTAX  TcpConnectionEntry
@@ -362,7 +362,7 @@ Let's read TCP-MIB::tcpConnectionState object for a TCP connection:
 
    >>> from pysnmp.hlapi import *
    >>>
-   >>> g = await getCmd(SnmpEngine(),
+   >>> g = getCmd(SnmpEngine(),
    ...            CommunityData('public'),
    ...            UdpTransportTarget(('demo.pysnmp.com', 161)),
    ...            ContextData(),
@@ -384,7 +384,7 @@ function.
 .. code-block:: python
 
    >>> from pysnmp.hlapi import *
-   >>> g = await nextCmd(SnmpEngine(),
+   >>> g =  nextCmd(SnmpEngine(),
    ...             CommunityData('public'),
    ...             UdpTransportTarget(('demo.pysnmp.com', 161)),
    ...             ContextData(),
@@ -411,7 +411,7 @@ API as *getNext()* for convenience.
    >>> from pysnmp.hlapi import *
    >>>
    >>> N, R = 0, 25
-   >>> g = await bulkCmd(SnmpEngine(),
+   >>> g = bulkCmd(SnmpEngine(),
    ...             CommunityData('public'),
    ...             UdpTransportTarget(('demo.pysnmp.com', 161)),
    ...             ContextData(),
@@ -432,7 +432,7 @@ of MIB objects.
 
    >>> from pysnmp.hlapi import *
    >>>
-   >>> g = await nextCmd(SnmpEngine(),
+   >>> g = nextCmd(SnmpEngine(),
    ...             CommunityData('public'),
    ...             UdpTransportTarget(('demo.pysnmp.com', 161)),
    ...             ContextData(),
@@ -449,7 +449,7 @@ values in exactly the same order as they were in request message.
 
    >>> from pysnmp.hlapi import *
    >>>
-   >>> g = await getCmd(SnmpEngine(),
+   >>> g = getCmd(SnmpEngine(),
    ...            CommunityData('public'),
    ...            UdpTransportTarget(('demo.pysnmp.com', 161)),
    ...            ContextData(),
@@ -472,7 +472,7 @@ function.
 
    >>> from pysnmp.hlapi import *
    >>>
-   >>> g = await setCmd(SnmpEngine(),
+   >>> g = setCmd(SnmpEngine(),
    ...            CommunityData('public'),
    ...            UdpTransportTarget(('demo.pysnmp.com', 161)),
    ...            ContextData(),
@@ -496,7 +496,7 @@ references a sequence of other MIB objects. These MIB objects
 are specified with the *OBJECTS* clause and when notification is being
 sent, their current values are included into the notification message.
 
-.. code-block:: bash
+.. code-block:: asn1
 
    linkUp NOTIFICATION-TYPE
        OBJECTS { ifIndex, ifAdminStatus, ifOperStatus }
@@ -536,7 +536,7 @@ or acknowledgement is sent.
 
    >>> from pysnmp.hlapi import *
    >>>
-   >>> g = await sendNotification(SnmpEngine(),
+   >>> g = sendNotification(SnmpEngine(),
    ...                      CommunityData('public'),
    ...                      UdpTransportTarget(('demo.pysnmp.com', 162)),
    ...                      ContextData(),
@@ -550,9 +550,11 @@ The *inform* notification is much like a command. The difference is in
 PDU format. Informs are used for manager-to-manager communication as
 well as for agent-to-manager.
 
+.. code-block:: python
+
    >>> from pysnmp.hlapi import *
    >>>
-   >>> g = await sendNotification(SnmpEngine(),
+   >>> g = sendNotification(SnmpEngine(),
    ...                      CommunityData('public'),
    ...                      UdpTransportTarget(('demo.pysnmp.com', 162)),
    ...                      ContextData(),
@@ -574,13 +576,15 @@ to those MIB objects. We can supply that missing information by
 passing *NotificationType* a dictionary-like object that maps MIB
 object OIDs to current values.
 
+.. code-block:: python
+
    >>> from pysnmp.hlapi import *
    >>>
    >>> mib = {ObjectIdentifier('1.3.6.1.2.1.2.2.1.1.123'): 123,
    ...        ObjectIdentifier('1.3.6.1.2.1.2.2.1.7.123'): 'testing',
    ...        ObjectIdentifier('1.3.6.1.2.1.2.2.1.8.123'): 'up'}
    >>>
-   >>> g = await sendNotification(SnmpEngine(),
+   >>> g = sendNotification(SnmpEngine(),
    ...                      CommunityData('public'),
    ...                      UdpTransportTarget(('demo.pysnmp.com', 162)),
    ...                      ContextData(),
@@ -607,6 +611,6 @@ becomes non-linear what hurts program analysis by human reader.
 
 PySNMP high-level API is adapted to work with the standard
 asynchronous I/O framework :mod:`asyncio`.
-Please, refer to PySNMP :doc:`library reference </docs/api-reference>`
-and :doc:`examples </examples/index>` for more information on
+Please, refer to PySNMP :doc:`/docs/api-reference`
+and :doc:`/examples/index` for more information on
 asynchronous API.

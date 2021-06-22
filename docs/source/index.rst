@@ -85,7 +85,7 @@ Best way is usually to
 
 .. code-block:: bash
 
-   pip install pysnmp-lextudio
+   $ pip install pysnmp-lextudio
 
 If that does not work for you for some reason, you might need to read the
 following page.
@@ -133,7 +133,6 @@ Contact
 -------
 
 In case of questions or troubles using PySNMP, please open up a
-new `GitHub issue`_ or ask on
-`Stack Overflow`_.
+new `GitHub issue`_ or ask on `Stack Overflow`_.
 
 For other inquiries, please contact `LeXtudio Inc.`_.

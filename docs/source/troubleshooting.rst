@@ -69,6 +69,7 @@ services. You can easily open a support ticket via its homepage.
 References
 ----------
 
+- `Support Options`_
 - :doc:`/quick-start`
 - :doc:`/examples/index`
 - :doc:`/docs/api-reference`
