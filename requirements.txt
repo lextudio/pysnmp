@@ -1,4 +1,0 @@
-pysmi
-ordereddict; python_version < '2.7'
-pycryptodomex
-pyasn1>=0.2.3,<0.5.0

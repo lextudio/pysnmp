@@ -1,2 +1,0 @@
-Sphinx <= 1.6; python_version < '2.7'
-Sphinx > 1.6; python_version >= '2.7'
