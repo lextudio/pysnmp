@@ -4,6 +4,26 @@ version = "0.1.0"
 description = ""
 authors = ["rfaircloth-splunk <rfaircloth@splunk.com>"]
 license = "BSD-2-Clause"
+repository = "https://github.com/pysnmp/pysnmp"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: System Administrators",
+    "Intended Audience :: Telecommunications Industry",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Topic :: Communications",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+readme = "README.md"
+
+packages = [
+    { include = "pysnmp" },
+]
+include = ["docs", "tests", "examples"]
+
 
 [tool.poetry.dependencies]
 python = "^3.7"
