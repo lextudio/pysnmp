@@ -31,11 +31,8 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
 # THE POSSIBILITY OF SUCH DAMAGE.
 #
-try:
-    import asyncio
+import asyncio
 
-except ImportError:
-    import trollius as asyncio
 
 from pysnmp.hlapi.v3arch.auth import *
 from pysnmp.hlapi.v3arch.context import *

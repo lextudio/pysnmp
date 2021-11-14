@@ -34,11 +34,7 @@ import platform
 import sys
 import traceback
 
-try:
-    import asyncio
-
-except ImportError:
-    import trollius as asyncio
+import asyncio
 
 from pysnmp import debug
 from pysnmp.carrier import error

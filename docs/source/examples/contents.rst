@@ -48,27 +48,8 @@ The v3 architecture
 .. toctree::
    :maxdepth: 2
 
-   /examples/hlapi/v3arch/asyncore/sync/contents
+   /examples/hlapi/asyncio/contents
 
-.. toctree::
-   :maxdepth: 2
-
-   /examples/hlapi/v3arch/asyncore/contents
-
-.. toctree::
-   :maxdepth: 2
-
-   /examples/hlapi/v3arch/asyncio/contents
-
-.. toctree::
-   :maxdepth: 2
-
-   /examples/hlapi/v3arch/trollius/contents
-
-.. toctree::
-   :maxdepth: 2
-
-   /examples/hlapi/v3arch/twisted/contents
 
 The v1 architecture
 +++++++++++++++++++
@@ -101,13 +82,10 @@ framework being used.
 .. toctree::
    :maxdepth: 2
 
-   /examples/v3arch/asyncore/contents
    /examples/v3arch/asyncio/contents
-   /examples/v3arch/trollius/contents
-   /examples/v3arch/twisted/contents
-
-Low-level v1 architecture
--------------------------
+   
+Packet-level SNMP
+-----------------
 
 In cases where performance is your top priority and you only need to 
 work with SNMP v1 and v2c systems and you do not mind writing much 

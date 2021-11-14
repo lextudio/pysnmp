@@ -15,11 +15,6 @@ the concepts such as coroutines and generators. If your task is to embed SNMP
 stack into an existing asyncio-based app, using PySNMP's asyncio interfaces 
 greatly simplifies the task.
 
-Older applications (Python 2.6+) can alternatively use 
-`Trollius <http://trollius.readthedocs.org/>`_ instead of asyncio. Trollius
-is a backport of asyncio so it `supports </examples/current/v3arch/trollius/index.html>`_ nearly the same API as asyncio. Full support of both modules is
-built into pysnmp.
-
 All SNMP-related functionality of Native PySNMP API to Standard SNMP 
 Applications (`RFC3413 <https://tools.ietf.org/html/rfc3413>`_)
 remains available to asyncio-backed applications.

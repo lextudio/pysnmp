@@ -23,8 +23,7 @@ Features
 * USM Extended Security Options support (3DES, 192/256-bit AES encryption)
 * Extensible network transports framework (UDP/IPv4, UDP/IPv6)
 * Asynchronous socket-based IO API support
-* [Twisted](http://twistedmatrix.com), [Asyncio](https://docs.python.org/3/library/asyncio.html)
-  and [Trollius](http://trollius.readthedocs.org/index.html) integration
+* [Asyncio](https://docs.python.org/3/library/asyncio.html) integration
 * [PySMI](http://snmplabs.com/pysmi/) integration for dynamic MIB compilation
 * Built-in instrumentation exposing protocol engine operations
 * Python eggs and py2exe friendly

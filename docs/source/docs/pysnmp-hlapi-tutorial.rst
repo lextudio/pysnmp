@@ -610,8 +610,7 @@ else whenever possible. The back side of this is that execution flow
 becomes non-linear what hurts program analysis by human reader.
 
 PySNMP high-level API is adapted to work with three popular
-asynchronous I/O frameworks - :mod:`asyncore`, :mod:`twisted` and
-:mod:`asyncio`.
+asynchronous I/O frameworks :mod:`asyncio`.
 Please, refer to PySNMP :doc:`library reference </docs/api-reference>`
 and :doc:`examples </examples/contents>` for more information on
 asynchronous API.

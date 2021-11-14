@@ -128,51 +128,6 @@ Transport configuration
 .. autoclass:: pysnmp.hlapi.v3arch.asyncio.Udp6TransportTarget
    :members: setLocalAddress
 
-High-level v3arch trollius
---------------------------
-
-An almost compatible alternative to *asyncio* for pre-3.3 Python
-is `Trollius <http://trollius.readthedocs.org>`_ module. PySNMP's
-`asyncio` bindings automatically work with Trolleus.
-
-Please refer to :doc:`Trollius examples </examples/contents>` for
-more information.
-
-High-level v3arch twisted
--------------------------
-
-`Twisted <http://twistedmatrix.org>`_ is one of the earliest and hugely
-popular asynchronous I/O framework. It introduced a concept of
-:class:`~twisted.internet.defer.Deferred` for representing work-in-progress
-that is not blocking the rest of I/O operations. PySNMP provides Twisted
-bindings.
-
-Command Generator
-
-.. toctree::
-   :maxdepth: 2
-
-   /docs/hlapi/v3arch/twisted/manager/cmdgen/getcmd
-   /docs/hlapi/v3arch/twisted/manager/cmdgen/setcmd
-   /docs/hlapi/v3arch/twisted/manager/cmdgen/nextcmd
-   /docs/hlapi/v3arch/twisted/manager/cmdgen/bulkcmd
-
-Notification Originator
-
-.. toctree::
-   :maxdepth: 2
-
-   /docs/hlapi/v3arch/twisted/agent/ntforg/notification 
-
-Transport configuration
-+++++++++++++++++++++++
-
-.. toctree::
-   :maxdepth: 2
-
-.. autoclass:: pysnmp.hlapi.v3arch.twisted.UdpTransportTarget
-   :members: setLocalAddress
-
 High-level v3arch SNMP Engine
 -----------------------------
 

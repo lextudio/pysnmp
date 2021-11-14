@@ -8,11 +8,8 @@
 # Authors: Matt Hooks <me@matthooks.com>
 #          Zachary Lorusso <zlorusso@gmail.com>
 #
-try:
-    import asyncio
+import asyncio
 
-except ImportError:
-    import trollius as asyncio
 
 from pysnmp.hlapi.v3arch.auth import *
 from pysnmp.hlapi.v3arch.context import *
