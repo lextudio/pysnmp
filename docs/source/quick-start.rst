@@ -48,7 +48,7 @@ To send a trivial TRAP message to our hosted Notification Receiver at
 :download:`Download</../../examples/hlapi/v3arch/asyncore/sync/agent/ntforg/default-v1-trap.py>` script.
 
 Many ASN.1 MIB files could be downloaded from
-`mibs.snmplabs.com <http://mibs.snmplabs.com/asn1/>`_ or PySNMP could
+`mibs.snmplabs.com <https://pysnmp.github.io/mibs/asn1/>`_ or PySNMP could
 be :doc:`configured <docs/api-reference>` to download them automatically.
 
 For more sophisticated examples and use cases please refer to
