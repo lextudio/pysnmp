@@ -33,6 +33,7 @@ pysnmp-pyasn1 = "^1.0.2"
 
 [tool.poetry.dev-dependencies]
 Sphinx = "^4.3.0"
+pytest = "^6.2.5"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
