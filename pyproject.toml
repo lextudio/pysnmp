@@ -28,8 +28,8 @@ include = ["docs", "tests", "examples"]
 [tool.poetry.dependencies]
 python = "^3.8"
 pysnmp-pysmi = "^1.0.4"
-pycryptodomex = "pysnmp-pyasn1"
 pysnmp-pyasn1 = "^1.0.3"
+pycryptodomex = "^3.11.0"
 
 [tool.poetry.dev-dependencies]
 Sphinx = "^4.3.0"
