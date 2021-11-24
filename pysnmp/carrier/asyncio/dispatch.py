@@ -40,7 +40,8 @@ import asyncio
 from pysnmp.carrier.base import AbstractTransportDispatcher
 from pysnmp.error import PySnmpError
 
-IS_PYTHON_344_PLUS = platform.python_version_tuple() >= ('3', '4', '4')
+IS_PYTHON_344_PLUS = tuple(int(version) for version in platform.python_version_tuple()) >= (3, 4, 4)
+
 
 
 class AsyncioDispatcher(AbstractTransportDispatcher):
