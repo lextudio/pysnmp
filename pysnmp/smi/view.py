@@ -6,14 +6,8 @@
 #
 import sys
 
-if sys.version_info[0] <= 2:
-    import types
-
-    classTypes = (types.ClassType, type)
-    instanceTypes = (types.InstanceType, object)
-else:
-    classTypes = (type,)
-    instanceTypes = (object,)
+classTypes = (type,)
+instanceTypes = (object,)
 
 from pysnmp import debug
 from pysnmp.smi import error

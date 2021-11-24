@@ -19,25 +19,14 @@ import sys
 
 from pysnmp import debug
 
-if sys.version_info[:2] < (3, 3):
-    def getRecvFrom(addressType):
-        raise error.CarrierError('sendmsg()/recvmsg() interface is not '
-                                 'supported by this OS and/or Python version')
+import ctypes
+import ipaddress
+import socket
+from pysnmp.carrier import sockfix
+from pysnmp.carrier import error
 
-
-    def getSendTo(addressType):
-        raise error.CarrierError('sendmsg()/recvmsg() interface is not '
-                                 'supported by this OS and/or Python version')
-
-else:
-    import ctypes
-    import ipaddress
-    import socket
-    from pysnmp.carrier import sockfix
-    from pysnmp.carrier import error
-
-    uint32_t = ctypes.c_uint32
-    in_addr_t = uint32_t
+uint32_t = ctypes.c_uint32
+in_addr_t = uint32_t
 
 
     class in_addr(ctypes.Structure):

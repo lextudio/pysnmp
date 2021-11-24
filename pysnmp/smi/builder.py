@@ -39,12 +39,8 @@ try:
 except ImportError:
     ENOENT = -1
 
-if sys.version_info[0] <= 2:
-    import types
 
-    classTypes = (types.ClassType, type)
-else:
-    classTypes = (type,)
+classTypes = (type,)
 
 from pysnmp import __version__ as pysnmp_version
 from pysnmp.smi import error
