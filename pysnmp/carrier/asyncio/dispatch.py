@@ -40,8 +40,6 @@ import asyncio
 from pysnmp.carrier.base import AbstractTransportDispatcher
 from pysnmp.error import PySnmpError
 
-IS_PYTHON_344_PLUS = tuple(int(version) for version in platform.python_version_tuple()) >= (3, 4, 4)
-
 
 
 class AsyncioDispatcher(AbstractTransportDispatcher):
@@ -78,13 +76,7 @@ class AsyncioDispatcher(AbstractTransportDispatcher):
 
     def registerTransport(self, tDomain, transport):
         if self.loopingcall is None and self.getTimerResolution() > 0:
-            # Avoid deprecation warning for asyncio.async()
-            if IS_PYTHON_344_PLUS:
-                self.loopingcall = asyncio.ensure_future(self.handle_timeout())
-
-            else:
-                self.loopingcall = getattr(asyncio, 'async')(self.handle_timeout())
-
+            self.loopingcall = asyncio.ensure_future(self.handle_timeout())
         AbstractTransportDispatcher.registerTransport(
             self, tDomain, transport
         )
