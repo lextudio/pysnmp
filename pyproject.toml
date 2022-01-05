@@ -34,6 +34,8 @@ pycryptodomex = "^3.11.0"
 [tool.poetry.dev-dependencies]
 Sphinx = "^4.3.0"
 pytest = "^6.2.5"
+codecov = "^2.1.12"
+pytest-codecov = "^0.4.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
