@@ -1,8 +1,9 @@
 
 SNMP library for Python
 -----------------------
-[![PyPI](https://img.shields.io/pypi/v/pysnmp.svg?maxAge=2592000)](https://pypi.org/project/pysnmp/)
-[![Python Versions](https://img.shields.io/pypi/pyversions/pysnmp.svg)](https://pypi.org/project/pysnmp/)
+[![PyPI](https://img.shields.io/pypi/v/pysnmplib.svg?maxAge=2592000)](https://pypi.python.org/pypi/pysnmplib)
+[![Python Versions](https://img.shields.io/pypi/pyversions/pysnmplib.svg)](https://pypi.python.org/pypi/pysnmplib/)
+[![Build status](https://travis-ci.org/etingof/pysnmp.svg?branch=master)](https://travis-ci.org/etingof/pysnmp)
 [![GitHub license](https://img.shields.io/badge/license-BSD-blue.svg)](https://raw.githubusercontent.com/etingof/pysnmp/master/LICENSE.rst)
 [![Build status](https://travis-ci.org/etingof/pysnmp.svg?branch=master)](https://travis-ci.org/etingof/pysnmp)
 [![Downloads](https://img.shields.io/pypi/dm/pysnmp.svg)](https://pypi.org/project/pysnmp/)
@@ -44,7 +45,11 @@ Features, specific to SNMPv3 model include:
 Download & Install
 ------------------
 
+<<<<<<< HEAD
 The PySNMP software is freely available for download from [PyPI](https://pypi.org/project/pysnmp/)
+=======
+The PySNMP software is freely available for download from [PyPI](https://pypi.python.org/pypi/pysnmplib)
+>>>>>>> 2c1bb181 (The PyPI name is pysnmplib)
 and [GitHub](https://github.com/etingof/pysnmp.git).
 
 Just run:
