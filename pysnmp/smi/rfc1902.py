@@ -412,7 +412,7 @@ class ObjectIdentity(object):
         self._indices = ()
 
         if isinstance(self._args[0], ObjectIdentity):
-            self._args[0].resolveWithMib(mibViewController, ignoreErrors=ignoreErrors)
+            self._args[0].resolveWithMib(mibViewController, ignoreErrors)
 
         if len(self._args) == 1:  # OID or label or MIB module
             debug.logger & debug.FLAG_MIB and debug.logger(
