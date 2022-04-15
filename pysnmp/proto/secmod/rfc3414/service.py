@@ -542,6 +542,7 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
             0, scopedPDU, verifyConstraints=False, matchTags=False,
             matchConstraints=False)
 
+        # 3.1.6a
         snmpEngineBoots = snmpEngineTime = 0
 
         if securityLevel in (2, 3):
