@@ -59,7 +59,7 @@ class AsyncioDispatcher(AbstractTransportDispatcher):
     @asyncio.coroutine
     def handle_timeout(self):
         while True:
-            yield asyncio.From(asyncio.sleep(self.getTimerResolution()))
+            yield from(asyncio.sleep(self.getTimerResolution()))
             self.handleTimerTick(self.loop.time())
 
     def runDispatcher(self, timeout=0.0):
