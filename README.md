@@ -151,8 +151,7 @@ Library documentation and examples can be found at the [pysnmp project site](htt
 
 If something does not work as expected, please
 [open an issue](https://github.com/etingof/pysnmp/issues) at GitHub or
-post your question [on Stack Overflow](http://stackoverflow.com/questions/ask)
-or try browsing pysnmp 
+post your question [on Stack Overflow](http://stackoverflow.com/questions/ask) or try browsing pysnmp 
 [mailing list archives](https://sourceforge.net/p/pysnmp/mailman/pysnmp-users/).
 
 Bug reports and PRs are appreciated! ;-)
