@@ -2,7 +2,7 @@
 name = "pysnmplib"
 version = "5.0.13"
 description = ""
-authors = ["omrozowicz <omrozowicz@splunk.com>"]
+authors = ["omrozowicz <omrozowicz@splunk.com>", "rfaircloth-splunk <rfaircloth@splunk.com>"]
 license = "BSD-2-Clause"
 repository = "https://github.com/pysnmp/pysnmp"
 classifiers = [
