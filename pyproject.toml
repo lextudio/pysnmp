@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pysnmplib"
-version = "5.0.12"
+version = "5.0.13"
 description = ""
 authors = ["omrozowicz <omrozowicz@splunk.com>"]
 license = "BSD-2-Clause"
