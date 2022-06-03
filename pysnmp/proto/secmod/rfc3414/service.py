@@ -579,8 +579,7 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
                     'snmpEngineBoots, snmpEngineTime')
 
             debug.logger & debug.FLAG_SM and debug.logger(
-                '__generateRequestOrResponseMsg: use snmpEngineBoots %s '
-                'snmpEngineTime %s for securityEngineID %r' % (
+                '__generateRequestOrResponseMsg: use snmpEngineBoots {} snmpEngineTime {} for securityEngineID {!r}'.format(
                     snmpEngineBoots, snmpEngineTime, securityEngineID))
 
         # 3.1.4a
