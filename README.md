@@ -1,6 +1,7 @@
 
 SNMP library for Python
 -----------------------
+
 [![PyPI](https://img.shields.io/pypi/v/pysnmplib.svg?maxAge=2592000)](https://pypi.python.org/pypi/pysnmplib)
 [![Python Versions](https://img.shields.io/pypi/pyversions/pysnmplib.svg)](https://pypi.python.org/pypi/pysnmplib/)
 [![CI](https://github.com/pysnmp/pysnmp/actions/workflows/build-test-release.yml/badge.svg)](https://github.com/pysnmp/pysnmp/actions/workflows/build-test-release.yml)
@@ -11,6 +12,8 @@ SNMP engine distributed under 2-clause [BSD license](http://snmplabs.com/pysnmp/
 
 The PySNMP project was initially sponsored by a [PSF](http://www.python.org/psf/) grant.
 Thank you!
+
+This version is a fork of Ilya Etingof's project [etingof/pysnmp](https://github.com/etingof/pysnmp). Ilya sadly passed away on 10-Aug-2022. Announcement [here](https://lists.openstack.org/pipermail/openstack-discuss/2022-August/030062.html).  His work is still of great use to the Python community and he will be missed.
 
 Features
 --------
@@ -53,8 +56,9 @@ Just run:
 $ pip install pysnmp
 ```
     
-to download and install PySNMP along with its dependencies:
+To download and install PySNMP along with its dependencies:
 
+<!-- Need to find an alternate location for the links to snmplabs.com -->
 * [PyASN1](http://snmplabs.com/pyasn1/)
 * [PySMI](http://snmplabs.com/pysmi/) (required for MIB services only)
 * Optional [pysnmpcrypto](https://github.com/etingof/pysnmpcrypto) package
@@ -123,9 +127,11 @@ if errorIndication:
     print(errorIndication)
 ```
 
-We maintain publicly available SNMP Agent and TRAP sink at 
-[demo.snmplabs.com](http://snmplabs.com/snmpsim/public-snmp-agent-simulator.html). You are
-welcome to use it while experimenting with whatever SNMP software you deal with.
+> We maintain publicly available SNMP Agent and TRAP sink at 
+> [demo.snmplabs.com](http://snmplabs.com/snmpsim/public-snmp-agent-simulator.html). You are
+> welcome to use it while experimenting with whatever SNMP software you deal with.
+
+:warning: ***This is no longer the case as the snmplabs.com site is now defunct***
 
 ```bash
 $ python3 examples/hlapi/asyncore/sync/manager/cmdgen/usm-sha-aes128.py
@@ -141,19 +147,19 @@ Other than that, PySNMP is capable to automatically fetch and use required MIBs 
 or local directories. You could configure any MIB source available to you (including
 [this one](https://pysnmp.github.io/mibs/asn1/)) for that purpose.
 
-For more example scripts please refer to [examples section](http://snmplabs.com/pysnmp/examples/contents.html#high-level-snmp)
+For more example scripts please refer to ~~[examples section](http://snmplabs.com/pysnmp/examples/contents.html#high-level-snmp)~~
 at pysnmp web site.
 
 Documentation
 -------------
 
-Library documentation and examples can be found at the [pysnmp project site](http://snmplabs.com/pysnmp/).
+Library documentation and examples can be found at the ~~[pysnmp project site](http://snmplabs.com/pysnmp/)~~.
 
 If something does not work as expected, please
-[open an issue](https://github.com/etingof/pysnmp/issues) at GitHub or
+[open an issue](https://github.com/pysnmp/pysnmp/issues) at GitHub or
 post your question [on Stack Overflow](http://stackoverflow.com/questions/ask) or try browsing pysnmp 
 [mailing list archives](https://sourceforge.net/p/pysnmp/mailman/pysnmp-users/).
 
 Bug reports and PRs are appreciated! ;-)
 
-Copyright (c) 2005-2020, [Ilya Etingof](mailto:etingof@gmail.com). All rights reserved.
+Copyright (c) 2005-2019, [Ilya Etingof](https://lists.openstack.org/pipermail/openstack-discuss/2022-August/030062.html). All rights reserved.
