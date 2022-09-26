@@ -144,7 +144,7 @@ def asyncsendNotification(snmpEngine, authData, transportTarget, contextData,
         snmpEngine, authData, transportTarget, notifyType,
         contextData.contextName)
 
-    future = asyncio.get_running_loop().create_future()()
+    future = asyncio.get_running_loop().create_future()
 
     ntforg.NotificationOriginator().sendVarBinds(
         snmpEngine,
