@@ -25,10 +25,10 @@ import asyncio
 from pysnmp.hlapi.v1arch.asyncio import *
 
 
-def asyncrun():
-    snmpEngine = SnmpDispatcher()
+async def run():
+    snmpDispatcher = SnmpDispatcher()
     errorIndication, errorStatus, errorIndex, varBinds = yield sendNotification(
-        snmpEngine,
+        snmpDispatcher,
         CommunityData('public', mpModel=0),
         UdpTransportTarget(('demo.snmplabs.com', 162)),
         'trap',

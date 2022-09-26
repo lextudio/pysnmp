@@ -21,7 +21,7 @@ import asyncio
 from pysnmp.hlapi.v3arch.asyncio import *
 
 
-def asyncgetone(snmpEngine, hostname):
+async def getone(snmpEngine, hostname):
     errorIndication, errorStatus, errorIndex, varBinds = yield getCmd(
         snmpEngine,
         CommunityData('public'),

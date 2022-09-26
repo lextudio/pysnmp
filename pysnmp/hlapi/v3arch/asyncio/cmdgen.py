@@ -160,7 +160,7 @@ def getCmd(snmpEngine, authData, transportTarget, contextData,
     return future
 
 
-def asyncsetCmd(snmpEngine, authData, transportTarget, contextData,
+async def setCmd(snmpEngine, authData, transportTarget, contextData,
            *varBinds, **options):
     """Creates a generator to perform SNMP SET query.
 
@@ -269,7 +269,7 @@ def asyncsetCmd(snmpEngine, authData, transportTarget, contextData,
     return future
 
 
-def asyncnextCmd(snmpEngine, authData, transportTarget, contextData,
+async def nextCmd(snmpEngine, authData, transportTarget, contextData,
             *varBinds, **options):
     """Creates a generator to perform SNMP GETNEXT query.
 
@@ -383,7 +383,7 @@ def asyncnextCmd(snmpEngine, authData, transportTarget, contextData,
     return future
 
 
-def asyncbulkCmd(snmpEngine, authData, transportTarget, contextData,
+async def bulkCmd(snmpEngine, authData, transportTarget, contextData,
             nonRepeaters, maxRepetitions, *varBinds, **options):
     """Creates a generator to perform SNMP GETBULK query.
 

@@ -19,7 +19,7 @@ import asyncio
 from pysnmp.hlapi.v3arch.asyncio import *
 
 
-def asyncrun():
+async def run():
     snmpEngine = SnmpEngine()
     errorIndication, errorStatus, errorIndex, varBinds = yield getCmd(
         snmpEngine,

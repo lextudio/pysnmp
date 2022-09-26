@@ -25,7 +25,7 @@ VB_PROCESSOR = NotificationOriginatorVarBinds()
 LCD = NotificationOriginatorLcdConfigurator()
 
 
-def asyncsendNotification(snmpEngine, authData, transportTarget, contextData,
+async def sendNotification(snmpEngine, authData, transportTarget, contextData,
                      notifyType, varBinds, **options):
     r"""Creates a generator to send SNMP notification.
 
