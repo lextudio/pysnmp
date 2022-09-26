@@ -52,7 +52,7 @@ isEndOfMib = lambda varBinds: not v2c.apiPDU.getNextVarBinds(varBinds)[1]
 
 
 
-def getCmd(snmpEngine, authData, transportTarget, contextData,
+async def getCmd(snmpEngine, authData, transportTarget, contextData,
            *varBinds, **options):
     """Creates a generator to perform SNMP GET query.
 
