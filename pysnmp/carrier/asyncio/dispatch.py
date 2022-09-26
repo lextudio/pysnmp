@@ -56,10 +56,9 @@ class AsyncioDispatcher(AbstractTransportDispatcher):
         self.loopingcall = None
         self.loop = kwargs.pop('loop', asyncio.get_event_loop())
 
-    @asyncio.coroutine
-    def handle_timeout(self):
+    async def handle_timeout(self):
         while True:
-            yield from(asyncio.sleep(self.getTimerResolution()))
+            yield(asyncio.sleep(self.getTimerResolution()))
             self.handleTimerTick(self.loop.time())
 
     def runDispatcher(self, timeout=0.0):

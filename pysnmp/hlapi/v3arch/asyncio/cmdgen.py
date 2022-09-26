@@ -51,14 +51,14 @@ LCD = CommandGeneratorLcdConfigurator()
 isEndOfMib = lambda varBinds: not v2c.apiPDU.getNextVarBinds(varBinds)[1]
 
 
-@asyncio.coroutine
+
 def getCmd(snmpEngine, authData, transportTarget, contextData,
            *varBinds, **options):
     """Creates a generator to perform SNMP GET query.
 
     When iterator gets advanced by :py:mod:`asyncio` main loop,
     SNMP GET request is send (:RFC:`1905#section-4.2.1`).
-    The iterator yields :py:class:`asyncio.Future` which gets done whenever
+    The iterator yields :py:class:`asyncio.get_running_loop().create_future()` which gets done whenever
     response arrives or error occurs.
 
     Parameters
@@ -110,9 +110,8 @@ def getCmd(snmpEngine, authData, transportTarget, contextData,
     >>> import asyncio
     >>> from pysnmp.hlapi.asyncio import *
     >>>
-    >>> @asyncio.coroutine
-    ... def run():
-    ...     errorIndication, errorStatus, errorIndex, varBinds = yield from getCmd(
+    >>> async def run():
+    ...     errorIndication, errorStatus, errorIndex, varBinds = yield getCmd(
     ...         SnmpEngine(),
     ...         CommunityData('public'),
     ...         UdpTransportTarget(('demo.snmplabs.com', 161)),
@@ -149,7 +148,7 @@ def getCmd(snmpEngine, authData, transportTarget, contextData,
     addrName, paramsName = LCD.configure(
         snmpEngine, authData, transportTarget, contextData.contextName)
 
-    future = asyncio.Future()
+    future = asyncio.get_running_loop().create_future()()
 
     cmdgen.GetCommandGenerator().sendVarBinds(
         snmpEngine, addrName, contextData.contextEngineId,
@@ -161,14 +160,13 @@ def getCmd(snmpEngine, authData, transportTarget, contextData,
     return future
 
 
-@asyncio.coroutine
-def setCmd(snmpEngine, authData, transportTarget, contextData,
+def asyncsetCmd(snmpEngine, authData, transportTarget, contextData,
            *varBinds, **options):
     """Creates a generator to perform SNMP SET query.
 
     When iterator gets advanced by :py:mod:`asyncio` main loop,
     SNMP SET request is send (:RFC:`1905#section-4.2.5`).
-    The iterator yields :py:class:`asyncio.Future` which gets done whenever
+    The iterator yields :py:class:`asyncio.get_running_loop().create_future()` which gets done whenever
     response arrives or error occurs.
 
     Parameters
@@ -220,9 +218,8 @@ def setCmd(snmpEngine, authData, transportTarget, contextData,
     >>> import asyncio
     >>> from pysnmp.hlapi.asyncio import *
     >>>
-    >>> @asyncio.coroutine
-    ... def run():
-    ...     errorIndication, errorStatus, errorIndex, varBinds = yield from setCmd(
+    >>> async def run():
+    ...     errorIndication, errorStatus, errorIndex, varBinds = yield setCmd(
     ...         SnmpEngine(),
     ...         CommunityData('public'),
     ...         UdpTransportTarget(('demo.snmplabs.com', 161)),
@@ -260,7 +257,7 @@ def setCmd(snmpEngine, authData, transportTarget, contextData,
     addrName, paramsName = LCD.configure(
         snmpEngine, authData, transportTarget, contextData.contextName)
 
-    future = asyncio.Future()
+    future = asyncio.get_running_loop().create_future()()
 
     cmdgen.SetCommandGenerator().sendVarBinds(
         snmpEngine, addrName, contextData.contextEngineId,
@@ -272,14 +269,13 @@ def setCmd(snmpEngine, authData, transportTarget, contextData,
     return future
 
 
-@asyncio.coroutine
-def nextCmd(snmpEngine, authData, transportTarget, contextData,
+def asyncnextCmd(snmpEngine, authData, transportTarget, contextData,
             *varBinds, **options):
     """Creates a generator to perform SNMP GETNEXT query.
 
     When iterator gets advanced by :py:mod:`asyncio` main loop,
     SNMP GETNEXT request is send (:RFC:`1905#section-4.2.2`).
-    The iterator yields :py:class:`asyncio.Future` which gets done whenever
+    The iterator yields :py:class:`asyncio.get_running_loop().create_future()` which gets done whenever
     response arrives or error occurs.
 
     Parameters
@@ -335,9 +331,8 @@ def nextCmd(snmpEngine, authData, transportTarget, contextData,
     >>> import asyncio
     >>> from pysnmp.hlapi.asyncio import *
     >>>
-    >>> @asyncio.coroutine
-    ... def run():
-    ...     errorIndication, errorStatus, errorIndex, varBinds = yield from nextCmd(
+    >>> async def run():
+    ...     errorIndication, errorStatus, errorIndex, varBinds = yield nextCmd(
     ...         SnmpEngine(),
     ...         CommunityData('public'),
     ...         UdpTransportTarget(('demo.snmplabs.com', 161)),
@@ -376,7 +371,7 @@ def nextCmd(snmpEngine, authData, transportTarget, contextData,
     addrName, paramsName = LCD.configure(
         snmpEngine, authData, transportTarget, contextData.contextName)
 
-    future = asyncio.Future()
+    future = asyncio.get_running_loop().create_future()()
 
     cmdgen.NextCommandGenerator().sendVarBinds(
         snmpEngine, addrName, contextData.contextEngineId,
@@ -388,14 +383,13 @@ def nextCmd(snmpEngine, authData, transportTarget, contextData,
     return future
 
 
-@asyncio.coroutine
-def bulkCmd(snmpEngine, authData, transportTarget, contextData,
+def asyncbulkCmd(snmpEngine, authData, transportTarget, contextData,
             nonRepeaters, maxRepetitions, *varBinds, **options):
     """Creates a generator to perform SNMP GETBULK query.
 
     When iterator gets advanced by :py:mod:`asyncio` main loop,
     SNMP GETBULK request is send (:RFC:`1905#section-4.2.3`).
-    The iterator yields :py:class:`asyncio.Future` which gets done whenever
+    The iterator yields :py:class:`asyncio.get_running_loop().create_future()` which gets done whenever
     response arrives or error occurs.
 
     Parameters
@@ -479,9 +473,8 @@ def bulkCmd(snmpEngine, authData, transportTarget, contextData,
     >>> import asyncio
     >>> from pysnmp.hlapi.asyncio import *
     >>>
-    >>> @asyncio.coroutine
-    ... def run():
-    ...     errorIndication, errorStatus, errorIndex, varBinds = yield from bulkCmd(
+    >>> async def run():
+    ...     errorIndication, errorStatus, errorIndex, varBinds = yield bulkCmd(
     ...         SnmpEngine(),
     ...         CommunityData('public'),
     ...         UdpTransportTarget(('demo.snmplabs.com', 161)),
@@ -522,7 +515,7 @@ def bulkCmd(snmpEngine, authData, transportTarget, contextData,
     addrName, paramsName = LCD.configure(
         snmpEngine, authData, transportTarget, contextData.contextName)
 
-    future = asyncio.Future()
+    future = asyncio.get_running_loop().create_future()()
 
     cmdgen.BulkCommandGenerator().sendVarBinds(
         snmpEngine, addrName, contextData.contextEngineId,

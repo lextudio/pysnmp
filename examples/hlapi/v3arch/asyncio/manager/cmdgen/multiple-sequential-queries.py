@@ -21,18 +21,14 @@ import asyncio
 from pysnmp.hlapi.v3arch.asyncio import *
 
 
-@asyncio.coroutine
-def getone(snmpEngine, hostname):
-
-    iterator = getCmd(
+def asyncgetone(snmpEngine, hostname):
+    errorIndication, errorStatus, errorIndex, varBinds = yield getCmd(
         snmpEngine,
         CommunityData('public'),
         UdpTransportTarget(hostname),
         ContextData(),
         ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0))
     )
-
-    errorIndication, errorStatus, errorIndex, varBinds = yield from iterator
 
     if errorIndication:
         print(errorIndication)
@@ -48,10 +44,9 @@ def getone(snmpEngine, hostname):
             print(' = '.join([x.prettyPrint() for x in varBind]))
 
 
-@asyncio.coroutine
-def getall(snmpEngine, hostnames):
+def asyncgetall(snmpEngine, hostnames):
     for hostname in hostnames:
-        yield from getone(snmpEngine, hostname)
+        yield getone(snmpEngine, hostname)
 
 
 snmpEngine = SnmpEngine()
