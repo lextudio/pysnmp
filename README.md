@@ -85,7 +85,7 @@ PySNMP is designed in a layered fashion. Top-level and easiest to use API is kno
 *hlapi*. Here's a quick example on how to SNMP GET:
 
 ```python
-from pysnmp.hlapi import *
+from pysnmplib.hlapi import *
 
 iterator = getCmd(SnmpEngine(),
                   CommunityData('public'),
@@ -108,7 +108,7 @@ else:
 This is how to send SNMP TRAP:
 
 ```python
-from pysnmp.hlapi import *
+from pysnmplib.hlapi import *
 
 errorIndication, errorStatus, errorIndex, varBinds = next(
     sendNotification(
