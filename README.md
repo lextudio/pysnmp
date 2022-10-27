@@ -55,7 +55,7 @@ Just run:
 ```bash
 $ pip install pysnmplib
 ```
-    
+
 To download and install PySNMP along with its dependencies:
 
 <!-- Need to find an alternate location for the links to snmplabs.com -->
@@ -70,14 +70,14 @@ written in pure-Python could be installed via:
 ```bash
 $ pip install snmpclitools
 ```
-    
+
 and used in the very similar manner as conventional Net-SNMP tools:
 
 ```bash
 $ snmpget.py -v3 -l authPriv -u usr-md5-des -A authkey1 -X privkey1 demo.snmplabs.com sysDescr.0
 SNMPv2-MIB::sysDescr.0 = STRING: Linux zeus 4.8.6.5-smp #2 SMP Sun Nov 13 14:58:11 CDT 2016 i686
 ```
-    
+
 Examples
 --------
 
@@ -85,7 +85,7 @@ PySNMP is designed in a layered fashion. Top-level and easiest to use API is kno
 *hlapi*. Here's a quick example on how to SNMP GET:
 
 ```python
-from pysnmplib.hlapi import *
+from pysnmp.hlapi import *
 
 iterator = getCmd(SnmpEngine(),
                   CommunityData('public'),
@@ -108,7 +108,7 @@ else:
 This is how to send SNMP TRAP:
 
 ```python
-from pysnmplib.hlapi import *
+from pysnmp.hlapi import *
 
 errorIndication, errorStatus, errorIndex, varBinds = next(
     sendNotification(
@@ -127,7 +127,7 @@ if errorIndication:
     print(errorIndication)
 ```
 
-> We maintain publicly available SNMP Agent and TRAP sink at 
+> We maintain publicly available SNMP Agent and TRAP sink at
 > [demo.snmplabs.com](http://snmplabs.com/snmpsim/public-snmp-agent-simulator.html). You are
 > welcome to use it while experimenting with whatever SNMP software you deal with.
 
@@ -142,7 +142,7 @@ SNMPv2-MIB::sysUpTime.0 = 0
 SNMPv2-MIB::snmpTrapOID.0 = SNMPv2-MIB::warmStart
 SNMPv2-MIB::sysName.0 = system name
 ```
-    
+
 Other than that, PySNMP is capable to automatically fetch and use required MIBs from HTTP, FTP sites
 or local directories. You could configure any MIB source available to you (including
 [this one](https://pysnmp.github.io/mibs/asn1/)) for that purpose.
@@ -157,7 +157,7 @@ Library documentation and examples can be found at the ~~[pysnmp project site](h
 
 If something does not work as expected, please
 [open an issue](https://github.com/pysnmp/pysnmp/issues) at GitHub or
-post your question [on Stack Overflow](http://stackoverflow.com/questions/ask) or try browsing pysnmp 
+post your question [on Stack Overflow](http://stackoverflow.com/questions/ask) or try browsing pysnmp
 [mailing list archives](https://sourceforge.net/p/pysnmp/mailman/pysnmp-users/).
 
 Bug reports and PRs are appreciated! ;-)
