@@ -25,18 +25,17 @@ async def run(varBinds):
     snmpEngine = SnmpEngine()
 
     while True:
+        bulk_task = await bulkCmd(
+            snmpEngine,
+            CommunityData('public'),
+            UdpTransportTarget(('localhost', 161)),
+            ContextData(),
+            0, 50,
+            *varBinds)
         (errorIndication,
          errorStatus,
          errorIndex,
-         varBindTable) = yield bulkCmd(
-            snmpEngine,
-            UsmUserData('usr-none-none'),
-            UdpTransportTarget(('demo.snmplabs.com', 161)),
-            ContextData(),
-            0, 50,
-            *varBinds
-        )
-
+         varBindTable) = await bulk_task
         if errorIndication:
             print(errorIndication)
             break
@@ -55,11 +54,8 @@ async def run(varBinds):
         varBinds = varBindTable[-1]
         if isEndOfMib(varBinds):
             break
+    return
 
-    snmpEngine.transportDispatcher.closeDispatcher()
 
+asyncio.run(run([ObjectType(ObjectIdentity('TCP-MIB')), ObjectType(ObjectIdentity('IP-MIB'))]))
 
-loop = asyncio.get_event_loop()
-loop.run_until_complete(
-    run([ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr'))])
-)

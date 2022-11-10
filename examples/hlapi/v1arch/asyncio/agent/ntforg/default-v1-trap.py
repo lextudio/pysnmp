@@ -27,7 +27,7 @@ from pysnmp.hlapi.v1arch.asyncio import *
 
 async def run():
     snmpDispatcher = SnmpDispatcher()
-    errorIndication, errorStatus, errorIndex, varBinds = yield sendNotification(
+    errorIndication, errorStatus, errorIndex, varBinds = await sendNotification(
         snmpDispatcher,
         CommunityData('public', mpModel=0),
         UdpTransportTarget(('demo.snmplabs.com', 162)),
@@ -48,4 +48,4 @@ async def run():
     snmpDispatcher.transportDispatcher.closeDispatcher()
 
 
-asyncio.get_event_loop().run_until_complete(run())
+asyncio.run(run())

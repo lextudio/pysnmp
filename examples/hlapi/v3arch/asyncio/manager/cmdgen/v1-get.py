@@ -21,14 +21,15 @@ from pysnmp.hlapi.v3arch.asyncio import *
 
 async def run():
     snmpEngine = SnmpEngine()
-    errorIndication, errorStatus, errorIndex, varBinds = yield getCmd(
+    get_result = await getCmd(
         snmpEngine,
         CommunityData('public', mpModel=0),
-        UdpTransportTarget(('demo.snmplabs.com', 161)),
+        UdpTransportTarget(('localhost', 161)),
         ContextData(),
         ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0))
     )
 
+    errorIndication, errorStatus, errorIndex, varBinds = await get_result
     if errorIndication:
         print(errorIndication)
 
@@ -45,4 +46,4 @@ async def run():
     snmpEngine.transportDispatcher.closeDispatcher()
 
 
-asyncio.get_event_loop().run_until_complete(run())
+asyncio.run(run())

@@ -111,13 +111,14 @@ async def getCmd(snmpEngine, authData, transportTarget, contextData,
     >>> from pysnmp.hlapi.asyncio import *
     >>>
     >>> async def run():
-    ...     errorIndication, errorStatus, errorIndex, varBinds = yield getCmd(
+    ...     result_get = await getCmd(
     ...         SnmpEngine(),
     ...         CommunityData('public'),
     ...         UdpTransportTarget(('demo.snmplabs.com', 161)),
     ...         ContextData(),
     ...         ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0))
     ...     )
+    ...     errorIndication, errorStatus, errorIndex, varBinds = await result_get
     ...     print(errorIndication, errorStatus, errorIndex, varBinds)
     >>>
     >>> asyncio.get_event_loop().run_until_complete(run())
@@ -474,7 +475,7 @@ async def bulkCmd(snmpEngine, authData, transportTarget, contextData,
     >>> from pysnmp.hlapi.asyncio import *
     >>>
     >>> async def run():
-    ...     errorIndication, errorStatus, errorIndex, varBinds = yield bulkCmd(
+    ...     result_bulk = await bulkCmd(
     ...         SnmpEngine(),
     ...         CommunityData('public'),
     ...         UdpTransportTarget(('demo.snmplabs.com', 161)),
@@ -482,9 +483,10 @@ async def bulkCmd(snmpEngine, authData, transportTarget, contextData,
     ...         0, 2,
     ...         ObjectType(ObjectIdentity('SNMPv2-MIB', 'system'))
     ...     )
+    ...     errorIndication, errorStatus, errorIndex, varBinds = await result_bulk
     ...     print(errorIndication, errorStatus, errorIndex, varBinds)
     >>>
-    >>> asyncio.get_event_loop().run_until_complete(run())
+    >>> asyncio.run(run())
     (None, 0, 0, [[ObjectType(ObjectIdentity(ObjectName('1.3.6.1.2.1.1.1.0')), DisplayString('SunOS zeus.snmplabs.com 4.1.3_U1 1 sun4m'))], [ObjectType(ObjectIdentity(ObjectName('1.3.6.1.2.1.1.2.0')), ObjectIdentifier('1.3.6.1.4.1.424242.1.1'))]])
     >>>
 

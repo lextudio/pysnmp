@@ -109,16 +109,17 @@ async def sendNotification(snmpEngine, authData, transportTarget, contextData,
     >>> from pysnmp.hlapi.asyncio import *
     >>>
     >>> async def run():
-    ...     errorIndication, errorStatus, errorIndex, varBinds = yield sendNotification(
+    ...     send_result = await sendNotification(
     ...         SnmpEngine(),
     ...         CommunityData('public'),
     ...         UdpTransportTarget(('demo.snmplabs.com', 162)),
     ...         ContextData(),
     ...         'trap',
     ...         NotificationType(ObjectIdentity('IF-MIB', 'linkDown')))
+    ...     errorIndication, errorStatus, errorIndex, varBinds = await send_result
     ...     print(errorIndication, errorStatus, errorIndex, varBinds)
     ...
-    >>> asyncio.get_event_loop().run_until_complete(run())
+    >>> asyncio.run(run())
     (None, 0, 0, [])
     >>>
 
