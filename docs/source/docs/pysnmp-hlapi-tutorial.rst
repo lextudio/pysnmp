@@ -612,6 +612,6 @@ becomes non-linear what hurts program analysis by human reader.
 PySNMP high-level API is adapted to work with three popular
 asynchronous I/O frameworks :mod:`asyncio`.
 Please, refer to PySNMP :doc:`library reference </docs/api-reference>`
-and :doc:`examples </examples/contents>` for more information on
+and :doc:`examples </examples/index>` for more information on
 asynchronous API.
 

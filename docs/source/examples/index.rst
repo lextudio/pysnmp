@@ -48,7 +48,7 @@ The v3 architecture
 .. toctree::
    :maxdepth: 2
 
-   /examples/hlapi/asyncio/contents
+   /examples/hlapi/asyncio/index
 
 
 The v1 architecture
@@ -82,7 +82,7 @@ framework being used.
 .. toctree::
    :maxdepth: 2
 
-   /examples/v3arch/asyncio/contents
+   /examples/v3arch/asyncio/index
    
 Packet-level SNMP
 -----------------

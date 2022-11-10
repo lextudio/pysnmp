@@ -145,7 +145,7 @@ Other than that, PySNMP is capable to automatically fetch and use required MIBs 
 or local directories. You could configure any MIB source available to you (including
 [this one](https://pysnmp.github.io/mibs/asn1/)) for that purpose.
 
-For more example scripts please refer to ~~[examples section](https://www.pysnmp.com/pysnmp/examples/contents.html#high-level-snmp)~~
+For more example scripts please refer to ~~[examples section](https://www.pysnmp.com/pysnmp/examples/index.html#high-level-snmp)~~
 at pysnmp web site.
 
 Documentation

@@ -52,5 +52,5 @@ Many ASN.1 MIB files could be downloaded from
 be :doc:`configured <docs/api-reference>` to download them automatically.
 
 For more sophisticated examples and use cases please refer to
-:doc:`examples <examples/contents>` and :doc:`library reference <docs/api-reference>`
+:doc:`examples <examples/index>` and :doc:`library reference <docs/api-reference>`
 pages.

@@ -64,7 +64,7 @@ Examples
 .. toctree::
    :maxdepth: 2
 
-   /examples/contents
+   /examples/index
 
 Download
 --------
