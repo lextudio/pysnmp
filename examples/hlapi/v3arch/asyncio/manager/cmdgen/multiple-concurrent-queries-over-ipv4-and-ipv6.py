@@ -6,15 +6,15 @@ Send multiple SNMP GET requests at once using the following options:
 
 * with SNMPv2c, community 'public'
 * over IPv4/UDP
-* to multiple Agents at demo.snmplabs.com
+* to multiple Agents at localhost
 * for instance of SNMPv2-MIB::sysDescr.0 MIB object
 * based on asyncio I/O framework
 
 Functionally similar to:
 
-| $ snmpget -v2c -c public demo.snmplabs.com:1161 SNMPv2-MIB::sysDescr.0
-| $ snmpget -v2c -c public demo.snmplabs.com:2161 SNMPv2-MIB::sysDescr.0
-| $ snmpget -v2c -c public demo.snmplabs.com:3161 SNMPv2-MIB::sysDescr.0
+| $ snmpget -v2c -c public localhost:1161 SNMPv2-MIB::sysDescr.0
+| $ snmpget -v2c -c public localhost:2161 SNMPv2-MIB::sysDescr.0
+| $ snmpget -v2c -c public localhost:3161 SNMPv2-MIB::sysDescr.0
 
 """#
 import asyncio

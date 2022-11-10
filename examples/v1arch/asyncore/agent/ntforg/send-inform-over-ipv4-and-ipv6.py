@@ -8,12 +8,12 @@ The following script sends SNMP INFORM notification using the following options:
 * with community name 'public'
 * over IPv4/UDP and IPv6/UDP
 * send INFORM notification
-* to a Manager at demo.snmplabs.com:162 and [::1]:162
+* to a Manager at localhost:162 and [::1]:162
 * with TRAP ID 'coldStart' specified as an OID
 
 The following Net-SNMP command will produce similar SNMP notification:
 
-| $ snmpinform -v2c -c public udp:demo.snmplabs.com 0 1.3.6.1.6.3.1.1.5.1
+| $ snmpinform -v2c -c public udp:localhost 0 1.3.6.1.6.3.1.1.5.1
 | $ snmpinform -v2c -c public udp6:[::1] 0 1.3.6.1.6.3.1.1.5.1
 
 """#
@@ -77,7 +77,7 @@ transportDispatcher.registerTransport(
     udp.DOMAIN_NAME, udp.UdpSocketTransport().openClientMode()
 )
 transportDispatcher.sendMessage(
-    encoder.encode(trapMsg), udp.DOMAIN_NAME, ('demo.snmplabs.com', 162)
+    encoder.encode(trapMsg), udp.DOMAIN_NAME, ('localhost', 162)
 )
 transportDispatcher.jobStarted(1)
 

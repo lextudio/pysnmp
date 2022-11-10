@@ -6,13 +6,13 @@ Send SNMP GET request using the following options:
 
   * with SNMPv1, community 'public'
   * over IPv4/UDP
-  * to an Agent at demo.snmplabs.com:161
+  * to an Agent at localhost:161
   * for an instance of SNMPv2-MIB::sysDescr.0 MIB object
   * Based on asyncio I/O framework
 
 Functionally similar to:
 
-| $ snmpget -v1 -c public demo.snmplabs.com SNMPv2-MIB::sysDescr.0
+| $ snmpget -v1 -c public localhost SNMPv2-MIB::sysDescr.0
 
 """#
 import asyncio

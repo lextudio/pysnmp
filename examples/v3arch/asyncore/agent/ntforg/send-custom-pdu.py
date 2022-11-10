@@ -15,7 +15,7 @@ framework for further treatment.
 
 Functionally similar to:
 
-| $ snmptrap -v2c -c public demo.snmplabs.com 0 1.3.6.1.6.3.1.1.5.1
+| $ snmptrap -v2c -c public localhost 0 1.3.6.1.6.3.1.1.5.1
 
 """#
 from pysnmp.entity import engine, config
