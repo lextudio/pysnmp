@@ -84,7 +84,7 @@ Stand-alone PySNMP-based tools
    **Done:** since `snmpsim-0.2.4 <https://www.pysnmp.com/snmpsim/>`_ 
 
 If you need some particular feature - please, 
-`open a feature request <https://github.com/etingof/pysnmp/issues/new>`_ . Once we 
+`open a feature request <https://github.com/lextudio/pysnmp/issues/new>`_ . Once we 
 see a greater demand in particular area, we would re-arrange our 
 development resources to meet it sooner. 
 

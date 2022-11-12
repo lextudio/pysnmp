@@ -6,13 +6,13 @@ Download PySNMP
 
 The PySNMP software is provided under terms and conditions of BSD-style 
 license, and can be freely downloaded from 
-`PyPI <https://pypi.org/project/pysnmp/>`_ or
-GitHub (`master branch <https://github.com/etingof/pysnmp/archive/master.zip>`_).
+`PyPI <http://pypi.python.org/pypi/pysnmp/>`_ or
+GitHub (`master branch <https://github.com/lextudio/pysnmp/archive/master.zip>`_).
 
 
 Besides official releases, it's advisable to try the cutting-edge
 development code that could be taken from PySNMP
-`source code repository <https://github.com/etingof/pysnmp>`_.
+`source code repository <https://github.com/lextudio/pysnmp>`_.
 It may be less stable in regards to general operation and changes to
 public interfaces, but it's first to contain fixes to recently discovered bugs.
 
@@ -65,6 +65,6 @@ The installation procedure for all the above packages is as follows
    # cd .. 
    # rm -rf package-X.X.X
 
-In case of any issues, please open a `GitHub issue <https://github.com/etingof/pysnmp/issues/new>`_ so we could try to help out.
+In case of any issues, please open a `GitHub issue <https://github.com/lextudio/pysnmp/issues/new>`_ so we could try to help out.
 
 

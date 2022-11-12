@@ -1,4 +1,5 @@
 Copyright (c) 2005-2020, Ilya Etingof <etingof@gmail.com>
+Copyright (c) 2022, LeXtudio Inc. <support@lextudio.com>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without

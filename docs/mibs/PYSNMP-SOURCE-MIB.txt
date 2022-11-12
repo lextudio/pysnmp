@@ -14,12 +14,14 @@ IMPORTS
 pysnmpSourceMIB MODULE-IDENTITY
     LAST-UPDATED "201704140000Z"
     ORGANIZATION "The PySNMP Project"
-    CONTACT-INFO "E-mail: Ilya Etingof <etingof@gmail.com>
-                  GitHub: https://github.com/etingof/pysnmp"
+    CONTACT-INFO "E-mail: Lex Li <support@lextudio.com>
+                  GitHub: https://github.com/lextudio/pysnmp"
     DESCRIPTION
         "This MIB module defines implementation specific objects
          that provide variable source transport endpoints feature to
          SNMP Engine and Standard SNMP Applications."
+    REVISION    "202211120000Z"
+    DESCRIPTION "Updated contact"
     REVISION    "201704140000Z"
     DESCRIPTION "Updated addresses"
     REVISION    "201501160000Z"          -- 16 January 2015, midnight

@@ -109,8 +109,8 @@ if mibBuilder.loadTexts:
 The PySNMP Project
 """)
 pysnmpSourceMIB.setContactInfo("""\
-E-mail: Ilya Etingof <etingof@gmail.com> GitHub:
-https://github.com/etingof/pysnmp
+E-mail: Lex Li <support@lextudio.com> GitHub:
+https://github.com/lextudio/pysnmp
 """)
 if mibBuilder.loadTexts:
     pysnmpSourceMIB.setDescription("""\

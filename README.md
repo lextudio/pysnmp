@@ -1,11 +1,11 @@
 
-SNMP library for Python
+SNMP Library for Python
 -----------------------
 
-[![PyPI](https://img.shields.io/pypi/v/pysnmplib.svg?maxAge=2592000)](https://pypi.python.org/pypi/pysnmplib)
-[![Python Versions](https://img.shields.io/pypi/pyversions/pysnmplib.svg)](https://pypi.python.org/pypi/pysnmplib/)
-[![CI](https://github.com/pysnmp/pysnmp/actions/workflows/build-test-release.yml/badge.svg)](https://github.com/pysnmp/pysnmp/actions/workflows/build-test-release.yml)
-[![GitHub license](https://img.shields.io/badge/license-BSD-blue.svg)](https://raw.githubusercontent.com/pysnmp/pysnmp/master/LICENSE.rst)
+[![PyPI](https://img.shields.io/pypi/v/pysnmp-lextudio.svg?maxAge=2592000)](https://pypi.python.org/pypi/pysnmp-lextudio)
+[![Python Versions](https://img.shields.io/pypi/pyversions/pysnmp-lextudio.svg)](https://pypi.python.org/pypi/pysnmp-lextudio/)
+[![CI](https://github.com/lextudio/pysnmp/actions/workflows/build-test-release.yml/badge.svg)](https://github.com/lextudio/pysnmp/actions/workflows/build-test-release.yml)
+[![GitHub license](https://img.shields.io/badge/license-BSD-blue.svg)](https://raw.githubusercontent.com/lextudio/pysnmp/master/LICENSE.rst)
 
 This is a pure-Python, open source and free implementation of v1/v2c/v3
 SNMP engine distributed under 2-clause [BSD license](https://www.pysnmp.com/pysnmp/license.html).
@@ -46,14 +46,14 @@ Features, specific to SNMPv3 model include:
 Download & Install
 ------------------
 
-The PySNMP software is freely available for download from [PyPI](https://pypi.python.org/pypi/pysnmplib)
-and [GitHub](https://github.com/pysnmp/pysnmp.git).
+The PySNMP software is freely available for download from [PyPI](https://pypi.python.org/pypi/pysnmp-lextudio)
+and [GitHub](https://github.com/lextudio/pysnmp.git).
 
 
 Just run:
 
 ```bash
-$ pip install pysnmplib
+$ pip install pysnmp-lextudio
 ```
 
 To download and install PySNMP along with its dependencies:
@@ -64,7 +64,7 @@ To download and install PySNMP along with its dependencies:
 * [PyASN1](https://www.pysnmp.com/pyasn1/)
 * [PySMI](https://www.pysnmp.com/pysmi/) (required for MIB services only)
 
-Besides the library, command-line [SNMP utilities](https://github.com/etingof/snmpclitools)
+Besides the library, command-line [SNMP utilities](https://github.com/lextudio/snmpclitools)
 written in pure-Python could be installed via:
 
 ```bash
@@ -154,7 +154,7 @@ Documentation
 Library documentation and examples can be found at the ~~[pysnmp project site](https://www.pysnmp.com/pysnmp/)~~.
 
 If something does not work as expected, please
-[open an issue](https://github.com/pysnmp/pysnmp/issues) at GitHub or
+[open an issue](https://github.com/lextudio/pysnmp/issues) at GitHub or
 post your question [on Stack Overflow](http://stackoverflow.com/questions/ask) or try browsing pysnmp
 [mailing list archives](https://sourceforge.net/p/pysnmp/mailman/pysnmp-users/).
 

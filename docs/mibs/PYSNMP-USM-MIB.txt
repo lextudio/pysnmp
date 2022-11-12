@@ -16,11 +16,13 @@ IMPORTS
 pysnmpUsmMIB MODULE-IDENTITY
     LAST-UPDATED "201704140000Z"
     ORGANIZATION "The PySNMP Project"
-    CONTACT-INFO "E-mail: Ilya Etingof <etingof@gmail.com>
-                  GitHub: https://github.com/etingof/pysnmp"
+    CONTACT-INFO "E-mail: Lex Li <support@lextudio.com>
+                  GitHub: https://github.com/lextudio/pysnmp"
     DESCRIPTION
         "This MIB module defines objects specific to User
          Security Model (USM) implementation at PySNMP."
+    REVISION    "202211120000Z" 
+    DESCRIPTION "Updated contact"
     REVISION    "201908300000Z"
     DESCRIPTION "Added USM key types"
     REVISION    "201707300000Z"

@@ -1,10 +1,10 @@
 [tool.poetry]
-name = "pysnmplib"
-version = "5.0.24"
+name = "pysnmp-lextudio"
+version = "5.0.19"
 description = ""
-authors = ["omrozowicz <omrozowicz@splunk.com>", "rfaircloth-splunk <rfaircloth@splunk.com>"]
+authors = ["Lex Li <support@lextudio.com>"]
 license = "BSD-2-Clause"
-repository = "https://github.com/pysnmp/pysnmp"
+repository = "https://github.com/lextudio/pysnmp"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Environment :: Console",

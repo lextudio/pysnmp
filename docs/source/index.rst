@@ -32,7 +32,7 @@ They may be useful in a cross-platform situations as well as a testing
 and prototyping instrument for pysnmp users.
 
 PySNMP software is free and open-source. Source code is hosted in 
-a `Github repo <https://github.com/etingof/pysnmp>`_.
+a `Github repo <https://github.com/lextudio/pysnmp>`_.
 The library is being distributed under 2-clause BSD-style license.
 
 PySNMP library development has been initially sponsored 
@@ -123,7 +123,7 @@ Contact
 -------
 
 In case of questions or troubles using PySNMP, please open up an
-`issue <https://github.com/etingof/pysnmp/issues>`_ at GitHub or ask at
+`issue <https://github.com/lextudio/pysnmp/issues>`_ at GitHub or ask at
 `Stack Overflow <http://stackoverflow.com/questions/tagged/pysnmp>`_ .
 
 Old site archive

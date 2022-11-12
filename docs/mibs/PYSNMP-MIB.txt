@@ -10,10 +10,12 @@ IMPORTS
 pysnmp MODULE-IDENTITY
     LAST-UPDATED "201704140000Z"
     ORGANIZATION "The PySNMP Project"
-    CONTACT-INFO "E-mail: Ilya Etingof <etingof@gmail.com>
-                  GitHub: https://github.com/etingof/pysnmp"
+    CONTACT-INFO "E-mail: Lex Li <support@lextudio.com>
+                  GitHub: https://github.com/lextudio/pysnmp"
     DESCRIPTION
 	"PySNMP top-level MIB tree infrastructure"
+    REVISION     "202211120000Z"
+    DESCRIPTION  "Updated contact"
     REVISION     "201704140000Z"
     DESCRIPTION  "Updated addresses"
     REVISION     "200505140000Z"
