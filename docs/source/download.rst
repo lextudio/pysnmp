@@ -20,7 +20,7 @@ The best way to obtain PySNMP and dependencies is to run:
 
 .. code-block:: bash
 
-   $ pip install pysnmp
+   $ pip install pysnmp-lextudio
 
 or
 

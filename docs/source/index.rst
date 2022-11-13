@@ -73,7 +73,7 @@ Best way is usually to
 
 .. code-block:: bash
 
-   # pip install pysnmp
+   # pip install pysnmp-lextudio
    
 If that does not work for you for some reason, you might need to read the 
 following page.

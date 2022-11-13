@@ -4,7 +4,6 @@ SNMP Library for Python
 
 [![PyPI](https://img.shields.io/pypi/v/pysnmp-lextudio.svg?maxAge=2592000)](https://pypi.python.org/pypi/pysnmp-lextudio)
 [![Python Versions](https://img.shields.io/pypi/pyversions/pysnmp-lextudio.svg)](https://pypi.python.org/pypi/pysnmp-lextudio/)
-[![CI](https://github.com/lextudio/pysnmp/actions/workflows/build-test-release.yml/badge.svg)](https://github.com/lextudio/pysnmp/actions/workflows/build-test-release.yml)
 [![GitHub license](https://img.shields.io/badge/license-BSD-blue.svg)](https://raw.githubusercontent.com/lextudio/pysnmp/master/LICENSE.rst)
 
 This is a pure-Python, open source and free implementation of v1/v2c/v3
@@ -68,7 +67,7 @@ Besides the library, command-line [SNMP utilities](https://github.com/lextudio/s
 written in pure-Python could be installed via:
 
 ```bash
-$ pip install snmpclitools
+$ pip install snmpclitools-lextudio
 ```
 
 and used in the very similar manner as conventional Net-SNMP tools:
@@ -160,4 +159,6 @@ post your question [on Stack Overflow](http://stackoverflow.com/questions/ask) o
 
 Bug reports and PRs are appreciated! ;-)
 
-Copyright (c) 2005-2020, [Ilya Etingof](https://lists.openstack.org/pipermail/openstack-discuss/2022-August/030062.html). All rights reserved.
+Copyright (c) 2005-2020, [Ilya Etingof](https://lists.openstack.org/pipermail/openstack-discuss/2022-August/030062.html).
+Copyright (c) 2022, [LeXtudio Inc](mailto:support@lextudio.com).
+All rights reserved.
