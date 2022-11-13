@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pysnmp-lextudio"
-version = "5.0.19"
+version = "5.0.18"
 description = ""
 authors = ["Lex Li <support@lextudio.com>"]
 license = "BSD-2-Clause"
@@ -27,8 +27,8 @@ include = ["docs", "tests", "examples"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-pysnmp-pysmi = "^1.0.4"
-pysnmp-pyasn1 = "^1.0.3"
+pysmi-lextudio = "^1.0.4"
+pyasn1-lextudio = "^1.0.3"
 pycryptodomex = "^3.11.0"
 
 [tool.poetry.dev-dependencies]
