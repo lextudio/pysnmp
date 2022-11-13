@@ -26,7 +26,7 @@ include = ["docs", "tests", "examples"]
 
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.7"
 pysnmp-pysmi = "^1.0.4"
 pysnmp-pyasn1 = "^1.0.3"
 pycryptodomex = "^3.11.0"
