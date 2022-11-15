@@ -14,9 +14,6 @@ build/
 # PyCharm stuff
 .idea/
 
-# Sphinx template
-docs/source/.templates/layout.html
-
 # Eclipse stuff
 .project
 .pydevproject
