@@ -29,7 +29,7 @@ Features
 * [PySMI](https://www.pysnmp.com/pysmi/) integration for dynamic MIB compilation
 * Built-in instrumentation exposing protocol engine operations
 * Python eggs and py2exe friendly
-* 100% Python, works with Python 2.6 though 3.7
+* 100% Python, works with Python 3.7+
 * MT-safe (if SnmpEngine is thread-local)
 
 Features, specific to SNMPv3 model include:
@@ -145,13 +145,13 @@ Other than that, PySNMP is capable to automatically fetch and use required MIBs 
 or local directories. You could configure any MIB source available to you (including
 [this one](https://pysnmp.github.io/mibs/asn1/)) for that purpose.
 
-For more example scripts please refer to ~~[examples section](https://www.pysnmp.com/pysnmp/examples/index.html#high-level-snmp)~~
+For more example scripts please refer to [examples section](https://www.pysnmp.com/pysnmp/examples/index.html#high-level-snmp)
 at pysnmp web site.
 
 Documentation
 -------------
 
-Library documentation and examples can be found at the ~~[pysnmp project site](https://www.pysnmp.com/pysnmp/)~~.
+Library documentation and examples can be found at the [pysnmp project site](https://www.pysnmp.com/pysnmp/).
 
 If something does not work as expected, please
 [open an issue](https://github.com/lextudio/pysnmp/issues) at GitHub or
