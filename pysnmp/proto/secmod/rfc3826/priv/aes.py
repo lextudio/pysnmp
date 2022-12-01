@@ -128,9 +128,6 @@ class Aes(base.AbstractEncryptionService):
             encryptKey, snmpEngineBoots, snmpEngineTime)
 
         # 3.3.1.3
-        # PyCrypto seems to require padding
-        padding = univ.OctetString((0,) * (16 - len(dataToEncrypt) % 16))
-        dataToEncrypt += padding
 
         try:
             ciphertext = aes.encrypt(dataToEncrypt.asOctets(), aesKey, iv)
@@ -154,10 +151,6 @@ class Aes(base.AbstractEncryptionService):
         # 3.3.2.3
         aesKey, iv = self._getDecryptionKey(
             decryptKey, snmpEngineBoots, snmpEngineTime, salt)
-
-        # PyCrypto seems to require padding
-        padding = univ.OctetString((0,) * (16 - len(encryptedData) % 16))
-        encryptedData += padding
 
         try:
             # 3.3.2.4-6
