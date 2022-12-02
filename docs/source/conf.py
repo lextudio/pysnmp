@@ -32,7 +32,11 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.napoleon',
     'sphinx.ext.intersphinx',
+    'sphinx_sitemap'
 ]
+
+html_baseurl = 'https://www.pysnmp.com/pysnmp'
+sitemap_url_scheme = '{link}'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['.templates']
