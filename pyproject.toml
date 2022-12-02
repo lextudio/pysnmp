@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pysnmp-lextudio"
-version = "5.0.18"
+version = "5.0.20"
 description = ""
 authors = ["Lex Li <support@lextudio.com>"]
 license = "BSD-2-Clause"
@@ -34,11 +34,10 @@ pycryptodomex = "^3.11.0"
 [tool.poetry.dev-dependencies]
 Sphinx = "^4.3.0"
 pytest = "^6.2.5"
-codecov = "^2.1.12"
+codecov = "^2.1.13"
 pytest-codecov = "^0.4.0"
 
-[tool.poetry.group.dev.dependencies]
-codecov = "^2.1.13"
+[tool.poetry_bumpversion.file."pysnmp/__init__.py"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

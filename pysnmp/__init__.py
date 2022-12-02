@@ -1,5 +1,5 @@
 # http://www.python.org/dev/peps/pep-0396/
-__version__ = '5.0.18'
+__version__ = '5.0.20'
 # backward compatibility
 # for beta versions, integer casting throws an exception, so string part must be cut off
 if 'beta' in __version__:
