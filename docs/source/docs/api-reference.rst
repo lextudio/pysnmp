@@ -26,17 +26,17 @@ Command Generator
 .. toctree::
    :maxdepth: 2
 
-   /docs/hlapi/v3arch/asyncore/sync/manager/cmdgen/getcmd
-   /docs/hlapi/v3arch/asyncore/sync/manager/cmdgen/setcmd
-   /docs/hlapi/v3arch/asyncore/sync/manager/cmdgen/nextcmd
-   /docs/hlapi/v3arch/asyncore/sync/manager/cmdgen/bulkcmd
+   /docs/hlapi/asyncio/manager/cmdgen/getcmd
+   /docs/hlapi/asyncio/manager/cmdgen/setcmd
+   /docs/hlapi/asyncio/manager/cmdgen/nextcmd
+   /docs/hlapi/asyncio/manager/cmdgen/bulkcmd
 
 Notification Originator
 
 .. toctree::
    :maxdepth: 2
 
-   /docs/hlapi/v3arch/asyncore/sync/agent/ntforg/notification
+   /docs/hlapi/asyncio/agent/ntforg/notification 
 
 Transport configuration
 +++++++++++++++++++++++
@@ -67,17 +67,17 @@ Command Generator
 .. toctree::
    :maxdepth: 2
 
-   /docs/hlapi/v3arch/asyncore/manager/cmdgen/getcmd
-   /docs/hlapi/v3arch/asyncore/manager/cmdgen/setcmd
-   /docs/hlapi/v3arch/asyncore/manager/cmdgen/nextcmd
-   /docs/hlapi/v3arch/asyncore/manager/cmdgen/bulkcmd
+   /docs/hlapi/asyncio/manager/cmdgen/getcmd
+   /docs/hlapi/asyncio/manager/cmdgen/setcmd
+   /docs/hlapi/asyncio/manager/cmdgen/nextcmd
+   /docs/hlapi/asyncio/manager/cmdgen/bulkcmd
 
 Notification Originator
 
 .. toctree::
    :maxdepth: 2
 
-   /docs/hlapi/v3arch/asyncore/agent/ntforg/notification 
+   /docs/hlapi/asyncore/agent/ntforg/notification 
 
 Transport configuration
 +++++++++++++++++++++++

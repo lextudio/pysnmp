@@ -17,7 +17,7 @@ A. Starting from PySNMP 4.3.x, plain-text (ASN.1) MIBs can be
    `https://pysnmp.github.io/mibs/asn1/ <https://pysnmp.github.io/mibs/asn1/>`_
    as shown below.
 
-.. literalinclude:: /../../examples/hlapi/v3arch/asyncore/sync/manager/cmdgen/custom-asn1-mib-search-path.py
+.. literalinclude:: /../../examples/hlapi/asyncio/manager/cmdgen/custom-asn1-mib-search-path.py
    :start-after: """#
    :language: python
 
@@ -36,7 +36,7 @@ A. Starting from PySNMP 4.3.x, plain-text (ASN.1) MIBs can be
         'https://pysnmp.github.io/mibs/asn1/@mib@',
     ])
 
-:download:`Download</../../examples/hlapi/v3arch/asyncore/sync/manager/cmdgen/custom-asn1-mib-search-path.py>` script.
+:download:`Download</../../examples/hlapi/asyncio/manager/cmdgen/custom-asn1-mib-search-path.py>` script.
 
 Alternatively, you can invoke the
 `mibdump.py <https://www.pysnmp.com/pysmi/mibdump.html>`_
