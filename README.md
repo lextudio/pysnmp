@@ -143,7 +143,7 @@ SNMPv2-MIB::sysName.0 = system name
 
 Other than that, PySNMP is capable to automatically fetch and use required MIBs from HTTP, FTP sites
 or local directories. You could configure any MIB source available to you (including
-[this one](https://pysnmp.github.io/mibs/asn1/)) for that purpose.
+[this one](https://github.com/lextudio/mibs.snmplabs.com/tree/master/asn1)) for that purpose.
 
 For more example scripts please refer to [examples section](https://www.pysnmp.com/pysnmp/examples/index.html#high-level-snmp)
 at pysnmp web site.

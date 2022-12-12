@@ -156,7 +156,7 @@ SNMP credentials of your SNMP Agent in the examples to let them work.
 
 Should you want to use a MIB to make SNMP operations more human-friendly,
 you are welcome to search for it and possibly download one from our
-`public MIB repository <https://pysnmp.github.io/mibs/asn1/>`_. Alternatively,
+`public MIB repository <https://github.com/lextudio/mibs.snmplabs.com/tree/master/asn1>`_. Alternatively,
 you can configure PySNMP to fetch and cache required MIBs from there
 automatically.
 

@@ -14,7 +14,7 @@ from pysnmp.smi import builder, view, compiler, rfc1902
 mibBuilder = builder.MibBuilder()
 mibViewController = view.MibViewController(mibBuilder)
 compiler.addMibCompiler(mibBuilder, sources=['file:///usr/share/snmp/mibs',
-                                             'https://pysnmp.github.io/mibs/asn1/@mib@'])
+                                             'https://mibs.pysnmp.com/asn1/@mib@'])
 
 # Pre-load MIB modules we expect to work with
 mibBuilder.loadModules('SNMPv2-MIB', 'SNMP-COMMUNITY-MIB')

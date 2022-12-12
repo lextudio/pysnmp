@@ -14,7 +14,7 @@ A. Starting from PySNMP 4.3.x, plain-text (ASN.1) MIBs can be
    MIBs at multiple local and remote locations. As for remote
    MIB repos, you are welcome to use our collection of ASN.1
    MIB files at
-   `https://pysnmp.github.io/mibs/asn1/ <https://pysnmp.github.io/mibs/asn1/>`_
+   `https://github.com/lextudio/mibs.snmplabs.com/tree/master/asn1 <https://github.com/lextudio/mibs.snmplabs.com/tree/master/asn1>`_
    as shown below.
 
 .. literalinclude:: /../../examples/hlapi/asyncio/manager/cmdgen/custom-asn1-mib-search-path.py
@@ -33,7 +33,7 @@ A. Starting from PySNMP 4.3.x, plain-text (ASN.1) MIBs can be
     compiler.addMibCompiler(builder, sources=[
         '/usr/share/snmp/mibs',
         os.path.expanduser('~/.snmp/mibs'),
-        'https://pysnmp.github.io/mibs/asn1/@mib@',
+        'https://mibs.pysnmp.com/asn1/@mib@',
     ])
 
 :download:`Download</../../examples/hlapi/asyncio/manager/cmdgen/custom-asn1-mib-search-path.py>` script.
