@@ -313,7 +313,7 @@ texinfo_documents = [
 # Configuration for Intersphinx
 intersphinx_mapping = {
     'python': ('https://docs.python.org/3.4/', None),
-    'pyasn1': ('https://www.pysnmp.com/pyasn1/', None),
+    'pyasn1': ('https://pyasn1.readthedocs.io/', None),
     'pysmi': ('https://www.pysnmp.com/pysmi/', None),
 }
 

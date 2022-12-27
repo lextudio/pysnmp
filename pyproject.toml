@@ -1,8 +1,8 @@
 [tool.poetry]
 name = "pysnmp-lextudio"
-version = "5.0.20"
+version = "5.0.21"
 description = ""
-authors = ["Lex Li <support@lextudio.com>"]
+authors = ["Ilya Etingof <etingof@gmail.com>", "Lex Li <support@lextudio.com>"]
 license = "BSD-2-Clause"
 repository = "https://github.com/lextudio/pysnmp"
 classifiers = [
@@ -28,7 +28,7 @@ include = ["docs", "tests", "examples"]
 [tool.poetry.dependencies]
 python = "^3.7"
 pysmi-lextudio = "^1.0.4"
-pyasn1-lextudio = "^1.0.3"
+pyasn1 = ">=0.4.8"
 pycryptodomex = "^3.11.0"
 
 [tool.poetry.dev-dependencies]

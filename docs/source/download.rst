@@ -6,7 +6,7 @@ Download PySNMP
 
 The PySNMP software is provided under terms and conditions of BSD-style 
 license, and can be freely downloaded from 
-`PyPI <http://pypi.python.org/pypi/pysnmp/>`_ or
+`PyPI <http://pypi.python.org/pypi/pysnmp-lextudio/>`_ or
 GitHub (`master branch <https://github.com/lextudio/pysnmp/archive/master.zip>`_).
 
 
@@ -26,7 +26,7 @@ or
 
 .. code-block:: bash
 
-   $ easy_install pysnmp
+   $ easy_install pysnmp-lextudio
 
 In case you do not have the easy_install command on your system but still 
 would like to use the on-line package installation method, please install 
@@ -46,7 +46,14 @@ operational:
   SNMP engine implementation
 * `pyasn1 <https://pypi.org/project/pyasn1/>`_,
   used for handling ASN.1 objects
-* `pysmi <https://pypi.org/project/pysmi/>`_ for automatic
+* `PySNMP <https://pypi.python.org/pypi/pysnmp-lextudio/>`_,
+  SNMP engine implementation
+
+Optional, but recommended:
+
+* `PyCryptodomex <https://pypi.python.org/pypi/pycryptodomex/>`_,
+  used by SNMPv3 crypto features
+* `PySMI <https://pypi.python.org/pypi/pysmi-lextudio/>`_ for automatic
   MIB download and compilation. That helps visualizing more SNMP objects
 
 Optional:

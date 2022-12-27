@@ -35,6 +35,6 @@ A. Always use prettyPrint() method for all pyasn1-based objects -- it
     > > > rfc1902.IpAddress.prettyPrint(a)
     '1.2.3.4'
 
-See `pyasn1 docs <https://www.pysnmp.com/pyasn1/>`_ for more information
+See `pyasn1 docs <https://pyasn1.readthedocs.io/>`_ for more information
 on pyasn1 data model.
 
