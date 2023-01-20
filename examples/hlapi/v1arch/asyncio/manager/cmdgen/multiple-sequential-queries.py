@@ -56,7 +56,6 @@ def getall(snmpDispatcher, hostnames):
 
 snmpDispatcher = SnmpDispatcher()
 
-loop = asyncio.get_event_loop()
-loop.run_until_complete(getall(snmpDispatcher, [('demo.pysnmp.com', 1161),
-                                            ('demo.pysnmp.com', 2161),
-                                            ('demo.pysnmp.com', 3161)]))
+asyncio.run(
+    getall(snmpDispatcher, [('demo.pysnmp.com', 1161), ('demo.pysnmp.com', 2161), ('demo.pysnmp.com', 3161)])
+)

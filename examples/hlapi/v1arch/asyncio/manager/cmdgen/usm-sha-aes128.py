@@ -27,10 +27,9 @@ Functionally similar to:
 import asyncio
 from pysnmp.hlapi.asyncio import *
 
-@asyncio.coroutine
-def run():
+async def run():
     snmpEngine = SnmpEngine()
-    errorIndication, errorStatus, errorIndex, varBinds = yield from getCmd(
+    get_result = await getCmd(
         snmpEngine,
         UsmUserData('usr-sha-aes', 'authkey1', 'privkey1',
                     authProtocol=usmHMACSHAAuthProtocol,
@@ -39,6 +38,7 @@ def run():
         ContextData(),
         ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0)))
 
+    errorIndication, errorStatus, errorIndex, varBinds = await get_result
     if errorIndication:
         print(errorIndication)
     elif errorStatus:
@@ -48,4 +48,4 @@ def run():
         for varBind in varBinds:
             print(' = '.join([x.prettyPrint() for x in varBind]))
 
-asyncio.get_event_loop().run_until_complete(run())
+asyncio.run(run())

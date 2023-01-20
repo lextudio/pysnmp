@@ -18,10 +18,9 @@ Functionally similar to:
 import asyncio
 from pysnmp.hlapi.asyncio import *
 
-@asyncio.coroutine
-def run():
+async def run():
     snmpEngine = SnmpEngine()
-    errorIndication, errorStatus, errorIndex, varBinds = yield from getCmd(
+    get_result = await getCmd(
         snmpEngine,
         CommunityData('public'),
         UdpTransportTarget(('demo.pysnmp.com', 161)),
@@ -30,6 +29,7 @@ def run():
                                                                                 'https://mibs.pysnmp.com/asn1/@mib@'))
     )
 
+    errorIndication, errorStatus, errorIndex, varBinds = await get_result
     if errorIndication:
         print(errorIndication)
     elif errorStatus:
@@ -39,4 +39,4 @@ def run():
         for varBind in varBinds:
             print(' = '.join([x.prettyPrint() for x in varBind]))
 
-asyncio.get_event_loop().run_until_complete(run())
+asyncio.run(run())
