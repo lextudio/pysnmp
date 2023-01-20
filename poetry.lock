@@ -229,7 +229,7 @@ plugins = ["importlib-metadata"]
 
 [[package]]
 name = "pysmi-lextudio"
-version = "1.1.11"
+version = "1.1.12"
 description = "A pure-Python implementation of SNMP/SMI MIB parsing and conversion library."
 category = "main"
 optional = false
@@ -736,8 +736,8 @@ pygments = [
     {file = "Pygments-2.13.0.tar.gz", hash = "sha256:56a8508ae95f98e2b9bdf93a6be5ae3f7d8af858b43e02c5a2ff083726be40c1"},
 ]
 pysmi-lextudio = [
-    {file = "pysmi_lextudio-1.1.11-py3-none-any.whl", hash = "sha256:f42309bfa9db009e7aa6cb8745f9a598bbfbe9bc6bffce2560b061b93a058afa"},
-    {file = "pysmi_lextudio-1.1.11.tar.gz", hash = "sha256:bb6c841c0b3d8f8e9bc93e00b76a52b0419e6869118cf41a2e1385838eb38c2e"},
+    {file = "pysmi_lextudio-1.1.12-py3-none-any.whl", hash = "sha256:0ff7b2d7af5ca3192a095373f21afae965495f792a35ddcd86adcc51605f4460"},
+    {file = "pysmi_lextudio-1.1.12.tar.gz", hash = "sha256:834299a4cbb6e3c44ec4d40352bc05dc4c4a4cd2a8d81e26dddba470507c9255"},
 ]
 
 [package.dependencies]
