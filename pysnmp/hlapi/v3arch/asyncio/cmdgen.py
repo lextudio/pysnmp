@@ -121,7 +121,7 @@ async def getCmd(snmpEngine, authData, transportTarget, contextData,
     ...     errorIndication, errorStatus, errorIndex, varBinds = await result_get
     ...     print(errorIndication, errorStatus, errorIndex, varBinds)
     >>>
-    >>> asyncio.get_event_loop().run_until_complete(run())
+    >>> asyncio.run(run())
     (None, 0, 0, [ObjectType(ObjectIdentity(ObjectName('1.3.6.1.2.1.1.1.0')), DisplayString('SunOS zeus.pysnmp.com 4.1.3_U1 1 sun4m'))])
     >>>
 
@@ -220,16 +220,17 @@ async def setCmd(snmpEngine, authData, transportTarget, contextData,
     >>> from pysnmp.hlapi.asyncio import *
     >>>
     >>> async def run():
-    ...     errorIndication, errorStatus, errorIndex, varBinds = yield setCmd(
+    ...     set_result = await setCmd(
     ...         SnmpEngine(),
     ...         CommunityData('public'),
     ...         UdpTransportTarget(('demo.pysnmp.com', 161)),
     ...         ContextData(),
     ...         ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0), 'Linux i386')
     ...     )
+    ...     errorIndication, errorStatus, errorIndex, varBinds = await set_result
     ...     print(errorIndication, errorStatus, errorIndex, varBinds)
     >>>
-    >>> asyncio.get_event_loop().run_until_complete(run())
+    >>> asyncio.run(run())
     (None, 0, 0, [ObjectType(ObjectIdentity(ObjectName('1.3.6.1.2.1.1.1.0')), DisplayString('Linux i386'))])
     >>>
 
@@ -333,16 +334,17 @@ async def nextCmd(snmpEngine, authData, transportTarget, contextData,
     >>> from pysnmp.hlapi.asyncio import *
     >>>
     >>> async def run():
-    ...     errorIndication, errorStatus, errorIndex, varBinds = yield nextCmd(
+    ...     next_result = await nextCmd(
     ...         SnmpEngine(),
     ...         CommunityData('public'),
     ...         UdpTransportTarget(('demo.pysnmp.com', 161)),
     ...         ContextData(),
     ...         ObjectType(ObjectIdentity('SNMPv2-MIB', 'system'))
     ...     )
+    ...     errorIndication, errorStatus, errorIndex, varBinds = await next_result
     ...     print(errorIndication, errorStatus, errorIndex, varBinds)
     >>>
-    >>> asyncio.get_event_loop().run_until_complete(run())
+    >>> asyncio.run(run())
     (None, 0, 0, [[ObjectType(ObjectIdentity('1.3.6.1.2.1.1.1.0'), DisplayString('Linux i386'))]])
     >>>
 
