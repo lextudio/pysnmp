@@ -1,7 +1,23 @@
-Revision 5.x.x, released 2022-11-XX
------------------------------------
+Revision 5.0.22, released 2023-01-20
+------------------------------------
+
+- Enabled Python 3.11 support.
+
+Revision 5.0.21, released 2022-12-26
+------------------------------------
+
+- Switched to pyasn1/pyasn1 package.
+
+Revision 5.0.20, released 2022-12-01
+------------------------------------
+
+- Removed legacy paddings in v3 packets.
+
+Revision 5.0.18, released 2022-11-13
+------------------------------------
 
 - Changed web site to pysnmp.com.
+- Inherited all changes made by Splunk team.
 
 Revision 5.0.0, released 2019-09-XX
 -----------------------------------
