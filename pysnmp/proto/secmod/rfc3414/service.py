@@ -1043,6 +1043,28 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
                     maxSizeResponseScopedPDU=maxSizeResponseScopedPDU
                 )
 
+        # Modified to be compatible with #SNMP agent
+        if securityLevel == 0:
+            # simply pick up time data
+            debug.logger & debug.flagSM and debug.logger('processIncomingMsg: pick up engine boots and engine time')
+
+            # synchronize time with authed peer
+            self.__timeline[msgAuthoritativeEngineId] = (
+                securityParameters.getComponentByPosition(1),
+                securityParameters.getComponentByPosition(2),
+                securityParameters.getComponentByPosition(2),
+                int(time.time())
+            )
+
+            timerResolution = snmpEngine.transportDispatcher is None and 1.0 or snmpEngine.transportDispatcher.getTimerResolution()
+            expireAt = int(self.__expirationTimer + 300 / timerResolution)
+            if expireAt not in self.__timelineExpQueue:
+                self.__timelineExpQueue[expireAt] = []
+            self.__timelineExpQueue[expireAt].append(msgAuthoritativeEngineId)
+
+            debug.logger & debug.flagSM and debug.logger(
+                f'processIncomingMsg: store timeline for securityEngineID {msgAuthoritativeEngineId!r}')
+
         # 3.2.6
         if securityLevel == 3 or securityLevel == 2:
             if usmUserAuthProtocol in self.AUTH_SERVICES:
