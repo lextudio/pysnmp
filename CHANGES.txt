@@ -1,3 +1,8 @@
+Revision 5.0.24, released 2023-01-22
+------------------------------------
+
+- Fixed a #SNMP demo compatibility issue.
+
 Revision 5.0.23, released 2023-01-21
 ------------------------------------
 
