@@ -21,7 +21,7 @@ Q. Some network devices do not respond to PySNMP-based management
    13:33:30.161881 IP 10.0.0.33.snmp > 10.0.0.1.51094: 
    GetResponse(31)  interfaces.ifTable.ifEntry.ifInOctets.3=1532504859
 
-   In some cases, particularily when running v1arch PySNMP code, the 
+   In some cases, particularly when running v1arch PySNMP code, the 
    following exception may be thrown on response processing:
 
 .. code-block:: python
@@ -36,7 +36,7 @@ Q. Some network devices do not respond to PySNMP-based management
 
 A. This appears to be a [widespread] bug in BER integer encoders. It usually 
    gets noticed on Counter values as they are constrained to be positive while 
-   wrong encoding yelds them negative.
+   wrong encoding yields them negative.
 
    Here's broken encoding:
 
@@ -77,13 +77,13 @@ And here's a good one:
    rfc1155.Counter.clone = counterCloneHack
    rfc1902.Counter32.clone = counterCloneHack
 
-   Execute this hack before any SNMP message processing occures in your app.
+   Execute this hack before any SNMP message processing occurs in your app.
 
    The bad news is that if this BER encoding bug also affects Integer values, 
    in that case it is theoretically impossible to fix because, unlike Counter,
    Integer values may legally be negative so they could not unconditionally be 
    converted into positives.
 
-   Therefore the best solutoin would be to get vendors fixing their 
+   Therefore the best solution would be to get vendors fixing their 
    BER encoders.
 
