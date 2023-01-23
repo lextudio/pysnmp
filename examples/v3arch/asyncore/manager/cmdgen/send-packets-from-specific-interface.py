@@ -6,14 +6,14 @@ Send a series of SNMP GETNEXT requests with the following options:
 
 * with SNMPv2c, community 'public'
 * over IPv4/UDP
-* to an Agent at 104.236.166.95:161
+* to an Agent at 127.0.0.1:161
 * sending packets from primary local interface 0.0.0.0, local port 61024
 * for two OIDs in tuple form
 * stop on end-of-mib condition for both OIDs
 
 This script performs similar to the following Net-SNMP command:
 
-| $ snmpwalk -v2c -c public -ObentU 104.236.166.95 1.3.6.1.2.1.1 1.3.6.1.4.1.1
+| $ snmpwalk -v2c -c public -ObentU 127.0.0.1 1.3.6.1.2.1.1 1.3.6.1.4.1.1
 
 """#
 from pysnmp.entity import engine, config
@@ -47,7 +47,7 @@ config.addTransport(
 
 config.addTargetAddr(
     snmpEngine, 'my-router',
-    udp.DOMAIN_NAME, ('104.236.166.95', 161),
+    udp.DOMAIN_NAME, ('127.0.0.1', 161),
     'my-creds'
 )
 

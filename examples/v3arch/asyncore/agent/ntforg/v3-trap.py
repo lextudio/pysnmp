@@ -8,7 +8,7 @@ Send SNMP TRAP notification using the following options:
 * with user 'usr-md5-des', auth: MD5, priv DES
 * over IPv4/UDP
 * send TRAP notification
-* to a Manager at 104.236.166.95:162
+* to a Manager at 127.0.0.1:162
 * with TRAP ID 'warmStart' specified as an OID
 * include managed object information 1.3.6.1.2.1.1.5.0 = 'system name'
 
@@ -48,7 +48,7 @@ config.addTransport(
 
 config.addTargetAddr(
     snmpEngine, 'my-nms',
-    udp.DOMAIN_NAME, ('104.236.166.95', 162),
+    udp.DOMAIN_NAME, ('127.0.0.1', 162),
     'my-creds',
     tagList='all-my-managers'
 )

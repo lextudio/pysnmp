@@ -5,13 +5,13 @@ Pull MIB subtree
 Send a series of SNMP GETNEXT requests
 * with SNMPv3 with user 'usr-none-none', no auth and no privacy protocols
 * over IPv4/UDP
-* to an Agent at 104.236.166.95:161
+* to an Agent at 127.0.0.1:161
 * for an OID in string form
 * stop whenever received OID goes out of initial prefix (it may be a table)
 
 This script performs similar to the following Net-SNMP command:
 
-| $ snmpwalk -v3 -l noAuthNoPriv -u usr-none-none -ObentU 104.236.166.95:161  1.3.6.1.2.1.1 
+| $ snmpwalk -v3 -l noAuthNoPriv -u usr-none-none -ObentU 127.0.0.1:161  1.3.6.1.2.1.1 
 
 """#
 from pysnmp.entity import engine, config
@@ -50,7 +50,7 @@ config.addTransport(
 
 config.addTargetAddr(
     snmpEngine, 'my-router',
-    udp.DOMAIN_NAME, ('104.236.166.95', 161),
+    udp.DOMAIN_NAME, ('127.0.0.1', 161),
     'my-creds'
 )
 

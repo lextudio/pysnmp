@@ -9,7 +9,7 @@ security settings:
 * with community name 'public'
 * over IPv4/UDP
 * send TRAP notification
-* to multiple Managers at 104.236.166.95:162, 104.236.166.95:162
+* to multiple Managers at 127.0.0.1:162, 127.0.0.1:162
 * with TRAP ID 'coldStart' specified as an OID
 * include managed objects information:
   1.3.6.1.2.1.1.1.0 = 'Example Notificator'
@@ -17,9 +17,9 @@ security settings:
 
 Functionally similar to:
 
-| $ snmptrap -v2c -c public 104.236.166.95 0 1.3.6.1.6.3.1.1.5.1 1.3.6.1.2.1.1.1.0 s 'Example notification' 1.3.6.1.2.1.1.5.0 s 'Notificator Example'
-| $ snmptrap -v2c -c public 104.236.166.95 0 1.3.6.1.6.3.1.1.5.1 1.3.6.1.2.1.1.1.0 s 'Example notification' 1.3.6.1.2.1.1.5.0 s 'Notificator Example'
-| $ snmptrap -v2c -c public 104.236.166.95 0 1.3.6.1.6.3.1.1.5.1 1.3.6.1.2.1.1.1.0 s 'Example notification' 1.3.6.1.2.1.1.5.0 s 'Notificator Example'
+| $ snmptrap -v2c -c public 127.0.0.1 0 1.3.6.1.6.3.1.1.5.1 1.3.6.1.2.1.1.1.0 s 'Example notification' 1.3.6.1.2.1.1.5.0 s 'Notificator Example'
+| $ snmptrap -v2c -c public 127.0.0.1 0 1.3.6.1.6.3.1.1.5.1 1.3.6.1.2.1.1.1.0 s 'Example notification' 1.3.6.1.2.1.1.5.0 s 'Notificator Example'
+| $ snmptrap -v2c -c public 127.0.0.1 0 1.3.6.1.6.3.1.1.5.1 1.3.6.1.2.1.1.1.0 s 'Example notification' 1.3.6.1.2.1.1.5.0 s 'Notificator Example'
 
 """#
 from pysnmp.entity import engine, config
@@ -47,7 +47,7 @@ config.addTransport(
 # First target
 config.addTargetAddr(
     snmpEngine, 'my-nms-1',
-    udp.DOMAIN_NAME, ('104.236.166.95', 162),
+    udp.DOMAIN_NAME, ('127.0.0.1', 162),
     'my-creds',
     tagList='all-my-managers'
 )
@@ -55,7 +55,7 @@ config.addTargetAddr(
 # Second target
 config.addTargetAddr(
     snmpEngine, 'my-nms-2',
-    udp.DOMAIN_NAME, ('104.236.166.95', 162),
+    udp.DOMAIN_NAME, ('127.0.0.1', 162),
     'my-creds',
     tagList='all-my-managers'
 )
@@ -63,7 +63,7 @@ config.addTargetAddr(
 # Third target
 config.addTargetAddr(
     snmpEngine, 'my-nms-3',
-    udp.DOMAIN_NAME, ('104.236.166.95', 162),
+    udp.DOMAIN_NAME, ('127.0.0.1', 162),
     'my-creds',
     tagList='all-my-managers'
 )

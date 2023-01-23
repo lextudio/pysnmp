@@ -43,7 +43,7 @@ config.addTransport(
 # Create named target
 config.addTargetAddr(
     snmpEngine, 'my-nms',
-    udp.DOMAIN_NAME, ('104.236.166.95', 162),
+    udp.DOMAIN_NAME, ('127.0.0.1', 162),
     'my-creds'
 )
 

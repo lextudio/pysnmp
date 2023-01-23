@@ -8,7 +8,7 @@ Send SNMP TRAP notification using the following options:
 * with community name 'public'
 * over IPv4/UDP
 * send TRAP notification
-* to a Manager at 104.236.166.95:162
+* to a Manager at 127.0.0.1:162
 * with TRAP ID IF-MIB::ifLink as MIB symbol
 
 The IF-MIB::ifLink NOTIFICATION-TYPE implies including four other
@@ -23,7 +23,7 @@ Where "x" is MIB table index (instance index).
 
 Functionally similar to:
 
-| $ snmptrap -v2c -c public 104.236.166.95 0 1.3.6.1.6.3.1.1.5.3 IF-MIB::ifIndex."1" IF-MIB::ifAdminStatus."1" IF-MIB::ifOperStatus."1" IF-MIB::ifDescr."1"
+| $ snmptrap -v2c -c public 127.0.0.1 0 1.3.6.1.6.3.1.1.5.3 IF-MIB::ifIndex."1" IF-MIB::ifAdminStatus."1" IF-MIB::ifOperStatus."1" IF-MIB::ifDescr."1"
 
 """#
 from pysnmp.entity import engine, config
@@ -70,7 +70,7 @@ config.addTransport(
 
 config.addTargetAddr(
     snmpEngine, 'my-nms-1',
-    udp.DOMAIN_NAME, ('104.236.166.95', 162),
+    udp.DOMAIN_NAME, ('127.0.0.1', 162),
     'my-creds',
     tagList='all-my-managers'
 )
