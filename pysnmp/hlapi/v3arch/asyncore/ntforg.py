@@ -109,7 +109,7 @@ def sendNotification(snmpEngine, authData, transportTarget, contextData,
     * sendRequestHandle (int): Unique request identifier. Can be used
       for matching multiple ongoing *INFORM* notifications with received
       responses.
-    * errorIndication (str): True value indicates SNMP engine error.
+    * errorIndication (ErrorIndication): True value indicates SNMP engine error.
     * errorStatus (str): True value indicates SNMP PDU error.
     * errorIndex (int): Non-zero value refers to `varBinds[errorIndex-1]`
     * varBinds (tuple): A sequence of

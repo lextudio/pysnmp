@@ -70,7 +70,7 @@ def getCmd(snmpEngine, authData, transportTarget, contextData,
       Class instance representing SNMP engine.
     * sendRequestHandle (int): Unique request identifier. Can be used
       for matching multiple ongoing requests with received responses.
-    * errorIndication (str): True value indicates SNMP engine error.
+    * errorIndication (ErrorIndication): True value indicates SNMP engine error.
     * errorStatus (str): True value indicates SNMP PDU error.
     * errorIndex (int): Non-zero value refers to `varBinds[errorIndex-1]`
     * varBinds (tuple): A sequence of
@@ -185,7 +185,7 @@ def setCmd(snmpEngine, authData, transportTarget, contextData,
       Class instance representing SNMP engine.
     * sendRequestHandle (int): Unique request identifier. Can be used
       for matching multiple ongoing requests with received responses.
-    * errorIndication (str): True value indicates SNMP engine error.
+    * errorIndication (ErrorIndication): True value indicates SNMP engine error.
     * errorStatus (str): True value indicates SNMP PDU error.
     * errorIndex (int): Non-zero value refers to `varBinds[errorIndex-1]`
     * varBinds (tuple): A sequence of
@@ -299,7 +299,7 @@ def nextCmd(snmpEngine, authData, transportTarget, contextData,
       Class instance representing SNMP engine.
     * sendRequestHandle (int): Unique request identifier. Can be used
       for matching multiple ongoing requests with received responses.
-    * errorIndication (str): True value indicates SNMP engine error.
+    * errorIndication (ErrorIndication): True value indicates SNMP engine error.
     * errorStatus (str): True value indicates SNMP PDU error.
     * errorIndex (int): Non-zero value refers to `varBinds[errorIndex-1]`
     * varBinds (tuple): A sequence of sequences (e.g. 2-D array) of
@@ -425,7 +425,7 @@ def bulkCmd(snmpEngine, authData, transportTarget, contextData,
       Class instance representing SNMP engine.
     * sendRequestHandle (int): Unique request identifier. Can be used
       for matching multiple ongoing requests with received responses.
-    * errorIndication (str): True value indicates SNMP engine error.
+    * errorIndication (ErrorIndication): True value indicates SNMP engine error.
     * errorStatus (str): True value indicates SNMP PDU error.
     * errorIndex (int): Non-zero value refers to `varBinds[errorIndex-1]`
     * varBindTable (tuple):

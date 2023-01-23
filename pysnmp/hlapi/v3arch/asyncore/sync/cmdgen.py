@@ -48,7 +48,7 @@ def getCmd(snmpEngine, authData, transportTarget, contextData,
 
     Yields
     ------
-    errorIndication : str
+    errorIndication : :py:class:`~pysnmp.proto.errind.ErrorIndication`
         True value indicates SNMP engine error.
     errorStatus : str
         True value indicates SNMP PDU error.
@@ -155,7 +155,7 @@ def setCmd(snmpEngine, authData, transportTarget, contextData,
 
     Yields
     ------
-    errorIndication : str
+    errorIndication : :py:class:`~pysnmp.proto.errind.ErrorIndication`
         True value indicates SNMP engine error.
     errorStatus : str
         True value indicates SNMP PDU error.
@@ -275,7 +275,7 @@ def nextCmd(snmpEngine, authData, transportTarget, contextData,
 
     Yields
     ------
-    errorIndication : str
+    errorIndication : :py:class:`~pysnmp.proto.errind.ErrorIndication`
         True value indicates SNMP engine error.
     errorStatus : str
         True value indicates SNMP PDU error.
@@ -472,7 +472,7 @@ def bulkCmd(snmpEngine, authData, transportTarget, contextData,
 
     Yields
     ------
-    errorIndication : str
+    errorIndication : :py:class:`~pysnmp.proto.errind.ErrorIndication`
         True value indicates SNMP engine error.
     errorStatus : str
         True value indicates SNMP PDU error.

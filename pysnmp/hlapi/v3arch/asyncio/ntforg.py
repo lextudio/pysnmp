@@ -87,7 +87,7 @@ async def sendNotification(snmpEngine, authData, transportTarget, contextData,
 
     Yields
     ------
-    errorIndication : str
+    errorIndication : :py:class:`~pysnmp.proto.errind.ErrorIndication`
         True value indicates SNMP engine error.
     errorStatus : str
         True value indicates SNMP PDU error.
