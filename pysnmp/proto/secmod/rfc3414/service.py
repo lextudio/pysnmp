@@ -545,7 +545,7 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
         # 3.1.6a
         snmpEngineBoots = snmpEngineTime = 0
 
-        if securityLevel in (2, 3):
+        if securityLevel in (1, 2, 3):
             pdu = scopedPDU.getComponentByPosition(2).getComponent()
 
             # 3.1.6.b
@@ -1066,37 +1066,37 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
                 f'processIncomingMsg: store timeline for securityEngineID {msgAuthoritativeEngineId!r}')
 
         # 3.2.6
-        if securityLevel == 3 or securityLevel == 2:
-            if usmUserAuthProtocol in self.AUTH_SERVICES:
-                authHandler = self.AUTH_SERVICES[usmUserAuthProtocol]
+        if securityLevel in (1, 2, 3):
+            if usmUserName:
+                if usmUserAuthProtocol in self.AUTH_SERVICES:
+                    authHandler = self.AUTH_SERVICES[usmUserAuthProtocol]
+                else:
+                    raise error.StatusInformation(
+                        errorIndication=errind.authenticationFailure
+                    )
 
-            else:
-                raise error.StatusInformation(
-                    errorIndication=errind.authenticationFailure)
+                try:
+                    authHandler.authenticateIncomingMsg(
+                        usmUserAuthKeyLocalized,
+                        securityParameters.getComponentByPosition(4),
+                        wholeMsg
+                    )
 
-            try:
-                authHandler.authenticateIncomingMsg(
-                    usmUserAuthKeyLocalized,
-                    securityParameters.getComponentByPosition(4),
-                    wholeMsg)
-
-            except error.StatusInformation:
-                usmStatsWrongDigests, = mibBuilder.importSymbols(
-                    '__SNMP-USER-BASED-SM-MIB', 'usmStatsWrongDigests')
-
-                usmStatsWrongDigests.syntax += 1
-
-                raise error.StatusInformation(
-                    errorIndication=errind.authenticationFailure,
-                    oid=usmStatsWrongDigests.name,
-                    val=usmStatsWrongDigests.syntax,
-                    securityStateReference=securityStateReference,
-                    securityLevel=securityLevel,
-                    contextEngineId=contextEngineId,
-                    contextName=contextName,
-                    msgUserName=msgUserName,
-                    maxSizeResponseScopedPDU=maxSizeResponseScopedPDU
-                )
+                except error.StatusInformation:
+                    usmStatsWrongDigests, = mibBuilder.importSymbols(
+                        '__SNMP-USER-BASED-SM-MIB', 'usmStatsWrongDigests')
+                    usmStatsWrongDigests.syntax += 1
+                    raise error.StatusInformation(
+                        errorIndication=errind.authenticationFailure,
+                        oid=usmStatsWrongDigests.name,
+                        val=usmStatsWrongDigests.syntax,
+                        securityStateReference=securityStateReference,
+                        securityLevel=securityLevel,
+                        contextEngineId=contextEngineId,
+                        contextName=contextName,
+                        msgUserName=msgUserName,
+                        maxSizeResponseScopedPDU=maxSizeResponseScopedPDU
+                    )
 
             debug.logger & debug.FLAG_SM and debug.logger(
                 'processIncomingMsg: incoming msg authenticated')

@@ -23,4 +23,4 @@ class NoAuth(base.AbstractAuthenticationService):
         raise error.StatusInformation(errorIndication=errind.noAuthentication)
 
     def authenticateIncomingMsg(self, authKey, authParameters, wholeMsg):
-        raise error.StatusInformation(errorIndication=errind.noAuthentication)
+        return

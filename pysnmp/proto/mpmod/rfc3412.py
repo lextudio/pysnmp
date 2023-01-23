@@ -536,9 +536,7 @@ class SnmpV3MessageProcessingModel(AbstractMessageProcessingModel):
             raise error.StatusInformation(errorIndication=errind.unsupportedSecurityModel)
 
         # 7.2.5
-        if msgFlags == 0x00:
-            securityLevel = 0
-        elif msgFlags & 0x03 == 0x00:
+        if msgFlags & 0x03 == 0x00:
             securityLevel = 1
 
         elif (msgFlags & 0x03) == 0x01:
