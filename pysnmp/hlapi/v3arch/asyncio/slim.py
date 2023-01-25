@@ -115,7 +115,7 @@ class Slim:
 
         return await get_result
 
-    async def next(self, communityName, address, port, id):
+    async def next(self, communityName, address, port, *varBinds):
         r"""Creates a generator to perform SNMP GETNEXT query.
 
         When iterator gets advanced by :py:mod:`asyncio` main loop,
@@ -185,12 +185,12 @@ class Slim:
             CommunityData(communityName, mpModel=self.version - 1),
             UdpTransportTarget((address, port)),
             ContextData(),
-            ObjectType(id),
+            *varBinds,
         )
 
         return await next_result
 
-    async def bulk(self, communityName, address, port, nonRepeaters, maxRepetitions, id):
+    async def bulk(self, communityName, address, port, nonRepeaters, maxRepetitions, *varBinds):
         r"""Creates a generator to perform SNMP GETBULK query.
 
         When iterator gets advanced by :py:mod:`asyncio` main loop,
@@ -295,12 +295,12 @@ class Slim:
             ContextData(),
             nonRepeaters,
             maxRepetitions,
-            ObjectType(id),
+            *varBinds,
         )
 
         return await bulk_result
 
-    async def set(self, communityName, address, port, id, data):
+    async def set(self, communityName, address, port, *varBinds):
         r"""Creates a generator to perform SNMP SET query.
 
         When iterator gets advanced by :py:mod:`asyncio` main loop,
@@ -366,7 +366,7 @@ class Slim:
             CommunityData(communityName, mpModel=self.version - 1),
             UdpTransportTarget((address, port)),
             ContextData(),
-            ObjectType(id, data),
+            *varBinds,
         )
 
         return await set_result

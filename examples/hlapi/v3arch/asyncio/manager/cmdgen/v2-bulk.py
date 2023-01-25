@@ -26,7 +26,7 @@ async def run():
         161,
         0,
         50,
-        ObjectIdentity("SNMPv2-MIB", "sysDescr", 0),
+        ObjectType(ObjectIdentity("SNMPv2-MIB", "sysDescr", 0)),
     )
 
     if errorIndication:

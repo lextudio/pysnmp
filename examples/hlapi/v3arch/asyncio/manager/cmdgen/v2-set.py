@@ -24,8 +24,7 @@ async def run():
         'public',
         'demo.pysnmp.com',
         161,
-        ObjectIdentity("SNMPv2-MIB", "sysLocation", 0),
-        OctetString("Shanghai")
+        ObjectType(ObjectIdentity("SNMPv2-MIB", "sysLocation", 0), "Toronto")
     )
 
     if errorIndication:

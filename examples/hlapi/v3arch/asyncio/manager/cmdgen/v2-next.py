@@ -24,7 +24,7 @@ async def run():
         'public',
         'demo.pysnmp.com',
         161,
-        ObjectIdentity("SNMPv2-MIB", "sysDescr", 0),
+        ObjectType(ObjectIdentity("SNMPv2-MIB", "sysDescr", 0)),
     )
 
     if errorIndication:
