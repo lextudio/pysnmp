@@ -1,3 +1,8 @@
+Revision 5.0.25, released 2023-01-26
+------------------------------------
+
+- Added Slim class and simplified some examples.
+
 Revision 5.0.24, released 2023-01-22
 ------------------------------------
 
