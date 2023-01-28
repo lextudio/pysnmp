@@ -6,10 +6,8 @@ This script explains how SNMP Agent application manipulates
 its MIB possibly triggered by SNMP Manager's commands.
 
 """#
-from pysnmp.smi import builder
-from pysnmp.smi import instrum
-from pysnmp.smi import exval
-from pysnmp.smi import error
+# SNMP agent backend e.g. Agent access to Managed Objects
+from pysnmp.smi import builder, instrum, exval
 
 
 def walkMib():
