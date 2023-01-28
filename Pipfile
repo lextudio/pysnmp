@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 esbonio = "*"
 sphinx-sitemap = "*"
+sphinx-rtd-theme = "*"
+sphinx-copybutton = "*"
 
 [dev-packages]
 

@@ -32,7 +32,8 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.napoleon',
     'sphinx.ext.intersphinx',
-    'sphinx_sitemap'
+    'sphinx_sitemap',
+    'sphinx_copybutton',
 ]
 
 html_baseurl = 'https://www.pysnmp.com/pysnmp'
@@ -115,30 +116,11 @@ pygments_style = 'sphinx'
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'alabaster'
-#html_theme = 'sphinx_rtd_theme'
+html_theme = 'sphinx_rtd_theme'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-html_theme_options = {
-    'logo': 'logo.svg',
-    'description': '<p align=left><i><b>Brewing free software for the communities</i></b></p>',
-    'show_powered_by': False,
-    'github_user': 'lextudio',
-    'github_repo': 'pysnmp',
-    'fixed_sidebar': True,
-}
-
-html_sidebars = {
-    '**': [
-        'about.html',
-        'navigation.html',
-        'relations.html',
-        'searchbox.html',
-        'donate.html',
-    ]
-}
 
 # Add any paths that contain custom themes here, relative to this directory.
 #html_theme_path = []
@@ -198,7 +180,7 @@ html_static_path = ['.static']
 html_show_sourcelink = False
 
 # If true, "Created using Sphinx" is shown in the HTML footer. Default is True.
-html_show_sphinx = False
+html_show_sphinx = True
 
 # If true, "(C) Copyright ..." is shown in the HTML footer. Default is True.
 #html_show_copyright = True
@@ -312,7 +294,7 @@ texinfo_documents = [
 
 # Configuration for Intersphinx
 intersphinx_mapping = {
-    'python': ('https://docs.python.org/3.4/', None),
+    'python': ('https://docs.python.org/3.7/', None),
     'pyasn1': ('https://pyasn1.readthedocs.io/', None),
     'pysmi': ('https://www.pysnmp.com/pysmi/', None),
 }
