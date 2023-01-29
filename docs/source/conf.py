@@ -72,7 +72,7 @@ release = '5.0.25'
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = 'en'
 
 # There are two options for replacing |today|: either, you set today to some
 # non-false value, then it is used:
@@ -295,7 +295,7 @@ texinfo_documents = [
 # Configuration for Intersphinx
 intersphinx_mapping = {
     'python': ('https://docs.python.org/3.7/', None),
-    'pyasn1': ('https://pyasn1.readthedocs.io/', None),
+    'pyasn1': ('https://pyasn1.readthedocs.io/en/latest/', None),
     'pysmi': ('https://www.pysnmp.com/pysmi/', None),
 }
 
