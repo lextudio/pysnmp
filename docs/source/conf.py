@@ -114,6 +114,13 @@ pygments_style = 'sphinx'
 
 # -- Options for HTML output ----------------------------------------------
 
+html_context = {
+    'display_github': True,
+    'github_user': 'lextudio',
+    'github_repo': 'pysnmp',
+    'github_version': 'main/docs/source/',
+}
+
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 html_theme = 'sphinx_rtd_theme'
@@ -177,10 +184,10 @@ html_static_path = ['.static']
 #html_split_index = False
 
 # If true, links to the reST sources are added to the pages.
-html_show_sourcelink = False
+#html_show_sourcelink = True
 
 # If true, "Created using Sphinx" is shown in the HTML footer. Default is True.
-html_show_sphinx = True
+#html_show_sphinx = True
 
 # If true, "(C) Copyright ..." is shown in the HTML footer. Default is True.
 #html_show_copyright = True
@@ -315,3 +322,12 @@ napoleon_use_admonition_for_references = False
 napoleon_use_ivar = False
 napoleon_use_param = False
 napoleon_use_rtype = False
+
+def setup(app):
+    on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
+    if not on_rtd:
+        """Insert Google Analytics tracker
+        Based on this Stackoverflow suggestion: https://stackoverflow.com/a/41885884
+        """
+        app.add_js_file("https://www.googletagmanager.com/gtag/js?id=G-DYQGY4MKR3")
+        app.add_js_file("google_analytics_tracker.js")
