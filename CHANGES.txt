@@ -1,3 +1,8 @@
+Revision 5.0.26, released 2023-04-21
+------------------------------------
+
+- Blocked pyasn1 new release due to its breaking changes.
+
 Revision 5.0.25, released 2023-01-26
 ------------------------------------
 
