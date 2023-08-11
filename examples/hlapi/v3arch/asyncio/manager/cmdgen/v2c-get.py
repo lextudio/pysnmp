@@ -1,10 +1,10 @@
 """
-SNMPv1
-++++++
+SNMPv2c
++++++++
 
 Send SNMP GET request using the following options:
 
-  * with SNMPv1, community 'public'
+  * with SNMPv2c, community 'public'
   * over IPv4/UDP
   * to an Agent at demo.pysnmp.com:161
   * for an instance of SNMPv2-MIB::sysDescr.0 MIB object
