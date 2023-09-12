@@ -9,7 +9,7 @@ async def test_send_trap():
     (sysUpTime,) = mibBuilder.importSymbols("__SNMPv2-MIB", "sysUpTime")
     sysUpTime.syntax = TimeTicks(12345)
 
-    errorIndication, errorStatus, errorIndex, varBinds = await (await sendNotification(
+    errorIndication, errorStatus, errorIndex, varBinds = await sendNotification(
         snmpEngine,
         CommunityData("public", mpModel=0),
         UdpTransportTarget(("demo.pysnmp.com", 162)),
@@ -23,7 +23,7 @@ async def test_send_trap():
                 1,
             )
         ),
-    ))
+    )
 
     assert errorIndication is None
     assert errorStatus == 0

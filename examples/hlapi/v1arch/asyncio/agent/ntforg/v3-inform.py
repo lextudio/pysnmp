@@ -18,7 +18,7 @@ from pysnmp.hlapi.asyncio.ntforg import sendNotification
 from pysnmp.hlapi.asyncio.transport import UdpTransportTarget
 
 async def run():
-    iterator = await sendNotification(
+    errorIndication, errorStatus, errorIndex, varBinds = await sendNotification(
         SnmpEngine(),
         UsmUserData('usr-md5-des', 'authkey1', 'privkey1'),
         UdpTransportTarget(('demo.pysnmp.com', 162)),
@@ -32,8 +32,6 @@ async def run():
             'SNMPv2-MIB'
         )
     )
-
-    errorIndication, errorStatus, errorIndex, varBinds = await iterator
 
     if errorIndication:
         print(errorIndication)

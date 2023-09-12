@@ -25,17 +25,16 @@ async def run(varBinds):
     snmpEngine = SnmpEngine()
 
     while True:
-        bulk_task = await bulkCmd(
+        errorIndication, errorStatus, errorIndex, varBindTable = await bulkCmd(
             snmpEngine,
             CommunityData('public'),
             UdpTransportTarget(('localhost', 161)),
             ContextData(),
-            0, 50,
-            *varBinds)
-        (errorIndication,
-         errorStatus,
-         errorIndex,
-         varBindTable) = await bulk_task
+            0,
+            50,
+            *varBinds
+        )
+
         if errorIndication:
             print(errorIndication)
             break

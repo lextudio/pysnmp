@@ -29,7 +29,7 @@ from pysnmp.hlapi.asyncio import *
 
 async def run():
     snmpEngine = SnmpEngine()
-    get_result = await getCmd(
+    errorIndication, errorStatus, errorIndex, varBinds = await getCmd(
         snmpEngine,
         UsmUserData('usr-sha-aes', 'authkey1', 'privkey1',
                     authProtocol=usmHMACSHAAuthProtocol,
@@ -38,7 +38,6 @@ async def run():
         ContextData(),
         ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0)))
 
-    errorIndication, errorStatus, errorIndex, varBinds = await get_result
     if errorIndication:
         print(errorIndication)
     elif errorStatus:

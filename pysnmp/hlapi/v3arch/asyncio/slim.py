@@ -105,15 +105,13 @@ class Slim:
 
         """
 
-        get_result = await getCmd(
+        return await getCmd(
             self.snmpEngine,
             CommunityData(communityName, mpModel=self.version - 1),
             UdpTransportTarget((address, port)),
             ContextData(),
             *varBinds,
         )
-
-        return await get_result
 
     async def next(self, communityName, address, port, *varBinds):
         r"""Creates a generator to perform SNMP GETNEXT query.
@@ -180,15 +178,13 @@ class Slim:
 
         """
 
-        next_result = await nextCmd(
+        return await nextCmd(
             self.snmpEngine,
             CommunityData(communityName, mpModel=self.version - 1),
             UdpTransportTarget((address, port)),
             ContextData(),
             *varBinds,
         )
-
-        return await next_result
 
     async def bulk(self, communityName, address, port, nonRepeaters, maxRepetitions, *varBinds):
         r"""Creates a generator to perform SNMP GETBULK query.
@@ -288,7 +284,7 @@ class Slim:
         version = self.version - 1
         if version == 0:
             raise PySnmpError('Cannot send V2 PDU on V1 session')
-        bulk_result = await bulkCmd(
+        return await bulkCmd(
             self.snmpEngine,
             CommunityData(communityName, mpModel=version),
             UdpTransportTarget((address, port)),
@@ -297,8 +293,6 @@ class Slim:
             maxRepetitions,
             *varBinds,
         )
-
-        return await bulk_result
 
     async def set(self, communityName, address, port, *varBinds):
         r"""Creates a generator to perform SNMP SET query.
@@ -361,12 +355,10 @@ class Slim:
 
         """
 
-        set_result = await setCmd(
+        return await setCmd(
             self.snmpEngine,
             CommunityData(communityName, mpModel=self.version - 1),
             UdpTransportTarget((address, port)),
             ContextData(),
             *varBinds,
         )
-
-        return await set_result

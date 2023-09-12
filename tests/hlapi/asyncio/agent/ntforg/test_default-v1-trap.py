@@ -8,7 +8,7 @@ from tests.manager_context import MANAGER_PORT, ManagerContextManager
 async def test_send_trap_enterprise_specific():
     async with ManagerContextManager():
         snmpEngine = SnmpEngine()
-        errorIndication, errorStatus, errorIndex, varBinds = await (await sendNotification(
+        errorIndication, errorStatus, errorIndex, varBinds = await sendNotification(
             snmpEngine,
             CommunityData("public", mpModel=0),
             # UdpTransportTarget(("localhost", MANAGER_PORT)), # TODO: Fix this
@@ -22,7 +22,7 @@ async def test_send_trap_enterprise_specific():
                 ("1.3.6.1.2.1.1.1.0", OctetString("my system")),
                 (v2c.apiTrapPDU.snmpTrapAddress, IpAddress("127.0.0.1")),
             ),
-        ))
+        )
         assert errorIndication is None
         assert errorStatus == 0
         assert errorIndex == 0

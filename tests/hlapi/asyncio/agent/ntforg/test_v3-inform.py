@@ -8,7 +8,7 @@ from tests.manager_context import MANAGER_PORT, ManagerContextManager
 async def test_send_v3_inform():
     async with ManagerContextManager():
         snmpEngine = SnmpEngine()
-        errorIndication, errorStatus, errorIndex, varBinds = await (await sendNotification(
+        errorIndication, errorStatus, errorIndex, varBinds = await sendNotification(
             snmpEngine,
             UsmUserData("usr-md5-des", "authkey1", "privkey1"),
             UdpTransportTarget(("localhost", MANAGER_PORT)),
@@ -17,7 +17,7 @@ async def test_send_v3_inform():
             NotificationType(ObjectIdentity("1.3.6.1.6.3.1.1.5.2")).addVarBinds(
                 ("1.3.6.1.2.1.1.1.0", OctetString("my system"))
             ),
-        ))
+        )
 
         assert errorIndication is None
         assert errorStatus == 0

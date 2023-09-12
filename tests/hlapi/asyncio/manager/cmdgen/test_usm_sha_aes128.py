@@ -15,13 +15,13 @@ async def test_usm_sha_aes128():
             authProtocol=USM_AUTH_HMAC96_SHA,
             privProtocol=USM_PRIV_CFB128_AES,
         )
-        errorIndication, errorStatus, errorIndex, varBinds = await (await getCmd(
+        errorIndication, errorStatus, errorIndex, varBinds = await getCmd(
             snmpEngine,
             authData,
             UdpTransportTarget(("localhost", AGENT_PORT), retries=0),
             ContextData(),
             ObjectType(ObjectIdentity("SNMPv2-MIB", "sysDescr", 0)),
-        ))
+        )
 
         assert errorIndication is None
         assert errorStatus == 0
