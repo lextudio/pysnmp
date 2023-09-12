@@ -1,3 +1,8 @@
+Revision 5.0.29, released 2023-09-12
+------------------------------------
+
+- Fix asyncio hlapi double awaitable returns
+
 Revision 5.0.28, released 2023-05-08
 ------------------------------------
 
