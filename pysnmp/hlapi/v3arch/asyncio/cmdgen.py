@@ -111,14 +111,13 @@ async def getCmd(snmpEngine, authData, transportTarget, contextData,
     >>> from pysnmp.hlapi.asyncio import *
     >>>
     >>> async def run():
-    ...     result_get = await getCmd(
+    ...     errorIndication, errorStatus, errorIndex, varBinds = await getCmd(
     ...         SnmpEngine(),
     ...         CommunityData('public'),
     ...         UdpTransportTarget(('demo.pysnmp.com', 161)),
     ...         ContextData(),
     ...         ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0))
     ...     )
-    ...     errorIndication, errorStatus, errorIndex, varBinds = await result_get
     ...     print(errorIndication, errorStatus, errorIndex, varBinds)
     >>>
     >>> asyncio.run(run())
@@ -157,8 +156,7 @@ async def getCmd(snmpEngine, authData, transportTarget, contextData,
         VB_PROCESSOR.makeVarBinds(snmpEngine.cache, varBinds), __cbFun,
         (options.get('lookupMib', True), future)
     )
-
-    return future
+    return await future
 
 
 async def setCmd(snmpEngine, authData, transportTarget, contextData,
@@ -220,14 +218,13 @@ async def setCmd(snmpEngine, authData, transportTarget, contextData,
     >>> from pysnmp.hlapi.asyncio import *
     >>>
     >>> async def run():
-    ...     set_result = await setCmd(
+    ...     errorIndication, errorStatus, errorIndex, varBinds = await setCmd(
     ...         SnmpEngine(),
     ...         CommunityData('public'),
     ...         UdpTransportTarget(('demo.pysnmp.com', 161)),
     ...         ContextData(),
     ...         ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0), 'Linux i386')
     ...     )
-    ...     errorIndication, errorStatus, errorIndex, varBinds = await set_result
     ...     print(errorIndication, errorStatus, errorIndex, varBinds)
     >>>
     >>> asyncio.run(run())
@@ -267,8 +264,7 @@ async def setCmd(snmpEngine, authData, transportTarget, contextData,
         VB_PROCESSOR.makeVarBinds(snmpEngine.cache, varBinds), __cbFun,
         (options.get('lookupMib', True), future)
     )
-
-    return future
+    return await future
 
 
 async def nextCmd(snmpEngine, authData, transportTarget, contextData,
@@ -334,14 +330,13 @@ async def nextCmd(snmpEngine, authData, transportTarget, contextData,
     >>> from pysnmp.hlapi.asyncio import *
     >>>
     >>> async def run():
-    ...     next_result = await nextCmd(
+    ...     errorIndication, errorStatus, errorIndex, varBinds = await nextCmd(
     ...         SnmpEngine(),
     ...         CommunityData('public'),
     ...         UdpTransportTarget(('demo.pysnmp.com', 161)),
     ...         ContextData(),
     ...         ObjectType(ObjectIdentity('SNMPv2-MIB', 'system'))
     ...     )
-    ...     errorIndication, errorStatus, errorIndex, varBinds = await next_result
     ...     print(errorIndication, errorStatus, errorIndex, varBinds)
     >>>
     >>> asyncio.run(run())
@@ -382,8 +377,7 @@ async def nextCmd(snmpEngine, authData, transportTarget, contextData,
         VB_PROCESSOR.makeVarBinds(snmpEngine.cache, varBinds), __cbFun,
         (options.get('lookupMib', True), future)
     )
-
-    return future
+    return await future
 
 
 async def bulkCmd(snmpEngine, authData, transportTarget, contextData,
@@ -477,7 +471,7 @@ async def bulkCmd(snmpEngine, authData, transportTarget, contextData,
     >>> from pysnmp.hlapi.asyncio import *
     >>>
     >>> async def run():
-    ...     result_bulk = await bulkCmd(
+    ...     errorIndication, errorStatus, errorIndex, varBinds = await bulkCmd(
     ...         SnmpEngine(),
     ...         CommunityData('public'),
     ...         UdpTransportTarget(('demo.pysnmp.com', 161)),
@@ -485,7 +479,6 @@ async def bulkCmd(snmpEngine, authData, transportTarget, contextData,
     ...         0, 2,
     ...         ObjectType(ObjectIdentity('SNMPv2-MIB', 'system'))
     ...     )
-    ...     errorIndication, errorStatus, errorIndex, varBinds = await result_bulk
     ...     print(errorIndication, errorStatus, errorIndex, varBinds)
     >>>
     >>> asyncio.get_event_loop().run_until_complete(run())
@@ -527,5 +520,4 @@ async def bulkCmd(snmpEngine, authData, transportTarget, contextData,
         VB_PROCESSOR.makeVarBinds(snmpEngine.cache, varBinds), __cbFun,
         (options.get('lookupMib', True), future)
     )
-
-    return future
+    return await future
