@@ -87,46 +87,64 @@ PySNMP is designed in a layered fashion. Top-level and easiest to use API is kno
 *hlapi*. Here's a quick example on how to SNMP GET:
 
 ```python
-from pysnmp.hlapi import *
+import asyncio
+from pysnmp.hlapi.asyncio.slim import Slim
+from pysnmp.smi.rfc1902 import ObjectIdentity, ObjectType
 
-iterator = getCmd(SnmpEngine(),
-                  CommunityData('public'),
-                  UdpTransportTarget(('demo.pysnmp.com', 161)),
-                  ContextData(),
-                  ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0)))
+async def run():
+    slim = Slim(1)
+    errorIndication, errorStatus, errorIndex, varBinds = await slim.get(
+        'public',
+        'demo.pysnmp.com',
+        161,
+        ObjectType(ObjectIdentity("SNMPv2-MIB", "sysDescr", 0)),
+    )
 
-errorIndication, errorStatus, errorIndex, varBinds = next(iterator)
-
-if errorIndication:  # SNMP engine errors
-    print(errorIndication)
-else:
-    if errorStatus:  # SNMP agent errors
-        print('%s at %s' % (errorStatus.prettyPrint(), varBinds[int(errorIndex)-1] if errorIndex else '?'))
+    if errorIndication:
+        print(errorIndication)
+    elif errorStatus:
+        print(
+            "{} at {}".format(
+                errorStatus.prettyPrint(),
+                errorIndex and varBinds[int(errorIndex) - 1][0] or "?",
+            )
+        )
     else:
-        for varBind in varBinds:  # SNMP response contents
-            print(' = '.join([x.prettyPrint() for x in varBind]))
+        for varBind in varBinds:
+            print(" = ".join([x.prettyPrint() for x in varBind]))
+
+    slim.close()
+
+
+asyncio.run(run())
 ```
 
 This is how to send SNMP TRAP:
 
 ```python
-from pysnmp.hlapi import *
+import asyncio
+from pysnmp.hlapi.asyncio import *
 
-errorIndication, errorStatus, errorIndex, varBinds = next(
-    sendNotification(
-        SnmpEngine(OctetString(hexValue='8000000001020304')),
-        UsmUserData('usr-sha-aes128', 'authkey1', 'privkey1',
-                    authProtocol=USM_AUTH_HMAC96_SHA,
-                    privProtocol=USM_PRIV_CFB128_AES),
+async def run():
+    snmpEngine = SnmpEngine()
+    errorIndication, errorStatus, errorIndex, varBinds = await sendNotification(
+        snmpEngine,
+        CommunityData('public', mpModel=0),
         UdpTransportTarget(('demo.pysnmp.com', 162)),
         ContextData(),
-        'trap',
-        NotificationType(ObjectIdentity('SNMPv2-MIB', 'authenticationFailure'))
+        "trap",
+        NotificationType(ObjectIdentity("1.3.6.1.6.3.1.1.5.2")).addVarBinds(
+            ("1.3.6.1.6.3.1.1.4.3.0", "1.3.6.1.4.1.20408.4.1.1.2"),
+            ("1.3.6.1.2.1.1.1.0", OctetString("my system")),
+        ),
     )
-)
 
-if errorIndication:
-    print(errorIndication)
+    if errorIndication:
+        print(errorIndication)
+
+    snmpEngine.transportDispatcher.closeDispatcher()
+
+asyncio.run(run())
 ```
 
 > We maintain publicly available SNMP Agent and TRAP sink at
@@ -134,7 +152,7 @@ if errorIndication:
 > welcome to use it while experimenting with whatever SNMP software you deal with.
 
 ```bash
-$ python3 examples/hlapi/asyncore/sync/manager/cmdgen/usm-sha-aes128.py
+$ python3 examples/hlapi/asyncio/manager/cmdgen/usm-sha-aes128.py
 SNMPv2-MIB::sysDescr.0 = SunOS zeus.pysnmp.com 4.1.3_U1 1 sun4m
 $
 $ python3 examples//hlapi/asyncore/sync/agent/ntforg/v3-inform.py
@@ -163,5 +181,5 @@ post your question [on Stack Overflow](http://stackoverflow.com/questions/ask) o
 Bug reports and PRs are appreciated! ;-)
 
 Copyright (c) 2005-2020, [Ilya Etingof](https://lists.openstack.org/pipermail/openstack-discuss/2022-August/030062.html).
-Copyright (c) 2022, [LeXtudio Inc](mailto:support@lextudio.com).
+Copyright (c) 2022-2023, [LeXtudio Inc](mailto:support@lextudio.com).
 All rights reserved.
