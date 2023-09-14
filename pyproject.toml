@@ -31,12 +31,13 @@ pyasn1 = ">=0.4.8, <0.5.0"
 pysnmpcrypto = "^0.0.4"
 pysmi-lextudio = "^1.0.4"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 Sphinx = "^4.3.0"
 codecov = "^2.1.13"
 pytest = "^7.2.0"
 pytest-codecov = "^0.4.0"
-pytest-asyncio = "^0.15.1"
+pytest-asyncio = "^0.21.1"
+tox = "4.8.0"
 
 [tool.poetry_bumpversion.file."pysnmp/__init__.py"]
 
