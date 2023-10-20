@@ -609,9 +609,8 @@ and scalable. The idea is simple: never wait for I/O - do something
 else whenever possible. The back side of this is that execution flow
 becomes non-linear what hurts program analysis by human reader.
 
-PySNMP high-level API is adapted to work with three popular
-asynchronous I/O frameworks :mod:`asyncio`.
+PySNMP high-level API is adapted to work with the standard
+asynchronous I/O framework :mod:`asyncio`.
 Please, refer to PySNMP :doc:`library reference </docs/api-reference>`
 and :doc:`examples </examples/index>` for more information on
 asynchronous API.
-
