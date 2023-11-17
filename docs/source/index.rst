@@ -124,11 +124,3 @@ Contact
 In case of questions or troubles using PySNMP, please open up an
 `issue <https://github.com/lextudio/pysnmp/issues>`_ at GitHub or ask at
 `Stack Overflow <http://stackoverflow.com/questions/tagged/pysnmp>`_ .
-
-Old site archive
-----------------
-
-.. toctree::
-   :maxdepth: 2
-
-   /oldsite
