@@ -11,14 +11,14 @@ the following options:
     - 'usr-sha-none', auth: SHA, no privacy
     - 'usr-sha-aes128', auth: SHA, priv AES
 * allow access to SNMPv2-MIB objects (1.3.6.1.2.1)
-* over IPv4/UDP, listening at 127.0.0.1:161
+* over IPv4/UDP, listening at 127.0.0.1:1161
 * using asyncio network transport (available since Python 3.4)
 
 Either of the following Net-SNMP commands will walk this Agent:
 
-| $ snmpwalk -v3 -u usr-md5-des -l authPriv -A authkey1 -X privkey1 localhost .1.3.6
-| $ snmpwalk -v3 -u usr-sha-none -l authNoPriv -a SHA -A authkey1 localhost .1.3.6
-| $ snmpwalk -v3 -u usr-sha-aes128 -l authPriv -a SHA -A authkey1 -x AES -X privkey1 localhost .1.3.6
+| $ snmpwalk -v3 -u usr-md5-des -l authPriv -A authkey1 -X privkey1 localhost:1161 .1.3.6
+| $ snmpwalk -v3 -u usr-sha-none -l authNoPriv -a SHA -A authkey1 localhost:1161 .1.3.6
+| $ snmpwalk -v3 -u usr-sha-aes128 -l authPriv -a SHA -A authkey1 -x AES -X privkey1 localhost:1161 .1.3.6
 
 Requires Python 3.4 and later!
 
@@ -39,8 +39,12 @@ snmpEngine = engine.SnmpEngine()
 
 # UDP over IPv4
 config.addTransport(
-    snmpEngine, udp.domainName, udp.UdpTransport().openServerMode(("127.0.0.1", 161))
+    snmpEngine, udp.domainName, udp.UdpTransport().openServerMode(("127.0.0.1", 1161))
 )
+"""
+if you ever change port 1161 to the standard 161 make sure to run the script with the root priviledges,
+otherwise you get no error messages from here while from the client a very confusing: "snmpwalk: Unknown user name"
+"""
 
 # SNMPv3/USM setup
 

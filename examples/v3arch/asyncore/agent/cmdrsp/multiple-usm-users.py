@@ -10,13 +10,13 @@ the following options:
   with USM user 'usr-sha-none', auth: SHA, no privacy
   with USM user 'usr-sha-aes128', auth: SHA, priv AES
 * allow access to SNMPv2-MIB objects (1.3.6.1.2.1)
-* over IPv4/UDP, listening at 127.0.0.1:161
+* over IPv4/UDP, listening at 127.0.0.1:1161
 
 Either of the following Net-SNMP commands will walk this Agent:
 
-| $ snmpwalk -v3 -u usr-md5-des -l authPriv -A authkey1 -X privkey1 localhost .1.3.6
-| $ snmpwalk -v3 -u usr-sha-none -l authNoPriv -a SHA -A authkey1 localhost .1.3.6
-| $ snmpwalk -v3 -u usr-sha-aes128 -l authPriv -a SHA -A authkey1 -x AES -X privkey1 localhost .1.3.6
+| $ snmpwalk -v3 -u usr-md5-des -l authPriv -A authkey1 -X privkey1 localhost:1161 .1.3.6
+| $ snmpwalk -v3 -u usr-sha-none -l authNoPriv -a SHA -A authkey1 localhost:1161 .1.3.6
+| $ snmpwalk -v3 -u usr-sha-aes128 -l authPriv -a SHA -A authkey1 -x AES -X privkey1 localhost:1161 .1.3.6
 
 """#
 from pysnmp.entity import engine, config
