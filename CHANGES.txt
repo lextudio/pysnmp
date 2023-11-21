@@ -1,7 +1,12 @@
+Revision 5.0.30, released 2023-11-20
+------------------------------------
+
+- Added pyasn1 0.5.1 support.
+
 Revision 5.0.29, released 2023-09-12
 ------------------------------------
 
-- Fix asyncio hlapi double awaitable returns
+- Fix asyncio hlapi double awaitable returns.
 
 Revision 5.0.28, released 2023-05-08
 ------------------------------------
