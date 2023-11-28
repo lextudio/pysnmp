@@ -1,5 +1,5 @@
 # http://www.python.org/dev/peps/pep-0396/
-__version__ = '5.0.20'
+__version__ = '5.0.22'
 # another variable is required to prevent semantic release from updating version in more than one place
 main_version = __version__
 # backward compatibility
