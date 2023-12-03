@@ -66,7 +66,7 @@ class SnmpEngineTime(Integer32):
     def clone(self, *args, **kwargs):
         if not args:
             try:
-                args = (time.time() - self,)
+                args = ((time.time() - self) % 2147483647,)
             except Exception:
                 pass
         return Integer32.clone(self, *args, **kwargs)
