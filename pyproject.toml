@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pysnmp-lextudio"
-version = "5.0.30"
+version = "5.0.31"
 description = ""
 authors = ["Ilya Etingof <etingof@gmail.com>", "Lex Li <support@lextudio.com>"]
 license = "BSD-2-Clause"
