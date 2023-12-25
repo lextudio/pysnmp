@@ -83,7 +83,7 @@ to SNMP engine LCD.
    UsmUserData(userName='testuser', authKey=<AUTHKEY>, privKey=<PRIVKEY>)
 
 PySNMP supports MD5 and SHA message authentication algorithms, DES,
-AES128/192/256 and 3DES encryption algoritms.
+AES128/192/256 and 3DES encryption algorithms.
 
 For sake of simplicity, let's use SNMPv2. Although completely
 insecure, it's still the most popular SNMP version in use.
@@ -197,7 +197,7 @@ MIB resolution means the service of MIB object name into OID
 transformation or vice versa.
 
 The :py:class:`~pysnmp.smi.rfc1902.ObjectType` class instance
-represents *OBJECT-TYPE* SMI constuct in PySNMP. ObjectType is a 
+represents *OBJECT-TYPE* SMI construct in PySNMP. ObjectType is a 
 container object that references ObjectIdentity and SNMP
 type instances. As a Python object it looks like a tuple of
 (OID, value).
@@ -241,9 +241,7 @@ in `SNMPv2-MIB <https://mibs.pysnmp.com/asn1/SNMPv2-MIB>`_ module.
 
 By default PySNMP will search your local filesystem for ASN.1 MIB files
 you refer to. It can also be configured to automatically download
-them from remote hosts, as
-:doc:`shown </examples/hlapi/v3arch/asyncore/sync/manager/cmdgen/mib-tweaks>`
-in the examples. We maintain a
+them from remote hosts. We maintain a
 `collection <https://github.com/lextudio/mibs.snmplabs.com/tree/master/asn1>`_ of ASN.1 MIB modules
 that you can use in your SNMP projects.
 
@@ -325,7 +323,7 @@ In PySNMP parlance:
    '1.3.6.1.2.1.2.2.1.2.123'
 
 Some SNMP tables are indexed by many indices. Each of these indices
-become parts of OID concatinated to each other and ultimately to
+become parts of OID concatenated to each other and ultimately to
 MIB object OID.
 
 From semantic standpoint, each index reflects an important and

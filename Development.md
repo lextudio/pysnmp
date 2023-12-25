@@ -11,3 +11,9 @@ poetry env use 3.12
 ```bash
 poetry version patch
 ```
+
+## Build Documentation
+
+```bash
+poetry run make html -C docs
+```

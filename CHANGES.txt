@@ -1,3 +1,8 @@
+Revision 5.0.32, released 2023-12-25
+------------------------------------
+
+- Added timeout and retries to Slim class.
+
 Revision 5.0.31, released 2023-12-09
 ------------------------------------
 
