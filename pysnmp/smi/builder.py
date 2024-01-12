@@ -13,6 +13,8 @@ import traceback
 
 try:
     import importlib
+    import importlib.util
+    import importlib.machinery
 
     try:
         PY_MAGIC_NUMBER = importlib.util.MAGIC_NUMBER
