@@ -4,6 +4,7 @@
 
 ```bash
 poetry env use 3.12
+poetry env info --path
 ```
 
 ## Bump Version Number
