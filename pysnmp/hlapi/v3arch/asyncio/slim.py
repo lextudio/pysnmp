@@ -1,7 +1,7 @@
 #
 # This file is part of pysnmp software.
 #
-# Copyright (c) 2023, LeXtudio Inc. <support@lextudio.com>
+# Copyright (c) 2023-2024, LeXtudio Inc. <support@lextudio.com>
 # License: https://www.pysnmp.com/pysnmp/license.html
 #
 from pysnmp.error import PySnmpError

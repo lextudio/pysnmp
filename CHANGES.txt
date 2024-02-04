@@ -1,5 +1,10 @@
+Revision 5.0.34, released 2024-2-4
+----------------------------------
+
+- Fixed a v3 authentication issue when wrong user name is used.
+
 Revision 5.0.33, released 2024-1-12
-------------------------------------
+-----------------------------------
 
 - Fixed an import error with Python 3.12.
 
