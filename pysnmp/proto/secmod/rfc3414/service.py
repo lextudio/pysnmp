@@ -1075,28 +1075,30 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
                         errorIndication=errind.authenticationFailure
                     )
 
+                hash = securityParameters.getComponentByPosition(4)
                 try:
                     authHandler.authenticateIncomingMsg(
                         usmUserAuthKeyLocalized,
-                        securityParameters.getComponentByPosition(4),
+                        hash,
                         wholeMsg
                     )
 
                 except error.StatusInformation:
-                    usmStatsWrongDigests, = mibBuilder.importSymbols(
-                        '__SNMP-USER-BASED-SM-MIB', 'usmStatsWrongDigests')
-                    usmStatsWrongDigests.syntax += 1
-                    raise error.StatusInformation(
-                        errorIndication=errind.authenticationFailure,
-                        oid=usmStatsWrongDigests.name,
-                        val=usmStatsWrongDigests.syntax,
-                        securityStateReference=securityStateReference,
-                        securityLevel=securityLevel,
-                        contextEngineId=contextEngineId,
-                        contextName=contextName,
-                        msgUserName=msgUserName,
-                        maxSizeResponseScopedPDU=maxSizeResponseScopedPDU
-                    )
+                    if len(hash) != 0: # don't throw error if hash is empty (and agent returned REPORT)
+                        usmStatsWrongDigests, = mibBuilder.importSymbols(
+                            '__SNMP-USER-BASED-SM-MIB', 'usmStatsWrongDigests')
+                        usmStatsWrongDigests.syntax += 1
+                        raise error.StatusInformation(
+                            errorIndication=errind.authenticationFailure,
+                            oid=usmStatsWrongDigests.name,
+                            val=usmStatsWrongDigests.syntax,
+                            securityStateReference=securityStateReference,
+                            securityLevel=securityLevel,
+                            contextEngineId=contextEngineId,
+                            contextName=contextName,
+                            msgUserName=msgUserName,
+                            maxSizeResponseScopedPDU=maxSizeResponseScopedPDU
+                        )
 
             debug.logger & debug.FLAG_SM and debug.logger(
                 'processIncomingMsg: incoming msg authenticated')
