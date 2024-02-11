@@ -29,7 +29,7 @@ Features
 * [PySMI](https://www.pysnmp.com/pysmi/) integration for dynamic MIB compilation
 * Built-in instrumentation exposing protocol engine operations
 * Python eggs and py2exe friendly
-* 100% Python, works with Python 3.7+
+* 100% Python, works with Python 3.8+
 * MT-safe (if SnmpEngine is thread-local)
 
 Features, specific to SNMPv3 model include:
@@ -41,7 +41,6 @@ Features, specific to SNMPv3 model include:
 * Remote SNMP engine configuration
 * Optional SNMP engine discovery
 * Shipped with standard SNMP applications (RC3413)
-
 
 Download & Install
 ------------------
@@ -148,7 +147,7 @@ asyncio.run(run())
 ```
 
 > We maintain publicly available SNMP Agent and TRAP sink at
-> [demo.pysnmp.com](https://www.pysnmp.com/snmpsim/public-snmp-agent-simulator.html). You are
+> [demo.pysnmp.com](https://www.pysnmp.com/snmp-simulation-service). You are
 > welcome to use it while experimenting with whatever SNMP software you deal with.
 
 ```bash
