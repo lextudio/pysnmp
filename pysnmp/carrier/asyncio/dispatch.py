@@ -63,15 +63,16 @@ class AsyncioDispatcher(AbstractTransportDispatcher):
         if not self.loop.is_running():
             try:
                 if timeout > 0:
-                    self.loop.call_later(timeout, self.closeDispatcher)
+                    self.loop.call_later(timeout, self.__closeDispatcher)
                 self.loop.run_forever()
             except KeyboardInterrupt:
                 raise
             except Exception:
                 raise PySnmpError(';'.join(traceback.format_exception(*sys.exc_info())))
-    
-    def closeDispatcher(self):
-        self.loop.stop()
+
+    def __closeDispatcher(self):
+        if self.loop.is_running():
+            self.loop.stop()
         super().closeDispatcher()
 
     def registerTransport(self, tDomain, transport):
