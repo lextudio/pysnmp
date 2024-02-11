@@ -16,7 +16,7 @@ except ImportError:
 from pysnmp.carrier.base import AbstractTransportAddress
 from pysnmp.carrier.asyncio.dgram.base import DgramAsyncioProtocol
 
-domainName = snmpLocalDomain = (1, 3, 6, 1, 2, 1, 100, 1, 13)
+DOMAIN_NAME = snmpLocalDomain = (1, 3, 6, 1, 2, 1, 100, 1, 13)
 
 random.seed()
 

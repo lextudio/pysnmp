@@ -5,15 +5,9 @@
 # License: https://www.pysnmp.com/pysnmp/license.html
 #
 from pyasn1.compat.octets import null
-
-from pysnmp import error
-from pysnmp.carrier.asyncore.dgram import udp
-from pysnmp.carrier.asyncore.dgram import udp6
-from pysnmp.proto.secmod.rfc3414.auth import hmacmd5
-from pysnmp.proto.secmod.rfc3414.auth import hmacsha
-from pysnmp.proto.secmod.rfc3414.auth import noauth
-from pysnmp.proto.secmod.rfc3414.priv import des
-from pysnmp.proto.secmod.rfc3414.priv import nopriv
+from pysnmp.carrier.asyncio.dgram import udp, udp6, unix
+from pysnmp.proto.secmod.rfc3414.auth import hmacmd5, hmacsha, noauth
+from pysnmp.proto.secmod.rfc3414.priv import des, nopriv
 from pysnmp.proto.secmod.rfc3826.priv import aes
 from pysnmp.proto.secmod.rfc7860.auth import hmacsha2
 from pysnmp.proto.secmod.eso.priv import aes192

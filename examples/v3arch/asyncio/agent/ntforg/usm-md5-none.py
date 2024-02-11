@@ -38,11 +38,6 @@ config.addTargetParams(snmpEngine, 'my-creds', 'usr-md5-none', 'authNoPriv')
 config.addTransport(
     snmpEngine, udp.DOMAIN_NAME, udp.UdpAsyncioTransport().openClientMode()
 )
-config.addTargetAddr(
-    snmpEngine,
-    udp.DOMAIN_NAME,
-    udp.UdpSocketTransport().openClientMode()
-)
 
 config.addTargetAddr(
     snmpEngine, 'my-nms',
