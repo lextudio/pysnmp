@@ -7,16 +7,14 @@
 import os
 import shutil
 import tempfile
-
+from typing import Tuple
 from pyasn1.compat.octets import str2octs
-
-from pysnmp import debug
-from pysnmp import error
+from pysnmp import debug, error
+from pysnmp.carrier.base import AbstractTransportAddress, AbstractTransportDispatcher
 from pysnmp.entity import observer
-from pysnmp.proto.acmod import rfc3415
-from pysnmp.proto.acmod import void
-from pysnmp.proto.mpmod.rfc2576 import SnmpV1MessageProcessingModel
-from pysnmp.proto.mpmod.rfc2576 import SnmpV2cMessageProcessingModel
+from pysnmp.proto.acmod import rfc3415, void
+from pysnmp.proto.rfc3412 import MsgAndPduDispatcher
+from pysnmp.proto.mpmod.rfc2576 import SnmpV1MessageProcessingModel, SnmpV2cMessageProcessingModel
 from pysnmp.proto.mpmod.rfc3412 import SnmpV3MessageProcessingModel
 from pysnmp.proto.rfc3412 import MsgAndPduDispatcher
 from pysnmp.proto.secmod.rfc2576 import SnmpV1SecurityModel
@@ -57,7 +55,11 @@ class SnmpEngine:
 
     """
 
-    def __init__(self, snmpEngineID=None, maxMessageSize=65507, msgAndPduDsp=None):
+    transportDispatcher: AbstractTransportDispatcher
+
+    def __init__(
+        self, snmpEngineID=None, maxMessageSize: int = 65507, msgAndPduDsp=None
+    ):
         self.cache = {}
 
         self.observer = observer.MetaObserver()
@@ -105,10 +107,8 @@ class SnmpEngine:
         )
 
         snmpEngineBoots.syntax += 1
-
-        (origSnmpEngineID,) = mibBuilder.importSymbols(
-            "__SNMP-FRAMEWORK-MIB", "snmpEngineID"
-        )
+        origSnmpEngineID, = self.msgAndPduDsp.mibInstrumController.mibBuilder.importSymbols('__SNMP-FRAMEWORK-MIB',
+                                                                                            'snmpEngineID')
 
         if snmpEngineID is None:
             self.snmpEngineID = origSnmpEngineID.syntax
@@ -140,8 +140,7 @@ class SnmpEngine:
                 except OSError:
                     return
 
-            f = os.path.join(persistentPath, "boots")
-
+            f = os.path.join(persistentPath, 'boots')
             try:
                 snmpEngineBoots.syntax = snmpEngineBoots.syntax.clone(open(f).read())
 
@@ -177,13 +176,17 @@ class SnmpEngine:
     # Transport dispatcher bindings
 
     def __receiveMessageCbFun(
-        self, transportDispatcher, transportDomain, transportAddress, wholeMsg
+        self,
+        transportDispatcher: AbstractTransportDispatcher,
+        transportDomain: Tuple[int, ...],
+        transportAddress: AbstractTransportAddress,
+        wholeMsg,
     ):
         self.msgAndPduDsp.receiveMessage(
             self, transportDomain, transportAddress, wholeMsg
         )
 
-    def __receiveTimerTickCbFun(self, timeNow):
+    def __receiveTimerTickCbFun(self, timeNow: float):
         self.msgAndPduDsp.receiveTimerTick(self, timeNow)
 
         for mpHandler in self.messageProcessingSubsystems.values():
@@ -192,16 +195,16 @@ class SnmpEngine:
         for smHandler in self.securityModels.values():
             smHandler.receiveTimerTick(self, timeNow)
 
-    def registerTransportDispatcher(self, transportDispatcher, recvId=None):
+    def registerTransportDispatcher(
+        self, transportDispatcher: AbstractTransportDispatcher, recvId=None
+    ):
         if (
-            self.transportDispatcher
+            self.transportDispatcher is not None
             and self.transportDispatcher is not transportDispatcher
         ):
             raise error.PySnmpError("Transport dispatcher already registered")
-
         transportDispatcher.registerRecvCbFun(self.__receiveMessageCbFun, recvId)
-
-        if not self.transportDispatcher:
+        if self.transportDispatcher is None:
             transportDispatcher.registerTimerCbFun(self.__receiveTimerTickCbFun)
             self.transportDispatcher = transportDispatcher
 

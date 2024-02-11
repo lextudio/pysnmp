@@ -5,9 +5,9 @@
 # License: https://www.pysnmp.com/pysnmp/license.html
 #
 from pyasn1.compat.octets import null
-
+from pysnmp.carrier.base import AbstractTransport, AbstractTransportAddress
 from pysnmp import error
-from pysnmp.carrier.base import AbstractTransport
+from pysnmp.entity.engine import SnmpEngine
 
 __all__ = []
 
@@ -16,7 +16,18 @@ class AbstractTransportTarget:
     TRANSPORT_DOMAIN = None
     PROTO_TRANSPORT = AbstractTransport
 
-    def __init__(self, transportAddr, timeout=1, retries=5, tagList=null):
+    retries: int
+    timeout: float
+    transport: AbstractTransport
+    transportAddr: AbstractTransportAddress
+
+    def __init__(
+        self,
+        transportAddr: AbstractTransportAddress,
+        timeout: float = 1,
+        retries: int = 5,
+        tagList=null,
+    ):
         self.transportAddr = self._resolveAddr(transportAddr)
         self.timeout = timeout
         self.retries = retries
@@ -57,14 +68,15 @@ class AbstractTransportTarget:
         self.transport = self.PROTO_TRANSPORT().openClientMode(self.iface)
         return self.transport
 
-    def verifyDispatcherCompatibility(self, snmpEngine):
+    def verifyDispatcherCompatibility(self, snmpEngine: SnmpEngine):
         if not self.PROTO_TRANSPORT.isCompatibleWithDispatcher(
             snmpEngine.transportDispatcher
         ):
             raise error.PySnmpError(
-                "Transport %r is not compatible with dispatcher "
-                "%r" % (self.PROTO_TRANSPORT, snmpEngine.transportDispatcher)
+                "Transport {!r} is not compatible with dispatcher {!r}".format(
+                    self.PROTO_TRANSPORT, snmpEngine.transportDispatcher
+                )
             )
 
-    def _resolveAddr(self, transportAddr):
+    def _resolveAddr(self, transportAddr: AbstractTransportAddress):
         raise NotImplementedError()

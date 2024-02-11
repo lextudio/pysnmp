@@ -5,9 +5,11 @@
 # License: https://www.pysnmp.com/pysnmp/license.html
 #
 import socket
-
-from pysnmp import error
-from pysnmp.carrier.asyncore.dgram import udp, udp6
+import sys
+from typing import Tuple
+from pysnmp.carrier.asyncio.dgram import udp, udp6
+from pysnmp.carrier.base import AbstractTransport, AbstractTransportAddress
+from pysnmp.error import PySnmpError
 from pysnmp.hlapi.transport import AbstractTransportTarget
 
 __all__ = ["Udp6TransportTarget", "UdpTransportTarget"]
@@ -49,10 +51,10 @@ class UdpTransportTarget(AbstractTransportTarget):
 
     """
 
-    TRANSPORT_DOMAIN = udp.DOMAIN_NAME
-    PROTO_TRANSPORT = udp.UdpSocketTransport
+    TRANSPORT_DOMAIN: Tuple[int, ...] = udp.DOMAIN_NAME
+    PROTO_TRANSPORT: AbstractTransport = udp.UdpAsyncioTransport
 
-    def _resolveAddr(self, transportAddr):
+    def _resolveAddr(self, transportAddr: AbstractTransportAddress):
         try:
             return socket.getaddrinfo(
                 transportAddr[0],
@@ -63,7 +65,7 @@ class UdpTransportTarget(AbstractTransportTarget):
             )[0][4][:2]
 
         except socket.gaierror as exc:
-            raise error.PySnmpError(
+            raise PySnmpError(
                 "Bad IPv4/UDP transport address %s: %s"
                 % ("@".join([str(x) for x in transportAddr]), exc)
             )
@@ -113,10 +115,10 @@ class Udp6TransportTarget(AbstractTransportTarget):
 
     """
 
-    TRANSPORT_DOMAIN = udp6.DOMAIN_NAME
-    PROTO_TRANSPORT = udp6.Udp6SocketTransport
+    TRANSPORT_DOMAIN: Tuple[int, ...] = udp6.DOMAIN_NAME
+    PROTO_TRANSPORT: AbstractTransport = udp6.Udp6AsyncioTransport
 
-    def _resolveAddr(self, transportAddr):
+    def _resolveAddr(self, transportAddr: AbstractTransportAddress):
         try:
             return socket.getaddrinfo(
                 transportAddr[0],
@@ -125,9 +127,9 @@ class Udp6TransportTarget(AbstractTransportTarget):
                 socket.SOCK_DGRAM,
                 socket.IPPROTO_UDP,
             )[0][4][:2]
-
         except socket.gaierror as exc:
-            raise error.PySnmpError(
-                "Bad IPv6/UDP transport address %s: %s"
-                % ("@".join([str(x) for x in transportAddr]), exc)
+            raise PySnmpError(
+                "Bad IPv6/UDP transport address {}: {}".format(
+                    "@".join([str(x) for x in transportAddr]), exc
+                )
             )

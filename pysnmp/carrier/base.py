@@ -4,10 +4,8 @@
 # Copyright (c) 2005-2019, Ilya Etingof <etingof@gmail.com>
 # License: https://www.pysnmp.com/pysnmp/license.html
 #
-import sys
-
-from pysnmp.carrier import error
 from typing import Tuple
+from pysnmp.carrier import error
 
 
 class TimerCallable:
@@ -99,12 +97,11 @@ class AbstractTransport:
 
 
 class AbstractTransportDispatcher:
-    __transports: dict[Tuple[int, ...], AbstractTransport]
-    __transportDomainMap: dict[AbstractTransport, Tuple[int, ...]]
-    __recvCallables: dict[str, callable]
-    __timerCallables: list[TimerCallable]
+    __transports: "dict[Tuple[int, ...], AbstractTransport]"
+    __transportDomainMap: "dict[AbstractTransport, Tuple[int, ...]]"
+    __recvCallables: "dict[str, callable]"
+    __timerCallables: "list[TimerCallable]"
     __ticks: int
-    __timerResolution: float
     __timerResolution: float
     __timerDelta: float
     __nextTime: float
@@ -155,8 +152,9 @@ class AbstractTransportDispatcher:
 
     def registerRoutingCbFun(self, routingCbFun):
         if self.__routingCbFun:
-            raise error.CarrierError("Data routing callback already registered")
-
+            raise error.CarrierError(
+                'Data routing callback already registered'
+            )
         self.__routingCbFun = routingCbFun
 
     def unregisterRoutingCbFun(self):
@@ -166,8 +164,7 @@ class AbstractTransportDispatcher:
     def registerRecvCbFun(self, recvCb, recvId=None):
         if recvId in self.__recvCallables:
             raise error.CarrierError(
-                "Receive callback %r already registered"
-                % (recvId is None and "<default>" or recvId,)
+                'Receive callback {!r} already registered'.format(recvId is None and '<default>' or recvId)
             )
 
         self.__recvCallables[recvId] = recvCb
@@ -189,31 +186,31 @@ class AbstractTransportDispatcher:
         else:
             self.__timerCallables = []
 
-    def registerTransport(
-        self, transportDomain: Tuple[int, ...], transport: AbstractTransport
-    ):
+    def registerTransport(self, transportDomain: Tuple[int, ...], transport: AbstractTransport):
         if transportDomain in self.__transports:
-            raise error.CarrierError(f"Transport {transportDomain} already registered")
-
+            raise error.CarrierError(
+                f'Transport {transportDomain} already registered'
+            )
         transport.registerCbFun(self._cbFun)
 
         self.__transports[transportDomain] = transport
         self.__transportDomainMap[transport] = transportDomain
 
-    def unregisterTransport(self, transportDomain: Tuple[int, ...]):
-        if transportDomain not in self.__transports:
-            raise error.CarrierError(f"Transport {transportDomain} not registered")
-
-        self.__transports[transportDomain].unregisterCbFun()
-
-        del self.__transportDomainMap[self.__transports[transportDomain]]
-        del self.__transports[transportDomain]
+    def unregisterTransport(self, tDomain: Tuple[int, ...]):
+        if tDomain not in self.__transports:
+            raise error.CarrierError(
+                f'Transport {tDomain} not registered'
+            )
+        self.__transports[tDomain].unregisterCbFun()
+        del self.__transportDomainMap[self.__transports[tDomain]]
+        del self.__transports[tDomain]
 
     def getTransport(self, transportDomain: Tuple[int, ...]):
         if transportDomain in self.__transports:
             return self.__transports[transportDomain]
-
-        raise error.CarrierError(f"Transport {transportDomain} not registered")
+        raise error.CarrierError(
+            f'Transport {transportDomain} not registered'
+        )
 
     def sendMessage(
         self,
@@ -228,7 +225,7 @@ class AbstractTransportDispatcher:
 
         else:
             raise error.CarrierError(
-                "No suitable transport domain for " "%s" % (transportDomain,)
+                f'No suitable transport domain for {transportDomain}'
             )
 
     def getTimerResolution(self):
