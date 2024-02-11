@@ -1,3 +1,8 @@
+Revision 5.0.36, released 2024-2-10
+-----------------------------------
+
+- Fixed a dispatch bug related to "Slim.close".
+
 Revision 5.0.35, released 2024-2-10
 -----------------------------------
 
