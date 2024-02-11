@@ -7,7 +7,7 @@
 from pysnmp.proto.rfc1902 import *
 from pysnmp.proto.rfc1905 import NoSuchInstance, NoSuchObject, EndOfMibView
 from pysnmp.smi.rfc1902 import *
-from pysnmp.hlapi import auth
+from pysnmp.hlapi.v3arch import auth
 from pysnmp.entity.engine import *
 
 # default is synchronous asyncio-based API
