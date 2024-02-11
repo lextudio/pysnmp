@@ -104,31 +104,31 @@ Command Generator
 
 .. toctree::
 
-   /examples/v1arch/asyncore/manager/cmdgen/fetching-variables
-   /examples/v1arch/asyncore/manager/cmdgen/modifying-variables
-   /examples/v1arch/asyncore/manager/cmdgen/walking-operations
-   /examples/v1arch/asyncore/manager/cmdgen/transport-tweaks
+   /examples/v1arch/asyncio/manager/cmdgen/fetching-variables
+   /examples/v1arch/asyncio/manager/cmdgen/modifying-variables
+   /examples/v1arch/asyncio/manager/cmdgen/walking-operations
+   /examples/v1arch/asyncio/manager/cmdgen/transport-tweaks
 
 Command Responder
 +++++++++++++++++
 
 .. toctree::
 
-   /examples/v1arch/asyncore/agent/cmdrsp/agent-side-mib-implementations
+   /examples/v1arch/asyncio/agent/cmdrsp/agent-side-mib-implementations
 
 Notification Originator
 +++++++++++++++++++++++
 
 .. toctree::
 
-   /examples/v1arch/asyncore/agent/ntforg/transport-tweaks
+   /examples/v1arch/asyncio/agent/ntforg/transport-tweaks
 
 Notification Receiver
 +++++++++++++++++++++
 
 .. toctree::
 
-   /examples/v1arch/asyncore/manager/ntfrcv/transport-tweaks
+   /examples/v1arch/asyncio/manager/ntfrcv/transport-tweaks
 
 Low-level SMI/MIB
 -----------------

@@ -2,11 +2,14 @@
 # This file is part of pysnmp software.
 #
 # Copyright (c) 2005-2020, Ilya Etingof <etingof@gmail.com>
-# License: https://www.pysnmp.com/pysnmp/license.html
 #
 # Copyright (C) 2014, Zebra Technologies
 # Authors: Matt Hooks <me@matthooks.com>
 #          Zachary Lorusso <zlorusso@gmail.com>
+#
+# Copyright (C) 2024, LeXtudio Inc. <support@lextudio.com>
+#
+# License: https://www.pysnmp.com/pysnmp/license.html
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -31,7 +34,7 @@
 # THE POSSIBILITY OF SUCH DAMAGE.
 #
 import platform
-import sys
+from time import time
 import traceback
 
 import asyncio
@@ -59,11 +62,13 @@ class AsyncioDispatcher(AbstractTransportDispatcher):
     async def handle_timeout(self):
         while True:
             await asyncio.sleep(self.getTimerResolution())
-            self.handleTimerTick(self.loop.time())
+            self.handleTimerTick(time())
 
     def runDispatcher(self, timeout=0.0):
         if not self.loop.is_running():
             try:
+                if timeout > 0:
+                    self.loop.call_later(timeout, self.closeDispatcher)
                 self.loop.run_forever()
 
             except KeyboardInterrupt:
@@ -71,6 +76,10 @@ class AsyncioDispatcher(AbstractTransportDispatcher):
 
             except Exception:
                 raise PySnmpError(';'.join(traceback.format_exception(*sys.exc_info())))
+    
+    def closeDispatcher(self):
+        self.loop.stop()
+        super().closeDispatcher()
 
     def registerTransport(self, tDomain, transport):
         if self.loopingcall is None and self.getTimerResolution() > 0:

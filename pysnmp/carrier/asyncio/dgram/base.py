@@ -2,11 +2,14 @@
 # This file is part of pysnmp software.
 #
 # Copyright (c) 2005-2020, Ilya Etingof <etingof@gmail.com>
-# License: https://www.pysnmp.com/pysnmp/license.html
 #
 # Copyright (C) 2014, Zebra Technologies
 # Authors: Matt Hooks <me@matthooks.com>
 #          Zachary Lorusso <zlorusso@gmail.com>
+#
+# Copyright (C) 2024, LeXtudio Inc. <support@lextudio.com>
+#
+# License: https://www.pysnmp.com/pysnmp/license.html
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -89,10 +92,10 @@ class DgramAsyncioProtocol(asyncio.DatagramProtocol, AbstractAsyncioTransport):
 
     # AbstractAsyncioTransport API
 
-    def openClientMode(self, iface=None):
+    def openClientMode(self, iface=None, allow_broadcast=False):
         try:
             c = self.loop.create_datagram_endpoint(
-                lambda: self, local_addr=iface, family=self.SOCK_FAMILY
+                lambda: self, local_addr=iface, family=self.SOCK_FAMILY, allow_broadcast=allow_broadcast
             )
 
             # Avoid deprecation warning for asyncio.async()

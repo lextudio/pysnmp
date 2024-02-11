@@ -1,30 +1,28 @@
 """
-Multiple SNMP USM users
+Specific SNMP Engine ID
 +++++++++++++++++++++++
 
 Listen and respond to SNMP GET/SET/GETNEXT/GETBULK queries with
 the following options:
 
 * SNMPv3
-* with USM user 'usr-md5-des', auth: MD5, priv DES or
-  with USM user 'usr-sha-none', auth: SHA, no privacy
-  with USM user 'usr-sha-aes128', auth: SHA, priv AES
+* with SNMP EngineID: 8000000004030201
+* with USM user 'usr-md5-des', auth: MD5, priv DES
 * allow access to SNMPv2-MIB objects (1.3.6.1.2.1)
 * over IPv4/UDP, listening at 127.0.0.1:161
 
-Either of the following Net-SNMP commands will walk this Agent:
+The following Net-SNMP command will walk this Agent:
 
-| $ snmpwalk -v3 -u usr-md5-des -l authPriv -A authkey1 -X privkey1 localhost .1.3.6
-| $ snmpwalk -v3 -u usr-sha-none -l authNoPriv -a SHA -A authkey1 localhost .1.3.6
-| $ snmpwalk -v3 -u usr-sha-aes128 -l authPriv -a SHA -A authkey1 -x AES -X privkey1 localhost .1.3.6
+| $ snmpwalk -v3 -u usr-md5-des -l authPriv -A authkey1 -X privkey1 -e 8000000004030201 localhost .1.3.6
 
 """#
 from pysnmp.entity import engine, config
 from pysnmp.entity.rfc3413 import cmdrsp, context
 from pysnmp.carrier.asyncio.dgram import udp
+from pysnmp.proto import rfc1902
 
 # Create SNMP engine
-snmpEngine = engine.SnmpEngine()
+snmpEngine = engine.SnmpEngine(rfc1902.OctetString(hexValue='8000000004030201'))
 
 # Transport setup
 
@@ -44,26 +42,8 @@ config.addV3User(
     config.USM_PRIV_CBC56_DES, 'privkey1'
 )
 
-# user: usr-sha-none, auth: SHA, priv NONE
-config.addV3User(
-    snmpEngine, 'usr-sha-none',
-    config.USM_AUTH_HMAC96_SHA, 'authkey1'
-)
-
-# user: usr-sha-none, auth: SHA, priv AES
-config.addV3User(
-    snmpEngine, 'usr-sha-aes128',
-    config.USM_AUTH_HMAC96_SHA, 'authkey1',
-    config.USM_PRIV_CFB128_AES, 'privkey1'
-)
-
 # Allow full MIB access for each user at VACM
-config.addVacmUser(snmpEngine, 3, 'usr-md5-des', 'authPriv',
-                   (1, 3, 6, 1, 2, 1), (1, 3, 6, 1, 2, 1))
-config.addVacmUser(snmpEngine, 3, 'usr-sha-none', 'authNoPriv',
-                   (1, 3, 6, 1, 2, 1), (1, 3, 6, 1, 2, 1))
-config.addVacmUser(snmpEngine, 3, 'usr-sha-aes128', 'authPriv',
-                   (1, 3, 6, 1, 2, 1), (1, 3, 6, 1, 2, 1))
+config.addVacmUser(snmpEngine, 3, 'usr-md5-des', 'authPriv', (1, 3, 6, 1, 2, 1), (1, 3, 6, 1, 2, 1))
 
 # Get default SNMP context this SNMP engine serves
 snmpContext = context.SnmpContext(snmpEngine)
@@ -80,6 +60,6 @@ snmpEngine.transportDispatcher.jobStarted(1)
 # Run I/O dispatcher which would receive queries and send responses
 try:
     snmpEngine.transportDispatcher.runDispatcher()
-except:
+
+finally:
     snmpEngine.transportDispatcher.closeDispatcher()
-    raise
