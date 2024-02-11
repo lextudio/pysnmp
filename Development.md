@@ -1,5 +1,13 @@
 # Commands for Development
 
+## Initialize Poetry
+
+```bash
+poetry init
+poetry add --group dev pre-commit=2.21.0
+poetry run pre-commit install
+```
+
 ## Change Poetry Venv Python Version
 
 ```bash
