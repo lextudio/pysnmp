@@ -1,56 +1,128 @@
 
-Quick start
+Quick Start
 ===========
 
 .. toctree::
    :maxdepth: 2
 
-Once you downloaded and installed PySNMP library on your Linux/Windows/macOS
-system, you should be able to solve the very basic SNMP task right from 
-your Python prompt - fetch some data from a remote SNMP Agent (you'd need 
-at least version 4.3.0 to run code from this page).
+Once you decide to test out PySNMP library on your Linux/Windows/macOS
+system, you should start to prepare a test field folder and configure the
+Python environment.
+
+Set Up Test Field Folder
+------------------------
+First, it is recommended that you use `pyenv`_ to manage different Python
+versions on this machine. If you are using Windows, you can use `pyenv-win`_.
+
+Next, we assume you are now on macOS/Linux, and the following commands
+initialize a folder for us,
+
+.. code-block:: bash
+
+   cd ~
+   mkdir test-field
+   cd test-field
+   pyenv local 3.12
+   pip install pipenv
+   pipenv install pysnmp-lextudio
+   pipenv run pip list
+
+Here we created a virtual environment using ``pipenv`` for this folder, and
+installed ``pysnmp-lextudio`` so that you can move on with the following
+sections.
+
+The final command should print out the dependencies and you should be able to
+see ``pysnmp-lextudio`` version 5.0+ there.
+
+.. note::
+
+   If you haven't installed Python 3.12 with ``pyenv``, you should execute
+   ``pyenv install 3.12``.
+
+   To delete the virtual environment for this folder, you can use
+
+   .. code-block:: bash
+
+      pipenv --rm
+
+   It is common that you use another virtual environment tool, such as venv,
+   poetry, or conda. Just make sure you use the equivalent commands to set up the
+   virtual environment for testing.
+
+   It is highly recommended that you use a Python virtual environment, as it
+   makes dependency management and troubleshooting much easier.
 
 Fetch SNMP variable
 -------------------
 
-So just cut&paste the following code right into your Python prompt. The 
-code will performs SNMP GET operation for a sysDescr.0 object at a 
-publically available SNMP Command Responder at
-`demo.pysnmp.com <https://www.pysnmp.com/snmpsim/public-snmp-simulator.html>`_:
+Next, let's write some test script and play with PySNMP manager side operations.
 
-.. literalinclude:: /../../examples/hlapi/asyncio/manager/cmdgen/v1-get.py
-   :start-after: """#
-   :language: python
+#. Create a Python script in the test field folder, such as ``v1-get.py``.
+#. Cut and paste the following contents below into this file,
 
-:download:`Download</../../examples/hlapi/asyncio/manager/cmdgen/v1-get.py>` script.
+   .. literalinclude:: /../../examples/hlapi/asyncio/manager/cmdgen/v1-get.py
+      :start-after: """#
+      :language: python
 
-If everything works as it should you will get:
+   :download:`Download</../../examples/hlapi/asyncio/manager/cmdgen/v1-get.py>` script.
 
-.. code-block:: python
+#. Execute this script.
 
-   ...
-   SNMPv2-MIB::sysDescr."0" = SunOS zeus.pysnmp.com 4.1.3_U1 1 sun4m
-   >>> 
+   .. code-block:: bash
 
-on your console.
+      pipenv run python v1-get.py
+
+   If everything works as it should you will get the following on your console:
+
+   .. code-block:: python
+
+      ...
+      SNMPv2-MIB::sysDescr."0" = SunOS zeus.pysnmp.com 4.1.3_U1 1 sun4m
+      >>>
+
+Here you can see SNMP v1 GET operation can be easily done with the
+:py:class:`~pysnmp.hlapi.asyncio.Slim` class. Other operations in SNMP v1 and
+v2c can be done in similar manner. To execute SNMP v3 operations, however,
+requires more complex code.
+
+The test agent we use is hosted at `demo.pysnmp.com`.
 
 Send SNMP TRAP
 --------------
 
-To send a trivial TRAP message to our hosted Notification Receiver at
-`demo.pysnmp.com <https://www.pysnmp.com/snmpsim/public-snmp-simulator.html>`_
-, just cut&paste the following code into your interactive Python session:
+Similarly we can perform agent side operations with PySNMP.
 
-.. literalinclude:: /../../examples/hlapi/asyncio/agent/ntforg/default-v1-trap.py
-   :start-after: """#
-   :language: python
+#. Create a script file ``default-v1-trap.py``.
+#. Cut and paste the following contents below into this file,
 
-:download:`Download</../../examples/hlapi/asyncio/agent/ntforg/default-v1-trap.py>` script.
+   .. literalinclude:: /../../examples/hlapi/asyncio/agent/ntforg/default-v1-trap.py
+      :start-after: """#
+      :language: python
+
+   :download:`Download</../../examples/hlapi/asyncio/agent/ntforg/default-v1-trap.py>` script.
+
+#. Execute this script.
+
+   .. code-block:: bash
+
+      pipenv run python default-v1-trap.py
+
+Because this sends out an SNMP v1 TRAP message, we know that no response will be
+received.
+
+The notification receiver the receives this message is hosted at `demo.pysnmp.com`.
+
+More Information
+----------------
+
+For more sophisticated examples and use cases please refer to
+:doc:`examples <examples/index>` and :doc:`library reference <docs/api-reference>`
+pages.
 
 Many ASN.1 MIB files could be downloaded from
 `mibs.pysnmp.com <https://github.com/lextudio/mibs.snmplabs.com/tree/master/asn1>`_ or PySNMP could
 be :doc:`configured <docs/api-reference>` to download them automatically.
 
-For more sophisticated examples and use cases please refer to
-:doc:`examples <examples/index>` and :doc:`library reference <docs/api-reference>`
-pages.
+.. _demo.pysnmp.com: https://www.pysnmp.com/snmp-simulation-service#
+.. _pyenv: https://github.com/pyenv/pyenv
+.. _pyenv-win: https://github.com/pyenv-win/pyenv-win

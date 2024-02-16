@@ -1,5 +1,5 @@
 
-SNMP library for Python
+SNMP Library for Python
 =======================
 
 .. toctree::
@@ -7,21 +7,21 @@ SNMP library for Python
 
 PySNMP is a cross-platform, pure-`Python <http://www.python.org/>`_
 `SNMP <http://en.wikipedia.org/wiki/Simple_Network_Management_Protocol>`_
-engine implementation. It features fully-functional SNMP engine capable 
-to act in Agent/Manager/Proxy roles, talking SNMP v1/v2c/v3 protocol 
+engine implementation. It features fully-functional SNMP engine capable
+to act in Agent/Manager/Proxy roles, talking SNMP v1/v2c/v3 protocol
 versions over IPv4/IPv6 and other network transports.
 
 Despite its name, SNMP is not really a simple protocol. For instance its
-third version introduces complex and open-ended security framework, 
-multilingual capabilities, remote configuration and other features. 
-PySNMP implementation closely follows intricate system details and features 
+third version introduces complex and open-ended security framework,
+multilingual capabilities, remote configuration and other features.
+PySNMP implementation closely follows intricate system details and features
 bringing most possible power and flexibility to its users.
 
-Current PySNMP stable version is 5.0. It runs with Python 3.7+
+Current PySNMP stable version is 5.0. It runs with Python 3.8+
 and is recommended for new applications as well as for migration from
-older, now obsolete, PySNMP releases. All site documentation and 
+older, now obsolete, PySNMP releases. All site documentation and
 examples are written for the 5.0 and later versions in mind.
-Older materials are still available under the obsolete section.
+Older materials have been removed.
 
 Besides the libraries, a set of pure-Python 
 `command-line tools <https://pypi.org/project/snmpclitools/>`_
@@ -30,11 +30,11 @@ and behaviour of popular Net-SNMP snmpget/snmpset/snmpwalk utilities.
 They may be useful in a cross-platform situations as well as a testing
 and prototyping instrument for pysnmp users.
 
-PySNMP software is free and open-source. Source code is hosted in 
+PySNMP software is free and open-source. Source code is hosted in
 a `Github repo <https://github.com/lextudio/pysnmp>`_.
 The library is being distributed under 2-clause BSD-style license.
 
-PySNMP library development has been initially sponsored 
+PySNMP library development has been initially sponsored
 by a `PSF <http://www.python.org/psf/>`_ grant.
 
 Quick start
@@ -46,7 +46,7 @@ this implementation? Try out quick start page!
 .. toctree::
    :maxdepth: 2
 
-   /pysnmp-website <https://pysnmp.com>
+   Return to PySNMP Homepage <https://pysnmp.com>
    /quick-start
 
 Documentation
@@ -74,8 +74,8 @@ Best way is usually to
 .. code-block:: bash
 
    # pip install pysnmp-lextudio
-   
-If that does not work for you for some reason, you might need to read the 
+
+If that does not work for you for some reason, you might need to read the
 following page.
 
 .. toctree::

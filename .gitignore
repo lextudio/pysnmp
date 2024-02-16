@@ -27,3 +27,5 @@ venv*
 # Pyenv
 .python-version
 .env
+.coverage
+junit/test-results.xml
