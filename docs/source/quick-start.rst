@@ -1,3 +1,4 @@
+.. include:: /includes/_links.rst
 
 Quick Start
 ===========
@@ -72,7 +73,8 @@ Next, let's write some test script and play with PySNMP manager side operations.
 
       pipenv run python v1-get.py
 
-   If everything works as it should you will get the following on your console:
+   If everything works as it should you will get the following on your
+   console:
 
    .. code-block:: python
 
@@ -81,11 +83,11 @@ Next, let's write some test script and play with PySNMP manager side operations.
       >>>
 
 Here you can see SNMP v1 GET operation can be easily done with the
-:py:class:`~pysnmp.hlapi.asyncio.Slim` class. Other operations in SNMP v1 and
-v2c can be done in similar manner. To execute SNMP v3 operations, however,
-requires more complex code.
+:py:class:`~pysnmp.hlapi.asyncio.Slim` class. Other operations in SNMP v1
+and v2c can be done in similar manner. To execute SNMP v3 operations,
+however, requires more complex code.
 
-The test agent we use is hosted at `demo.pysnmp.com`.
+The test agent we use is hosted at `demo.pysnmp.com`_.
 
 Send SNMP TRAP
 --------------
@@ -110,19 +112,12 @@ Similarly we can perform agent side operations with PySNMP.
 Because this sends out an SNMP v1 TRAP message, we know that no response will be
 received.
 
-The notification receiver the receives this message is hosted at `demo.pysnmp.com`.
+The notification receiver the receives this message is hosted at
+`demo.pysnmp.com`_.
 
-More Information
-----------------
+References
+----------
 
-For more sophisticated examples and use cases please refer to
-:doc:`examples <examples/index>` and :doc:`library reference <docs/api-reference>`
-pages.
-
-Many ASN.1 MIB files could be downloaded from
-`mibs.pysnmp.com <https://github.com/lextudio/mibs.snmplabs.com/tree/master/asn1>`_ or PySNMP could
-be :doc:`configured <docs/api-reference>` to download them automatically.
-
-.. _demo.pysnmp.com: https://www.pysnmp.com/snmp-simulation-service#
-.. _pyenv: https://github.com/pyenv/pyenv
-.. _pyenv-win: https://github.com/pyenv-win/pyenv-win
+- :doc:`/examples/index`
+- :doc:`/troubleshooting`
+- :doc:`/docs/api-reference`

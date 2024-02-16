@@ -1,14 +1,18 @@
 
-Library reference
-=================
+API References
+==============
 
 .. toctree::
    :maxdepth: 3
 
-Dealing with many SNMP features may quickly overwhelm developers who aim at a 
-quick and trivial task, PySNMP employs a layered architecture approach
-where the topmost programming API tries to be as simple as possible 
-to allow immediate solutions for most common use cases. 
+Dealing with many SNMP features may quickly overwhelm developers who aim at
+a quick and trivial task, PySNMP employs a layered architecture approach
+where the topmost programming API tries to be as simple as possible
+to allow immediate solutions for most common use cases.
+
+It will let you perform SNMP GET/SET/WALK and TRAP/INFORM operations by
+pasting code snippets from PySNMP documentation and sample scripts right
+into your Python interactive session.
 
 Most of SNMP operations involve packet exchange over network. PySNMP
 is shipped with a set of bindings to popular asynchronous Python I/O
@@ -80,8 +84,13 @@ Notification Originator
 
    /docs/hlapi/v3arch/asyncio/agent/ntforg/notification 
 
-Transport configuration
+Transport Configuration
 +++++++++++++++++++++++
+
+The following shortcut classes convey configuration information to
+SNMP engine's Local Configuration Datastore (:RFC:`2271#section-3.4.2`)
+as well as to underlying socket API. Once committed to LCD, SNMP engine
+saves its configuration for the lifetime of SNMP engine object.
 
 .. toctree::
    :maxdepth: 2
@@ -114,7 +123,7 @@ Local Configuration Datastore (:RFC:`2271#section-3.4.2`).
 Once committed to LCD, SNMP engine saves its configuration for
 the lifetime of SNMP engine object.
 
-Community-based
+Community-Based
 +++++++++++++++
 
 Security Parameters object is Security Model specific. The
@@ -126,7 +135,7 @@ class is used for configuring Community-Based Security Model of SNMPv1/SNMPv2c.
 
 .. autoclass:: pysnmp.hlapi.v3arch.CommunityData(communityIndex, communityName=None, mpModel=1, contextEngineId=None, contextName='', tag='')
 
-User-based
+User-Based
 ++++++++++
 
 The :py:class:`~pysnmp.hlapi.v3arch.UsmUserData` class provides SNMPv3 User-Based
@@ -308,7 +317,7 @@ class is used for configuring Community-Based Security Model of SNMPv1/SNMPv2c.
 
 .. _mib-services:
 
-MIB services
+MIB Services
 ------------
 
 .. _mib-variables:
@@ -316,7 +325,7 @@ MIB services
 MIB Variables
 +++++++++++++
 
-SNMP MIB variable is identified by an OBJECT IDENTIFIER (OID) and is 
+SNMP MIB variable is identified by an OBJECT IDENTIFIER (OID) and is
 accompanied by a value belonging to one of SNMP types (:RFC:`1902#section-2`).
 This pair is collectively called a variable-binding in SNMP parlance.
 
@@ -334,13 +343,13 @@ MACRO definitions.
 
 .. _notification-types:
 
-MIB notification types
+MIB Notification Types
 ++++++++++++++++++++++
 
 SNMP Notifications are enumerated and imply including certain
 set of MIB variables.
 Notification Originator applications refer to MIBs for MIB notifications
-through *NOTIFICATION-TYPE* ASN.1 macro. It conveys a set of MIB variables to 
+through *NOTIFICATION-TYPE* ASN.1 macro. It conveys a set of MIB variables to
 be gathered and reported in SNMP Notification. The
 :py:mod:`~pysnmp.smi.rfc1902` module implements :RFC:`1902#section-2`
 macro definitions.
@@ -353,13 +362,13 @@ macro definitions.
 
 .. _snmp-types:
 
-SNMP base types
+SNMP Base Types
 ---------------
 
 SNMP represents real-world objects it serves along with their
 states in form of values. Those values each belong to one
 of SNMP types (:RFC:`1902#section-2`) which, in turn, are based
-on `ASN.1 <https://en.wikipedia.org/wiki/Abstract_Syntax_Notation_One>`_ 
+on `ASN.1 <https://en.wikipedia.org/wiki/Abstract_Syntax_Notation_One>`_
 data description language. PySNMP types are derived from
 `Python ASN.1 types <https://pyasn1.readthedocs.io/>`_ implementation.
 
@@ -368,7 +377,7 @@ data description language. PySNMP types are derived from
 
 .. _null:
 
-Null type
+Null Type
 +++++++++
 
 .. autoclass:: pysnmp.proto.rfc1902.Null(initializer)
@@ -382,7 +391,7 @@ Null type
 
 .. _integer32:
 
-Integer32 type
+Integer32 Type
 ++++++++++++++
 
 .. autoclass:: pysnmp.proto.rfc1902.Integer32(initializer)
@@ -390,7 +399,7 @@ Integer32 type
 
 .. _integer:
 
-Integer type
+Integer Type
 ++++++++++++
 
 .. autoclass:: pysnmp.proto.rfc1902.Integer(initializer)
@@ -398,7 +407,7 @@ Integer type
 
 .. _octetstring:
 
-OctetString type
+OctetString Type
 ++++++++++++++++
 
 .. autoclass:: pysnmp.proto.rfc1902.OctetString(strValue=None, hexValue=None)
@@ -406,47 +415,47 @@ OctetString type
 
 .. _ipaddress:
 
-IpAddress type
+IpAddress Type
 ++++++++++++++
 
 .. autoclass:: pysnmp.proto.rfc1902.IpAddress(strValue=None, hexValue=None)
 
-ObjectIdentifier type
+ObjectIdentifier Type
 +++++++++++++++++++++
 
 .. autoclass:: pysnmp.proto.rfc1902.ObjectIdentifier(initializer)
 
-Counter32 type
+Counter32 Type
 ++++++++++++++
 
 .. autoclass:: pysnmp.proto.rfc1902.Counter32(initializer)
 
-Gauge32 type
+Gauge32 Type
 ++++++++++++
 
 .. autoclass:: pysnmp.proto.rfc1902.Gauge32(initializer)
 
-Unsigned32 type
+Unsigned32 Type
 +++++++++++++++
 
 .. autoclass:: pysnmp.proto.rfc1902.Unsigned32(initializer)
 
-TimeTicks type
+TimeTicks Type
 ++++++++++++++
 
 .. autoclass:: pysnmp.proto.rfc1902.TimeTicks(initializer)
 
-Opaque type
+Opaque Type
 +++++++++++
 
 .. autoclass:: pysnmp.proto.rfc1902.Opaque(initializer)
 
-Counter64 type
+Counter64 Type
 ++++++++++++++
 
 .. autoclass:: pysnmp.proto.rfc1902.Counter64(initializer)
 
-Bits type
+Bits Type
 +++++++++
 
 .. autoclass:: pysnmp.proto.rfc1902.Bits(initializer)

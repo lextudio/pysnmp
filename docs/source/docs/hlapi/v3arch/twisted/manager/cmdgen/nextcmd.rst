@@ -1,5 +1,5 @@
 
-GETNEXT command
+GETNEXT Command
 ===============
 
 .. toctree::

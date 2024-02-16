@@ -2,7 +2,7 @@
 .. toctree::
    :maxdepth: 2
 
-SNMP history
+SNMP History
 ============
 
 In the early days of networking, when computer networks were research
@@ -21,7 +21,7 @@ post-mortem investigation could be read between the lines.  As the
 public Internet and private intranets have grown from small networks
 into a large global infrastructure, the need to more systematically
 manage the huge number of hardware and software components within
-these networks has grown more important as well.   
+these networks has grown more important as well.
 
 SNMP was quickly designed and deployed by a group of university
 network researchers and users at a time when the need for network
@@ -50,7 +50,7 @@ designated SNMPv3 a full Internet standard, the highest maturity level
 for an RFC. In practice, SNMP implementations often support multiple
 versions: typically SNMPv1, SNMPv2c, and SNMPv3
 
-Is it still relevant?
+Is It Still Relevant?
 ---------------------
 
 Considering how old SNMP is you might be wondering why it is still in
@@ -82,10 +82,10 @@ ad-hoc management system. That can be done very easily on top of
 HTTPS/JSON, for example. However that would only work with your
 application. Also, SSL engine might be heavier on resources.
 
-Current and future uses
------------------------
+Current and Future Use
+----------------------
 
-As for current SNMP deployment, its virtually impossible to estimate 
+As for current SNMP deployment, its virtually impossible to estimate
 how many SNMP-enabled devices run on the modern Internet today.
 For example, every home router and most of the desktop printers have
 embedded SNMP agent inside.

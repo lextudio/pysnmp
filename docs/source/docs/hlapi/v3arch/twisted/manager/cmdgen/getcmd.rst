@@ -1,5 +1,5 @@
 
-GET command
+GET Command
 ===========
 
 .. toctree::

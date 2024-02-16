@@ -1,5 +1,5 @@
 
-SET command
+SET Command
 ===========
 
 .. toctree::

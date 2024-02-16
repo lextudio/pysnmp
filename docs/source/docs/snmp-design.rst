@@ -2,14 +2,14 @@
 .. toctree::
    :maxdepth: 2
 
-SNMP design
+SNMP Design
 ===========
 
 Contrary to what the name might suggest, SNMP is much more than just
 a protocol for moving management data. Over time it has grown to be
 more complex than its initial designers probably planned it.
 
-Terminology and entities
+Terminology and Entities
 ------------------------
 
 The network management field has its own specific terminology for
@@ -24,7 +24,7 @@ management protocol.
 .. image:: nms-components.svg
 
 * The managing entity is an application running in a centralized
-  network management station (NMS).  It is the managing entity 
+  network management station (NMS).  It is the managing entity
   that controls the collection, processing, analysis, and/or display
   of network management information.  It is here that actions are
   initiated to control network behavior and here that the human network
@@ -42,14 +42,14 @@ management protocol.
   status of managed entity and make the latter carrying out actions
   via its agents.
 
-Structure and components
+Structure and Components
 ------------------------
 
 SNMP consists of four parts:
 
-* Definitions of network management objects known as MIB objects. 
+* Definitions of network management objects known as MIB objects.
   Management information is represented as a collection of managed
-  objects that together form a virtual information store, known as 
+  objects that together form a virtual information store, known as
   the Management Information Base (MIB). A MIB object might be a counter,
   descriptive information such as software version; status
   information such as whether or not a device is healthy, or
@@ -60,19 +60,19 @@ SNMP consists of four parts:
 * Data definition language, called SMI (Structure of Management
   Information) that introduces base data types, allows for creating
   their subtypes and more complex data structures. MIB objects are
-  expressed in this data definition language. 
+  expressed in this data definition language.
 
 * Protocol (SNMP) for conveying information and commands between a managing
   and managed entities. SNMP is designed around a client-server model.
   What's interesting that both managing and managed entities contain client
   and server components.
-      
+
 * Extensible security framework and system administration capabilities.
 
 The latter features were completely absent in SNMP versions prior to
 SNMPv3.
 
-Data types
+Data Types
 ----------
 
 SMI introduces eleven base data types used for representing managed
@@ -101,7 +101,7 @@ into ordered arrays. From these arrays 2-d tables could be built.
 PySNMP relies on the `PyASN1 <https://pyasn1.readthedocs.io/>`_ package for
 modeling all SNMP types.  With PyASN1, instances of ASN.1 types are
 represented by Python objects that look like either a string or an
-integer. 
+integer.
 
 We can convert PyASN1 objects into Python types and back. PyASN1
 objects can participate in basic arithmetic operations (numbers)
@@ -126,7 +126,7 @@ when passing data to or receiving data from PySNMP.
 
 The one data type we will discuss in more detail shortly is the OBJECT
 IDENTIFIER data type, which is used to name an object.  With this
-system, objects are identified in a hierarchical manner. 
+system, objects are identified in a hierarchical manner.
 
 Object Identifier
 +++++++++++++++++
@@ -178,7 +178,7 @@ or split apart. Subscription operation returns a numeric sub-OID.
     ...
     TypeError: object does not support item assignment
 
-Collections of objects
+Collections of Objects
 ----------------------
 
 Management Information Base (MIB) can be thought of as a formal
@@ -232,7 +232,7 @@ it is handled by PySNMP sister project called
 `PySMI <https://www.pysnmp.com/pysmi/>`_. However you can also perform said
 conversion by hand with PySMI's *mibdump.py* tool.
 
-Protocol operations
+Protocol Operations
 -------------------
 
 SNMP is designed around a client-server model. Both managing and
@@ -269,7 +269,7 @@ either managing or managed entities (Manager or Agent repectively).
 
   + SNMPv2-Trap, Response
 
-Core applications
+Core Applications
 -----------------
 
 The standard (:RFC:`3413`) identifies a few "standard" SNMP applications
@@ -282,4 +282,3 @@ API*) carefully following RFCs and their abstract service
 interfaces. The backside of this approach is that it's way too
 detailed and verbose for most SNMP tasks. To make SNMP easy to use,
 PySNMP introduces *High-level SNMP API*.
-

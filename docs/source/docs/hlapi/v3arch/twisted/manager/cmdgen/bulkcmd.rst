@@ -1,5 +1,5 @@
 
-GETBULK command
+GETBULK Command
 ===============
 
 .. toctree::

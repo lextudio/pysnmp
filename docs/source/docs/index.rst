@@ -9,4 +9,4 @@ Overview
    /docs/snmp-design
    /docs/pysnmp-architecture
    /docs/pysnmp-hlapi-tutorial
-
+   /docs/api-reference

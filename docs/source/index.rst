@@ -1,3 +1,4 @@
+.. include:: /includes/_links.rst
 
 SNMP Library for Python
 =======================
@@ -26,7 +27,7 @@ Older materials have been removed.
 Besides the libraries, a set of pure-Python 
 `command-line tools <https://pypi.org/project/snmpclitools/>`_
 are shipped along with the system. Those tools mimic the interface
-and behaviour of popular Net-SNMP snmpget/snmpset/snmpwalk utilities.
+and behavior of popular Net-SNMP snmpget/snmpset/snmpwalk utilities.
 They may be useful in a cross-platform situations as well as a testing
 and prototyping instrument for pysnmp users.
 
@@ -52,22 +53,35 @@ this implementation? Try out quick start page!
 Documentation
 -------------
 
+You can find conceptual and API documentation in the following section.
+
 .. toctree::
    :maxdepth: 2
 
-   /docs/tutorial
-   /docs/api-reference
+   /docs/index
 
-Examples
---------
+Samples
+-------
+
+We have a collection of sample scripts to help you get started with PySNMP.
 
 .. toctree::
    :maxdepth: 2
 
    /examples/index
 
-Download
---------
+Troubleshooting
+---------------
+
+If you are having trouble with PySNMP, please check the following section.
+
+.. toctree::
+   :maxdepth: 2
+
+   /troubleshooting
+
+Downloads
+---------
 
 Best way is usually to
 
@@ -99,20 +113,18 @@ FAQ
 
    /faq
 
-Further development
+Further Development
 -------------------
 
 We fanatically document all fixes, changes and new features in changelog.
-There you could also download the latest unreleased pysnmp tarball
-containing the latest fixes and improvements.
 
 .. toctree::
    :maxdepth: 1
 
    /changelog
 
-Our development plans and new features we consider for eventual implementation
-are collected in the following section.
+Our development plans and new features we consider for eventual
+implementation are collected in the following section.
 
 .. toctree::
    :maxdepth: 2
@@ -122,6 +134,8 @@ are collected in the following section.
 Contact
 -------
 
-In case of questions or troubles using PySNMP, please open up an
-`issue <https://github.com/lextudio/pysnmp/issues>`_ at GitHub or ask at
-`Stack Overflow <http://stackoverflow.com/questions/tagged/pysnmp>`_ .
+In case of questions or troubles using PySNMP, please open up a
+new `GitHub issue`_ or ask on
+`Stack Overflow`_.
+
+For other inquiries, please contact `LeXtudio Inc.`_.

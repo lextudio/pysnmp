@@ -2,7 +2,7 @@
 .. toctree::
    :maxdepth: 2
 
-PySNMP architecture
+PySNMP Architecture
 ===================
 
 We can look at PySNMP's internal structure from the view point of
@@ -96,4 +96,3 @@ all these PySNMP components. However implementing SNMP Agents, Proxies
 and some non-trivial features of managers require using the Standard
 Applications API. In those cases general understanding of SNMP
 operations and SNMP Engine components would be helpful.
-

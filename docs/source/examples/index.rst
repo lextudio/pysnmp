@@ -1,6 +1,7 @@
- 
-Example scripts
-===============
+.. include:: /includes/_links.rst
+
+Samples
+=======
 
 .. toctree::
    :maxdepth: 2
@@ -26,8 +27,8 @@ and others) -- SNMPv3 architecture.
    new amendments to the SNMP protocol may come up in the future, they
    will be implemented within the v3 model.
 
-High-level SNMP
----------------
+High-Level API
+--------------
 
 The high-level API (`hlapi`) is designed to be simple, concise and
 suitable for the most typical client-side operations. For that matter,
@@ -72,35 +73,44 @@ The v1 architecture
 Low-level v3 architecture
 -------------------------
 
-Complete implementation of all official Standard SNMP Applications. It 
+Complete implementation of all official Standard SNMP Applications. It
 should let you implement any SNMP operation defined in the standard
 at the cost of working at a somewhat low level.
 
-This API also comes in several transport varieties depending on I/O
-framework being used.
+This API also used to come in several transport varieties depending on I/O
+framework being used. But now only asyncio based API is supported.
 
 .. toctree::
    :maxdepth: 2
 
    /examples/v3arch/asyncio/index
-   
-Packet-level SNMP
+
+.. note::
+
+   It is recommended that you move away from other APIs such as asyncore
+   based ones, as they are not maintained and will be removed in future.
+
+Packet Level SNMP
 -----------------
 
-In cases where performance is your top priority and you only need to 
-work with SNMP v1 and v2c systems and you do not mind writing much 
-more code, then there is a low-level API to SNMP v1/v2c PDU and 
-PySNMP I/O engine. There's practically no SNMP engine or SMI 
-infrastructure involved in the operations of these almost wire-level 
+In cases where performance is your top priority and you only need to
+work with SNMP v1 and v2c systems and you do not mind writing much
+more code, then there is a low-level API to SNMP v1/v2c PDU and
+PySNMP I/O engine. There's practically no SNMP engine or SMI
+infrastructure involved in the operations of these almost wire-level
 interfaces. Although MIB services can still be used separately.
 
-A packet-level API-based application typically manages both SNMP 
-message building/parsing and network communication via one or more 
-transports. It's fully up to the application to handle failures on 
+A packet-level API-based application typically manages both SNMP
+message building/parsing and network communication via one or more
+transports. It's fully up to the application to handle failures on
 message and transport levels.
 
 Command Generator
 +++++++++++++++++
+
+If you are developing an SNMP manager application, you will most likely
+want to study the following examples and learn how to send out SNMP
+requests.
 
 .. toctree::
 
@@ -112,12 +122,18 @@ Command Generator
 Command Responder
 +++++++++++++++++
 
+If you are developing an SNMP agent application, you will most likely want
+to study the following examples and learn how to respond to SNMP requests.
+
 .. toctree::
 
    /examples/v1arch/asyncio/agent/cmdrsp/agent-side-mib-implementations
 
 Notification Originator
 +++++++++++++++++++++++
+
+These examples demonstrate how to send SNMP notifications, usually from an
+SNMP agent application.
 
 .. toctree::
 
@@ -126,12 +142,18 @@ Notification Originator
 Notification Receiver
 +++++++++++++++++++++
 
+These examples demonstrate how to receive SNMP notifications, usually in an
+SNMP manager application.
+
 .. toctree::
 
    /examples/v1arch/asyncio/manager/ntfrcv/transport-tweaks
 
-Low-level SMI/MIB
------------------
+Low Level MIB Access
+--------------------
+
+Accessing MIB objects is a common task in SNMP applications, so the
+following examples demonstrate how to do that.
 
 .. toctree::
 
@@ -141,50 +163,27 @@ Low-level SMI/MIB
 Using these examples
 --------------------
 
-Before doing cut&paste of the code below into your Python interpreter, 
-make sure to install pysnmp and its dependencies by running pip or 
-easy_install: ::
+Before using the sample code, make sure ``pysnmp-lextudio`` and its
+dependencies are installed. You might refer to :doc:`/quick-start` for
+details.
 
-    # pip pysnmp
+Many sample scripts use the public, multilingual SNMP Command Responder and
+Notification Receiver configured at `demo.pysnmp.com`_, which enable you to
+run them in a cut&paste fashion.
 
-There's a public, multilingual SNMP Command Responder and Notification
-Receiver configured at
-`demo.pysnmp.com <https://www.pysnmp.com/snmpsim/public-snmp-simulator.html>`_ to let you run PySNMP examples scripts in a cut&paste fashion. If you
-wish to use your own SNMP Agent with these scripts, make sure to either
-configure your local snmpd and/or snmptrapd or use a valid address and
-SNMP credentials of your SNMP Agent in the examples to let them work.
+If you wish to use your own SNMP Agent with these scripts, make sure to
+either configure your local snmpd and/or snmptrapd, or use a valid address
+and SNMP credentials of your SNMP Agent in the examples to let them work.
 
 Should you want to use a MIB to make SNMP operations more human-friendly,
 you are welcome to search for it and possibly download one from our
-`public MIB repository <https://github.com/lextudio/mibs.snmplabs.com/tree/master/asn1>`_. Alternatively,
+public MIB repository `mibs.pysnmp.com`_. Alternatively,
 you can configure PySNMP to fetch and cache required MIBs from there
 automatically.
 
-If you find your PySNMP application behaving unexpectedly, try to enable 
-a /more or less verbose/ built-in PySNMP debugging by adding the 
-following snippet of code at the beginning of your application:
+References
+----------
 
-.. code-block:: python
-
-    from pysnmp import debug
-
-    # use specific flags or 'all' for full debugging
-    debug.setLogger(debug.Debug('dsp', 'msgproc', 'secmod'))
-
-Then run your app and watch stderr. The Debug initializer enables debugging 
-for a particular PySNMP subsystem, 'all' enables full debugging. More 
-specific flags are:
-
-* io
-* dsp
-* msgproc
-* secmod
-* mibbuild
-* mibview
-* mibinstrum
-* acl
-* proxy
-* app
-
-For more details on PySNMP programming model and interfaces, please 
-refer to :doc:`library documentation</docs/api-reference>`.
+- :doc:`/quick-start`
+- :doc:`/troubleshooting`
+- :doc:`/docs/api-reference`

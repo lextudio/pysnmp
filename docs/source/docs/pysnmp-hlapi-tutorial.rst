@@ -1,8 +1,9 @@
+.. include:: /includes/_links.rst
 
 .. toctree::
    :maxdepth: 2
 
-Common operations
+Common Operations
 =================
 
 In this tutorial we will gradually build and run a few different
@@ -29,7 +30,7 @@ SNMP engine has unique identifier that can be assigned automatically
 or administratively. This identifier is used in SNMP protocol
 operations.
 
-Making SNMP query
+Making SNMP Query
 -----------------
 
 We will send SNMP GET command to read a MIB object from SNMP agent.
@@ -46,7 +47,7 @@ corresponding functions.
    >>> getCmd
    <function getCmd at 0x222b330>
 
-Choosing SNMP protocol and credentials
+Choosing SNMP Protocol and Credentials
 --------------------------------------
 
 We have a choice of three SNMP protocol versions. To employ
@@ -95,17 +96,15 @@ insecure, it's still the most popular SNMP version in use.
    >>> g = getCmd(SnmpEngine(), CommunityData('public'),
    ...
 
-Setting transport and target
+Setting Transport and Target
 ----------------------------
 
 PySNMP supports UDP-over-IPv4 and UDP-over-IPv6 network transports.
-In this example we will query 
-`public SNMP Simulator <https://www.pysnmp.com/snmpsim/public-snmp-simulator.html>`_
-available over IPv4 on the Internet at *demo.pysnmp.com*. Transport
-configuration is passed to SNMP LCD in form of properly initialized
+In this example we will query public SNMP Simulator available over IPv4 on
+the Internet at `demo.pysnmp.com`_. Transport configuration is passed to
+SNMP LCD in form of properly initialized
 :py:class:`~pysnmp.hlapi.UdpTransportTarget` or
-:py:class:`~pysnmp.hlapi.Udp6TransportTarget` objects
-respectively.
+:py:class:`~pysnmp.hlapi.Udp6TransportTarget` objects respectively.
 
 .. code-block:: python
 
@@ -116,7 +115,7 @@ respectively.
    ...            UdpTransportTarget(('demo.pysnmp.com', 161)),
    ...
 
-Addressing SNMP context
+Addressing SNMP Context
 -----------------------
 
 SNMP context is a parameter in SNMP (v3) message header that
@@ -141,7 +140,7 @@ For this example we will use the 'empty' context (default).
    ...
 
 
-Specifying MIB object
+Specifying MIB Object
 ---------------------
 
 Finally, we have to specify the MIB object we want to read.
@@ -197,7 +196,7 @@ MIB resolution means the service of MIB object name into OID
 transformation or vice versa.
 
 The :py:class:`~pysnmp.smi.rfc1902.ObjectType` class instance
-represents *OBJECT-TYPE* SMI construct in PySNMP. ObjectType is a 
+represents *OBJECT-TYPE* SMI construct in PySNMP. ObjectType is a
 container object that references ObjectIdentity and SNMP
 type instances. As a Python object it looks like a tuple of
 (OID, value).
@@ -252,7 +251,7 @@ that you can use in your SNMP projects.
     to describe their SNMP services, and is the same format used by
     Perl's Net::SNMP and almost all SNMP tools.
 
-Reading scalar value
+Reading Scalar Value
 --------------------
 
 We are finally in a position to send SNMP query and hopefully receive
@@ -276,7 +275,7 @@ out, response is awaited, received and parsed.
    >>> next(g)
    (None, 0, 0, [ObjectType(ObjectIdentity('1.3.6.1.2.1.1.3.0'), TimeTicks(44430646))])
 
-Working with SNMP tables
+Working with SNMP Tables
 ------------------------
 
 SNMP defines a concept of table. Tables are used when a single given
@@ -374,7 +373,7 @@ Let's read TCP-MIB::tcpConnectionState object for a TCP connection:
    >>> next(g)
    (None, 0, 0, [ObjectType(ObjectIdentity(ObjectName('1.3.6.1.2.1.6.19.1.7.1.4.195.218.254.105.41511.1.4.194.67.1.250.993')), Integer(5))])
 
-SNMP command operations
+SNMP Command Operations
 -----------------------
 
 SNMP allows you to request a MIB object that is "next" to the given
@@ -483,7 +482,7 @@ function.
    >>> next(g)
    (None, 0, 0, [ObjectType(ObjectIdentity('1.3.6.1.2.1.1.1.0'), DisplayString('Linux i386'))])
 
-Sending SNMP notifications
+Sending SNMP Notifications
 --------------------------
 
 Managed entity could send unsolicited messages to the managing entity.
@@ -590,12 +589,12 @@ object OIDs to current values.
    ...                      NotificationType(ObjectIdentity('IF-MIB', 'linkUp'), instanceIndex=(123,), objects=mib)
    ... )
    >>> next(g)
-   (None, 0, 0, [ObjectType(ObjectIdentity('1.3.6.1.2.1.1.3.0'), TimeTicks(0)), ObjectType(ObjectIdentity('1.3.6.1.6.3.1.1.4.1.0'), ObjectIdentity('1.3.6.1.6.3.1.1.5.4')), ObjectType(ObjectName('1.3.6.1.2.1.2.2.1.1.123'), InterfaceIndex(123)), ObjectType(ObjectIdentity('1.3.6.1.2.1.2.2.1.7.123'), Integer(3)), ObjectType(ObjectIdentity('1.3.6.1.2.1.2.2.1.8.123'), Integer(1))]) 
+   (None, 0, 0, [ObjectType(ObjectIdentity('1.3.6.1.2.1.1.3.0'), TimeTicks(0)), ObjectType(ObjectIdentity('1.3.6.1.6.3.1.1.4.1.0'), ObjectIdentity('1.3.6.1.6.3.1.1.5.4')), ObjectType(ObjectName('1.3.6.1.2.1.2.2.1.1.123'), InterfaceIndex(123)), ObjectType(ObjectIdentity('1.3.6.1.2.1.2.2.1.7.123'), Integer(3)), ObjectType(ObjectIdentity('1.3.6.1.2.1.2.2.1.8.123'), Integer(1))])
 
-High-volume messaging
+High-volume Messaging
 ---------------------
 
-When in comes to managing large network, reading MIB objects
+When it comes to managing large network, reading MIB objects
 sequentially introduces latency. By some point the latency becomes
 intolerable. Solutions to parallelize queries are well known - you
 could do that by offloading individual operations into multiple

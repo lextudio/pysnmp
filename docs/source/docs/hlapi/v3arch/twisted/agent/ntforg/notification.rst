@@ -1,5 +1,5 @@
 
-TRAP/INFORM notification
+TRAP/INFORM Notification
 ========================
 
 .. toctree::
