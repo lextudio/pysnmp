@@ -9,3 +9,6 @@
 .. _mibs.pysnmp.com: https://github.com/lextudio/mibs.snmplabs.com/tree/master/asn1
 .. _pyenv: https://github.com/pyenv/pyenv
 .. _pyenv-win: https://github.com/pyenv-win/pyenv-win
+.. _Wireshark: https://www.wireshark.org/
+.. _tcpdump: https://www.tcpdump.org/
+.. _Net-SNMP: http://www.net-snmp.org/
