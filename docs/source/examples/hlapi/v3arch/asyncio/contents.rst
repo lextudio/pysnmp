@@ -8,13 +8,14 @@ makes asynchronous code looking like synchronous one thus eliminating
 "callback hell".
 
 With `asyncio` built-in facilities, you could run many SNMP queries
-in parallel and/or sequentially, interleave SNMP queries with other I/O
-operations. See `asyncio resources <http://asyncio.org>`_
-repository for other `asyncio`-compatible modules.
+in parallel and/or sequentially, interleave SNMP queries with I/O
+operations with other systems. Other `asyncio`-compatible Python modules
+can be easily found as it is a popular programming paradigm.
 
 In most examples approximate analogues of well known Net-SNMP snmp* tools
 command line options are shown. That may help those readers who, by chance
-are familiar with Net-SNMP tools, better understanding what example code doe
+are familiar with Net-SNMP tools, better understanding what example code
+does.
 
 Here's a quick example on a simple SNMP GET by high-level API:
 
@@ -64,5 +65,5 @@ More examples on Notification Originator API usage follow.
    /examples/hlapi/v3arch/asyncio/agent/ntforg/common-notifications
    /examples/hlapi/v3arch/asyncio/agent/ntforg/advanced-topics
 
-More sophisticated or less popular SNMP operations can still be performed 
+More sophisticated or less popular SNMP operations can still be performed
 with PySNMP through its Native API to Standard SNMP Applications.

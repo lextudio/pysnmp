@@ -1,3 +1,4 @@
+.. include:: /includes/_links.rst
 
 How to pass MIB to the Manager
 ------------------------------
@@ -6,16 +7,14 @@ Q. How to make use of random MIBs at my Manager application?
 
 A. Starting from PySNMP 4.3.x, plain-text (ASN.1) MIBs can be
    automatically parsed into PySNMP form by the
-   `PySMI <https://www.pysnmp.com/pysmi/>`_ tool.  PySNMP will call PySMI
+   `PySMI`_ tool.  PySNMP will call PySMI
    automatically, parsed PySNMP MIB will be cached in
    $HOME/.pysnmp/mibs/ (default location).
 
    MIB compiler could be configured to search for plain-text
    MIBs at multiple local and remote locations. As for remote
    MIB repos, you are welcome to use our collection of ASN.1
-   MIB files at
-   `https://github.com/lextudio/mibs.snmplabs.com/tree/master/asn1 <https://github.com/lextudio/mibs.snmplabs.com/tree/master/asn1>`_
-   as shown below.
+   MIB files at `mibs.pysnmp.com`_ as shown below.
 
 .. literalinclude:: /../../examples/hlapi/asyncio/manager/cmdgen/custom-asn1-mib-search-path.py
    :start-after: """#
@@ -23,7 +22,7 @@ A. Starting from PySNMP 4.3.x, plain-text (ASN.1) MIBs can be
 
 .. code:
     :language: python
-    
+
     # Configure the SNMP engine with access to the
     # common Linux ASN.1 (Textual) MIB directories...
     from pysnmp import hlapi
@@ -38,8 +37,7 @@ A. Starting from PySNMP 4.3.x, plain-text (ASN.1) MIBs can be
 
 :download:`Download</../../examples/hlapi/asyncio/manager/cmdgen/custom-asn1-mib-search-path.py>` script.
 
-Alternatively, you can invoke the
-`mibdump.py <https://www.pysnmp.com/pysmi/mibdump.html>`_
+Alternatively, you can invoke the `mibdump`_ command
 (shipped with PySMI) by hand and this way compile plain-text MIB
 into PySNMP format. Once the compiled MIBs are stored in a directory,
 add the directory to your MibBuilder's MibSources.
@@ -52,4 +50,3 @@ add the directory to your MibBuilder's MibSources.
     builder.addMibSources(builder_module.DirMibSource(
         os.path.join( HERE, 'mibs')
     ))
-

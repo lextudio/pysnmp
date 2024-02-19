@@ -1,9 +1,10 @@
+.. include:: /includes/_links.rst
 
-Garbaged SNMP values (apps)
----------------------------
+Garbled SNMP values (apps)
+--------------------------
 
-Q. When my PySNMP application prints out fetched values, some of them 
-   come out as a garbage on my screan. Here's my code:
+Q. When my PySNMP application prints out fetched values, some of them
+   come out as a garbage on my screen. Here's my code:
 
 .. code-block:: python
 
@@ -19,8 +20,8 @@ Q. When my PySNMP application prints out fetched values, some of them
 
    The IpAddress type seems to be the only one with this problem.
 
-A. Always use prettyPrint() method for all pyasn1-based objects -- it 
-   automatically converts ASN1 types to human-friendly form.
+A. Always use prettyPrint() method for all PyASN1-based objects -- it
+   automatically converts ASN.1 types to human-friendly form.
 
 .. code-block:: python
 
@@ -35,6 +36,4 @@ A. Always use prettyPrint() method for all pyasn1-based objects -- it
     > > > rfc1902.IpAddress.prettyPrint(a)
     '1.2.3.4'
 
-See `pyasn1 docs <https://pyasn1.readthedocs.io/>`_ for more information
-on pyasn1 data model.
-
+See `PyASN1`_ docs for more information on PyASN1 data model.

@@ -6,8 +6,7 @@ SNMP Library for Python
 .. toctree::
    :maxdepth: 2
 
-PySNMP is a cross-platform, pure-`Python <http://www.python.org/>`_
-`SNMP <http://en.wikipedia.org/wiki/Simple_Network_Management_Protocol>`_
+PySNMP is a cross-platform, pure-`Python`_ `SNMP`_
 engine implementation. It features fully-functional SNMP engine capable
 to act in Agent/Manager/Proxy roles, talking SNMP v1/v2c/v3 protocol
 versions over IPv4/IPv6 and other network transports.
@@ -24,21 +23,20 @@ older, now obsolete, PySNMP releases. All site documentation and
 examples are written for the 5.0 and later versions in mind.
 Older materials have been removed.
 
-Besides the libraries, a set of pure-Python 
-`command-line tools <https://pypi.org/project/snmpclitools/>`_
+Besides the libraries, a set of pure-Python `command line tools`_
 are shipped along with the system. Those tools mimic the interface
 and behavior of popular Net-SNMP snmpget/snmpset/snmpwalk utilities.
 They may be useful in a cross-platform situations as well as a testing
 and prototyping instrument for pysnmp users.
 
 PySNMP software is free and open-source. Source code is hosted in
-a `Github repo <https://github.com/lextudio/pysnmp>`_.
+a `Github repository`_.
 The library is being distributed under 2-clause BSD-style license.
 
 PySNMP library development has been initially sponsored
-by a `PSF <http://www.python.org/psf/>`_ grant.
+by a `PSF`_ grant.
 
-Quick start
+Quick Start
 -----------
 
 You already know something about SNMP and have no courage to dive into

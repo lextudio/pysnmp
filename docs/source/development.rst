@@ -1,3 +1,4 @@
+.. include:: /includes/_links.rst
 
 Further development
 -------------------
@@ -21,7 +22,7 @@ PySNMP library
    be to write another MIB parser and code generator which would produce
    PySNMP compliant Python code right from MIB text files all by itself.
 
-   **Done:** see `PySMI project <https://www.pysnmp.com/pysmi/>`_ in conjunction with the latest PySNMP codebase.
+   **Done:** see `PySMI`_` project in conjunction with the latest PySNMP codebase.
 
 #. Reverse MIB index. The variable-bindings received by the system whilst
    in Manager role could be post-processed using the information kept in
@@ -60,10 +61,10 @@ Stand-alone PySNMP-based tools
 #. SNMP Proxy Forwarder. That would be a stand-alone, application-level
    proxy service supporting all SNMP versions, multiple network transports,
    Command and Notification SNMP message types. Its anticipated features
-   include extensive configuration facilities, fine-graned access
+   include extensive configuration facilities, fine-grained access
    control and logging.
 
-   **Done:** see `SNMP Proxy Forwarder <https://www.pysnmp.com/snmpfwd/>`_.
+   **Done:** see `SNMP Proxy Forwarder`_.
 
 #. SNMP Trap Receiver. We see this application as a simple yet flexible
    SNMP TRAP collector. It would listen on network sockets of different
@@ -81,18 +82,17 @@ Stand-alone PySNMP-based tools
    a relational database application. So we are planning to put some more
    efforts into the Simulator project as time permits.
 
-   **Done:** since `snmpsim-0.2.4 <https://www.pysnmp.com/snmpsim/>`_
+   **Done:** since `snmpsim`_ 0.2.4.
 
 If you need some particular feature - please,
-`open a feature request <https://github.com/lextudio/pysnmp/issues/new>`_ . Once we
+open a feature request via a `GitHub issue`_ . Once we
 see a greater demand in particular area, we would re-arrange our
 development resources to meet it sooner.
 
 You could greater speed up the development of particular feature by
-sponsoring it. Please get back to us to discuss details.
+sponsoring it. Please contact `LeXtudio Inc.`_ to discuss details.
 
 Contributions to the PySNMP source code is greatly appreciated as well.
-We require contributed code to run with Python 3.7 through the latest
-Python version (which is 3.11 at the time of this writing). Contributed
-code will be redistributed under the terms of the same
-`license <https://www.pysnmp.com/pysnmp/>`_ as PySNMP is.
+We require contributed code to run with Python 3.8 through the latest
+Python version (which is 3.12 at the time of this writing). Contributed
+code will be redistributed under the terms of the same license as PySNMP is.

@@ -1,3 +1,4 @@
+.. include:: /includes/_links.rst
 
 .. toctree::
    :maxdepth: 2
@@ -98,7 +99,7 @@ SNMP-specific subtypes of those base ASN.1 types are:
 In addition to these scalar types, SNMP defines a way to collect them
 into ordered arrays. From these arrays 2-d tables could be built.
 
-PySNMP relies on the `PyASN1 <https://pyasn1.readthedocs.io/>`_ package for
+PySNMP relies on the `PyASN1`_ package for
 modeling all SNMP types.  With PyASN1, instances of ASN.1 types are
 represented by Python objects that look like either a string or an
 integer.
@@ -218,9 +219,8 @@ Both SNMP managed and managing entities could consume MIB information.
   + Implements MIB objects in code
 
 From human perspective, MIB is a text file written in a subset of
-ASN.1 language. We maintain `a collection
-<https://github.com/lextudio/mibs.snmplabs.com/tree/master/asn1>`_ of 9000+ MIB modules that you can
-use for your projects.
+ASN.1 language. We maintain a collection of 9000+ MIB modules on
+`mibs.pysnmp.com`_ that you can use for your projects.
 
 PySNMP converts ASN.1 MIB files into Python modules, then SNMP
 engine loads those modules at runtime on demand. PySNMP MIB modules
@@ -229,8 +229,8 @@ managing entities.
 
 MIB conversion is performed automatically by PySNMP, but technically,
 it is handled by PySNMP sister project called
-`PySMI <https://www.pysnmp.com/pysmi/>`_. However you can also perform said
-conversion by hand with PySMI's *mibdump.py* tool.
+`PySMI`_. However you can also perform said
+conversion by hand with PySMI's ``mibdump`` tool.
 
 Protocol Operations
 -------------------
@@ -254,7 +254,7 @@ Protocol carries SNMP messages. Besides header information used for
 protocol operations, management information is transferred in
 so-called Protocol Data Units (PDU). Seven PDU types are defined in
 SNMP addressing conceptually different operations to be performed by
-either managing or managed entities (Manager or Agent repectively).
+either managing or managed entities (Manager or Agent respectively).
 
 * Manager-to-agent
 
