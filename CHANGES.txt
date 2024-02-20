@@ -1,3 +1,10 @@
+Revision 6.0.0, released 2024-2-10
+-----------------------------------
+
+- Improved asyncio "runDispatcher" method to support timeout.
+- Changed internal defaults to asyncio.
+- Converted asyncore samples to asyncio.
+
 Revision 5.0.34, released 2024-2-4
 ----------------------------------
 

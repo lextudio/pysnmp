@@ -4,15 +4,15 @@
 Transport tweaks
 ----------------
 
-.. include:: /../../examples/v3arch/asyncio/manager/ntfrcv/multiple-interfaces.py
+.. include:: /../../examples/v3arch/asyncio/manager/ntfrcv/multiple-network-interfaces.py
    :start-after: """
    :end-before: """#
 
-.. literalinclude:: /../../examples/v3arch/asyncio/manager/ntfrcv/multiple-interfaces.py
+.. literalinclude:: /../../examples/v3arch/asyncio/manager/ntfrcv/multiple-network-interfaces.py
    :start-after: """#
    :language: python
 
-:download:`Download</../../examples/v3arch/asyncio/manager/ntfrcv/multiple-interfaces.py>` script.
+:download:`Download</../../examples/v3arch/asyncio/manager/ntfrcv/multiple-network-interfaces.py>` script.
 
 
 See also: :doc:`library reference </docs/api-reference>`.
