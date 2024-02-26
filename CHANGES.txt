@@ -1,4 +1,10 @@
+Revision 6.0.3, released 2024-2-26
+----------------------------------
+
+- Deleted asyncore related bits.
+
 Revision 6.0.2, released 2024-2-13
+----------------------------------
 
 - Simplified asyncio dispatch.
 - Added ignoreNonIncreasingOid option to nextCmd and bulkCmd.
