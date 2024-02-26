@@ -20,8 +20,11 @@ following snippet of code at the beginning of your application:
 
     from pysnmp import debug
 
-    # use specific flags or 'all' for full debugging
+    # use specific flags for debugging
     debug.setLogger(debug.Debug('dsp', 'msgproc', 'secmod'))
+
+    # use 'all' for full debugging
+    debug.setLogger(debug.Debug('all'))
 
 Then run your app and watch stderr. The Debug initializer enables debugging
 for a particular PySNMP subsystem, 'all' enables full debugging. More
