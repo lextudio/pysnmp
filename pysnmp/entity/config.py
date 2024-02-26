@@ -6,6 +6,7 @@
 #
 from pyasn1.compat.octets import null
 from pysnmp.carrier.asyncio.dgram import udp, udp6, unix
+from pysnmp.entity.engine import SnmpEngine
 from pysnmp.proto.secmod.rfc3414.auth import hmacmd5, hmacsha, noauth
 from pysnmp.proto.secmod.rfc3414.priv import des, nopriv
 from pysnmp.proto.secmod.rfc3826.priv import aes
@@ -104,9 +105,9 @@ def __cookV1SystemInfo(snmpEngine, communityIndex):
 
 
 def addV1System(
-    snmpEngine,
-    communityIndex,
-    communityName,
+    snmpEngine: SnmpEngine,
+    communityIndex: str,
+    communityName: str,
     contextEngineId=None,
     contextName=None,
     transportTag=None,
@@ -817,10 +818,10 @@ def __cookVacmUserInfo(snmpEngine, securityModel, securityName, securityLevel):
 
 
 def addVacmUser(
-    snmpEngine,
-    securityModel,
-    securityName,
-    securityLevel,
+    snmpEngine: SnmpEngine,
+    securityModel: int,
+    securityName: str,
+    securityLevel: str,
     readSubTree=(),
     writeSubTree=(),
     notifySubTree=(),
@@ -829,11 +830,9 @@ def addVacmUser(
     (groupName, securityLevel, readView, writeView, notifyView) = __cookVacmUserInfo(
         snmpEngine, securityModel, securityName, securityLevel
     )
-
     addContext(snmpEngine, contextName)
 
     addVacmGroup(snmpEngine, groupName, securityModel, securityName)
-
     addVacmAccess(
         snmpEngine,
         groupName,
@@ -845,7 +844,6 @@ def addVacmUser(
         writeView,
         notifyView,
     )
-
     if readSubTree:
         addVacmView(snmpEngine, readView, "included", readSubTree, null)
 
