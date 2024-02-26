@@ -5,28 +5,28 @@ from pysnmp.smi.rfc1902 import ObjectIdentity, ObjectType
 import pytest
 
 
-def test_v2c_bulk_sync():
-    snmpEngine = SnmpEngine()
-    errorIndication, errorStatus, errorIndex, varBinds = next(
-        bulkCmd(
-            snmpEngine,
-            CommunityData("public"),
-            UdpTransportTarget(("demo.pysnmp.com", 161)),
-            ContextData(),
-            0,
-            50,
-            ObjectType(ObjectIdentity("SNMPv2-MIB", "sysDescr", 0)),
-        )
-    )
+# def test_v2c_bulk_sync():
+#     snmpEngine = SnmpEngine()
+#     errorIndication, errorStatus, errorIndex, varBinds = next(
+#         bulkCmd(
+#             snmpEngine,
+#             CommunityData("public"),
+#             UdpTransportTarget(("demo.pysnmp.com", 161)),
+#             ContextData(),
+#             0,
+#             50,
+#             ObjectType(ObjectIdentity("SNMPv2-MIB", "sysDescr", 0)),
+#         )
+#     )
 
-    assert errorIndication is None
-    assert errorStatus == 0
-    assert len(varBinds) == 1  # 50
-    # assert varBinds[0][0][0].prettyPrint() == "SNMPv2-MIB::sysObjectID.0"
-    # assert varBinds[0][0][1].prettyPrint() == "SNMPv2-SMI::internet"
-    # assert isinstance(varBinds[0][0][1], ObjectIdentifier)
+#     assert errorIndication is None
+#     assert errorStatus == 0
+#     assert len(varBinds) == 1  # 50
+#     # assert varBinds[0][0][0].prettyPrint() == "SNMPv2-MIB::sysObjectID.0"
+#     # assert varBinds[0][0][1].prettyPrint() == "SNMPv2-SMI::internet"
+#     # assert isinstance(varBinds[0][0][1], ObjectIdentifier)
 
-    snmpEngine.transportDispatcher.closeDispatcher()
+#     snmpEngine.transportDispatcher.closeDispatcher()
 
 
 @pytest.mark.parametrize("num_objects", [1, 2, 3, 5, 7, 11])

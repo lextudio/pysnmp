@@ -13,9 +13,6 @@ from pysnmp.proto.rfc1905 import NoSuchObject
 from pysnmp.smi.rfc1902 import *
 from pysnmp.entity.engine import *
 
-# default is synchronous asyncore-based API
-from pysnmp.hlapi.v3arch.asyncore.sync import *
-
 USM_AUTH_NONE = auth.USM_AUTH_NONE
 """No Authentication Protocol"""
 

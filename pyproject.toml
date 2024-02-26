@@ -31,10 +31,6 @@ pyasn1 = ">=0.4.8, !=0.5.0"
 pysnmpcrypto = "^0.0.4"
 pysmi-lextudio = "^1.0.4"
 
-[tool.poetry.dependencies.pyasyncore]
-version = "^1.0.0"
-python = ">=3.12"
-
 [tool.poetry.group.dev.dependencies]
 codecov = "^2.1.13"
 pytest = "^7.2.0"
