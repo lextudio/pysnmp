@@ -28,3 +28,9 @@ poetry version patch
 ```bash
 poetry run make html -C docs
 ```
+
+## Check Port number
+
+```bash
+netstat -anp udp | grep 1611
+```
