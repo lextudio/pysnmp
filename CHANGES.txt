@@ -1,3 +1,8 @@
+Revision 6.0.4, released 2024-2-28
+----------------------------------
+
+- Reverted some changes in 6.0.2 on asyncio dispatch.
+
 Revision 6.0.3, released 2024-2-26
 ----------------------------------
 
