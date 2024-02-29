@@ -287,6 +287,7 @@ class SnmpV1MessageProcessingModel(AbstractMessageProcessingModel):
             securityLevel,
             scopedPDU,
             securityStateReference,
+            statusInformation.get("errorIndication"),
         )
 
         # recover unique request-id right after PDU serialization

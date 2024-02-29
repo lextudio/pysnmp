@@ -4,8 +4,9 @@
 # Copyright (c) 2005-2020, Ilya Etingof <etingof@gmail.com>
 # License: https://www.pysnmp.com/pysnmp/license.html
 #
-from pysnmp.proto import error
+from pysnmp.proto.errind import ErrorIndication
 from pysnmp.proto.secmod import cache
+from pysnmp.proto import error
 
 
 class AbstractSecurityModel:
@@ -53,6 +54,7 @@ class AbstractSecurityModel:
         securityLevel,
         scopedPDU,
         securityStateReference,
+        ctx: ErrorIndication,
     ):
         raise error.ProtocolError("Security model %s not implemented" % self)
 

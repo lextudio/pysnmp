@@ -586,6 +586,9 @@ class SnmpV3MessageProcessingModel(AbstractMessageProcessingModel):
                 securityLevel,
                 scopedPDU,
                 securityStateReference,
+                statusInformation.get(
+                    "errorIndication"
+                ),  # Use get() to handle missing errorIndication
             )
 
         except error.StatusInformation:

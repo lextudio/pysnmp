@@ -206,6 +206,11 @@ class SnmpV1SecurityModel(base.AbstractSecurityModel):
                     )
 
                     targetAddrTAddress = tuple(TransportAddressIPv6(targetAddrTAddress))
+                elif (
+                    targetAddrTDomain[: len(unix.SNMP_LOCAL_DOMAIN)]
+                    == unix.SNMP_LOCAL_DOMAIN
+                ):
+                    targetAddrTAddress = str(targetAddrTAddress)
 
                 targetAddr = targetAddrTDomain, targetAddrTAddress
 
@@ -503,6 +508,7 @@ class SnmpV1SecurityModel(base.AbstractSecurityModel):
         securityLevel,
         scopedPDU,
         securityStateReference,
+        ctx,
     ):
         # rfc2576: 5.2.2
         (msg,) = globalData
@@ -655,6 +661,7 @@ class SnmpV1SecurityModel(base.AbstractSecurityModel):
 
 class SnmpV2cSecurityModel(SnmpV1SecurityModel):
     SECURITY_MODEL_ID = 2
+
 
 
 # XXX

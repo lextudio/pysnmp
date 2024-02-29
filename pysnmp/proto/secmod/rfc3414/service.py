@@ -2,6 +2,9 @@
 # This file is part of pysnmp software.
 #
 # Copyright (c) 2005-2020, Ilya Etingof <etingof@gmail.com>
+#
+# Copyright (c) 2024, LeXtudio Inc. <support@lextudio.com>
+#
 # License: https://www.pysnmp.com/pysnmp/license.html
 #
 import time
@@ -276,8 +279,17 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
         usmUserEntry.getNode(
             usmUserEntry.name + (3,) + tblIdx2
         ).syntax = usmUserSecurityName.syntax
+        usmUserEntry.getNode(
+            usmUserEntry.name + (2,) + tblIdx2
+        ).syntax = usmUserName.syntax
+        usmUserEntry.getNode(
+            usmUserEntry.name + (3,) + tblIdx2
+        ).syntax = usmUserSecurityName.syntax
 
         # Store a reference to original row
+        usmUserEntry.getNode(
+            usmUserEntry.name + (4,) + tblIdx2
+        ).syntax = usmUserCloneFrom.syntax.clone(tblIdx1)
         usmUserEntry.getNode(
             usmUserEntry.name + (4,) + tblIdx2
         ).syntax = usmUserCloneFrom.syntax.clone(tblIdx1)
@@ -358,6 +370,7 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
         securityLevel,
         scopedPDU,
         securityStateReference,
+        ctx,
     ):
         mibBuilder = snmpEngine.msgAndPduDsp.mibInstrumController.mibBuilder
 
@@ -641,10 +654,24 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
 
         # 3.1.3
         if securityLevel == 3 or securityLevel == 2:
+            if ctx:  # convert to noauth
+                usmUserAuthProtocol = noauth.NoAuth.SERVICE_ID
             if usmUserAuthProtocol == noauth.NoAuth.SERVICE_ID:
-                raise error.StatusInformation(
-                    errorIndication=errind.unsupportedSecurityLevel
-                )
+                if ctx is None:
+                    raise error.StatusInformation(
+                        errorIndication=errind.unsupportedSecurityLevel
+                    )
+                else:
+                    headerData = msg.getComponentByPosition(1)
+
+                    # Clear possible auth&priv flags
+                    headerData.setComponentByPosition(
+                        2,
+                        univ.OctetString(hexValue="04"),
+                        verifyConstraints=False,
+                        matchTags=False,
+                        matchConstraints=False,
+                    )
 
         securityParameters = self._securityParametersSpec
 
@@ -935,6 +962,7 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
             securityLevel,
             scopedPDU,
             None,
+            None,
         )
 
     def generateResponseMsg(
@@ -949,6 +977,7 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
         securityLevel,
         scopedPDU,
         securityStateReference,
+        ctx,
     ):
         return self._generateRequestOrResponseMsg(
             snmpEngine,
@@ -961,6 +990,7 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
             securityLevel,
             scopedPDU,
             securityStateReference,
+            ctx,
         )
 
     # 3.2
