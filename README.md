@@ -164,13 +164,13 @@ Other than that, PySNMP is capable to automatically fetch and use required MIBs 
 or local directories. You could configure any MIB source available to you (including
 [this one](https://github.com/lextudio/mibs.snmplabs.com/tree/master/asn1)) for that purpose.
 
-For more example scripts please refer to [examples section](https://www.pysnmp.com/pysnmp/examples/index.html#high-level-snmp)
-at pysnmp web site.
+For more sample scripts please refer to [examples section](https://www.pysnmp.com/pysnmp/examples/index.html#high-level-snmp)
+at PySNMP web site.
 
 Documentation
 -------------
 
-Library documentation and examples can be found at the [pysnmp project site](https://www.pysnmp.com/pysnmp/).
+Library documentation and examples can be found at the [PySNMP docs site](https://www.pysnmp.com/pysnmp/).
 
 If something does not work as expected, please
 [open an issue](https://github.com/lextudio/pysnmp/issues) at GitHub or
