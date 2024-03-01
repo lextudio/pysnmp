@@ -3,8 +3,6 @@
 #
 # Copyright (c) 2005-2020, Ilya Etingof <etingof@gmail.com>
 #
-# Copyright (c) 2023-2024, LeXtudio Inc. <support@lextudio.com>
-#
 # License: https://www.pysnmp.com/pysnmp/license.html
 #
 from pysnmp.proto import errind
@@ -21,13 +19,9 @@ class NoAuth(base.AbstractAuthenticationService):
     def localizeKey(self, authKey, snmpEngineID):
         return
 
-    @property
-    def digestLength(self):
-        return 0
-
     # 7.2.4.2
     def authenticateOutgoingMsg(self, authKey, wholeMsg):
-        return wholeMsg
+        raise error.StatusInformation(errorIndication=errind.noAuthentication)
 
     def authenticateIncomingMsg(self, authKey, authParameters, wholeMsg):
-        return
+        raise error.StatusInformation(errorIndication=errind.noAuthentication)
