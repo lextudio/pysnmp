@@ -1,3 +1,9 @@
+Revision 6.0.5, released 2024-3-1
+---------------------------------
+
+- Added custom socket support in openServerMode.
+- Fixed various bugs in RFC3414 error handling.
+
 Revision 6.0.4, released 2024-2-28
 ----------------------------------
 

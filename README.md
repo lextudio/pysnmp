@@ -40,7 +40,7 @@ Features, specific to SNMPv3 model include:
   SNMP entities (RFC2576)
 * Remote SNMP engine configuration
 * Optional SNMP engine discovery
-* Shipped with standard SNMP applications (RC3413)
+* Shipped with standard SNMP applications (RFC3413)
 
 Download & Install
 ------------------
