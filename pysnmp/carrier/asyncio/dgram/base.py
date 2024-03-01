@@ -33,7 +33,6 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
 # THE POSSIBILITY OF SUCH DAMAGE.
 #
-import platform
 import sys
 import traceback
 
@@ -44,11 +43,12 @@ from pysnmp.carrier import error
 from pysnmp.carrier.asyncio.base import AbstractAsyncioTransport
 
 
+
 class DgramAsyncioProtocol(asyncio.DatagramProtocol, AbstractAsyncioTransport):
     """Base Asyncio datagram Transport, to be used with AsyncioDispatcher"""
 
-    SOCK_FAMILY = None
-    ADDRESS_TYPE = lambda x: x
+    SOCK_FAMILY = 0
+    ADDRESS_TYPE = type
 
     transport = None
 
@@ -83,7 +83,7 @@ class DgramAsyncioProtocol(asyncio.DatagramProtocol, AbstractAsyncioTransport):
 
             try:
                 self.transport.sendto(
-                    outgoingMessage, self.normalizeAddress(transportAddress)
+                    outgoingMessage, self.normalizeAddress(transportAddress) # type: ignore
                 )
 
             except Exception:
@@ -115,12 +115,17 @@ class DgramAsyncioProtocol(asyncio.DatagramProtocol, AbstractAsyncioTransport):
 
         return self
 
-    def openServerMode(self, iface):
-        try:
-            c = self.loop.create_datagram_endpoint(
-                lambda: self, local_addr=iface, family=self.SOCK_FAMILY
-            )
+    def openServerMode(self, iface=None, sock=None):
+        if iface is None and sock is None:
+            raise error.CarrierError("either iface or sock is required")
 
+        try:
+            if sock:
+                c = self.loop.create_datagram_endpoint(lambda: self, sock=sock)
+            else:
+                c = self.loop.create_datagram_endpoint(
+                    lambda: self, local_addr=iface, family=self.SOCK_FAMILY
+                )
             # Avoid deprecation warning for asyncio.async()
             self._lport = asyncio.ensure_future(c)
         except Exception:
@@ -156,7 +161,7 @@ class DgramAsyncioProtocol(asyncio.DatagramProtocol, AbstractAsyncioTransport):
         else:
             try:
                 self.transport.sendto(
-                    outgoingMessage, self.normalizeAddress(transportAddress)
+                    outgoingMessage, self.normalizeAddress(transportAddress) # type: ignore
                 )
 
             except Exception:
