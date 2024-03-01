@@ -35,3 +35,9 @@ poetry run make html -C docs
 ```bash
 netstat -anp udp | grep 1611
 ```
+
+## Test Coverage
+
+```bash
+poetry run pytest --cov=pysnmp --cov-report=xml:coverage.xml
+```

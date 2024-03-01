@@ -13,7 +13,9 @@ SNMP engine distributed under 2-clause [BSD license](https://www.pysnmp.com/pysn
 The PySNMP project was initially sponsored by a [PSF](http://www.python.org/psf/) grant.
 Thank you!
 
-This version is a fork of Ilya Etingof's project [etingof/pysnmp](https://github.com/etingof/pysnmp). Ilya sadly passed away on 10-Aug-2022. Announcement [here](https://lists.openstack.org/pipermail/openstack-discuss/2022-August/030062.html).  His work is still of great use to the Python community and he will be missed.
+This repo is a fork of Ilya Etingof's project [etingof/pysnmp](https://github.com/etingof/pysnmp), but [LeXtudio Inc. is taking over the entire PySNMP ecosystem](https://github.com/etingof/pysnmp/issues/429), including the library, documentation, and the website.
+
+Ilya sadly passed away on 10-Aug-2022. Announcement [here](https://lists.openstack.org/pipermail/openstack-discuss/2022-August/030062.html).  His work is still of great use to the Python community and he will be missed.
 
 Features
 --------
