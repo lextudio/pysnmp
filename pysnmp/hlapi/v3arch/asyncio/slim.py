@@ -117,7 +117,9 @@ class Slim:
         return await getCmd(
             self.snmpEngine,
             CommunityData(communityName, mpModel=self.version - 1),
-            UdpTransportTarget((address, port), timeout, retries),
+            Udp6TransportTarget((address, port), timeout, retries)
+            if ":" in address
+            else UdpTransportTarget((address, port), timeout, retries),
             ContextData(),
             *varBinds,
         )
@@ -198,7 +200,9 @@ class Slim:
         return await nextCmd(
             self.snmpEngine,
             CommunityData(communityName, mpModel=self.version - 1),
-            UdpTransportTarget((address, port), timeout, retries),
+            Udp6TransportTarget((address, port), timeout, retries)
+            if ":" in address
+            else UdpTransportTarget((address, port), timeout, retries),
             ContextData(),
             *varBinds,
         )
@@ -320,7 +324,9 @@ class Slim:
         return await bulkCmd(
             self.snmpEngine,
             CommunityData(communityName, mpModel=version),
-            UdpTransportTarget((address, port), timeout, retries),
+            Udp6TransportTarget((address, port), timeout, retries)
+            if ":" in address
+            else UdpTransportTarget((address, port), timeout, retries),
             ContextData(),
             nonRepeaters,
             maxRepetitions,
@@ -397,7 +403,9 @@ class Slim:
         return await setCmd(
             self.snmpEngine,
             CommunityData(communityName, mpModel=self.version - 1),
-            UdpTransportTarget((address, port), timeout, retries),
+            Udp6TransportTarget((address, port), timeout, retries)
+            if ":" in address
+            else UdpTransportTarget((address, port), timeout, retries),
             ContextData(),
             *varBinds,
         )
