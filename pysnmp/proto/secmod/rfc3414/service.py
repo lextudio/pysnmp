@@ -649,6 +649,10 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
                 or ctx == errind.unknownSecurityName
                 or ctx == errind.decryptionError
             ):
+                debug.logger & debug.flagSM and debug.logger(
+                    "__generateRequestOrResponseMsg: ctx is known error indication %s"
+                    % ctx
+                )
                 securityLevel = 1
                 headerData = msg.getComponentByPosition(1)
 
