@@ -20,6 +20,7 @@ poetry env list
 ## Bump Version Number
 
 ```bash
+poetry lock
 poetry version patch
 ```
 
