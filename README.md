@@ -2,6 +2,7 @@
 SNMP Library for Python
 -----------------------
 
+[![Become a Sponsor](https://img.shields.io/badge/Become%20a%20Sponsor-lextudio-orange.svg?style=for-readme)](https://github.com/sponsors/lextudio)
 [![PyPI](https://img.shields.io/pypi/v/pysnmp-lextudio.svg)](https://pypi.python.org/pypi/pysnmp-lextudio)
 [![PyPI Downloads](https://img.shields.io/pypi/dd/pysnmp-lextudio)](https://pypi.python.org/pypi/pysnmp-lextudio/)
 [![Python Versions](https://img.shields.io/pypi/pyversions/pysnmp-lextudio.svg)](https://pypi.python.org/pypi/pysnmp-lextudio/)
