@@ -34,12 +34,15 @@
 import asyncio
 
 
+from pysnmp.entity.engine import SnmpEngine
+from pysnmp.hlapi.transport import AbstractTransportTarget
 from pysnmp.hlapi.v3arch.auth import *
 from pysnmp.hlapi.v3arch.context import *
 from pysnmp.hlapi.v3arch.lcd import *
 from pysnmp.hlapi.varbinds import *
 from pysnmp.hlapi.v3arch.asyncio.transport import *
 from pysnmp.entity.rfc3413 import cmdgen
+from pysnmp.proto import errind
 from pysnmp.proto.api import v2c
 from pysnmp.smi.rfc1902 import *
 
@@ -52,9 +55,14 @@ isEndOfMib = lambda varBinds: not v2c.apiPDU.getNextVarBinds(varBinds)[1]
 
 
 async def getCmd(
-    snmpEngine, authData, transportTarget, contextData, *varBinds, **options
-):
-    """Creates a generator to perform SNMP GET query.
+    snmpEngine: SnmpEngine,
+    authData: "CommunityData | UsmUserData",
+    transportTarget: AbstractTransportTarget,
+    contextData: ContextData,
+    *varBinds,
+    **options
+) -> "tuple[errind.ErrorIndication, int, int, tuple[ObjectType]]":
+    r"""Creates a generator to perform SNMP GET query.
 
     When iterator gets advanced by :py:mod:`asyncio` main loop,
     SNMP GET request is send (:RFC:`1905#section-4.2.1`).
@@ -172,9 +180,14 @@ async def getCmd(
 
 
 async def setCmd(
-    snmpEngine, authData, transportTarget, contextData, *varBinds, **options
-):
-    """Creates a generator to perform SNMP SET query.
+    snmpEngine: SnmpEngine,
+    authData: "CommunityData | UsmUserData",
+    transportTarget: AbstractTransportTarget,
+    contextData: ContextData,
+    *varBinds,
+    **options
+) -> "tuple[errind.ErrorIndication, int, int, tuple[ObjectType]]":
+    r"""Creates a generator to perform SNMP SET query.
 
     When iterator gets advanced by :py:mod:`asyncio` main loop,
     SNMP SET request is send (:RFC:`1905#section-4.2.5`).
@@ -292,9 +305,14 @@ async def setCmd(
 
 
 async def nextCmd(
-    snmpEngine, authData, transportTarget, contextData, *varBinds, **options
-):
-    """Creates a generator to perform SNMP GETNEXT query.
+    snmpEngine: SnmpEngine,
+    authData: "CommunityData | UsmUserData",
+    transportTarget: AbstractTransportTarget,
+    contextData: ContextData,
+    *varBinds,
+    **options
+) -> "tuple[errind.ErrorIndication, int, int, tuple[ObjectType]]":
+    r"""Creates a generator to perform SNMP GETNEXT query.
 
     When iterator gets advanced by :py:mod:`asyncio` main loop,
     SNMP GETNEXT request is send (:RFC:`1905#section-4.2.2`).
@@ -426,8 +444,8 @@ async def bulkCmd(
     maxRepetitions,
     *varBinds,
     **options
-):
-    """Creates a generator to perform SNMP GETBULK query.
+) -> "tuple[errind.ErrorIndication, int, int, tuple[ObjectType]]":
+    r"""Creates a generator to perform SNMP GETBULK query.
 
     When iterator gets advanced by :py:mod:`asyncio` main loop,
     SNMP GETBULK request is send (:RFC:`1905#section-4.2.3`).

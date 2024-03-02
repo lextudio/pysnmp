@@ -14,33 +14,32 @@ Functionally similar to:
 
 | $ snmpgetnext -v2c -c public demo.pysnmp.com SNMPv2-MIB::sysDescr.0
 
-"""#
+"""  #
 import asyncio
 from pysnmp.hlapi.v3arch.asyncio import *
 
+
 async def run():
-    slim = Slim()
-    errorIndication, errorStatus, errorIndex, varBinds = await slim.next(
-        'public',
-        'localhost',
-        161,
-        ObjectType(ObjectIdentity("SNMPv2-MIB", "sysDescr", 0)),
-    )
-
-    if errorIndication:
-        print(errorIndication)
-    elif errorStatus:
-        print(
-            "{} at {}".format(
-                errorStatus.prettyPrint(),
-                errorIndex and varBinds[int(errorIndex) - 1][0] or "?",
-            )
+    with Slim() as slim:
+        errorIndication, errorStatus, errorIndex, varBinds = await slim.next(
+            "public",
+            "localhost",
+            161,
+            ObjectType(ObjectIdentity("SNMPv2-MIB", "sysDescr", 0)),
         )
-    else:
-        for varBind in varBinds:
-            print(" = ".join([x.prettyPrint() for x in varBind]))
 
-    slim.close()
+        if errorIndication:
+            print(errorIndication)
+        elif errorStatus:
+            print(
+                "{} at {}".format(
+                    errorStatus.prettyPrint(),
+                    errorIndex and varBinds[int(errorIndex) - 1][0] or "?",
+                )
+            )
+        else:
+            for varBind in varBinds:
+                print(" = ".join([x.prettyPrint() for x in varBind]))
 
 
 asyncio.run(run())

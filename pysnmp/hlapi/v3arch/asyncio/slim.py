@@ -6,6 +6,7 @@
 #
 from pysnmp.error import PySnmpError
 from pysnmp.hlapi.v3arch.asyncio import *
+from pysnmp.proto.errind import ErrorIndication
 
 __all__ = ["Slim"]
 
@@ -44,7 +45,21 @@ class Slim:
         """Closes the wrapper to release its resources."""
         self.snmpEngine.transportDispatcher.closeDispatcher()
 
-    async def get(self, communityName, address, port, *varBinds, timeout=1, retries=5):
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
+
+    async def get(
+        self,
+        communityName: str,
+        address: str,
+        port: int,
+        *varBinds,
+        timeout: int = 1,
+        retries: int = 5,
+    ) -> "tuple[ErrorIndication, int, int, tuple[ObjectType]]":
         """
         Creates a generator to perform SNMP GET query.
 
@@ -101,13 +116,14 @@ class Slim:
         >>> from pysnmp.hlapi.asyncio.slim import Slim
         >>>
         >>> async def run():
-        ...     errorIndication, errorStatus, errorIndex, varBinds = await Slim().get(
-        ...         'public',
-        ...         'demo.pysnmp.com',
-        ...         161,
-        ...         ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0))
-        ...     )
-        ...     print(errorIndication, errorStatus, errorIndex, varBinds)
+        ...     with Slim() as slim:
+        ...         errorIndication, errorStatus, errorIndex, varBinds = await slim.get(
+        ...             'public',
+        ...             'demo.pysnmp.com',
+        ...             161,
+        ...             ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0))
+        ...         )
+        ...         print(errorIndication, errorStatus, errorIndex, varBinds)
         >>>
         >>> asyncio.run(run())
         (None, 0, 0, [ObjectType(ObjectIdentity(ObjectName('1.3.6.1.2.1.1.1.0')), DisplayString('SunOS zeus.pysnmp.com 4.1.3_U1 1 sun4m'))])
@@ -124,7 +140,15 @@ class Slim:
             *varBinds,
         )
 
-    async def next(self, communityName, address, port, *varBinds, timeout=1, retries=5):
+    async def next(
+        self,
+        communityName: str,
+        address: str,
+        port: int,
+        *varBinds,
+        timeout: int = 1,
+        retries: int = 5,
+    ) -> "tuple[ErrorIndication, int, int, tuple[ObjectType]]":
         """
         Creates a generator to perform SNMP GETNEXT query.
 
@@ -185,13 +209,14 @@ class Slim:
         >>> from pysnmp.hlapi.asyncio.slim import Slim
         >>>
         >>> async def run():
-        ...     errorIndication, errorStatus, errorIndex, varBinds = await Slim().next(
-        ...         'public',
-        ...         'demo.pysnmp.com',
-        ...         161,
-        ...         ObjectType(ObjectIdentity('SNMPv2-MIB', 'system'))
-        ...     )
-        ...     print(errorIndication, errorStatus, errorIndex, varBinds)
+        ...     with Slim() as slim:
+        ...         errorIndication, errorStatus, errorIndex, varBinds = await slim.next(
+        ...             'public',
+        ...             'demo.pysnmp.com',
+        ...             161,
+        ...             ObjectType(ObjectIdentity('SNMPv2-MIB', 'system'))
+        ...         )
+        ...         print(errorIndication, errorStatus, errorIndex, varBinds)
         >>>
         >>> asyncio.run(run())
         (None, 0, 0, [[ObjectType(ObjectIdentity('1.3.6.1.2.1.1.1.0'), DisplayString('Linux i386'))]])
@@ -215,9 +240,9 @@ class Slim:
         nonRepeaters,
         maxRepetitions,
         *varBinds,
-        timeout=1,
-        retries=5
-    ):
+        timeout: int = 1,
+        retries: int = 5,
+    ) -> "tuple[ErrorIndication, int, int, tuple[ObjectType]]":
         r"""Creates a generator to perform SNMP GETBULK query.
 
         When iterator gets advanced by :py:mod:`asyncio` main loop,
@@ -302,15 +327,16 @@ class Slim:
         >>> from pysnmp.hlapi.asyncio.slim import Slim
         >>>
         >>> async def run():
-        ...     errorIndication, errorStatus, errorIndex, varBinds = await Slim().bulk(
-        ...         'public',
-        ...         'demo.pysnmp.com',
-        ...         161,
-        ...         0,
-        ...         2,
-        ...         ObjectType(ObjectIdentity('SNMPv2-MIB', 'system'))
-        ...     )
-        ...     print(errorIndication, errorStatus, errorIndex, varBinds)
+        ...     with Slim() as slim:
+        ...         errorIndication, errorStatus, errorIndex, varBinds = await slim.bulk(
+        ...             'public',
+        ...             'demo.pysnmp.com',
+        ...             161,
+        ...             0,
+        ...             2,
+        ...             ObjectType(ObjectIdentity('SNMPv2-MIB', 'system'))
+        ...         )
+        ...         print(errorIndication, errorStatus, errorIndex, varBinds)
         >>>
         >>> asyncio.run(run())
         (None, 0, 0, [[ObjectType(ObjectIdentity(ObjectName('1.3.6.1.2.1.1.1.0')), DisplayString('SunOS zeus.pysnmp.com 4.1.3_U1 1 sun4m'))], [ObjectType(ObjectIdentity(ObjectName('1.3.6.1.2.1.1.2.0')), ObjectIdentifier('1.3.6.1.4.1.424242.1.1'))]])
@@ -333,7 +359,15 @@ class Slim:
             *varBinds,
         )
 
-    async def set(self, communityName, address, port, *varBinds, timeout=1, retries=5):
+    async def set(
+        self,
+        communityName: str,
+        address: str,
+        port: int,
+        *varBinds,
+        timeout: int = 1,
+        retries: int = 5,
+    ) -> "tuple[ErrorIndication, int, int, tuple[ObjectType]]":
         """
         Creates a generator to perform SNMP SET query.
 
@@ -387,13 +421,14 @@ class Slim:
         >>> from pysnmp.hlapi.asyncio.slim import Slim
         >>>
         >>> async def run():
-        ...     errorIndication, errorStatus, errorIndex, varBinds = await Slim().set(
-        ...         'public',
-        ...         'demo.pysnmp.com',
-        ...         161,
-        ...         ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0), 'Linux i386')
-        ...     )
-        ...     print(errorIndication, errorStatus, errorIndex, varBinds)
+        ...     with Slim() as slim:
+        ...         errorIndication, errorStatus, errorIndex, varBinds = await slim.set(
+        ...             'public',
+        ...             'demo.pysnmp.com',
+        ...             161,
+        ...             ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0), 'Linux i386')
+        ...         )
+        ...         print(errorIndication, errorStatus, errorIndex, varBinds)
         >>>
         >>> asyncio.run(run())
         (None, 0, 0, [ObjectType(ObjectIdentity(ObjectName('1.3.6.1.2.1.1.1.0')), DisplayString('Linux i386'))])

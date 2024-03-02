@@ -30,47 +30,47 @@ async def test_usm_sha_none():
         snmpEngine.transportDispatcher.closeDispatcher()
 
 
-# @pytest.mark.asyncio
-# async def test_usm_sha_none_wrong_auth():
-#     async with AgentContextManager():
-#         snmpEngine = SnmpEngine()
-#         authData = UsmUserData(
-#             "usr-sha-none",
-#             "authkey1",
-#             authProtocol=USM_AUTH_HMAC96_MD5,  # wrongly use usmHMACMD5AuthProtocol
-#         )
-#         errorIndication, errorStatus, errorIndex, varBinds = await getCmd(
-#             snmpEngine,
-#             authData,
-#             UdpTransportTarget(("localhost", AGENT_PORT), retries=0),
-#             ContextData(),
-#             ObjectType(ObjectIdentity("SNMPv2-MIB", "sysDescr", 0)),
-#         )
+@pytest.mark.asyncio
+async def test_usm_sha_none_wrong_auth():
+    async with AgentContextManager():
+        snmpEngine = SnmpEngine()
+        authData = UsmUserData(
+            "usr-sha-none",
+            "authkey1",
+            authProtocol=USM_AUTH_HMAC96_MD5,  # wrongly use usmHMACMD5AuthProtocol
+        )
+        errorIndication, errorStatus, errorIndex, varBinds = await getCmd(
+            snmpEngine,
+            authData,
+            UdpTransportTarget(("localhost", AGENT_PORT), retries=0),
+            ContextData(),
+            ObjectType(ObjectIdentity("SNMPv2-MIB", "sysDescr", 0)),
+        )
 
-#         assert isinstance(errorIndication, WrongDigest)
-#         assert str(errorIndication) == "Wrong SNMP PDU digest"
+        assert isinstance(errorIndication, WrongDigest)
+        assert str(errorIndication) == "Wrong SNMP PDU digest"
 
-#         snmpEngine.transportDispatcher.closeDispatcher()
+        snmpEngine.transportDispatcher.closeDispatcher()
 
 
-# @pytest.mark.asyncio
-# async def test_usm_sha_none_wrong_user():
-#     async with AgentContextManager():
-#         snmpEngine = SnmpEngine()
-#         authData = UsmUserData(
-#             "usr-sha-none-not-exist",
-#             "authkey1",
-#             authProtocol=USM_AUTH_HMAC96_SHA,
-#         )
-#         errorIndication, errorStatus, errorIndex, varBinds = await getCmd(
-#             snmpEngine,
-#             authData,
-#             UdpTransportTarget(("localhost", AGENT_PORT), retries=0),
-#             ContextData(),
-#             ObjectType(ObjectIdentity("SNMPv2-MIB", "sysDescr", 0)),
-#         )
+@pytest.mark.asyncio
+async def test_usm_sha_none_wrong_user():
+    async with AgentContextManager():
+        snmpEngine = SnmpEngine()
+        authData = UsmUserData(
+            "usr-sha-none-not-exist",
+            "authkey1",
+            authProtocol=USM_AUTH_HMAC96_SHA,
+        )
+        errorIndication, errorStatus, errorIndex, varBinds = await getCmd(
+            snmpEngine,
+            authData,
+            UdpTransportTarget(("localhost", AGENT_PORT), retries=0),
+            ContextData(),
+            ObjectType(ObjectIdentity("SNMPv2-MIB", "sysDescr", 0)),
+        )
 
-#         assert isinstance(errorIndication, UnknownUserName)
-#         assert str(errorIndication) == "Unknown USM user"
+        assert isinstance(errorIndication, UnknownUserName)
+        assert str(errorIndication) == "Unknown USM user"
 
-#         snmpEngine.transportDispatcher.closeDispatcher()
+        snmpEngine.transportDispatcher.closeDispatcher()
