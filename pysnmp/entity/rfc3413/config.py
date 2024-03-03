@@ -4,9 +4,9 @@
 # Copyright (c) 2005-2020, Ilya Etingof <etingof@gmail.com>
 # License: https://www.pysnmp.com/pysnmp/license.html
 #
+from typing import Any
+from pysnmp.smi.error import SmiError, NoSuchInstanceError
 from pysnmp.entity import config
-from pysnmp.smi.error import NoSuchInstanceError
-from pysnmp.smi.error import SmiError
 
 
 def getTargetAddr(snmpEngine, snmpTargetAddrName):
@@ -16,7 +16,7 @@ def getTargetAddr(snmpEngine, snmpTargetAddrName):
         "SNMP-TARGET-MIB", "snmpTargetAddrEntry"
     )
 
-    cache = snmpEngine.getUserContext("getTargetAddr")
+    cache: "dict[str, Any] | None" = snmpEngine.getUserContext("getTargetAddr")
     if cache is None:
         cache = {"id": -1}
         snmpEngine.setUserContext(getTargetAddr=cache)
@@ -100,8 +100,8 @@ def getTargetAddr(snmpEngine, snmpTargetAddrName):
             ).setLocalAddress(TransportAddressIPv6(snmpSourceAddrTAddress))
 
         elif (
-            snmpTargetAddrTDomain[: len(config.snmpLocalDomain)]
-            == config.snmpLocalDomain
+            snmpTargetAddrTDomain[: len(config.SNMP_LOCAL_DOMAIN)]
+            == config.SNMP_LOCAL_DOMAIN
         ):
             snmpTargetAddrTAddress = transport.ADDRESS_TYPE(snmpTargetAddrTAddress)
 
@@ -125,7 +125,7 @@ def getTargetParams(snmpEngine, paramsName):
         "SNMP-TARGET-MIB", "snmpTargetParamsEntry"
     )
 
-    cache = snmpEngine.getUserContext("getTargetParams")
+    cache: "dict[str, Any] | None" = snmpEngine.getUserContext("getTargetParams")
     if cache is None:
         cache = {"id": -1}
         snmpEngine.setUserContext(getTargetParams=cache)
@@ -219,7 +219,7 @@ def getNotificationInfo(snmpEngine, notificationTarget):
         "SNMP-NOTIFICATION-MIB", "snmpNotifyEntry"
     )
 
-    cache = snmpEngine.getUserContext("getNotificationInfo")
+    cache: "dict[str, Any] | None" = snmpEngine.getUserContext("getNotificationInfo")
     if cache is None:
         cache = {"id": -1}
         snmpEngine.setUserContext(getNotificationInfo=cache)
@@ -258,7 +258,7 @@ def getTargetNames(snmpEngine, tag):
         "SNMP-TARGET-MIB", "snmpTargetAddrEntry"
     )
 
-    cache = snmpEngine.getUserContext("getTargetNames")
+    cache: "dict[str, Any] | None" = snmpEngine.getUserContext("getTargetNames")
     if cache is None:
         cache = {"id": -1}
         snmpEngine.setUserContext(getTargetNames=cache)

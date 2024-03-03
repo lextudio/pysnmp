@@ -6,6 +6,7 @@
 #
 from pysnmp import debug
 from pysnmp.smi import error
+from pysnmp.smi.builder import MibBuilder
 
 __all__ = ["AbstractMibInstrumController", "MibInstrumController"]
 
@@ -71,7 +72,7 @@ class MibInstrumController(AbstractMibInstrumController):
         (STATE_ANY, STATUS_ERROR): STATE_STOP,
     }
 
-    def __init__(self, mibBuilder):
+    def __init__(self, mibBuilder: MibBuilder):
         self.mibBuilder = mibBuilder
         self.lastBuildId = -1
         self.lastBuildSyms = {}

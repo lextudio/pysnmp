@@ -6,6 +6,7 @@
 #
 from pyasn1.compat.octets import null
 from pysnmp.carrier.asyncio.dgram import udp, udp6, unix
+from pysnmp.carrier.base import AbstractTransport
 from pysnmp.entity.engine import SnmpEngine
 from pysnmp.proto.secmod.rfc3414.auth import hmacmd5, hmacsha, noauth
 from pysnmp.proto.secmod.rfc3414.priv import des, nopriv
@@ -24,6 +25,7 @@ from pysnmp import debug
 # Transports
 SNMP_UDP_DOMAIN = udp.SNMP_UDP_DOMAIN
 SNMP_UDP6_DOMAIN = udp6.SNMP_UDP6_DOMAIN
+SNMP_LOCAL_DOMAIN = unix.SNMP_LOCAL_DOMAIN
 
 # Auth protocol
 USM_AUTH_HMAC96_MD5 = hmacmd5.HmacMd5.SERVICE_ID
@@ -91,7 +93,7 @@ PRIV_SERVICES = {
 # Instrumentation calls never yield control but block.
 
 
-def __cookV1SystemInfo(snmpEngine, communityIndex):
+def __cookV1SystemInfo(snmpEngine: SnmpEngine, communityIndex):
     mibBuilder = snmpEngine.msgAndPduDsp.mibInstrumController.mibBuilder
 
     (snmpEngineID,) = mibBuilder.importSymbols("__SNMP-FRAMEWORK-MIB", "snmpEngineID")
@@ -545,7 +547,11 @@ def delTargetAddr(snmpEngine, addrName):
     )
 
 
-def addTransport(snmpEngine, transportDomain, transport):
+def addTransport(
+    snmpEngine: SnmpEngine,
+    transportDomain: "tuple[int, ...]",
+    transport: AbstractTransport,
+):
     if snmpEngine.transportDispatcher:
         if not transport.isCompatibleWithDispatcher(snmpEngine.transportDispatcher):
             raise error.PySnmpError(
@@ -569,6 +575,10 @@ def addTransport(snmpEngine, transportDomain, transport):
         snmpEngine.setUserContext(
             automaticTransportDispatcher=automaticTransportDispatcher + 1
         )
+        if automaticTransportDispatcher is not None:
+            snmpEngine.setUserContext(
+                automaticTransportDispatcher=automaticTransportDispatcher + 1
+            )
 
 
 def getTransport(snmpEngine, transportDomain):

@@ -4,45 +4,38 @@
 # Copyright (c) 2005-2019, Ilya Etingof <etingof@gmail.com>
 # License: https://www.pysnmp.com/pysnmp/license.html
 #
-from typing import Tuple
+from typing import Any, Callable
 from pysnmp.carrier import error
+from typing import Callable
 
 
 class TimerCallable:
-    def __init__(self, cbFun, callInterval):
+    __cbFun: Callable
+    __nextCall: float
+    __callInterval: float
+
+    def __init__(self, cbFun: Callable, callInterval: float):
         self.__cbFun = cbFun
         self.__callInterval = callInterval
         self.__nextCall = 0
 
-    def __call__(self, timeNow):
+    def __call__(self, timeNow: float):
         if self.__nextCall <= timeNow:
             self.__cbFun(timeNow)
             self.__nextCall = timeNow + self.__callInterval
 
-    def __eq__(self, cbFun):
+    def __eq__(self, cbFun: Callable):
         return self.__cbFun == cbFun
 
-    def __ne__(self, cbFun):
+    def __ne__(self, cbFun: Callable):
         return self.__cbFun != cbFun
-
-    def __lt__(self, cbFun):
-        return self.__cbFun < cbFun
-
-    def __le__(self, cbFun):
-        return self.__cbFun <= cbFun
-
-    def __gt__(self, cbFun):
-        return self.__cbFun > cbFun
-
-    def __ge__(self, cbFun):
-        return self.__cbFun >= cbFun
 
     @property
     def interval(self):
         return self.__callInterval
 
     @interval.setter
-    def interval(self, callInterval):
+    def interval(self, callInterval: float):
         self.__callInterval = callInterval
 
 
@@ -68,7 +61,13 @@ class AbstractTransport:
     _cbFun = None
 
     @classmethod
-    def isCompatibleWithDispatcher(cls, transportDispatcher):
+    def isCompatibleWithDispatcher(
+        cls, transportDispatcher: "AbstractTransportDispatcher"
+    ):
+        if cls.protoTransportDispatcher is None:
+            raise error.CarrierError(
+                f"Protocol transport dispatcher not specified for {cls}"
+            )
         return isinstance(transportDispatcher, cls.protoTransportDispatcher)
 
     def registerCbFun(self, cbFun):
@@ -97,14 +96,15 @@ class AbstractTransport:
 
 
 class AbstractTransportDispatcher:
-    __transports: "dict[Tuple[int, ...], AbstractTransport]"
-    __transportDomainMap: "dict[AbstractTransport, Tuple[int, ...]]"
-    __recvCallables: "dict[str, callable]"
+    __transports: "dict[tuple[int, ...], AbstractTransport]"
+    __transportDomainMap: "dict[AbstractTransport, tuple[int, ...]]"
+    __recvCallables: "dict['tuple[int, ...] | None', Callable]"
     __timerCallables: "list[TimerCallable]"
     __ticks: int
     __timerResolution: float
     __timerDelta: float
     __nextTime: float
+    __routingCbFun: "Callable[[tuple[int, ...], AbstractTransportAddress, Any], 'tuple[int, ...]'] | None"  # fix message type
 
     def __init__(self):
         self.__transports = {}
@@ -150,7 +150,10 @@ class AbstractTransportDispatcher:
 
     # Dispatcher API
 
-    def registerRoutingCbFun(self, routingCbFun):
+    def registerRoutingCbFun(
+        self,
+        routingCbFun: "Callable[[tuple[int, ...], AbstractTransportAddress, Any], 'tuple[int, ...]'] | None",
+    ):
         if self.__routingCbFun:
             raise error.CarrierError("Data routing callback already registered")
         self.__routingCbFun = routingCbFun
@@ -159,7 +162,7 @@ class AbstractTransportDispatcher:
         if self.__routingCbFun:
             self.__routingCbFun = None
 
-    def registerRecvCbFun(self, recvCb, recvId=None):
+    def registerRecvCbFun(self, recvCb, recvId: "tuple[int, ...] | None" = None):
         if recvId in self.__recvCallables:
             raise error.CarrierError(
                 "Receive callback {!r} already registered".format(
@@ -169,17 +172,19 @@ class AbstractTransportDispatcher:
 
         self.__recvCallables[recvId] = recvCb
 
-    def unregisterRecvCbFun(self, recvId=None):
+    def unregisterRecvCbFun(self, recvId: "tuple[int, ...] | None" = None):
         if recvId in self.__recvCallables:
             del self.__recvCallables[recvId]
 
-    def registerTimerCbFun(self, timerCbFun, tickInterval=None):
+    def registerTimerCbFun(
+        self, timerCbFun: Callable, tickInterval: "float | None" = None
+    ):
         if not tickInterval:
             tickInterval = self.__timerResolution
 
         self.__timerCallables.append(TimerCallable(timerCbFun, tickInterval))
 
-    def unregisterTimerCbFun(self, timerCbFun=None):
+    def unregisterTimerCbFun(self, timerCbFun: "TimerCallable | None" = None):
         if timerCbFun:
             self.__timerCallables.remove(timerCbFun)
 
@@ -187,7 +192,7 @@ class AbstractTransportDispatcher:
             self.__timerCallables = []
 
     def registerTransport(
-        self, transportDomain: Tuple[int, ...], transport: AbstractTransport
+        self, transportDomain: "tuple[int, ...]", transport: AbstractTransport
     ):
         if transportDomain in self.__transports:
             raise error.CarrierError(f"Transport {transportDomain} already registered")
@@ -196,14 +201,14 @@ class AbstractTransportDispatcher:
         self.__transports[transportDomain] = transport
         self.__transportDomainMap[transport] = transportDomain
 
-    def unregisterTransport(self, tDomain: Tuple[int, ...]):
+    def unregisterTransport(self, tDomain: "tuple[int, ...]"):
         if tDomain not in self.__transports:
             raise error.CarrierError(f"Transport {tDomain} not registered")
         self.__transports[tDomain].unregisterCbFun()
         del self.__transportDomainMap[self.__transports[tDomain]]
         del self.__transports[tDomain]
 
-    def getTransport(self, transportDomain: Tuple[int, ...]):
+    def getTransport(self, transportDomain: "tuple[int, ...]"):
         if transportDomain in self.__transports:
             return self.__transports[transportDomain]
         raise error.CarrierError(f"Transport {transportDomain} not registered")
@@ -211,7 +216,7 @@ class AbstractTransportDispatcher:
     def sendMessage(
         self,
         outgoingMessage,
-        transportDomain: Tuple[int, ...],
+        transportDomain: "tuple[int, ...]",
         transportAddress: AbstractTransportAddress,
     ):
         if transportDomain in self.__transports:

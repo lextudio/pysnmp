@@ -23,7 +23,11 @@ class MsgAndPduDispatcher:
     applications and serialized messages with transport level.
     """
 
-    def __init__(self, mibInstrumController=None):
+    mibInstrumController: instrum.MibInstrumController
+
+    def __init__(
+        self, mibInstrumController: "instrum.MibInstrumController | None" = None
+    ):
         if mibInstrumController is None:
             self.mibInstrumController = instrum.MibInstrumController(
                 builder.MibBuilder()
