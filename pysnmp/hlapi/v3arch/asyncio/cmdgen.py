@@ -44,6 +44,7 @@ from pysnmp.hlapi.v3arch.asyncio.transport import *
 from pysnmp.entity.rfc3413 import cmdgen
 from pysnmp.proto import errind
 from pysnmp.proto.api import v2c
+from pysnmp.proto.rfc1902 import Integer32
 from pysnmp.smi.rfc1902 import *
 
 __all__ = ["getCmd", "nextCmd", "setCmd", "bulkCmd", "isEndOfMib"]
@@ -61,7 +62,7 @@ async def getCmd(
     contextData: ContextData,
     *varBinds,
     **options
-) -> "tuple[errind.ErrorIndication, int, int, tuple[ObjectType]]":
+) -> "tuple[errind.ErrorIndication, Integer32 | int, Integer32 | int, tuple[ObjectType]]":
     r"""Creates a generator to perform SNMP GET query.
 
     When iterator gets advanced by :py:mod:`asyncio` main loop,
@@ -137,9 +138,9 @@ async def getCmd(
     def __cbFun(
         snmpEngine,
         sendRequestHandle,
-        errorIndication,
-        errorStatus,
-        errorIndex,
+        errorIndication: errind.ErrorIndication,
+        errorStatus: "Integer32 | int",
+        errorIndex: "Integer32 | int",
         varBinds,
         cbCtx,
     ):
@@ -186,7 +187,7 @@ async def setCmd(
     contextData: ContextData,
     *varBinds,
     **options
-) -> "tuple[errind.ErrorIndication, int, int, tuple[ObjectType]]":
+) -> "tuple[errind.ErrorIndication, Integer32 | int, Integer32 | int, tuple[ObjectType]]":
     r"""Creates a generator to perform SNMP SET query.
 
     When iterator gets advanced by :py:mod:`asyncio` main loop,
@@ -262,9 +263,9 @@ async def setCmd(
     def __cbFun(
         snmpEngine,
         sendRequestHandle,
-        errorIndication,
-        errorStatus,
-        errorIndex,
+        errorIndication: errind.ErrorIndication,
+        errorStatus: "Integer32 | int",
+        errorIndex: "Integer32 | int",
         varBinds,
         cbCtx,
     ):
@@ -311,7 +312,7 @@ async def nextCmd(
     contextData: ContextData,
     *varBinds,
     **options
-) -> "tuple[errind.ErrorIndication, int, int, tuple[ObjectType]]":
+) -> "tuple[errind.ErrorIndication, Integer32 | int, Integer32 | int, tuple[ObjectType]]":
     r"""Creates a generator to perform SNMP GETNEXT query.
 
     When iterator gets advanced by :py:mod:`asyncio` main loop,
@@ -391,16 +392,21 @@ async def nextCmd(
     def __cbFun(
         snmpEngine,
         sendRequestHandle,
-        errorIndication,
-        errorStatus,
-        errorIndex,
+        errorIndication: errind.ErrorIndication,
+        errorStatus: "Integer32 | int",
+        errorIndex: "Integer32 | int",
         varBindTable,
         cbCtx,
     ):
         lookupMib, future = cbCtx
         if future.cancelled():
             return
-
+        if (
+            options.get("ignoreNonIncreasingOid", False)
+            and errorIndication
+            and isinstance(errorIndication, errind.OidNotIncreasing)
+        ):
+            errorIndication = None  # TODO: fix this
         try:
             varBindsUnmade = [
                 VB_PROCESSOR.unmakeVarBinds(
@@ -444,7 +450,7 @@ async def bulkCmd(
     maxRepetitions,
     *varBinds,
     **options
-) -> "tuple[errind.ErrorIndication, int, int, tuple[ObjectType]]":
+) -> "tuple[errind.ErrorIndication, Integer32 | int, Integer32 | int, tuple[ObjectType]]":
     r"""Creates a generator to perform SNMP GETBULK query.
 
     When iterator gets advanced by :py:mod:`asyncio` main loop,
@@ -553,9 +559,9 @@ async def bulkCmd(
     def __cbFun(
         snmpEngine,
         sendRequestHandle,
-        errorIndication,
-        errorStatus,
-        errorIndex,
+        errorIndication: errind.ErrorIndication,
+        errorStatus: "Integer32 | int",
+        errorIndex: "Integer32 | int",
         varBindTable,
         cbCtx,
     ):
@@ -563,7 +569,12 @@ async def bulkCmd(
 
         if future.cancelled():
             return
-
+        if (
+            options.get("ignoreNonIncreasingOid", False)
+            and errorIndication
+            and isinstance(errorIndication, errind.OidNotIncreasing)
+        ):
+            errorIndication = None  # TODO: fix here
         try:
             varBindsUnmade = [
                 VB_PROCESSOR.unmakeVarBinds(
