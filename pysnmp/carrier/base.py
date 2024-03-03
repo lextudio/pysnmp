@@ -85,10 +85,10 @@ class AbstractTransport:
 
     # Public API
 
-    def openClientMode(self, iface=None):
+    def openClientMode(self, iface: "tuple[str, int] | None" = None):
         raise error.CarrierError("Method not implemented")
 
-    def openServerMode(self, iface):
+    def openServerMode(self, iface: "tuple[str, int]"):
         raise error.CarrierError("Method not implemented")
 
     def sendMessage(self, outgoingMessage, transportAddress: AbstractTransportAddress):

@@ -222,7 +222,7 @@ class SnmpEngine:
             transportDispatcher.registerTimerCbFun(self.__receiveTimerTickCbFun)
             self.transportDispatcher = transportDispatcher
 
-    def unregisterTransportDispatcher(self, recvId: "tuple[int, ...]"):
+    def unregisterTransportDispatcher(self, recvId: "tuple[int, ...] | None" = None):
         if self.transportDispatcher is None:
             raise error.PySnmpError("Transport dispatcher not registered")
 
