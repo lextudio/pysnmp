@@ -1,17 +1,17 @@
 .. toctree::
 
 .. _LeXtudio Inc.: https://www.lextudio.com
-.. _PyPI package: http://pypi.python.org/pypi/pysnmp-lextudio
-.. _GitHub repository: https://github.com/lextudio/pysnmp
+.. _PySNMP PyPI package: http://pypi.python.org/pypi/pysnmp-lextudio
+.. _PySNMP GitHub repository: https://github.com/lextudio/pysnmp
 .. _GitHub issue: https://github.com/lextudio/pysnmp/issues/new
 .. _Stack Overflow: http://stackoverflow.com/questions/tagged/pysnmp
 .. _demo.pysnmp.com: https://www.pysnmp.com/snmp-simulation-service#
-.. _mibs.pysnmp.com: https://github.com/lextudio/mibs.snmplabs.com/tree/master/asn1
+.. _mibs.pysnmp.com: https://mibs.pysnmp.com/
 .. _PySMI: https://www.pysnmp.com/pysmi/
 .. _SNMP Proxy Forwarder: https://www.pysnmp.com/snmpfwd/
 .. _snmpsim: https://www.pysnmp.com/snmpsim/
 .. _PyASN1: https://pyasn1.readthedocs.io/
-.. _mibdump: https://www.pysnmp.com/pysmi/mibdump
+.. _mibdump: https://www.pysnmp.com/pysmi/docs/mibdump
 .. _command line tools: https://www.pysnmp.com/snmpclitools/
 .. _Python: https://www.python.org/
 .. _SNMP: https://en.wikipedia.org/wiki/Simple_Network_Management_Protocol

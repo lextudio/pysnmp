@@ -30,7 +30,7 @@ They may be useful in a cross-platform situations as well as a testing
 and prototyping instrument for pysnmp users.
 
 PySNMP software is free and open-source. Source code is hosted in
-a `Github repository`_.
+the `PySNMP Github repository`_.
 The library is being distributed under 2-clause BSD-style license.
 
 PySNMP library development has been initially sponsored
@@ -85,7 +85,7 @@ Best way is usually to
 
 .. code-block:: bash
 
-   # pip install pysnmp-lextudio
+   pip install pysnmp-lextudio
 
 If that does not work for you for some reason, you might need to read the
 following page.
