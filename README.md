@@ -161,7 +161,7 @@ SNMPv2-MIB::snmpTrapOID.0 = SNMPv2-MIB::warmStart
 SNMPv2-MIB::sysName.0 = system name
 ```
 
-Other than that, PySNMP is capable to automatically fetch and use required MIBs from HTTP, FTP sites
+Other than that, PySNMP is capable to automatically fetch and use required MIBs from HTTP sites
 or local directories. You could configure any MIB source available to you (including
 [this one](https://github.com/lextudio/mibs.snmplabs.com/tree/master/asn1)) for that purpose.
 
