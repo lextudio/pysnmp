@@ -6,10 +6,10 @@ Agent side
 
 .. include:: /../../examples/smi/agent/custom-managed-object.py
    :start-after: """
-   :end-before: """#
+   :end-before: """  #
 
 .. literalinclude:: /../../examples/smi/agent/custom-managed-object.py
-   :start-after: """#
+   :start-after: """  #
    :language: python
 
 :download:`Download</../../examples/smi/agent/custom-managed-object.py>` script.
@@ -17,10 +17,10 @@ Agent side
 
 .. include:: /../../examples/smi/agent/operations-on-managed-objects.py
    :start-after: """
-   :end-before: """#
+   :end-before: """  #
 
 .. literalinclude:: /../../examples/smi/agent/operations-on-managed-objects.py
-   :start-after: """#
+   :start-after: """  #
    :language: python
 
 :download:`Download</../../examples/smi/agent/operations-on-managed-objects.py>` script.

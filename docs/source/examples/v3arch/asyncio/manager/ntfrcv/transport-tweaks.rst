@@ -6,10 +6,10 @@ Transport tweaks
 
 .. include:: /../../examples/v3arch/asyncio/manager/ntfrcv/multiple-network-interfaces.py
    :start-after: """
-   :end-before: """#
+   :end-before: """  #
 
 .. literalinclude:: /../../examples/v3arch/asyncio/manager/ntfrcv/multiple-network-interfaces.py
-   :start-after: """#
+   :start-after: """  #
    :language: python
 
 :download:`Download</../../examples/v3arch/asyncio/manager/ntfrcv/multiple-network-interfaces.py>` script.

@@ -6,10 +6,10 @@ MIB walking operations
 
 .. include:: /../../examples/v1arch/asyncio/manager/cmdgen/getnext-pull-whole-mib.py
    :start-after: """
-   :end-before: """#
+   :end-before: """  #
 
 .. literalinclude:: /../../examples/v1arch/asyncio/manager/cmdgen/getnext-pull-whole-mib.py
-   :start-after: """#
+   :start-after: """  #
    :language: python
 
 :download:`Download</../../examples/v1arch/asyncio/manager/cmdgen/getnext-pull-whole-mib.py>` script.
@@ -17,10 +17,10 @@ MIB walking operations
 
 .. include:: /../../examples/v1arch/asyncio/manager/cmdgen/getbulk-pull-whole-mib.py
    :start-after: """
-   :end-before: """#
+   :end-before: """  #
 
 .. literalinclude:: /../../examples/v1arch/asyncio/manager/cmdgen/getbulk-pull-whole-mib.py
-   :start-after: """#
+   :start-after: """  #
    :language: python
 
 :download:`Download</../../examples/v1arch/asyncio/manager/cmdgen/getbulk-pull-whole-mib.py>` script.

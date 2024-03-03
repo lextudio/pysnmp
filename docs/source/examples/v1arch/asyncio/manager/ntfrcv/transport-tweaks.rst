@@ -6,10 +6,10 @@ Transport tweaks
 
 .. include:: /../../examples/v1arch/asyncio/manager/ntfrcv/listen-on-ipv4-and-ipv6-interfaces.py
    :start-after: """
-   :end-before: """#
+   :end-before: """  #
 
 .. literalinclude:: /../../examples/v1arch/asyncio/manager/ntfrcv/listen-on-ipv4-and-ipv6-interfaces.py
-   :start-after: """#
+   :start-after: """  #
    :language: python
 
 :download:`Download</../../examples/v1arch/asyncio/manager/ntfrcv/listen-on-ipv4-and-ipv6-interfaces.py>` script.

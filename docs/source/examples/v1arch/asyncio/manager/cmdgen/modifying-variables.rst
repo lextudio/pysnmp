@@ -6,10 +6,10 @@ Modifying variables
 
 .. include:: /../../examples/v1arch/asyncio/manager/cmdgen/v2c-set.py
    :start-after: """
-   :end-before: """#
+   :end-before: """  #
 
 .. literalinclude:: /../../examples/v1arch/asyncio/manager/cmdgen/v2c-set.py
-   :start-after: """#
+   :start-after: """  #
    :language: python
 
 :download:`Download</../../examples/v1arch/asyncio/manager/cmdgen/v2c-set.py>` script.

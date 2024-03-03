@@ -17,7 +17,7 @@ A. Starting from PySNMP 4.3.x, plain-text (ASN.1) MIBs can be
    MIB files at `mibs.pysnmp.com`_ as shown below.
 
 .. literalinclude:: /../../examples/hlapi/asyncio/manager/cmdgen/custom-asn1-mib-search-path.py
-   :start-after: """#
+   :start-after: """  #
    :language: python
 
 .. code:

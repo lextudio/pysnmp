@@ -62,7 +62,7 @@ Next, let's write some test script and play with PySNMP manager side operations.
 #. Cut and paste the following contents below into this file,
 
    .. literalinclude:: /../../examples/hlapi/asyncio/manager/cmdgen/v1-get.py
-      :start-after: """#
+      :start-after: """  #
       :language: python
 
    :download:`Download</../../examples/hlapi/asyncio/manager/cmdgen/v1-get.py>` script.
@@ -98,7 +98,7 @@ Similarly we can perform agent side operations with PySNMP.
 #. Cut and paste the following contents below into this file,
 
    .. literalinclude:: /../../examples/hlapi/asyncio/agent/ntforg/default-v1-trap.py
-      :start-after: """#
+      :start-after: """  #
       :language: python
 
    :download:`Download</../../examples/hlapi/asyncio/agent/ntforg/default-v1-trap.py>` script.
