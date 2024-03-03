@@ -7,14 +7,16 @@ variable-bindings into MIB objects or the other way around.
 
 The code that configures MIB compiler is similar to what
 happens inside the pysnmp.hlapi API.
-"""#
+"""  #
 from pysnmp.smi import builder, view, compiler, rfc1902
 
 # Assemble MIB browser
 mibBuilder = builder.MibBuilder()
 mibViewController = view.MibViewController(mibBuilder)
-compiler.addMibCompiler(mibBuilder, sources=['file:///usr/share/snmp/mibs',
-                                             'https://mibs.pysnmp.com/asn1/@mib@'])
+compiler.addMibCompiler(
+    mibBuilder,
+    sources=["file:///usr/share/snmp/mibs", "https://mibs.pysnmp.com/asn1/@mib@"],
+)
 
 # Pre-load MIB modules we expect to work with
 mibBuilder.loadModules('SNMPv2-MIB', 'SNMP-COMMUNITY-MIB')

@@ -15,10 +15,10 @@ Either of the following Net-SNMP commands will walk this Agent:
 | $ snmpwalk -v2c -c public 127.0.0.1 .1.3.6
 | $ snmpwalk -v2c -c public udp6:[::1] .1.3.6
 
-The Command Receiver below uses two distinct transports for communication 
+The Command Receiver below uses two distinct transports for communication
 with Command Generators - UDP over IPv4 and UDP over IPv6.
 
-"""#
+"""  #
 from pysnmp.carrier.asyncio.dispatch import AsyncioDispatcher
 from pysnmp.carrier.asyncio.dgram import udp, udp6, unix
 from pyasn1.codec.ber import encoder, decoder

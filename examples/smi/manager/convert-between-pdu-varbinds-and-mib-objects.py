@@ -9,7 +9,7 @@ or the other way around.
 The code below does not explicitly add MIB compiler - that happens
 behind the scenes. Examples below try to demo different kinds
 of MIB objects to work with.
-"""#
+"""  #
 from pysnmp.smi import builder, view, rfc1902, error
 
 # MIB Builder manages pysnmp MIBs
@@ -25,7 +25,7 @@ mibVar = rfc1902.ObjectIdentity('IF-MIB', 'ifInOctets', 1)
 # create pysnmp MIBs on demand from ASN.1 sources downloaded from
 # a web site.
 try:
-    mibVar.addAsn1MibSource('https://mibs.pysnmp.com/asn1/@mib@')
+    mibVar.addAsn1MibSource("https://mibs.pysnmp.com/asn1/@mib@")
 except error.SmiError:
     print('WARNING: not using MIB compiler (PySMI not installed)')
 

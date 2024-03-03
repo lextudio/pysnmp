@@ -16,7 +16,7 @@ Functionally similar to:
 | $ snmpbulkwalk -v3 -lnoAuthNoPriv -u usr-none-none -Cn0 -Cr50 \
 |                localhost  SNMPv2-MIB::system
 
-"""#
+"""  #
 import asyncio
 from pysnmp.hlapi.v3arch.asyncio import *
 
@@ -27,8 +27,8 @@ async def run(varBinds):
     while True:
         errorIndication, errorStatus, errorIndex, varBindTable = await bulkCmd(
             snmpEngine,
-            CommunityData('public'),
-            UdpTransportTarget(('localhost', 161)),
+            UsmUserData("usr-none-none"),
+            UdpTransportTarget(("demo.pysnmp.com", 161)),
             ContextData(),
             0,
             50,

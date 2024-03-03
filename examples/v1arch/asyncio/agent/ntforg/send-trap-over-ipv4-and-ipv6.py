@@ -2,7 +2,7 @@
 TRAP over multiple transports
 +++++++++++++++++++++++++++++
 
-The following script sends two SNMP TRAP notification using the 
+The following script sends two SNMP TRAP notification using the
 following options:
 
 * with SNMPv1
@@ -21,7 +21,7 @@ The following Net-SNMP commands will produce similar SNMP notification:
 | $ snmptrap -v1 -c public udp:demo.pysnmp.com 1.3.6.1.4.1.20408.4.1.1.2 127.0.0.1 1 0 12345
 | $ snmptrap -v1 -c public udp6:[::1] 1.3.6.1.4.1.20408.4.1.1.2 127.0.0.1 1 0 12345
 
-"""#
+"""  #
 from pysnmp.carrier.asyncio.dispatch import AsyncioDispatcher
 from pysnmp.carrier.asyncio.dgram import udp, udp6
 from pyasn1.codec.ber import encoder

@@ -11,7 +11,7 @@ This script performs similar to the following Net-SNMP command:
 
 | $ snmpget -v1 -c public -ObentU 127.0.0.1 1.3.6.1.2.1.1.1.0
 
-"""#
+"""  #
 from pysnmp.entity import engine, config
 from pysnmp.carrier.asyncio.dgram import udp
 from pysnmp.entity.rfc3413 import cmdgen

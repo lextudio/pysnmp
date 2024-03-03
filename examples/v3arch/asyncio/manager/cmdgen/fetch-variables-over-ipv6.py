@@ -14,7 +14,7 @@ This script performs similar to the following Net-SNMP command:
 
 | $ snmpwalk -v3 -l authNoPriv -u usr-md5-none -A authkey1 -ObentU udp6:[::1]:161 1.3.6.1.2.1.1 1.3.6.1.4.1.1
 
-"""#
+"""  #
 from pysnmp.entity import engine, config
 from pysnmp.carrier.asyncio.dgram import udp6
 from pysnmp.entity.rfc3413 import cmdgen

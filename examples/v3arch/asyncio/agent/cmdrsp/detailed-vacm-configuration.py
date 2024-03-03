@@ -7,7 +7,7 @@ Serves MIB subtrees under different conditions:
 * Respond to SNMPv2c commands
 * with SNMP community "public"
 * over IPv4/UDP, listening at 127.0.0.1:161
-* Serve MIB under non-default contextName `abcd` 
+* Serve MIB under non-default contextName `abcd`
 * Allow access to `SNMPv2-MIB::system` subtree
 * Although deny access to `SNMPv2-MIB::sysUpTime` by a bit mask
 * Use partial context name matching (`a`)
@@ -29,7 +29,7 @@ However this command will fail:
 This command will not reveal `SNMPv2-MIB::sysUpTime.0` among other objects:
 
 | $ snmpwalk -v2c -c public 127.0.0.1 SNMPv2-MIB::system
-"""#
+"""  #
 from pysnmp.entity import engine, config
 from pysnmp.entity.rfc3413 import cmdrsp, context
 from pysnmp.carrier.asyncio.dgram import udp

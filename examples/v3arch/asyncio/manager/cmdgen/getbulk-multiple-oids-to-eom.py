@@ -14,7 +14,7 @@ This script performs similar to the following Net-SNMP command:
 
 | $ snmpbulkwalk -v2c -c public -C n0 -C r25 -ObentU 127.0.0.1 1.3.6.1.2.1.1 1.3.6.1.4.1.1
 
-"""#
+"""  #
 from pysnmp.entity import engine, config
 from pysnmp.entity.rfc3413 import cmdgen
 from pysnmp.carrier.asyncio.dgram import udp

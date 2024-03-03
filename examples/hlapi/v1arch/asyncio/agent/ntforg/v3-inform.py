@@ -10,38 +10,40 @@ Send SNMP INFORM notification using the following options:
 * include managed object information 1.3.6.1.2.1.1.5.0 = 'system name'
 Functionally similar to:
 | $ snmpinform -v3 -l authPriv -u usr-md5-des -A authkey1 -X privkey1 demo.pysnmp.com 12345 1.3.6.1.4.1.20408.4.1.1.2 1.3.6.1.2.1.1.1.0 s "my system"
-"""#
+"""  #
 
 import asyncio
 from pysnmp.hlapi import *
 from pysnmp.hlapi.asyncio.ntforg import sendNotification
 from pysnmp.hlapi.asyncio.transport import UdpTransportTarget
 
+
 async def run():
     errorIndication, errorStatus, errorIndex, varBinds = await sendNotification(
         SnmpEngine(),
-        UsmUserData('usr-md5-des', 'authkey1', 'privkey1'),
-        UdpTransportTarget(('demo.pysnmp.com', 162)),
+        UsmUserData("usr-md5-des", "authkey1", "privkey1"),
+        UdpTransportTarget(("demo.pysnmp.com", 162)),
         ContextData(),
-        'inform',
-        NotificationType(
-            ObjectIdentity('1.3.6.1.6.3.1.1.5.2')
-        ).addVarBinds(
-            ObjectType(ObjectIdentity('1.3.6.1.2.1.1.5.0'), 'system name')
-        ).loadMibs(
-            'SNMPv2-MIB'
-        )
+        "inform",
+        NotificationType(ObjectIdentity("1.3.6.1.6.3.1.1.5.2"))
+        .addVarBinds(ObjectType(ObjectIdentity("1.3.6.1.2.1.1.5.0"), "system name"))
+        .loadMibs("SNMPv2-MIB"),
     )
 
     if errorIndication:
         print(errorIndication)
 
     elif errorStatus:
-        print('%s at %s' % (errorStatus.prettyPrint(),
-                            errorIndex and varBinds[int(errorIndex) - 1][0] or '?'))
+        print(
+            "{} at {}".format(
+                errorStatus.prettyPrint(),
+                errorIndex and varBinds[int(errorIndex) - 1][0] or "?",
+            )
+        )
 
     else:
         for varBind in varBinds:
-            print(' = '.join([x.prettyPrint() for x in varBind]))
+            print(" = ".join([x.prettyPrint() for x in varBind]))
+
 
 asyncio.run(run())

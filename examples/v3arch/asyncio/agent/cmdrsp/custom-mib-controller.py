@@ -7,7 +7,7 @@ the following options:
 
 * SNMPv3
 * with USM username usr-none-none
-* using alternative set of Managed Objects addressed by 
+* using alternative set of Managed Objects addressed by
   contextName: my-context
 * allow access to SNMPv2-MIB objects (1.3.6.1.2.1)
 * over IPv4/UDP, listening at 127.0.0.1:161
@@ -16,7 +16,7 @@ The following Net-SNMP command will send GET request to this Agent:
 
 | $ snmpget -v3 -u usr-none-none -l noAuthNoPriv -n my-context -Ir 127.0.0.1 sysDescr.0
 
-"""#
+"""  #
 from pysnmp.entity import engine, config
 from pysnmp.entity.rfc3413 import cmdrsp, context
 from pysnmp.carrier.asyncio.dgram import udp

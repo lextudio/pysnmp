@@ -18,7 +18,7 @@ Functionally similar to:
 
 | $ snmptrap -v2c -c public 127.0.0.1 12345 1.3.6.1.4.1.20408.4.1.1.2
 
-"""#
+"""  #
 from pysnmp.entity import engine, config
 from pysnmp.carrier.asyncio.dgram import udp
 from pysnmp.entity.rfc3413 import ntforg

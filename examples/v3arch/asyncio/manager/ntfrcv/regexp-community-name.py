@@ -24,7 +24,7 @@ Engine, and may modify it to match the only locally configured CommunityName
 'public'. This effectively makes NotificationReceiver accepting messages with
 CommunityName's, not explicitly configured to local SNMP Engine.
 
-"""#
+"""  #
 from pysnmp.entity import engine, config
 from pysnmp.carrier.asyncio.dgram import udp
 from pysnmp.entity.rfc3413 import ntfrcv

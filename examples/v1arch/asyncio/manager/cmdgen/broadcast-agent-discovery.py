@@ -9,9 +9,9 @@ Send SNMP GET request to broadcast address and wait for respons(es):
 * to all Agents via broadcast address 255.255.255.255:161
 * for OIDs in tuple form
 
-Here we send out a single SNMP request and wait for potentially many SNMP 
+Here we send out a single SNMP request and wait for potentially many SNMP
 responses from multiple SNMP Agents listening in local broadcast domain.
-Since we can't predict the exact number of Agents responding, this script 
+Since we can't predict the exact number of Agents responding, this script
 just waits for arbitrary time for collecting all responses. This technology
 is also known as SNMP-based discovery.
 
@@ -19,7 +19,7 @@ This script performs similar to the following Net-SNMP command:
 
 | $ snmpget -v2c -c public -ObentU 255.255.255.255 1.3.6.1.2.1.1.1.0 1.3.6.1.2.1.1.3.0
 
-"""#
+"""  #
 from pysnmp.carrier.asyncio.dispatch import AsyncioDispatcher
 from pysnmp.carrier.asyncio.dgram import udp
 from pyasn1.codec.ber import encoder, decoder
@@ -46,6 +46,7 @@ reqMsg = pMod.Message()
 pMod.apiMessage.setDefaults(reqMsg)
 pMod.apiMessage.setCommunity(reqMsg, 'public')
 pMod.apiMessage.setPDU(reqMsg, reqPDU)
+
 
 # noinspection PyUnusedLocal,PyUnusedLocal
 def cbRecvFun(transportDispatcher, transportDomain, transportAddress,

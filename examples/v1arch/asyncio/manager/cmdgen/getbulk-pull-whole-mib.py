@@ -14,7 +14,7 @@ This script performs similar to the following Net-SNMP command:
 
 | $ snmpbulkwalk -v2c -c public -ObentU -Cn0 -Cr25 demo.pysnmp.com 1.3.6
 
-"""#
+"""  #
 from pysnmp.carrier.asyncio.dispatch import AsyncioDispatcher
 from pysnmp.carrier.asyncio.dgram import udp
 from pyasn1.codec.ber import encoder, decoder
@@ -33,13 +33,19 @@ v2c.apiBulkPDU.setVarBinds(reqPDU, [(x, v2c.null) for x in headVars])
 # Build message
 reqMsg = v2c.Message()
 v2c.apiMessage.setDefaults(reqMsg)
-v2c.apiMessage.setCommunity(reqMsg, 'public')
+v2c.apiMessage.setCommunity(reqMsg, "public")
 v2c.apiMessage.setPDU(reqMsg, reqPDU)
 
-# noinspection PyUnusedLocal
-def cbRecvFun(transportDispatcher, transportDomain, transportAddress,
-              wholeMsg, reqPDU=reqPDU, headVars=headVars):
 
+# noinspection PyUnusedLocal
+def cbRecvFun(
+    transportDispatcher,
+    transportDomain,
+    transportAddress,
+    wholeMsg,
+    reqPDU=reqPDU,
+    headVars=headVars,
+):
     while wholeMsg:
         rspMsg, wholeMsg = decoder.decode(wholeMsg, asn1Spec=v2c.Message())
 
@@ -54,17 +60,23 @@ def cbRecvFun(transportDispatcher, transportDomain, transportAddress,
             errorStatus = v2c.apiBulkPDU.getErrorStatus(rspPDU)
             if errorStatus and errorStatus != 2:
                 errorIndex = v2c.apiBulkPDU.getErrorIndex(rspPDU)
-                print('%s at %s' % (errorStatus.prettyPrint(),
-                                    errorIndex and varBindTable[int(errorIndex) - 1] or '?'))
+                print(
+                    "{} at {}".format(
+                        errorStatus.prettyPrint(),
+                        errorIndex and varBindTable[int(errorIndex) - 1] or "?",
+                    )
+                )
                 transportDispatcher.jobFinished(1)
                 break
 
             # Report SNMP table
             for tableRow in varBindTable:
                 for name, val in tableRow:
-                    print('from: %s, %s = %s' % (transportAddress,
-                                                 name.prettyPrint(),
-                                                 val.prettyPrint()))
+                    print(
+                        "from: {}, {} = {}".format(
+                            transportAddress, name.prettyPrint(), val.prettyPrint()
+                        )
+                    )
 
             # Stop on EOM
             for oid, val in varBindTable[-1]:

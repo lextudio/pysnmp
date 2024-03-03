@@ -16,7 +16,7 @@ The following Net-SNMP command will produce similar SNMP notification:
 | $ snmpinform -v2c -c public udp:demo.pysnmp.com 0 1.3.6.1.6.3.1.1.5.1
 | $ snmpinform -v2c -c public udp6:[::1] 0 1.3.6.1.6.3.1.1.5.1
 
-"""#
+"""  #
 from pysnmp.carrier.asyncio.dispatch import AsyncioDispatcher
 from pysnmp.carrier.asyncio.dgram import udp, udp6
 from pyasn1.codec.ber import encoder, decoder
@@ -31,6 +31,7 @@ trapMsg = pMod.Message()
 pMod.apiMessage.setDefaults(trapMsg)
 pMod.apiMessage.setCommunity(trapMsg, 'public')
 pMod.apiMessage.setPDU(trapMsg, reqPDU)
+
 
 # noinspection PyUnusedLocal,PyUnusedLocal
 def cbRecvFun(
