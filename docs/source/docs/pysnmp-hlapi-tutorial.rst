@@ -266,12 +266,12 @@ out, response is awaited, received and parsed.
 
    >>> from pysnmp.hlapi import *
    >>>
-   >>> g = getCmd(SnmpEngine(),
+   >>> g = await getCmd(SnmpEngine(),
    ...            CommunityData('public'),
    ...            UdpTransportTarget(('demo.pysnmp.com', 161)),
    ...            ContextData(),
    ...            ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysUpTime', 0)))
-   >>> next(g)
+   >>> g
    (None, 0, 0, [ObjectType(ObjectIdentity('1.3.6.1.2.1.1.3.0'), TimeTicks(44430646))])
 
 Working with SNMP Tables
@@ -362,14 +362,14 @@ Let's read TCP-MIB::tcpConnectionState object for a TCP connection:
 
    >>> from pysnmp.hlapi import *
    >>>
-   >>> g = getCmd(SnmpEngine(),
+   >>> g = await getCmd(SnmpEngine(),
    ...            CommunityData('public'),
    ...            UdpTransportTarget(('demo.pysnmp.com', 161)),
    ...            ContextData(),
    ...            ObjectType(ObjectIdentity('TCP-MIB', 'tcpConnectionState',
    ...                                      'ipv4', '195.218.254.105', 41511,
    ...                                      'ipv4', '194.67.1.250', 993)
-   >>> next(g)
+   >>> g
    (None, 0, 0, [ObjectType(ObjectIdentity(ObjectName('1.3.6.1.2.1.6.19.1.7.1.4.195.218.254.105.41511.1.4.194.67.1.250.993')), Integer(5))])
 
 SNMP Command Operations
@@ -384,14 +384,14 @@ function.
 .. code-block:: python
 
    >>> from pysnmp.hlapi import *
-   >>> g = nextCmd(SnmpEngine(),
+   >>> g = await nextCmd(SnmpEngine(),
    ...             CommunityData('public'),
    ...             UdpTransportTarget(('demo.pysnmp.com', 161)),
    ...             ContextData(),
    ...             ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr')))
-   >>> next(g)
+   >>> g
    (None, 0, 0, [ObjectType(ObjectIdentity('1.3.6.1.2.1.1.1.0'), DisplayString('SunOS zeus.pysnmp.com'))])
-   >>> next(g)
+   >>> g
    (None, 0, 0, [ObjectType(ObjectIdentity('1.3.6.1.2.1.1.2.0'), ObjectIdentity(ObjectIdentifier('1.3.6.1.4.1.8072.3.2.10')))])
 
 Iteration over the generator object "walk" over SNMP agent's MIB objects.
@@ -411,16 +411,16 @@ API as *getNext()* for convenience.
    >>> from pysnmp.hlapi import *
    >>>
    >>> N, R = 0, 25
-   >>> g = bulkCmd(SnmpEngine(),
+   >>> g = await bulkCmd(SnmpEngine(),
    ...             CommunityData('public'),
    ...             UdpTransportTarget(('demo.pysnmp.com', 161)),
    ...             ContextData(),
    ...             N, R,
    ...             ObjectType(ObjectIdentity('1.3.6')))
    >>>
-   >>> next(g)
+   >>> g
    (None, 0, 0, [ObjectType(ObjectIdentity('1.3.6.1.2.1.1.1.0'), DisplayString('SunOS zeus.pysnmp.com'))])
-   >>> next(g)
+   >>> g
    (None, 0, 0, [ObjectType(ObjectIdentity('1.3.6.1.2.1.1.2.0'), ObjectIdentifier('1.3.6.1.4.1.20408'))])
 
 Python generators can not only produce data, but it is also possible
@@ -432,7 +432,7 @@ of MIB objects.
 
    >>> from pysnmp.hlapi import *
    >>>
-   >>> g = nextCmd(SnmpEngine(),
+   >>> g = await nextCmd(SnmpEngine(),
    ...             CommunityData('public'),
    ...             UdpTransportTarget(('demo.pysnmp.com', 161)),
    ...             ContextData(),
@@ -449,14 +449,14 @@ values in exactly the same order as they were in request message.
 
    >>> from pysnmp.hlapi import *
    >>>
-   >>> g = getCmd(SnmpEngine(),
+   >>> g = await getCmd(SnmpEngine(),
    ...            CommunityData('public'),
    ...            UdpTransportTarget(('demo.pysnmp.com', 161)),
    ...            ContextData(),
    ...            ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0)),
    ...            ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysUpTime', 0))
    ... )
-   >>> next(g)
+   >>> g
    (None, 0, 0, [ObjectType(ObjectIdentity('1.3.6.1.2.1.1.1.0'), DisplayString('SunOS zeus.pysnmp.com')), ObjectType(ObjectIdentity('1.3.6.1.2.1.1.3.0'), TimeTicks(44430646))])
 
 Configuration management part of SNMP relies on SNMP *SET* command.
@@ -472,13 +472,13 @@ function.
 
    >>> from pysnmp.hlapi import *
    >>>
-   >>> g = setCmd(SnmpEngine(),
+   >>> g = await setCmd(SnmpEngine(),
    ...            CommunityData('public'),
    ...            UdpTransportTarget(('demo.pysnmp.com', 161)),
    ...            ContextData(),
    ...            ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0), 'Linux i386')
    ... )
-   >>> next(g)
+   >>> g
    (None, 0, 0, [ObjectType(ObjectIdentity('1.3.6.1.2.1.1.1.0'), DisplayString('Linux i386'))])
 
 Sending SNMP Notifications
@@ -536,14 +536,14 @@ or acknowledgement is sent.
 
    >>> from pysnmp.hlapi import *
    >>>
-   >>> g = sendNotification(SnmpEngine(),
+   >>> g = await sendNotification(SnmpEngine(),
    ...                      CommunityData('public'),
    ...                      UdpTransportTarget(('demo.pysnmp.com', 162)),
    ...                      ContextData(),
    ...                      'trap',
    ...                      NotificationType(ObjectIdentity('IF-MIB', 'linkUp'), instanceIndex=(123,))
    ... )
-   >>> next(g)
+   >>> g
    (None, 0, 0, [])
 
 The *inform* notification is much like a command. The difference is in
@@ -552,14 +552,14 @@ well as for agent-to-manager.
 
    >>> from pysnmp.hlapi import *
    >>>
-   >>> g = sendNotification(SnmpEngine(),
+   >>> g = await sendNotification(SnmpEngine(),
    ...                      CommunityData('public'),
    ...                      UdpTransportTarget(('demo.pysnmp.com', 162)),
    ...                      ContextData(),
    ...                      'inform',
    ...                      NotificationType(ObjectIdentity('IF-MIB', 'linkUp'), instanceIndex=(123,))
    ... )
-   >>> next(g)
+   >>> g
    (None, 0, 0, [ObjectType(ObjectIdentity('1.3.6.1.2.1.1.3.0'), TimeTicks(0)), ObjectType(ObjectIdentity('1.3.6.1.6.3.1.1.4.1.0'), ObjectIdentity('1.3.6.1.6.3.1.1.5.4')), ObjectType(ObjectName('1.3.6.1.2.1.2.2.1.1.123'), Null('')), ObjectType(ObjectIdentity('1.3.6.1.2.1.2.2.1.7.123'), Null('')), ObjectType(ObjectIdentity('1.3.6.1.2.1.2.2.1.8.123'), Null(''))])
 
 In the latter example you can see MIB objects (ifIndex, ifAdminStatus,
@@ -580,14 +580,14 @@ object OIDs to current values.
    ...        ObjectIdentifier('1.3.6.1.2.1.2.2.1.7.123'): 'testing',
    ...        ObjectIdentifier('1.3.6.1.2.1.2.2.1.8.123'): 'up'}
    >>>
-   >>> g = sendNotification(SnmpEngine(),
+   >>> g = await sendNotification(SnmpEngine(),
    ...                      CommunityData('public'),
    ...                      UdpTransportTarget(('demo.pysnmp.com', 162)),
    ...                      ContextData(),
    ...                      'inform',
    ...                      NotificationType(ObjectIdentity('IF-MIB', 'linkUp'), instanceIndex=(123,), objects=mib)
    ... )
-   >>> next(g)
+   >>> g
    (None, 0, 0, [ObjectType(ObjectIdentity('1.3.6.1.2.1.1.3.0'), TimeTicks(0)), ObjectType(ObjectIdentity('1.3.6.1.6.3.1.1.4.1.0'), ObjectIdentity('1.3.6.1.6.3.1.1.5.4')), ObjectType(ObjectName('1.3.6.1.2.1.2.2.1.1.123'), InterfaceIndex(123)), ObjectType(ObjectIdentity('1.3.6.1.2.1.2.2.1.7.123'), Integer(3)), ObjectType(ObjectIdentity('1.3.6.1.2.1.2.2.1.8.123'), Integer(1))])
 
 High-volume Messaging
