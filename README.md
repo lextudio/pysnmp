@@ -89,62 +89,54 @@ PySNMP is designed in a layered fashion. Top-level and easiest to use API is kno
 *hlapi*. Here's a quick example on how to SNMP GET:
 
 ```python
-import asyncio
-from pysnmp.hlapi.asyncio.slim import Slim
+from pysnmp.hlapi import *
 from pysnmp.smi.rfc1902 import ObjectIdentity, ObjectType
 
-async def run():
-    with Slim(1) as slim:
-        errorIndication, errorStatus, errorIndex, varBinds = await slim.get(
-            'public',
-            'demo.pysnmp.com',
-            161,
-            ObjectType(ObjectIdentity("SNMPv2-MIB", "sysDescr", 0)),
-        )
+with Slim(1) as slim:
+    errorIndication, errorStatus, errorIndex, varBinds = slim.get(
+        'public',
+        'demo.pysnmp.com',
+        161,
+        ObjectType(ObjectIdentity("SNMPv2-MIB", "sysDescr", 0)),
+    )
 
-        if errorIndication:
-            print(errorIndication)
-        elif errorStatus:
-            print(
-                "{} at {}".format(
-                    errorStatus.prettyPrint(),
-                    errorIndex and varBinds[int(errorIndex) - 1][0] or "?",
-                )
+    if errorIndication:
+        print(errorIndication)
+    elif errorStatus:
+        print(
+            "{} at {}".format(
+                errorStatus.prettyPrint(),
+                errorIndex and varBinds[int(errorIndex) - 1][0] or "?",
             )
-        else:
-            for varBind in varBinds:
-                print(" = ".join([x.prettyPrint() for x in varBind]))
-
-
-asyncio.run(run())
+        )
+    else:
+        for varBind in varBinds:
+            print(" = ".join([x.prettyPrint() for x in varBind]))
 ```
 
 This is how to send SNMP TRAP:
 
 ```python
-import asyncio
-from pysnmp.hlapi.asyncio import *
+from pysnmp.hlapi import *
 
-async def run():
-    snmpEngine = SnmpEngine()
-    errorIndication, errorStatus, errorIndex, varBinds = await sendNotification(
-        snmpEngine,
-        CommunityData('public', mpModel=0),
-        UdpTransportTarget(('demo.pysnmp.com', 162)),
-        ContextData(),
-        "trap",
-        NotificationType(ObjectIdentity("1.3.6.1.6.3.1.1.5.2")).addVarBinds(
-            ("1.3.6.1.6.3.1.1.4.3.0", "1.3.6.1.4.1.20408.4.1.1.2"),
-            ("1.3.6.1.2.1.1.1.0", OctetString("my system")),
-        ),
-    )
 
-    if errorIndication:
-        print(errorIndication)
+snmpEngine = SnmpEngine()
+errorIndication, errorStatus, errorIndex, varBinds = sendNotification(
+    snmpEngine,
+    CommunityData('public', mpModel=0),
+    UdpTransportTarget(('demo.pysnmp.com', 162)),
+    ContextData(),
+    "trap",
+    NotificationType(ObjectIdentity("1.3.6.1.6.3.1.1.5.2")).addVarBinds(
+        ("1.3.6.1.6.3.1.1.4.3.0", "1.3.6.1.4.1.20408.4.1.1.2"),
+        ("1.3.6.1.2.1.1.1.0", OctetString("my system")),
+    ),
+)
 
-    snmpEngine.transportDispatcher.closeDispatcher()
+if errorIndication:
+    print(errorIndication)
 
-asyncio.run(run())
+snmpEngine.transportDispatcher.closeDispatcher()
 ```
 
 > We maintain publicly available SNMP Agent and TRAP sink at
@@ -163,7 +155,7 @@ SNMPv2-MIB::sysName.0 = system name
 
 Other than that, PySNMP is capable to automatically fetch and use required MIBs from HTTP sites
 or local directories. You could configure any MIB source available to you (including
-[this one](https://github.com/lextudio/mibs.snmplabs.com/tree/master/asn1)) for that purpose.
+[this one](https://mibs.pysnmp.com)) for that purpose.
 
 For more sample scripts please refer to [examples section](https://www.pysnmp.com/pysnmp/examples/index.html#high-level-snmp)
 at PySNMP web site.
@@ -175,8 +167,7 @@ Library documentation and examples can be found at the [PySNMP docs site](https:
 
 If something does not work as expected, please
 [open an issue](https://github.com/lextudio/pysnmp/issues) at GitHub or
-post your question [on Stack Overflow](http://stackoverflow.com/questions/ask) or try browsing pysnmp
-[mailing list archives](https://sourceforge.net/p/pysnmp/mailman/pysnmp-users/).
+post your question [on Stack Overflow](http://stackoverflow.com/questions/ask).
 
 Bug reports and PRs are appreciated! ;-)
 

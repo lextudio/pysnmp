@@ -4,12 +4,14 @@
 # Copyright (c) 2005-2020, Ilya Etingof <etingof@gmail.com>
 # License: https://www.pysnmp.com/pysnmp/license.html
 #
+from pysnmp.entity import config
+from pysnmp import nextid, error
+from pysnmp.entity.engine import SnmpEngine
+from pysnmp.hlapi.v3arch.auth import *
+
 from pyasn1.compat.octets import null
 
-from pysnmp import error
-from pysnmp import nextid
-from pysnmp.entity import config
-from pysnmp.hlapi.v3arch.auth import *
+from pysnmp.hlapi.transport import AbstractTransportTarget
 
 __all__ = ["CommandGeneratorLcdConfigurator", "NotificationOriginatorLcdConfigurator"]
 
@@ -249,7 +251,13 @@ class NotificationOriginatorLcdConfigurator(AbstractLcdConfigurator):
     _cmdGenLcdCfg = CommandGeneratorLcdConfigurator()
 
     def configure(
-        self, snmpEngine, authData, transportTarget, notifyType, contextName, **options
+        self,
+        snmpEngine: SnmpEngine,
+        authData: "CommunityData | UsmUserData",
+        transportTarget: AbstractTransportTarget,
+        notifyType: str,
+        contextName=None,
+        **options,
     ):
         cache = self._getCache(snmpEngine)
 

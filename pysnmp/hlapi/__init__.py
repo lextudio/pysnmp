@@ -11,7 +11,7 @@ from pysnmp.hlapi.v3arch import auth
 from pysnmp.entity.engine import *
 
 # default is synchronous asyncio-based API
-from pysnmp.hlapi.asyncio import *
+from pysnmp.hlapi.asyncio.sync import *
 
 
 CommunityData = auth.CommunityData
