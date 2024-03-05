@@ -43,7 +43,7 @@ You already know something about SNMP and have no courage to dive into
 this implementation? Try out quick start page!
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    Return to PySNMP Homepage <https://pysnmp.com>
    /quick-start
@@ -65,7 +65,6 @@ We have a collection of sample scripts to help you get started with PySNMP.
 
 .. toctree::
    :maxdepth: 2
-
    /examples/index
 
 Troubleshooting
@@ -74,14 +73,14 @@ Troubleshooting
 If you are having trouble with PySNMP, please check the following section.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    /troubleshooting
 
 Downloads
 ---------
 
-Best way is usually to
+Best way is usually to install PySNMP using `PySNMP PyPI package`_.
 
 .. code-block:: bash
 
@@ -91,20 +90,24 @@ If that does not work for you for some reason, you might need to read the
 following page.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    /download
 
 License
 -------
 
+This library is distributed under 2-clause BSD-style license.
+
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    /license
 
 FAQ
 ---
+
+We have a collection of frequently asked questions.
 
 .. toctree::
    :maxdepth: 2
@@ -121,14 +124,6 @@ We fanatically document all fixes, changes and new features in changelog.
 
    /changelog
 
-Our development plans and new features we consider for eventual
-implementation are collected in the following section.
-
-.. toctree::
-   :maxdepth: 2
-
-   /development
-
 Contact
 -------
 
@@ -136,3 +131,11 @@ In case of questions or troubles using PySNMP, please open up a
 new `GitHub issue`_ or ask on `Stack Overflow`_.
 
 For other inquiries, please contact `LeXtudio Inc.`_.
+
+More information about support options can be found in the following
+section.
+
+.. toctree::
+   :maxdepth: 1
+
+   Support Options <https://www.pysnmp.com/support>
