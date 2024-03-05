@@ -112,8 +112,6 @@ The notification receiver the receives this message is hosted at
 
 References
 ----------
-References
-----------
 
 - `Support Options`_
 - :doc:`/examples/index`
