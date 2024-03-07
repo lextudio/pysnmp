@@ -6,7 +6,7 @@
 #
 from typing import Iterator
 from pysnmp.error import PySnmpError
-from pysnmp.hlapi.asyncio.sync import *
+from pysnmp.hlapi.v3arch.asyncio.sync import *
 from pysnmp.proto.errind import ErrorIndication
 
 __all__ = ["Slim"]

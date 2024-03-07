@@ -631,7 +631,7 @@ async def walkCmd(
     *varBinds,
     **options
 ) -> AsyncGenerator[
-    tuple[errind.ErrorIndication, Integer32 | int, Integer32 | int, tuple[ObjectType]],
+    "tuple[errind.ErrorIndication, Integer32 | int, Integer32 | int, tuple[ObjectType]]",
     None,
 ]:
     r"""Creates a generator to perform one or more SNMP GETNEXT queries.
@@ -816,7 +816,7 @@ async def bulkWalkCmd(
     *varBinds,
     **options
 ) -> AsyncGenerator[
-    tuple[errind.ErrorIndication, Integer32 | int, Integer32 | int, tuple[ObjectType]],
+    "tuple[errind.ErrorIndication, Integer32 | int, Integer32 | int, tuple[ObjectType]]",
     None,
 ]:
     r"""Creates a generator to perform one or more SNMP GETBULK queries.

@@ -412,7 +412,7 @@ def walkCmd(
     *varBinds,
     **options
 ) -> Generator[
-    tuple[errind.ErrorIndication, Integer32 | int, Integer32 | int, tuple[ObjectType]],
+    "tuple[errind.ErrorIndication, Integer32 | int, Integer32 | int, tuple[ObjectType]]",
     None,
     None,
 ]:
@@ -540,7 +540,7 @@ def bulkWalkCmd(
     *varBinds,
     **options
 ) -> Generator[
-    tuple[errind.ErrorIndication, Integer32 | int, Integer32 | int, tuple[ObjectType]],
+    "tuple[errind.ErrorIndication, Integer32 | int, Integer32 | int, tuple[ObjectType]]",
     None,
     None,
 ]:
