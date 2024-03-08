@@ -129,7 +129,6 @@ html_theme = "sphinx_rtd_theme"
 # further.  For a list of options available for each theme, see the
 # documentation.
 
-# Add any paths that contain custom themes here, relative to this directory.
 # html_theme_path = []
 
 # The name for this set of Sphinx documents.  If None, it defaults to
@@ -237,7 +236,7 @@ latex_documents = [
     (
         master_doc,
         "PySNMP.tex",
-        "PySNMP Documentation",
+        "PySNMP 6.0 Documentation",
         "Ilya Etingof \\textless{}etingof@gmail.com\\textgreater{}",
         "manual",
     ),
@@ -268,7 +267,7 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [(master_doc, "pysnmp", "PySNMP Documentation", [author], 1)]
+man_pages = [(master_doc, "pysnmp", "PySNMP 6.0 Documentation", [author], 1)]
 
 # If true, show URL addresses after external links.
 # man_show_urls = False
@@ -283,7 +282,7 @@ texinfo_documents = [
     (
         master_doc,
         "PySNMP",
-        "PySNMP Documentation",
+        "PySNMP 6.0 Documentation",
         author,
         "PySNMP",
         "One line description of project.",

@@ -35,13 +35,15 @@ Command Generator
    /docs/hlapi/asyncio/manager/cmdgen/setcmd
    /docs/hlapi/asyncio/manager/cmdgen/nextcmd
    /docs/hlapi/asyncio/manager/cmdgen/bulkcmd
+   /docs/hlapi/asyncio/manager/cmdgen/walkcmd
+   /docs/hlapi/asyncio/manager/cmdgen/bulkwalkcmd
 
 Notification Originator
 
 .. toctree::
    :maxdepth: 2
 
-   /docs/hlapi/asyncio/agent/ntforg/notification 
+   /docs/hlapi/asyncio/agent/ntforg/notification
 
 Transport configuration
 +++++++++++++++++++++++
@@ -83,7 +85,7 @@ Notification Originator
 .. toctree::
    :maxdepth: 2
 
-   /docs/hlapi/v3arch/asyncio/agent/ntforg/notification 
+   /docs/hlapi/v3arch/asyncio/agent/ntforg/notification
 
 Transport Configuration
 +++++++++++++++++++++++

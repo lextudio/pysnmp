@@ -65,6 +65,7 @@ We have a collection of sample scripts to help you get started with PySNMP.
 
 .. toctree::
    :maxdepth: 2
+
    /examples/index
 
 Troubleshooting
