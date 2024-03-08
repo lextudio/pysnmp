@@ -77,6 +77,7 @@ If you are having trouble with PySNMP, please check the following section.
    :maxdepth: 1
 
    /troubleshooting
+   /upgrade
 
 Downloads
 ---------
