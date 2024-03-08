@@ -1,7 +1,7 @@
 .. include:: /includes/_links.rst
 
-SNMP Library for Python
-=======================
+SNMP Library for Python 6.0
+===========================
 
 .. toctree::
    :maxdepth: 2
