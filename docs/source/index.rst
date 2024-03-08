@@ -17,10 +17,10 @@ multilingual capabilities, remote configuration and other features.
 PySNMP implementation closely follows intricate system details and features
 bringing most possible power and flexibility to its users.
 
-Current PySNMP stable version is 5.0. It runs with Python 3.8+
+Current PySNMP stable version is 6.0. It runs with Python 3.8+
 and is recommended for new applications as well as for migration from
 older, now obsolete, PySNMP releases. All site documentation and
-examples are written for the 5.0 and later versions in mind.
+examples are written for the 6.0 and later versions in mind.
 Older materials have been removed.
 
 Besides the libraries, a set of pure-Python `command line tools`_
