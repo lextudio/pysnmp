@@ -1000,10 +1000,8 @@ async def bulkWalkCmd(
                     if nullVarBinds[col]:
                         varBindTable[row][col] = previousVarBinds[col][0], endOfMibView
                         continue
-                    if isinstance(val, EndOfMibView):
-                        break
                     stopFlag = False
-                    if isinstance(val, Null):
+                    if isinstance(val, Null) or isinstance(val, EndOfMibView):
                         varBindTable[row][col] = previousVarBinds[col][0], endOfMibView
                         nullVarBinds[col] = True
                     if not lexicographicMode and not initialVars[col].isPrefixOf(name):
