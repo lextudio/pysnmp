@@ -1,3 +1,8 @@
+Revision 6.0.10, released 2024-3-13
+-----------------------------------
+
+- Fixed bulkWalkCmd bug.
+
 Revision 6.0.9, released 2024-3-8
 ---------------------------------
 
