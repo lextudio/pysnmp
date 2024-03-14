@@ -775,7 +775,7 @@ async def walkCmd(
 
                 for col, varBind in enumerate(varBinds):
                     name, val = varBind
-                    if isinstance(val, Null):
+                    if isinstance(val, Null) or isinstance(val, EndOfMibView):
                         varBinds[col] = previousVarBinds[col][0], endOfMibView
 
                     if not lexicographicMode and not initialVars[col].isPrefixOf(name):
