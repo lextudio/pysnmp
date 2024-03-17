@@ -163,6 +163,11 @@ following examples demonstrate how to do that.
 Using these examples
 --------------------
 
+.. note::
+
+   It is difficult to cover all examples on this site, so you might want to
+   visit the ``examples`` folder in `PySNMP GitHub repository`_.
+
 Before using the sample code, make sure ``pysnmp-lextudio`` and its
 dependencies are installed. You might refer to :doc:`/quick-start` for
 details.
