@@ -40,7 +40,7 @@ html_baseurl = "https://www.pysnmp.com/pysnmp/"
 sitemap_url_scheme = "{link}"
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = [".templates"]
+templates_path = ["_templates"]
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
