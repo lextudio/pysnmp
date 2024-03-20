@@ -97,8 +97,8 @@ We require contributed code to run with Python 3.8 through the latest
 Python version (which is 3.12 at the time of this writing). Contributed
 code will be redistributed under the terms of the same license as PySNMP is.
 
-References
-----------
+Related Resources
+-----------------
 
 - `Support Options`_
 - :doc:`/quick-start`

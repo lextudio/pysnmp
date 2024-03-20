@@ -128,8 +128,8 @@ Initial changes were introduced to better support time synchronization in
 5.0 release, but more changes are included in 6.0 release to make the
 engine fully compliant with RFC3414.
 
-References
-----------
+Related Resources
+-----------------
 
 - `Support Options`_
 - :doc:`/troubleshooting`

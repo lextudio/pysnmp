@@ -20,8 +20,8 @@ The best way to obtain PySNMP and dependencies is to run:
 
    $ pip install pysnmp-lextudio
 
-References
-----------
+Related Resources
+-----------------
 
 - `Support Options`_
 - :doc:`/quick-start`

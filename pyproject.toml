@@ -2,7 +2,7 @@
 name = "pysnmp-lextudio"
 version = "6.0.11"
 description = ""
-authors = ["Ilya Etingof <etingof@gmail.com>", "Lex Li <support@lextudio.com>"]
+authors = ["Ilya Etingof <etingof@gmail.com>", "LeXtudio Inc. <support@lextudio.com>"]
 license = "BSD-2-Clause"
 repository = "https://github.com/lextudio/pysnmp"
 classifiers = [

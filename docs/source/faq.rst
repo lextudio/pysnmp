@@ -16,8 +16,8 @@ to any PySNMP revision.
 
    /faq/*
 
-References
-----------
+Related Resources
+-----------------
 
 - `Support Options`_
 - :doc:`/quick-start`

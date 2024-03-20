@@ -5,8 +5,8 @@ License
 
 .. include:: ../../LICENSE.rst
 
-References
-----------
+Related Resources
+-----------------
 
 - `Support Options`_
 - :doc:`/quick-start`

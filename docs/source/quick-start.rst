@@ -110,8 +110,8 @@ received.
 The notification receiver the receives this message is hosted at
 `demo.pysnmp.com`_.
 
-References
-----------
+Related Resources
+-----------------
 
 - `Support Options`_
 - :doc:`/examples/index`
