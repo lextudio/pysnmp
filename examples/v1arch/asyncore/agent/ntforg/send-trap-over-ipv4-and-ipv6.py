@@ -9,7 +9,7 @@ following options:
 * with community name 'public'
 * over IPv4/UDP and IPv6/UDP
 * send TRAP notification
-* to a Manager at localhost:162 and [::1]
+* to a Manager at demo.pysnmp.com:162 and [::1]
 * with TRAP ID 'coldStart' specified as an OID
 * include managed objects information:
 * with default Uptime value
@@ -18,7 +18,7 @@ following options:
 
 The following Net-SNMP commands will produce similar SNMP notification:
 
-| $ snmptrap -v1 -c public udp:localhost 1.3.6.1.4.1.20408.4.1.1.2 127.0.0.1 1 0 12345
+| $ snmptrap -v1 -c public udp:demo.pysnmp.com 1.3.6.1.4.1.20408.4.1.1.2 127.0.0.1 1 0 12345
 | $ snmptrap -v1 -c public udp6:[::1] 1.3.6.1.4.1.20408.4.1.1.2 127.0.0.1 1 0 12345
 
 """#
@@ -54,7 +54,7 @@ transportDispatcher.registerTransport(
 )
 
 transportDispatcher.sendMessage(
-    encoder.encode(trapMsg), udp.DOMAIN_NAME, ('localhost', 162)
+    encoder.encode(trapMsg), udp.DOMAIN_NAME, ('demo.pysnmp.com', 162)
 )
 
 # UDP/IPv6

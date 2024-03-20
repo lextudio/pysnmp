@@ -50,7 +50,7 @@ master_doc = 'contents'
 
 # General information about the project.
 project = 'SNMP library for Python'
-copyright = '2005-2019, Ilya Etingof <etingof@gmail.com>'
+copyright = '2005-2020, Ilya Etingof <etingof@gmail.com>'
 author = 'Ilya Etingof <etingof@gmail.com>'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -309,8 +309,8 @@ texinfo_documents = [
 # Configuration for Intersphinx
 intersphinx_mapping = {
     'python': ('https://docs.python.org/3.4/', None),
-    'pyasn1': ('http://snmplabs.com/pyasn1/', None),
-    'pysmi': ('http://snmplabs.com/pysmi/', None),
+    'pyasn1': ('https://www.pysnmp.com/pyasn1/', None),
+    'pysmi': ('https://www.pysnmp.com/pysmi/', None),
 }
 
 # this merges constructor docstring with class docstring

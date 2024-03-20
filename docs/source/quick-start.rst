@@ -16,7 +16,7 @@ Fetch SNMP variable
 So just cut&paste the following code right into your Python prompt. The 
 code will performs SNMP GET operation for a sysDescr.0 object at a 
 publically available SNMP Command Responder at
-`demo.snmplabs.com <http://snmplabs.com/snmpsim/public-snmp-simulator.html>`_:
+`demo.pysnmp.com <https://www.pysnmp.com/snmpsim/public-snmp-simulator.html>`_:
 
 .. literalinclude:: /../../examples/hlapi/v3arch/asyncore/sync/manager/cmdgen/v1-get.py
    :start-after: """#
@@ -29,7 +29,7 @@ If everything works as it should you will get:
 .. code-block:: python
 
    ...
-   SNMPv2-MIB::sysDescr."0" = SunOS zeus.snmplabs.com 4.1.3_U1 1 sun4m
+   SNMPv2-MIB::sysDescr."0" = SunOS zeus.pysnmp.com 4.1.3_U1 1 sun4m
    >>> 
 
 on your console.
@@ -38,7 +38,7 @@ Send SNMP TRAP
 --------------
 
 To send a trivial TRAP message to our hosted Notification Receiver at
-`demo.snmplabs.com <http://snmplabs.com/snmpsim/public-snmp-simulator.html>`_
+`demo.pysnmp.com <https://www.pysnmp.com/snmpsim/public-snmp-simulator.html>`_
 , just cut&paste the following code into your interactive Python session:
 
 .. literalinclude:: /../../examples/hlapi/v3arch/asyncore/sync/agent/ntforg/default-v1-trap.py
@@ -48,7 +48,7 @@ To send a trivial TRAP message to our hosted Notification Receiver at
 :download:`Download</../../examples/hlapi/v3arch/asyncore/sync/agent/ntforg/default-v1-trap.py>` script.
 
 Many ASN.1 MIB files could be downloaded from
-`mibs.snmplabs.com <https://pysnmp.github.io/mibs/asn1/>`_ or PySNMP could
+`mibs.pysnmp.com <https://pysnmp.github.io/mibs/asn1/>`_ or PySNMP could
 be :doc:`configured <docs/api-reference>` to download them automatically.
 
 For more sophisticated examples and use cases please refer to

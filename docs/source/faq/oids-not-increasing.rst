@@ -29,7 +29,7 @@ A. The Agent you are talking to seems to be broken. The
          errorIndex,
          varBinds) in nextCmd(SnmpEngine(),
                               CommunityData('public'),
-                              UdpTransportTarget(('demo.snmplabs.com', 161)),
+                              UdpTransportTarget(('demo.pysnmp.com', 161)),
                               ContextData(),
                               ObjectType(ObjectIdentity('1.3.6')),
                               ignoreNonIncreasingOid=True):

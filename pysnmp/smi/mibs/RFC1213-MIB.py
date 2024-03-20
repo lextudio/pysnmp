@@ -2,7 +2,7 @@
 # This file is part of pysnmp software.
 #
 # Copyright (c) 2005-2020, Ilya Etingof <etingof@gmail.com>
-# License: http://snmplabs.com/pysnmp/license.html
+# License: http://www.pysnmp.com/pysnmp/license.html
 #
 # It is a stripped version of MIB that contains only symbols that is
 # unique to SMIv1 and have no analogues in SMIv2

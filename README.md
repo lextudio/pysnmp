@@ -8,7 +8,7 @@ SNMP library for Python
 [![GitHub license](https://img.shields.io/badge/license-BSD-blue.svg)](https://raw.githubusercontent.com/pysnmp/pysnmp/master/LICENSE.rst)
 
 This is a pure-Python, open source and free implementation of v1/v2c/v3
-SNMP engine distributed under 2-clause [BSD license](http://snmplabs.com/pysnmp/license.html).
+SNMP engine distributed under 2-clause [BSD license](https://www.pysnmp.com/pysnmp/license.html).
 
 The PySNMP project was initially sponsored by a [PSF](http://www.python.org/psf/) grant.
 Thank you!
@@ -26,7 +26,7 @@ Features
 * Extensible network transports framework (UDP/IPv4, UDP/IPv6)
 * Asynchronous socket-based IO API support
 * [Asyncio](https://docs.python.org/3/library/asyncio.html) integration
-* [PySMI](http://snmplabs.com/pysmi/) integration for dynamic MIB compilation
+* [PySMI](https://www.pysnmp.com/pysmi/) integration for dynamic MIB compilation
 * Built-in instrumentation exposing protocol engine operations
 * Python eggs and py2exe friendly
 * 100% Python, works with Python 2.6 though 3.7
@@ -58,11 +58,11 @@ $ pip install pysnmplib
 
 To download and install PySNMP along with its dependencies:
 
-<!-- Need to find an alternate location for the links to snmplabs.com -->
-* [PyASN1](http://snmplabs.com/pyasn1/)
-* [PySMI](http://snmplabs.com/pysmi/) (required for MIB services only)
 * Optional [pysnmpcrypto](https://github.com/etingof/pysnmpcrypto) package
   whenever strong SNMPv3 encryption is desired
+<!-- Need to find an alternate location for the links to pysnmp.com -->
+* [PyASN1](https://www.pysnmp.com/pyasn1/)
+* [PySMI](https://www.pysnmp.com/pysmi/) (required for MIB services only)
 
 Besides the library, command-line [SNMP utilities](https://github.com/etingof/snmpclitools)
 written in pure-Python could be installed via:
@@ -74,7 +74,7 @@ $ pip install snmpclitools
 and used in the very similar manner as conventional Net-SNMP tools:
 
 ```bash
-$ snmpget.py -v3 -l authPriv -u usr-md5-des -A authkey1 -X privkey1 demo.snmplabs.com sysDescr.0
+$ snmpget.py -v3 -l authPriv -u usr-md5-des -A authkey1 -X privkey1 demo.pysnmp.com sysDescr.0
 SNMPv2-MIB::sysDescr.0 = STRING: Linux zeus 4.8.6.5-smp #2 SMP Sun Nov 13 14:58:11 CDT 2016 i686
 ```
 
@@ -89,7 +89,7 @@ from pysnmp.hlapi import *
 
 iterator = getCmd(SnmpEngine(),
                   CommunityData('public'),
-                  UdpTransportTarget(('demo.snmplabs.com', 161)),
+                  UdpTransportTarget(('demo.pysnmp.com', 161)),
                   ContextData(),
                   ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0)))
 
@@ -116,7 +116,7 @@ errorIndication, errorStatus, errorIndex, varBinds = next(
         UsmUserData('usr-sha-aes128', 'authkey1', 'privkey1',
                     authProtocol=USM_AUTH_HMAC96_SHA,
                     privProtocol=USM_PRIV_CFB128_AES),
-        UdpTransportTarget(('demo.snmplabs.com', 162)),
+        UdpTransportTarget(('demo.pysnmp.com', 162)),
         ContextData(),
         'trap',
         NotificationType(ObjectIdentity('SNMPv2-MIB', 'authenticationFailure'))
@@ -128,14 +128,12 @@ if errorIndication:
 ```
 
 > We maintain publicly available SNMP Agent and TRAP sink at
-> [demo.snmplabs.com](http://snmplabs.com/snmpsim/public-snmp-agent-simulator.html). You are
+> [demo.pysnmp.com](https://www.pysnmp.com/snmpsim/public-snmp-agent-simulator.html). You are
 > welcome to use it while experimenting with whatever SNMP software you deal with.
-
-:warning: ***This is no longer the case as the snmplabs.com site is now defunct***
 
 ```bash
 $ python3 examples/hlapi/asyncore/sync/manager/cmdgen/usm-sha-aes128.py
-SNMPv2-MIB::sysDescr.0 = SunOS zeus.snmplabs.com 4.1.3_U1 1 sun4m
+SNMPv2-MIB::sysDescr.0 = SunOS zeus.pysnmp.com 4.1.3_U1 1 sun4m
 $
 $ python3 examples//hlapi/asyncore/sync/agent/ntforg/v3-inform.py
 SNMPv2-MIB::sysUpTime.0 = 0
@@ -147,13 +145,13 @@ Other than that, PySNMP is capable to automatically fetch and use required MIBs 
 or local directories. You could configure any MIB source available to you (including
 [this one](https://pysnmp.github.io/mibs/asn1/)) for that purpose.
 
-For more example scripts please refer to ~~[examples section](http://snmplabs.com/pysnmp/examples/contents.html#high-level-snmp)~~
+For more example scripts please refer to ~~[examples section](https://www.pysnmp.com/pysnmp/examples/contents.html#high-level-snmp)~~
 at pysnmp web site.
 
 Documentation
 -------------
 
-Library documentation and examples can be found at the ~~[pysnmp project site](http://snmplabs.com/pysnmp/)~~.
+Library documentation and examples can be found at the ~~[pysnmp project site](https://www.pysnmp.com/pysnmp/)~~.
 
 If something does not work as expected, please
 [open an issue](https://github.com/pysnmp/pysnmp/issues) at GitHub or
@@ -162,4 +160,4 @@ post your question [on Stack Overflow](http://stackoverflow.com/questions/ask) o
 
 Bug reports and PRs are appreciated! ;-)
 
-Copyright (c) 2005-2019, [Ilya Etingof](https://lists.openstack.org/pipermail/openstack-discuss/2022-August/030062.html). All rights reserved.
+Copyright (c) 2005-2020, [Ilya Etingof](https://lists.openstack.org/pipermail/openstack-discuss/2022-August/030062.html). All rights reserved.

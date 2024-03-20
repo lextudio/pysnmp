@@ -2,9 +2,9 @@
 # This file is part of pysnmp software.
 #
 # Copyright (c) 2005-2020, Ilya Etingof <etingof@gmail.com>
-# License: http://snmplabs.com/pysnmp/license.html
+# License: http://www.pysnmp.com/pysnmp/license.html
 #
-# ASN.1 source http://mibs.snmplabs.com/asn1/SNMP-COMMUNITY-MIB.txt
+# ASN.1 source http://mibs.pysnmp.com/asn1/SNMP-COMMUNITY-MIB.txt
 # Produced by pysmi-0.4.0 at Sat Feb 16 08:57:23 2019
 #
 if 'mibBuilder' not in globals():

@@ -6,15 +6,15 @@ Send multiple SNMP GET requests at once using the following options:
 
 * with SNMPv2c, community 'public'
 * over IPv4/UDP
-* to multiple Agents at demo.snmplabs.com
+* to multiple Agents at demo.pysnmp.com
 * for instance of SNMPv2-MIB::sysDescr.0 MIB object
 * based on asyncio I/O framework
 
 Functionally similar to:
 
-| $ snmpget -v2c -c public demo.snmplabs.com:1161 SNMPv2-MIB::sysDescr.0
-| $ snmpget -v2c -c public demo.snmplabs.com:2161 SNMPv2-MIB::sysDescr.0
-| $ snmpget -v2c -c public demo.snmplabs.com:3161 SNMPv2-MIB::sysDescr.0
+| $ snmpget -v2c -c public demo.pysnmp.com:1161 SNMPv2-MIB::sysDescr.0
+| $ snmpget -v2c -c public demo.pysnmp.com:2161 SNMPv2-MIB::sysDescr.0
+| $ snmpget -v2c -c public demo.pysnmp.com:3161 SNMPv2-MIB::sysDescr.0
 
 """#
 import asyncio
@@ -53,8 +53,8 @@ snmpDispatcher = SnmpDispatcher()
 loop = asyncio.get_event_loop()
 loop.run_until_complete(
     asyncio.wait(
-        [getone(snmpDispatcher, ('demo.snmplabs.com', 1161)),
-         getone(snmpDispatcher, ('demo.snmplabs.com', 2161)),
-         getone(snmpDispatcher, ('demo.snmplabs.com', 3161))]
+        [getone(snmpDispatcher, ('demo.pysnmp.com', 1161)),
+         getone(snmpDispatcher, ('demo.pysnmp.com', 2161)),
+         getone(snmpDispatcher, ('demo.pysnmp.com', 3161))]
     )
 )

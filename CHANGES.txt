@@ -1,3 +1,7 @@
+Revision 5.x.x, released 2022-11-XX
+-----------------------------------
+
+- Changed web site to pysnmp.com.
 
 Revision 5.0.0, released 2019-09-XX
 -----------------------------------

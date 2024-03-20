@@ -16,7 +16,7 @@ Send SNMPv1 TRAP using the following options:
 
 Functionally similar to:
 
-| $ snmptrap -v1 -c public localhost 1.3.6.1.4.1.20408.4.1.1.2 0.0.0.0 1 0 0 1.3.6.1.2.1.1.1.0 s "my system"
+| $ snmptrap -v1 -c public demo.pysnmp.com 1.3.6.1.4.1.20408.4.1.1.2 0.0.0.0 1 0 0 1.3.6.1.2.1.1.1.0 s "my system"
 
 """#
 import asyncio
@@ -29,7 +29,7 @@ async def run():
     errorIndication, errorStatus, errorIndex, varBinds = await sendNotification(
         snmpDispatcher,
         CommunityData('public', mpModel=0),
-        UdpTransportTarget(('demo.snmplabs.com', 162)),
+        UdpTransportTarget(('demo.pysnmp.com', 162)),
         'trap',
         NotificationType(
             ObjectIdentity('1.3.6.1.6.3.1.1.5.2')

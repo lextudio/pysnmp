@@ -18,7 +18,7 @@ Send SNMP notification using the following options:
 
 Functionally similar to:
 
-| $ snmptrap -v1 -c public localhost 1.3.6.1.4.1.20408.4.1.1.2 104.236.166.95 6 432 12345 1.3.6.1.2.1.1.1.0 s "my system"
+| $ snmptrap -v1 -c public demo.pysnmp.com 1.3.6.1.4.1.20408.4.1.1.2 104.236.166.95 6 432 12345 1.3.6.1.2.1.1.1.0 s "my system"
 
 """#
 from pysnmp.entity import engine, config

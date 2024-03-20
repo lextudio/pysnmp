@@ -2,7 +2,7 @@
 # This file is part of pysnmp software.
 #
 # Copyright (c) 2005-2020, Ilya Etingof <etingof@gmail.com>
-# License: http://snmplabs.com/pysnmp/license.html
+# License: https://www.pysnmp.com/pysnmp/license.html
 #
 # This file instantiates some of the MIB managed objects for SNMP engine use
 #

@@ -2,7 +2,7 @@
 # This file is part of pysnmp software.
 #
 # Copyright (c) 2005-2020, Ilya Etingof <etingof@gmail.com>
-# License: http://snmplabs.com/pysnmp/license.html
+# License: http://www.pysnmp.com/pysnmp/license.html
 #
 # ASN.1 source file:///usr/share/snmp/mibs/SNMP-NOTIFICATION-MIB.txt
 # Produced by pysmi-0.4.0 at Sat Feb 16 12:12:15 2019

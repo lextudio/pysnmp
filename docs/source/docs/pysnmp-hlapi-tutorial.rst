@@ -100,8 +100,8 @@ Setting transport and target
 
 PySNMP supports UDP-over-IPv4 and UDP-over-IPv6 network transports.
 In this example we will query 
-`public SNMP Simulator <http://snmplabs.com/snmpsim/public-snmp-simulator.html>`_
-available over IPv4 on the Internet at *demo.snmplabs.com*. Transport
+`public SNMP Simulator <https://www.pysnmp.com/snmpsim/public-snmp-simulator.html>`_
+available over IPv4 on the Internet at *demo.pysnmp.com*. Transport
 configuration is passed to SNMP LCD in form of properly initialized
 :py:class:`~pysnmp.hlapi.UdpTransportTarget` or
 :py:class:`~pysnmp.hlapi.Udp6TransportTarget` objects
@@ -113,7 +113,7 @@ respectively.
    >>>
    >>> g = getCmd(SnmpEngine(),
    ...            CommunityData('public'),
-   ...            UdpTransportTarget(('demo.snmplabs.com', 161)),
+   ...            UdpTransportTarget(('demo.pysnmp.com', 161)),
    ...
 
 Addressing SNMP context
@@ -136,7 +136,7 @@ For this example we will use the 'empty' context (default).
    >>>
    >>> g = getCmd(SnmpEngine(),
    ...            CommunityData('public'),
-   ...            UdpTransportTarget(('demo.snmplabs.com', 161)),
+   ...            UdpTransportTarget(('demo.pysnmp.com', 161)),
    ...            ContextData(),
    ...
 
@@ -150,11 +150,11 @@ humans tend to address them by name:
 
 .. code-block:: bash
 
-   $ snmpget -v2c -c public demo.snmplabs.com SNMPv2-MIB::sysDescr.0
-   SNMPv2-MIB::sysDescr.0 = STRING: SunOS zeus.snmplabs.com
+   $ snmpget -v2c -c public demo.pysnmp.com SNMPv2-MIB::sysDescr.0
+   SNMPv2-MIB::sysDescr.0 = STRING: SunOS zeus.pysnmp.com
    $
-   $ snmpget -v2c -c public demo.snmplabs.com 1.3.6.1.2.1.1.1.0
-   SNMPv2-MIB::sysDescr.0 = STRING: SunOS zeus.snmplabs.com
+   $ snmpget -v2c -c public demo.pysnmp.com 1.3.6.1.2.1.1.1.0
+   SNMPv2-MIB::sysDescr.0 = STRING: SunOS zeus.pysnmp.com
 
 Both object name and OID come from MIB. Name and OID linking is done
 by high-level SMI construct called *OBJECT-TYPE*. Here is an example MIB
@@ -235,7 +235,7 @@ in `SNMPv2-MIB <https://pysnmp.github.io/mibs/asn1/SNMPv2-MIB>`_ module.
    >>> from pysnmp.hlapi import *
    >>> g = getCmd(SnmpEngine(),
    ...            CommunityData('public'),
-   ...            UdpTransportTarget(('demo.snmplabs.com', 161)),
+   ...            UdpTransportTarget(('demo.pysnmp.com', 161)),
    ...            ContextData(),
    ...            ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0)))
 
@@ -272,7 +272,7 @@ out, response is awaited, received and parsed.
    >>>
    >>> g = getCmd(SnmpEngine(),
    ...            CommunityData('public'),
-   ...            UdpTransportTarget(('demo.snmplabs.com', 161)),
+   ...            UdpTransportTarget(('demo.pysnmp.com', 161)),
    ...            ContextData(),
    ...            ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysUpTime', 0)))
    >>> next(g)
@@ -368,7 +368,7 @@ Let's read TCP-MIB::tcpConnectionState object for a TCP connection:
    >>>
    >>> g = getCmd(SnmpEngine(),
    ...            CommunityData('public'),
-   ...            UdpTransportTarget(('demo.snmplabs.com', 161)),
+   ...            UdpTransportTarget(('demo.pysnmp.com', 161)),
    ...            ContextData(),
    ...            ObjectType(ObjectIdentity('TCP-MIB', 'tcpConnectionState',
    ...                                      'ipv4', '195.218.254.105', 41511,
@@ -390,11 +390,11 @@ function.
    >>> from pysnmp.hlapi import *
    >>> g = nextCmd(SnmpEngine(),
    ...             CommunityData('public'),
-   ...             UdpTransportTarget(('demo.snmplabs.com', 161)),
+   ...             UdpTransportTarget(('demo.pysnmp.com', 161)),
    ...             ContextData(),
    ...             ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr')))
    >>> next(g)
-   (None, 0, 0, [ObjectType(ObjectIdentity('1.3.6.1.2.1.1.1.0'), DisplayString('SunOS zeus.snmplabs.com'))])
+   (None, 0, 0, [ObjectType(ObjectIdentity('1.3.6.1.2.1.1.1.0'), DisplayString('SunOS zeus.pysnmp.com'))])
    >>> next(g)
    (None, 0, 0, [ObjectType(ObjectIdentity('1.3.6.1.2.1.1.2.0'), ObjectIdentity(ObjectIdentifier('1.3.6.1.4.1.8072.3.2.10')))])
 
@@ -417,13 +417,13 @@ API as *getNext()* for convenience.
    >>> N, R = 0, 25
    >>> g = bulkCmd(SnmpEngine(),
    ...             CommunityData('public'),
-   ...             UdpTransportTarget(('demo.snmplabs.com', 161)),
+   ...             UdpTransportTarget(('demo.pysnmp.com', 161)),
    ...             ContextData(),
    ...             N, R,
    ...             ObjectType(ObjectIdentity('1.3.6')))
    >>>
    >>> next(g)
-   (None, 0, 0, [ObjectType(ObjectIdentity('1.3.6.1.2.1.1.1.0'), DisplayString('SunOS zeus.snmplabs.com'))])
+   (None, 0, 0, [ObjectType(ObjectIdentity('1.3.6.1.2.1.1.1.0'), DisplayString('SunOS zeus.pysnmp.com'))])
    >>> next(g)
    (None, 0, 0, [ObjectType(ObjectIdentity('1.3.6.1.2.1.1.2.0'), ObjectIdentifier('1.3.6.1.4.1.20408'))])
 
@@ -438,7 +438,7 @@ of MIB objects.
    >>>
    >>> g = nextCmd(SnmpEngine(),
    ...             CommunityData('public'),
-   ...             UdpTransportTarget(('demo.snmplabs.com', 161)),
+   ...             UdpTransportTarget(('demo.pysnmp.com', 161)),
    ...             ContextData(),
    ...             ObjectType(ObjectIdentity('IF-MIB', 'ifTable')))
    >>>
@@ -455,13 +455,13 @@ values in exactly the same order as they were in request message.
    >>>
    >>> g = getCmd(SnmpEngine(),
    ...            CommunityData('public'),
-   ...            UdpTransportTarget(('demo.snmplabs.com', 161)),
+   ...            UdpTransportTarget(('demo.pysnmp.com', 161)),
    ...            ContextData(),
    ...            ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0)),
    ...            ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysUpTime', 0))
    ... )
    >>> next(g)
-   (None, 0, 0, [ObjectType(ObjectIdentity('1.3.6.1.2.1.1.1.0'), DisplayString('SunOS zeus.snmplabs.com')), ObjectType(ObjectIdentity('1.3.6.1.2.1.1.3.0'), TimeTicks(44430646))])
+   (None, 0, 0, [ObjectType(ObjectIdentity('1.3.6.1.2.1.1.1.0'), DisplayString('SunOS zeus.pysnmp.com')), ObjectType(ObjectIdentity('1.3.6.1.2.1.1.3.0'), TimeTicks(44430646))])
 
 Configuration management part of SNMP relies on SNMP *SET* command.
 Although its implementation on managed entity's side proved to be
@@ -478,7 +478,7 @@ function.
    >>>
    >>> g = setCmd(SnmpEngine(),
    ...            CommunityData('public'),
-   ...            UdpTransportTarget(('demo.snmplabs.com', 161)),
+   ...            UdpTransportTarget(('demo.pysnmp.com', 161)),
    ...            ContextData(),
    ...            ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0), 'Linux i386')
    ... )
@@ -542,7 +542,7 @@ or acknowledgement is sent.
    >>>
    >>> g = sendNotification(SnmpEngine(),
    ...                      CommunityData('public'),
-   ...                      UdpTransportTarget(('demo.snmplabs.com', 162)),
+   ...                      UdpTransportTarget(('demo.pysnmp.com', 162)),
    ...                      ContextData(),
    ...                      'trap',
    ...                      NotificationType(ObjectIdentity('IF-MIB', 'linkUp'), instanceIndex=(123,))
@@ -558,7 +558,7 @@ well as for agent-to-manager.
    >>>
    >>> g = sendNotification(SnmpEngine(),
    ...                      CommunityData('public'),
-   ...                      UdpTransportTarget(('demo.snmplabs.com', 162)),
+   ...                      UdpTransportTarget(('demo.pysnmp.com', 162)),
    ...                      ContextData(),
    ...                      'inform',
    ...                      NotificationType(ObjectIdentity('IF-MIB', 'linkUp'), instanceIndex=(123,))
@@ -586,7 +586,7 @@ object OIDs to current values.
    >>>
    >>> g = sendNotification(SnmpEngine(),
    ...                      CommunityData('public'),
-   ...                      UdpTransportTarget(('demo.snmplabs.com', 162)),
+   ...                      UdpTransportTarget(('demo.pysnmp.com', 162)),
    ...                      ContextData(),
    ...                      'inform',
    ...                      NotificationType(ObjectIdentity('IF-MIB', 'linkUp'), instanceIndex=(123,), objects=mib)

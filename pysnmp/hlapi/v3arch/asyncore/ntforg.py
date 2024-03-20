@@ -2,7 +2,7 @@
 # This file is part of pysnmp software.
 #
 # Copyright (c) 2005-2020, Ilya Etingof <etingof@gmail.com>
-# License: http://snmplabs.com/pysnmp/license.html
+# License: https://www.pysnmp.com/pysnmp/license.html
 #
 from pysnmp.hlapi.v3arch.auth import *
 from pysnmp.hlapi.v3arch.context import *
@@ -139,7 +139,7 @@ def sendNotification(snmpEngine, authData, transportTarget, contextData,
     >>> sendNotification(
     ...     snmpEngine,
     ...     CommunityData('public'),
-    ...     UdpTransportTarget(('demo.snmplabs.com', 162)),
+    ...     UdpTransportTarget(('demo.pysnmp.com', 162)),
     ...     ContextData(),
     ...     'trap',
     ...     NotificationType(ObjectIdentity('SNMPv2-MIB', 'coldStart')),

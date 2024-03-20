@@ -2,9 +2,9 @@
 # This file is part of pysnmp software.
 #
 # Copyright (c) 2005-2020, Ilya Etingof <etingof@gmail.com>
-# License: http://snmplabs.com/pysnmp/license.html
+# License: http://www.pysnmp.com/pysnmp/license.html
 #
-# ASN.1 source http://mibs.snmplabs.com/asn1/PYSNMP-MIB.txt
+# ASN.1 source http://mibs.pysnmp.com/asn1/PYSNMP-MIB.txt
 # Produced by pysmi-0.4.0 at Thu Feb 14 10:50:29 2019
 #
 

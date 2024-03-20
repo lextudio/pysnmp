@@ -6,13 +6,13 @@ Send SNMP GET request using the following options:
 
   * with SNMPv1, community 'public'
   * over IPv4/UDP
-  * to an Agent at demo.snmplabs.com:161
+  * to an Agent at demo.pysnmp.com:161
   * for the 1.3.6.1.2.1.1.1.0 OID (e.g. SNMPv2-MIB::sysDescr.0 MIB object)
   * Based on asyncio I/O framework
 
 Functionally similar to:
 
-| $ snmpget -v1 -c public demo.snmplabs.com SNMPv2-MIB::sysDescr.0
+| $ snmpget -v1 -c public demo.pysnmp.com SNMPv2-MIB::sysDescr.0
 
 """#
 import asyncio
@@ -27,7 +27,7 @@ def run():
     iterator = getCmd(
         snmpDispatcher,
         CommunityData('public', mpModel=0),
-        UdpTransportTarget(('demo.snmplabs.com', 161)),
+        UdpTransportTarget(('demo.pysnmp.com', 161)),
         ('1.3.6.1.2.1.1.1.0', None)
     )
 

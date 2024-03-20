@@ -2,9 +2,9 @@
 # This file is part of pysnmp software.
 #
 # Copyright (c) 2005-2020, Ilya Etingof <etingof@gmail.com>
-# License: http://snmplabs.com/pysnmp/license.html
+# License: http://www.pysnmp.com/pysnmp/license.html
 #
-# ASN.1 source http://mibs.snmplabs.com:80/asn1/SNMPv2-CONF
+# ASN.1 source http://mibs.pysnmp.com:80/asn1/SNMPv2-CONF
 # Produced by pysmi-0.4.0 at Sun Feb 17 00:14:09 2019
 #
 MibNode, = mibBuilder.importSymbols(
