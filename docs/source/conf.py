@@ -11,9 +11,7 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import sys
 import os
-import shlex
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -36,7 +34,7 @@ extensions = [
     "sphinx_copybutton",
 ]
 
-html_baseurl = "https://www.pysnmp.com/pysnmp/"
+html_baseurl = "https://docs.lextudio.com/pysnmp/"
 sitemap_url_scheme = "{link}"
 
 # Add any paths that contain templates here, relative to this directory.
@@ -321,7 +319,7 @@ texinfo_documents = [
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3.7/", None),
     "pyasn1": ("https://pyasn1.readthedocs.io/en/latest/", None),
-    "pysmi": ("https://www.pysnmp.com/pysmi/", None),
+    "pysmi": ("https://docs.lextudio.com/pysmi/", None),
 }
 
 # this merges constructor docstring with class docstring
@@ -348,5 +346,5 @@ def setup(app):
         """Insert Google Analytics tracker
         Based on this Stackoverflow suggestion: https://stackoverflow.com/a/41885884
         """
-        app.add_js_file("https://www.googletagmanager.com/gtag/js?id=G-DYQGY4MKR3")
+        app.add_js_file("https://www.googletagmanager.com/gtag/js?id=G-DFLYZZK12P")
         app.add_js_file("google_analytics_tracker.js")
