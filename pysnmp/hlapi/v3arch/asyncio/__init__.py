@@ -12,3 +12,5 @@ from pysnmp.hlapi.v3arch.asyncio.cmdgen import *
 from pysnmp.hlapi.v3arch.asyncio.ntforg import *
 from pysnmp.proto.rfc1902 import *
 from pysnmp.smi.rfc1902 import *
+
+from pysnmp.hlapi.v3arch.asyncio import slim
