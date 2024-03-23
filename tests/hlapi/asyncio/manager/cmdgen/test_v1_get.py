@@ -51,13 +51,13 @@ from tests.agent_context import AGENT_PORT, AgentContextManager
 async def test_v1_get_raw():
     async with AgentContextManager():
         snmpEngine = SnmpEngine()
-        errorIndication, errorStatus, errorIndex, varBinds = await getCmd(
+        errorIndication, errorStatus, errorIndex, varBinds = await (await getCmd(
             snmpEngine,
             CommunityData("public", mpModel=0),
             UdpTransportTarget(("localhost", AGENT_PORT)),
             ContextData(),
             ObjectType(ObjectIdentity("SNMPv2-MIB", "sysDescr", 0)),
-        )
+        ))
 
         assert errorIndication is None
         assert errorStatus == 0
@@ -73,13 +73,13 @@ async def test_v1_get_raw():
 async def test_v1_get_ipv6():
     async with AgentContextManager(enable_ipv6=True):
         snmpEngine = SnmpEngine()
-        errorIndication, errorStatus, errorIndex, varBinds = await getCmd(
+        errorIndication, errorStatus, errorIndex, varBinds = await (await getCmd(
             snmpEngine,
             CommunityData("public", mpModel=0),
             Udp6TransportTarget(("localhost", AGENT_PORT)),
             ContextData(),
             ObjectType(ObjectIdentity("SNMPv2-MIB", "sysDescr", 0)),
-        )
+        ))
 
         assert errorIndication is None
         assert errorStatus == 0

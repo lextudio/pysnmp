@@ -7,7 +7,7 @@ from tests.agent_context import AGENT_PORT, AgentContextManager
 async def test_custom_asn1_mib_search_path():
     async with AgentContextManager():
         snmpEngine = SnmpEngine()
-        errorIndication, errorStatus, errorIndex, varBinds = await getCmd(
+        errorIndication, errorStatus, errorIndex, varBinds = await (await getCmd(
             snmpEngine,
             CommunityData("public"),
             UdpTransportTarget(("localhost", AGENT_PORT)),
@@ -17,7 +17,7 @@ async def test_custom_asn1_mib_search_path():
                     "file:///usr/share/snmp", "https://mibs.pysnmp.com/asn1/@mib@"
                 )
             ),
-        )
+        ))
 
         assert errorIndication is None
         assert errorStatus == 0

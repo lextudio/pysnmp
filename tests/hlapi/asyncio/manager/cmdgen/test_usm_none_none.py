@@ -9,13 +9,13 @@ async def test_usm_no_auth_no_priv():
     async with AgentContextManager():
         snmpEngine = SnmpEngine()
         authData = UsmUserData("usr-none-none")
-        errorIndication, errorStatus, errorIndex, varBinds = await getCmd(
+        errorIndication, errorStatus, errorIndex, varBinds = await (await getCmd(
             snmpEngine,
             authData,
             UdpTransportTarget(("localhost", AGENT_PORT), retries=0),
             ContextData(),
             ObjectType(ObjectIdentity("SNMPv2-MIB", "sysDescr", 0)),
-        )
+        ))
 
         assert errorIndication is None
         assert errorStatus == 0
@@ -30,13 +30,13 @@ async def test_usm_no_auth_no_priv_wrong_user():
     async with AgentContextManager():
         snmpEngine = SnmpEngine()
         authData = UsmUserData("usr-none-none-not-exist")
-        errorIndication, errorStatus, errorIndex, varBinds = await getCmd(
+        errorIndication, errorStatus, errorIndex, varBinds = await (await getCmd(
             snmpEngine,
             authData,
             UdpTransportTarget(("localhost", AGENT_PORT), retries=0),
             ContextData(),
             ObjectType(ObjectIdentity("SNMPv2-MIB", "sysDescr", 0)),
-        )
+        ))
 
         assert isinstance(errorIndication, UnknownUserName)
         assert str(errorIndication) == "Unknown USM user"
