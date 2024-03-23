@@ -1046,10 +1046,10 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
         # Modified to be compatible with #SNMP agent
         if securityLevel == 0:
             # simply pick up time data
-            debug.logger & debug.flagSM and debug.logger('processIncomingMsg: pick up engine boots and engine time')
+            debug.logger & debug.FLAG_SM and debug.logger('processIncomingMsg: pick up engine boots and engine time')
 
             # synchronize time with authed peer
-            self.__timeline[msgAuthoritativeEngineId] = (
+            self._timeline[msgAuthoritativeEngineId] = (
                 securityParameters.getComponentByPosition(1),
                 securityParameters.getComponentByPosition(2),
                 securityParameters.getComponentByPosition(2),
@@ -1057,12 +1057,12 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
             )
 
             timerResolution = snmpEngine.transportDispatcher is None and 1.0 or snmpEngine.transportDispatcher.getTimerResolution()
-            expireAt = int(self.__expirationTimer + 300 / timerResolution)
-            if expireAt not in self.__timelineExpQueue:
-                self.__timelineExpQueue[expireAt] = []
-            self.__timelineExpQueue[expireAt].append(msgAuthoritativeEngineId)
+            expireAt = int(self._expirationTimer + 300 / timerResolution)
+            if expireAt not in self._timelineExpQueue:
+                self._timelineExpQueue[expireAt] = []
+            self._timelineExpQueue[expireAt].append(msgAuthoritativeEngineId)
 
-            debug.logger & debug.flagSM and debug.logger(
+            debug.logger & debug.FLAG_SM and debug.logger(
                 f'processIncomingMsg: store timeline for securityEngineID {msgAuthoritativeEngineId!r}')
 
         # 3.2.6
