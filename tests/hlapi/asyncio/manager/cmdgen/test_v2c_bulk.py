@@ -3,25 +3,27 @@ from pysnmp.hlapi.v3arch.asyncio import *
 from tests.agent_context import AGENT_PORT, AgentContextManager
 
 
-# @pytest.mark.asyncio
-# async def test_v2c_bulk():
-#     async with AgentContextManager():
-#         with Slim() as slim:
-#             errorIndication, errorStatus, errorIndex, varBinds = await slim.bulk(
-#                 "public",
-#                 "localhost",
-#                 AGENT_PORT,
-#                 0,
-#                 50,
-#                 ObjectType(ObjectIdentity("SNMPv2-MIB", "sysDescr", 0)),
-#             )
+@pytest.mark.asyncio
+async def test_v2c_bulk():
+    async with AgentContextManager():
+        with Slim() as slim:
+            errorIndication, errorStatus, errorIndex, varBinds = await slim.bulk(
+                "public",
+                "localhost",
+                AGENT_PORT,
+                0,
+                5,
+                ObjectType(ObjectIdentity("SNMPv2-MIB", "sysDescr", 0)),
+            )
 
-#             assert errorIndication is None
-#             assert errorStatus == 0
-#             assert len(varBinds) == 50
-#             assert varBinds[0][0][0].prettyPrint() == "SNMPv2-MIB::sysObjectID.0"
-#             assert varBinds[0][0][1].prettyPrint() == "PYSNMP-MIB::pysnmp"
-#             # assert isinstance(varBinds[0][0][1], ObjectIdentifier)
+            assert errorIndication is None
+            assert errorStatus == 0
+            assert len(varBinds) == 5  # 50
+            assert varBinds[0][0][0].prettyPrint() == "SNMPv2-MIB::sysObjectID.0"
+            assert (
+                varBinds[0][0][1].prettyPrint() == "SNMPv2-SMI::enterprises.20408"
+            )  # "PYSNMP-MIB::pysnmp"
+            # assert isinstance(varBinds[0][0][1], ObjectIdentifier)
 
 
 # @pytest.mark.asyncio
