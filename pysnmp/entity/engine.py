@@ -14,7 +14,10 @@ from pysnmp.carrier.base import AbstractTransportAddress, AbstractTransportDispa
 from pysnmp.entity import observer
 from pysnmp.proto.acmod import rfc3415, void
 from pysnmp.proto.rfc3412 import MsgAndPduDispatcher
-from pysnmp.proto.mpmod.rfc2576 import SnmpV1MessageProcessingModel, SnmpV2cMessageProcessingModel
+from pysnmp.proto.mpmod.rfc2576 import (
+    SnmpV1MessageProcessingModel,
+    SnmpV2cMessageProcessingModel,
+)
 from pysnmp.proto.mpmod.rfc3412 import SnmpV3MessageProcessingModel
 from pysnmp.proto.rfc3412 import MsgAndPduDispatcher
 from pysnmp.proto.secmod.rfc2576 import SnmpV1SecurityModel
@@ -107,8 +110,11 @@ class SnmpEngine:
         )
 
         snmpEngineBoots.syntax += 1
-        origSnmpEngineID, = self.msgAndPduDsp.mibInstrumController.mibBuilder.importSymbols('__SNMP-FRAMEWORK-MIB',
-                                                                                            'snmpEngineID')
+        (
+            origSnmpEngineID,
+        ) = self.msgAndPduDsp.mibInstrumController.mibBuilder.importSymbols(
+            "__SNMP-FRAMEWORK-MIB", "snmpEngineID"
+        )
 
         if snmpEngineID is None:
             self.snmpEngineID = origSnmpEngineID.syntax
@@ -140,7 +146,7 @@ class SnmpEngine:
                 except OSError:
                     return
 
-            f = os.path.join(persistentPath, 'boots')
+            f = os.path.join(persistentPath, "boots")
             try:
                 snmpEngineBoots.syntax = snmpEngineBoots.syntax.clone(open(f).read())
 

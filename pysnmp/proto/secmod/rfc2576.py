@@ -663,6 +663,5 @@ class SnmpV2cSecurityModel(SnmpV1SecurityModel):
     SECURITY_MODEL_ID = 2
 
 
-
 # XXX
 # contextEngineId/contextName goes to globalData

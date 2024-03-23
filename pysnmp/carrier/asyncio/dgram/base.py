@@ -43,7 +43,6 @@ from pysnmp.carrier import error
 from pysnmp.carrier.asyncio.base import AbstractAsyncioTransport
 
 
-
 class DgramAsyncioProtocol(asyncio.DatagramProtocol, AbstractAsyncioTransport):
     """Base Asyncio datagram Transport, to be used with AsyncioDispatcher"""
 
@@ -83,7 +82,7 @@ class DgramAsyncioProtocol(asyncio.DatagramProtocol, AbstractAsyncioTransport):
 
             try:
                 self.transport.sendto(
-                    outgoingMessage, self.normalizeAddress(transportAddress) # type: ignore
+                    outgoingMessage, self.normalizeAddress(transportAddress)  # type: ignore
                 )
 
             except Exception:
@@ -161,7 +160,7 @@ class DgramAsyncioProtocol(asyncio.DatagramProtocol, AbstractAsyncioTransport):
         else:
             try:
                 self.transport.sendto(
-                    outgoingMessage, self.normalizeAddress(transportAddress) # type: ignore
+                    outgoingMessage, self.normalizeAddress(transportAddress)  # type: ignore
                 )
 
             except Exception:
