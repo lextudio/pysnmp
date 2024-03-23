@@ -9,6 +9,7 @@ from pyasn1.type import univ
 
 from pysnmp import debug
 from pysnmp import error
+from pysnmp.smi.instrum import MibInstrumController
 
 
 class SnmpContext:
@@ -60,7 +61,7 @@ class SnmpContext:
 
             del self.contextNames[contextName]
 
-    def getMibInstrum(self, contextName=null):
+    def getMibInstrum(self, contextName=null) -> MibInstrumController:
         contextName = univ.OctetString(contextName).asOctets()
         if contextName not in self.contextNames:
             debug.logger & debug.FLAG_INS and debug.logger(

@@ -79,9 +79,11 @@ def cbFun(varBinds, **context):
 
 
 mibInstrum.writeMibObjects(
-    (snmpCommunityEntry.name + (2,) + instanceId, "mycomm"),
-    (snmpCommunityEntry.name + (3,) + instanceId, "mynmsname"),
-    (snmpCommunityEntry.name + (7,) + instanceId, "volatile"),
+    (
+        (snmpCommunityEntry.name + (2,) + instanceId, "mycomm"),
+        (snmpCommunityEntry.name + (3,) + instanceId, "mynmsname"),
+        (snmpCommunityEntry.name + (7,) + instanceId, "volatile"),
+    ),
     cbFun=cbFun,
 )
 
@@ -106,7 +108,7 @@ def cbFun(varBinds, **context):
 print("Destroy SNMP-COMMUNITY-MIB::snmpCommunityEntry table row via RowStatus column: ")
 
 mibInstrum.writeMibObjects(
-    (snmpCommunityEntry.name + (8,) + instanceId, "destroy"), cbFun=cbFun
+    ((snmpCommunityEntry.name + (8,) + instanceId, "destroy"),), cbFun=cbFun
 )
 
 walkMib()
@@ -130,14 +132,16 @@ def cbFun(varBinds, **context):
 print("Create SNMP-COMMUNITY-MIB::snmpCommunityEntry table row: ")
 
 mibInstrum.writeMibObjects(
-    (snmpCommunityEntry.name + (1,) + instanceId, "mycomm"),
-    (snmpCommunityEntry.name + (2,) + instanceId, "mycomm"),
-    (snmpCommunityEntry.name + (3,) + instanceId, "mysecname"),
-    (snmpCommunityEntry.name + (4,) + instanceId, "abcdef"),
-    (snmpCommunityEntry.name + (5,) + instanceId, ""),
-    (snmpCommunityEntry.name + (6,) + instanceId, "mytag"),
-    (snmpCommunityEntry.name + (7,) + instanceId, "nonVolatile"),
-    (snmpCommunityEntry.name + (8,) + instanceId, "createAndGo"),
+    (
+        (snmpCommunityEntry.name + (1,) + instanceId, "mycomm"),
+        (snmpCommunityEntry.name + (2,) + instanceId, "mycomm"),
+        (snmpCommunityEntry.name + (3,) + instanceId, "mysecname"),
+        (snmpCommunityEntry.name + (4,) + instanceId, "abcdef"),
+        (snmpCommunityEntry.name + (5,) + instanceId, ""),
+        (snmpCommunityEntry.name + (6,) + instanceId, "mytag"),
+        (snmpCommunityEntry.name + (7,) + instanceId, "nonVolatile"),
+        (snmpCommunityEntry.name + (8,) + instanceId, "createAndGo"),
+    ),
     cbFun=cbFun,
 )
 
@@ -146,7 +150,7 @@ walkMib()
 print("Destroy SNMP-COMMUNITY-MIB::snmpCommunityEntry table row via RowStatus column: ")
 
 mibInstrum.writeMibObjects(
-    (snmpCommunityEntry.name + (8,) + instanceId, "destroy"), cbFun=cbFun
+    ((snmpCommunityEntry.name + (8,) + instanceId, "destroy"),), cbFun=cbFun
 )
 
 walkMib()
