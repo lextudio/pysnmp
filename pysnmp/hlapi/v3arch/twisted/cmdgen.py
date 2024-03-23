@@ -47,13 +47,13 @@ def getCmd(snmpEngine, authData, transportTarget, contextData,
     contextData : :class:`~pysnmp.hlapi.ContextData`
         Class instance representing SNMP ContextEngineId and ContextName values.
 
-    \*varBinds : :class:`~pysnmp.smi.rfc1902.ObjectType`
+    *varBinds : :class:`~pysnmp.smi.rfc1902.ObjectType`
         One or more class instances representing MIB variables to place
         into SNMP request.
 
     Other Parameters
     ----------------
-    \*\*options :
+    **options :
         Request options:
 
             * `lookupMib` - load MIB and resolve response MIB variables at
@@ -167,13 +167,13 @@ def setCmd(snmpEngine, authData, transportTarget, contextData,
     contextData : :class:`~pysnmp.hlapi.ContextData`
         Class instance representing SNMP ContextEngineId and ContextName values.
 
-    \*varBinds : :class:`~pysnmp.smi.rfc1902.ObjectType`
+    *varBinds : :class:`~pysnmp.smi.rfc1902.ObjectType`
         One or more class instances representing MIB variables to place
         into SNMP request.
 
     Other Parameters
     ----------------
-    \*\*options :
+    **options :
         Request options:
 
             * `lookupMib` - load MIB and resolve response MIB variables at
@@ -287,13 +287,13 @@ def nextCmd(snmpEngine, authData, transportTarget, contextData,
     contextData : :class:`~pysnmp.hlapi.ContextData`
         Class instance representing SNMP ContextEngineId and ContextName values.
 
-    \*varBinds : :class:`~pysnmp.smi.rfc1902.ObjectType`
+    *varBinds : :class:`~pysnmp.smi.rfc1902.ObjectType`
         One or more class instances representing MIB variables to place
         into SNMP request.
 
     Other Parameters
     ----------------
-    \*\*options :
+    **options :
         Request options:
 
             * `lookupMib` - load MIB and resolve response MIB variables at
@@ -433,13 +433,13 @@ def bulkCmd(snmpEngine, authData, transportTarget, contextData,
         `nonRepeaters`). Remote SNMP engine may choose lesser value than
         requested.
 
-    \*varBinds : :class:`~pysnmp.smi.rfc1902.ObjectType`
+    *varBinds : :class:`~pysnmp.smi.rfc1902.ObjectType`
         One or more class instances representing MIB variables to place
         into SNMP request.
 
     Other Parameters
     ----------------
-    \*\*options :
+    **options :
         Request options:
 
             * `lookupMib` - load MIB and resolve response MIB variables at

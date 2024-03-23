@@ -35,7 +35,7 @@ def sendNotification(snmpEngine, authData, transportTarget, contextData,
         Indicates type of notification to be sent. Recognized literal
         values are *trap* or *inform*.
 
-    \*varBinds: :class:`tuple` of OID-value pairs or :py:class:`~pysnmp.smi.rfc1902.ObjectType` or :py:class:`~pysnmp.smi.rfc1902.NotificationType`
+    *varBinds: :class:`tuple` of OID-value pairs or :py:class:`~pysnmp.smi.rfc1902.ObjectType` or :py:class:`~pysnmp.smi.rfc1902.NotificationType`
         One or more objects representing MIB variables to place
         into SNMP notification. It could be tuples of OID-values
         or :py:class:`~pysnmp.smi.rfc1902.ObjectType` class instances
@@ -75,7 +75,7 @@ def sendNotification(snmpEngine, authData, transportTarget, contextData,
 
     Other Parameters
     ----------------
-    \*\*options:
+    **options:
         * `lookupMib` - load MIB and resolve response MIB variables at
           the cost of slightly reduced performance. Default is `True`.
 

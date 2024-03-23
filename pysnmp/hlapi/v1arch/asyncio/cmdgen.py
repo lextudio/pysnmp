@@ -46,7 +46,7 @@ def getCmd(snmpDispatcher, authData, transportTarget,
         :py:class:`~pysnmp.hlapi.v1arch.asyncio.Udp6TransportTarget` Class instance representing
         transport type along with SNMP peer address.
 
-    \*varBinds: :class:`tuple` of OID-value pairs or :py:class:`~pysnmp.smi.rfc1902.ObjectType`
+    *varBinds: :class:`tuple` of OID-value pairs or :py:class:`~pysnmp.smi.rfc1902.ObjectType`
         One or more class instances representing MIB variables to place
         into SNMP request.
 
@@ -58,7 +58,7 @@ def getCmd(snmpDispatcher, authData, transportTarget,
 
     Other Parameters
     ----------------
-    \*\*options :
+    **options :
         Request options:
 
         * `lookupMib` - load MIB and resolve response MIB variables at
@@ -173,7 +173,7 @@ def setCmd(snmpDispatcher, authData, transportTarget,
         :py:class:`~pysnmp.hlapi.v1arch.asyncio.Udp6TransportTarget` Class instance representing
         transport type along with SNMP peer address.
 
-    \*varBinds: :class:`tuple` of OID-value pairs or :py:class:`~pysnmp.smi.rfc1902.ObjectType`
+    *varBinds: :class:`tuple` of OID-value pairs or :py:class:`~pysnmp.smi.rfc1902.ObjectType`
         One or more class instances representing MIB variables to place
         into SNMP request.
 
@@ -185,7 +185,7 @@ def setCmd(snmpDispatcher, authData, transportTarget,
 
     Other Parameters
     ----------------
-    \*\*options :
+    **options :
         Request options:
 
         * `lookupMib` - load MIB and resolve response MIB variables at
@@ -300,7 +300,7 @@ def nextCmd(snmpDispatcher, authData, transportTarget,
         :py:class:`~pysnmp.hlapi.v1arch.asyncio.Udp6TransportTarget` Class instance representing
         transport type along with SNMP peer address.
 
-    \*varBinds: :class:`tuple` of OID-value pairs or :py:class:`~pysnmp.smi.rfc1902.ObjectType`
+    *varBinds: :class:`tuple` of OID-value pairs or :py:class:`~pysnmp.smi.rfc1902.ObjectType`
         One or more class instances representing MIB variables to place
         into SNMP request.
 
@@ -312,7 +312,7 @@ def nextCmd(snmpDispatcher, authData, transportTarget,
 
     Other Parameters
     ----------------
-    \*\*options:
+    **options:
         Request options:
 
         * `lookupMib` - load MIB and resolve response MIB variables at
@@ -443,13 +443,13 @@ def bulkCmd(snmpDispatcher, authData, transportTarget,
         `nonRepeaters`). Remote SNMP engine may choose lesser value than
         requested.
 
-    \*varBinds: :class:`tuple` of OID-value pairs or :py:class:`~pysnmp.smi.rfc1902.ObjectType`
+    *varBinds: :class:`tuple` of OID-value pairs or :py:class:`~pysnmp.smi.rfc1902.ObjectType`
         One or more class instances representing MIB variables to place
         into SNMP request.
 
     Other Parameters
     ----------------
-    \*\*options :
+    **options :
         Request options:
 
         * `lookupMib` - load MIB and resolve response MIB variables at

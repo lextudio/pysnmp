@@ -232,7 +232,7 @@ class MibInstrumController(AbstractMibInstrumController):
 
         Other Parameters
         ----------------
-        \*\*context:
+        **context:
 
             Query parameters:
 
@@ -393,7 +393,7 @@ class MibInstrumController(AbstractMibInstrumController):
 
         Other Parameters
         ----------------
-        \*\*context:
+        **context:
 
             Query parameters:
 
@@ -447,7 +447,7 @@ class MibInstrumController(AbstractMibInstrumController):
 
         Other Parameters
         ----------------
-        \*\*context:
+        **context:
 
             Query parameters:
 
@@ -522,7 +522,7 @@ class MibInstrumController(AbstractMibInstrumController):
 
         Other Parameters
         ----------------
-        \*\*context:
+        **context:
 
             Query parameters:
 

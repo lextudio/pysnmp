@@ -9,7 +9,7 @@ import socket
 from pysnmp.carrier.asyncio.dgram.base import DgramAsyncioProtocol
 from pysnmp.carrier.base import AbstractTransportAddress
 
-domainName = snmpUDP6Domain = (1, 3, 6, 1, 2, 1, 100, 1, 2)
+DOMAIN_NAME = SNMP_UDP6_DOMAIN = (1, 3, 6, 1, 2, 1, 100, 1, 2)
 
 
 class Udp6TransportAddress(tuple, AbstractTransportAddress):
