@@ -1,9 +1,12 @@
+from typing import Generator
 from pysnmp.entity.engine import SnmpEngine
 from pysnmp.hlapi.v3arch.asyncio.cmdgen import (
     getCmd as _getCmd,
     setCmd as _setCmd,
     nextCmd as _nextCmd,
     bulkCmd as _bulkCmd,
+    walkCmd as _walkCmd,
+    bulkWalkCmd as _bulkWalkCmd,
 )
 from pysnmp.hlapi.v3arch.auth import CommunityData, UsmUserData
 from pysnmp.hlapi.v3arch.context import ContextData
@@ -15,9 +18,10 @@ from pysnmp.proto import errind
 
 from pysnmp.proto.rfc1902 import Integer32
 from pysnmp.smi.rfc1902 import ObjectType
+from pysnmp.hlapi import SnmpEngine
 
 
-__all__ = ["getCmd", "nextCmd", "setCmd", "bulkCmd"]
+__all__ = ["getCmd", "nextCmd", "setCmd", "bulkCmd", "walkCmd", "bulkWalkCmd"]
 
 
 def getCmd(
@@ -30,10 +34,7 @@ def getCmd(
 ) -> (
     "tuple[errind.ErrorIndication, Integer32 | int, Integer32 | int, tuple[ObjectType]]"
 ):
-    r"""Creates a generator to perform one or more SNMP GET queries.
-
-    On each iteration, new SNMP GET request is send (:RFC:`1905#section-4.2.1`).
-    The iterator blocks waiting for response to arrive or error to occur.
+    r"""Performs one SNMP GET query.
 
     Parameters
     ----------
@@ -79,12 +80,6 @@ def getCmd(
         Or its derivative indicating that an error occurred while
         performing SNMP operation.
 
-    Notes
-    -----
-    The `getCmd` generator will be exhausted immediately unless
-    a new sequence of `varBinds` are send back into running generator
-    (supported since Python 2.6).
-
     Examples
     --------
     >>> from pysnmp.hlapi import *
@@ -125,10 +120,7 @@ def setCmd(
 ) -> (
     "tuple[errind.ErrorIndication, Integer32 | int, Integer32 | int, tuple[ObjectType]]"
 ):
-    r"""Creates a generator to perform one or more SNMP SET queries.
-
-    On each iteration, new SNMP SET request is send (:RFC:`1905#section-4.2.5`).
-    The iterator blocks waiting for response to arrive or error to occur.
+    r"""Performs one SNMP SET query.
 
     Parameters
     ----------
@@ -175,12 +167,6 @@ def setCmd(
         Or its derivative indicating that an error occurred while
         performing SNMP operation.
 
-    Notes
-    -----
-    The `setCmd` generator will be exhausted immidiately unless
-    a new sequence of `varBinds` are send back into running generator
-    (supported since Python 2.6).
-
     Examples
     --------
     >>> from pysnmp.hlapi import *
@@ -221,6 +207,215 @@ def nextCmd(
 ) -> (
     "tuple[errind.ErrorIndication, Integer32 | int, Integer32 | int, tuple[ObjectType]]"
 ):
+    r"""Performs one SNMP GETNEXT query.
+
+    Parameters
+    ----------
+    snmpEngine : :py:class:`~pysnmp.hlapi.SnmpEngine`
+        Class instance representing SNMP engine.
+
+    authData : :py:class:`~pysnmp.hlapi.CommunityData` or :py:class:`~pysnmp.hlapi.UsmUserData`
+        Class instance representing SNMP credentials.
+
+    transportTarget : :py:class:`~pysnmp.hlapi.asyncio.UdpTransportTarget` or :py:class:`~pysnmp.hlapi.asyncio.Udp6TransportTarget`
+        Class instance representing transport type along with SNMP peer address.
+
+    contextData : :py:class:`~pysnmp.hlapi.ContextData`
+        Class instance representing SNMP ContextEngineId and ContextName values.
+
+    \*varBinds : :py:class:`~pysnmp.smi.rfc1902.ObjectType`
+        One or more class instances representing MIB variables to place
+        into SNMP request.
+
+    Other Parameters
+    ----------------
+    \*\*options :
+        Request options:
+
+            * `lookupMib` - load MIB and resolve response MIB variables at
+              the cost of slightly reduced performance. Default is `True`.
+              Default is `True`.
+
+    Yields
+    ------
+    errorIndication : str
+        True value indicates SNMP engine error.
+    errorStatus : str
+        True value indicates SNMP PDU error.
+    errorIndex : int
+        Non-zero value refers to `varBinds[errorIndex-1]`
+    varBinds : tuple
+        A sequence of :py:class:`~pysnmp.smi.rfc1902.ObjectType` class
+        instances representing MIB variables returned in SNMP response.
+
+    Raises
+    ------
+    PySnmpError
+        Or its derivative indicating that an error occurred while
+        performing SNMP operation.
+
+    Examples
+    --------
+    >>> from pysnmp.hlapi import *
+    >>> g = nextCmd(SnmpEngine(),
+    ...             CommunityData('public'),
+    ...             UdpTransportTarget(('demo.pysnmp.com', 161)),
+    ...             ContextData(),
+    ...             ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr')))
+    >>> g
+    (None, 0, 0, [ObjectType(ObjectIdentity(ObjectName('1.3.6.1.2.1.1.1.0')), DisplayString('SunOS zeus.pysnmp.com 4.1.3_U1 1 sun4m'))])
+    >>> g.send( [ ObjectType(ObjectIdentity('IF-MIB', 'ifInOctets')) ] )
+    (None, 0, 0, [(ObjectName('1.3.6.1.2.1.2.2.1.10.1'), Counter32(284817787))])
+    """
+
+    loop = asyncio.get_event_loop()
+    if loop.is_running():
+        future = asyncio.ensure_future(
+            _nextCmd(
+                snmpEngine, authData, transportTarget, contextData, *varBinds, **options
+            )
+        )
+        return loop.run_until_complete(future)
+    else:
+        return loop.run_until_complete(
+            _nextCmd(
+                snmpEngine, authData, transportTarget, contextData, *varBinds, **options
+            )
+        )
+
+
+def bulkCmd(
+    snmpEngine: SnmpEngine,
+    authData: "CommunityData | UsmUserData",
+    transportTarget: AbstractTransportTarget,
+    contextData: ContextData,
+    nonRepeaters: int,
+    maxRepetitions: int,
+    *varBinds,
+    **options
+) -> (
+    "tuple[errind.ErrorIndication, Integer32 | int, Integer32 | int, tuple[ObjectType]]"
+):
+    r"""Performs one SNMP GETBULK query.
+
+    Parameters
+    ----------
+    snmpEngine : :py:class:`~pysnmp.hlapi.SnmpEngine`
+        Class instance representing SNMP engine.
+
+    authData : :py:class:`~pysnmp.hlapi.CommunityData` or :py:class:`~pysnmp.hlapi.UsmUserData`
+        Class instance representing SNMP credentials.
+
+    transportTarget : :py:class:`~pysnmp.hlapi.asyncio.UdpTransportTarget` or :py:class:`~pysnmp.hlapi.asyncio.Udp6TransportTarget`
+        Class instance representing transport type along with SNMP peer address.
+
+    contextData : :py:class:`~pysnmp.hlapi.ContextData`
+        Class instance representing SNMP ContextEngineId and ContextName values.
+
+    nonRepeaters : int
+        One MIB variable is requested in response for the first
+        `nonRepeaters` MIB variables in request.
+
+    maxRepetitions : int
+        `maxRepetitions` MIB variables are requested in response for each
+        of the remaining MIB variables in the request (e.g. excluding
+        `nonRepeaters`). Remote SNMP engine may choose lesser value than
+        requested.
+
+    \*varBinds : :py:class:`~pysnmp.smi.rfc1902.ObjectType`
+        One or more class instances representing MIB variables to place
+        into SNMP request.
+
+    Other Parameters
+    ----------------
+    \*\*options :
+        Request options:
+
+            * `lookupMib` - load MIB and resolve response MIB variables at
+              the cost of slightly reduced performance. Default is `True`.
+              Default is `True`.
+
+    Yields
+    ------
+    errorIndication : str
+        True value indicates SNMP engine error.
+    errorStatus : str
+        True value indicates SNMP PDU error.
+    errorIndex : int
+        Non-zero value refers to \*varBinds[errorIndex-1]
+    varBinds : tuple
+        A sequence of :py:class:`~pysnmp.smi.rfc1902.ObjectType` class
+        instances representing MIB variables returned in SNMP response.
+
+    Raises
+    ------
+    PySnmpError
+        Or its derivative indicating that an error occurred while
+        performing SNMP operation.
+
+    Notes
+    -----
+    Setting `maxRepetitions` value to 15..50 might significantly improve
+    system performance, as many MIB variables get packed into a single
+    response message at once.
+
+    Examples
+    --------
+    >>> from pysnmp.hlapi import *
+    >>> g = bulkCmd(SnmpEngine(),
+    ...             CommunityData('public'),
+    ...             UdpTransportTarget(('demo.pysnmp.com', 161)),
+    ...             ContextData(),
+    ...             0, 25,
+    ...             ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr')))
+    >>> g
+    (None, 0, 0, [ObjectType(ObjectIdentity(ObjectName('1.3.6.1.2.1.1.1.0')), DisplayString('SunOS zeus.pysnmp.com 4.1.3_U1 1 sun4m'))])
+    >>> g.send( [ ObjectType(ObjectIdentity('IF-MIB', 'ifInOctets')) ] )
+    (None, 0, 0, [(ObjectName('1.3.6.1.2.1.2.2.1.10.1'), Counter32(284817787))])
+    """
+
+    loop = asyncio.get_event_loop()
+    if loop.is_running():
+        future = asyncio.ensure_future(
+            _bulkCmd(
+                snmpEngine,
+                authData,
+                transportTarget,
+                contextData,
+                nonRepeaters,
+                maxRepetitions,
+                *varBinds,
+                **options
+            )
+        )
+        return loop.run_until_complete(future)
+    else:
+        return loop.run_until_complete(
+            _bulkCmd(
+                snmpEngine,
+                authData,
+                transportTarget,
+                contextData,
+                nonRepeaters,
+                maxRepetitions,
+                *varBinds,
+                **options
+            )
+        )
+
+
+def walkCmd(
+    snmpEngine: SnmpEngine,
+    authData: "CommunityData | UsmUserData",
+    transportTarget: AbstractTransportTarget,
+    contextData: ContextData,
+    *varBinds,
+    **options
+) -> Generator[
+    tuple[errind.ErrorIndication, Integer32 | int, Integer32 | int, tuple[ObjectType]],
+    None,
+    None,
+]:
     r"""Creates a generator to perform one or more SNMP GETNEXT queries.
 
     On each iteration, new SNMP GETNEXT request is send
@@ -235,7 +430,7 @@ def nextCmd(
     authData : :py:class:`~pysnmp.hlapi.CommunityData` or :py:class:`~pysnmp.hlapi.UsmUserData`
         Class instance representing SNMP credentials.
 
-    transportTarget : :py:class:`~pysnmp.hlapi.asyncio.UdpTransportTarget` or :py:class:`~pysnmp.hlapi.asyncio.Udp6TransportTarget`
+    transportTarget : :py:class:`~pysnmp.hlapi.asyncore.UdpTransportTarget` or :py:class:`~pysnmp.hlapi.asyncore.Udp6TransportTarget`
         Class instance representing transport type along with SNMP peer address.
 
     contextData : :py:class:`~pysnmp.hlapi.ContextData`
@@ -304,45 +499,51 @@ def nextCmd(
     Examples
     --------
     >>> from pysnmp.hlapi import *
-    >>> g = nextCmd(SnmpEngine(),
+    >>> g = walkCmd(SnmpEngine(),
     ...             CommunityData('public'),
     ...             UdpTransportTarget(('demo.pysnmp.com', 161)),
     ...             ContextData(),
     ...             ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr')))
-    >>> g
+    >>> next(g)
     (None, 0, 0, [ObjectType(ObjectIdentity(ObjectName('1.3.6.1.2.1.1.1.0')), DisplayString('SunOS zeus.pysnmp.com 4.1.3_U1 1 sun4m'))])
     >>> g.send( [ ObjectType(ObjectIdentity('IF-MIB', 'ifInOctets')) ] )
     (None, 0, 0, [(ObjectName('1.3.6.1.2.1.2.2.1.10.1'), Counter32(284817787))])
     """
 
-    loop = asyncio.get_event_loop()
-    if loop.is_running():
-        future = asyncio.ensure_future(
-            _nextCmd(
-                snmpEngine, authData, transportTarget, contextData, *varBinds, **options
-            )
-        )
-        return loop.run_until_complete(future)
-    else:
-        return loop.run_until_complete(
-            _nextCmd(
-                snmpEngine, authData, transportTarget, contextData, *varBinds, **options
-            )
-        )
+    async def run():
+        result = []
+        async for row in _walkCmd(
+            snmpEngine, authData, transportTarget, contextData, *varBinds, **options
+        ):
+            result.append(row)
+        return result
+
+    # Get or create a new event loop
+    try:
+        loop = asyncio.get_running_loop()
+    except RuntimeError:  # 'RuntimeError: There is no current event loop...'
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+
+    # Now run the coroutine until completion and return the results
+    result = loop.run_until_complete(run())
+    yield from result
 
 
-def bulkCmd(
+def bulkWalkCmd(
     snmpEngine: SnmpEngine,
     authData: "CommunityData | UsmUserData",
     transportTarget: AbstractTransportTarget,
     contextData: ContextData,
-    nonRepeaters: int,
-    maxRepetitions: int,
+    nonRepeaters,
+    maxRepetitions,
     *varBinds,
     **options
-) -> (
-    "tuple[errind.ErrorIndication, Integer32 | int, Integer32 | int, tuple[ObjectType]]"
-):
+) -> Generator[
+    tuple[errind.ErrorIndication, Integer32 | int, Integer32 | int, tuple[ObjectType]],
+    None,
+    None,
+]:
     r"""Creates a generator to perform one or more SNMP GETBULK queries.
 
     On each iteration, new SNMP GETBULK request is send
@@ -357,7 +558,7 @@ def bulkCmd(
     authData : :py:class:`~pysnmp.hlapi.CommunityData` or :py:class:`~pysnmp.hlapi.UsmUserData`
         Class instance representing SNMP credentials.
 
-    transportTarget : :py:class:`~pysnmp.hlapi.asyncio.UdpTransportTarget` or :py:class:`~pysnmp.hlapi.asyncio.Udp6TransportTarget`
+    transportTarget : :py:class:`~pysnmp.hlapi.asyncore.UdpTransportTarget` or :py:class:`~pysnmp.hlapi.asyncore.Udp6TransportTarget`
         Class instance representing transport type along with SNMP peer address.
 
     contextData : :py:class:`~pysnmp.hlapi.ContextData`
@@ -440,43 +641,40 @@ def bulkCmd(
     Examples
     --------
     >>> from pysnmp.hlapi import *
-    >>> g = bulkCmd(SnmpEngine(),
+    >>> g = bulkWalkCmd(SnmpEngine(),
     ...             CommunityData('public'),
     ...             UdpTransportTarget(('demo.pysnmp.com', 161)),
     ...             ContextData(),
     ...             0, 25,
     ...             ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr')))
-    >>> g
+    >>> next(g)
     (None, 0, 0, [ObjectType(ObjectIdentity(ObjectName('1.3.6.1.2.1.1.1.0')), DisplayString('SunOS zeus.pysnmp.com 4.1.3_U1 1 sun4m'))])
     >>> g.send( [ ObjectType(ObjectIdentity('IF-MIB', 'ifInOctets')) ] )
     (None, 0, 0, [(ObjectName('1.3.6.1.2.1.2.2.1.10.1'), Counter32(284817787))])
     """
 
-    loop = asyncio.get_event_loop()
-    if loop.is_running():
-        future = asyncio.ensure_future(
-            _bulkCmd(
-                snmpEngine,
-                authData,
-                transportTarget,
-                contextData,
-                nonRepeaters,
-                maxRepetitions,
-                *varBinds,
-                **options
-            )
-        )
-        return loop.run_until_complete(future)
-    else:
-        return loop.run_until_complete(
-            _bulkCmd(
-                snmpEngine,
-                authData,
-                transportTarget,
-                contextData,
-                nonRepeaters,
-                maxRepetitions,
-                *varBinds,
-                **options
-            )
-        )
+    async def run():
+        result = []
+        async for row in _bulkWalkCmd(
+            snmpEngine,
+            authData,
+            transportTarget,
+            contextData,
+            nonRepeaters,
+            maxRepetitions,
+            *varBinds,
+            **options
+        ):
+            result.append(row)
+        return result
+
+    # Get or create a new event loop
+    try:
+        loop = asyncio.get_running_loop()
+    except RuntimeError:  # 'RuntimeError: There is no current event loop...'
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+
+    # Now run the coroutine until completion and return the results
+    result = loop.run_until_complete(run())
+    yield from result

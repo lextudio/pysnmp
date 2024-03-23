@@ -69,11 +69,7 @@ def cbFun(
 
     if errorStatus:
         print(
-            "%s at %s"
-            % (
-                errorStatus.prettyPrint(),
-                errorIndex and varBindTable[-1][int(errorIndex) - 1][0] or "?",
-            )
+            f"{errorStatus.prettyPrint()} at {varBindTable[-1][int(errorIndex) - 1][0] if errorIndex else '?'}"
         )
         return False  # stop on error
 

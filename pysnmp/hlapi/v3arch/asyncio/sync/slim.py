@@ -4,6 +4,7 @@
 # Copyright (c) 2023-2024, LeXtudio Inc. <support@lextudio.com>
 # License: https://www.pysnmp.com/pysnmp/license.html
 #
+from typing import Iterator
 from pysnmp.error import PySnmpError
 from pysnmp.hlapi.asyncio.sync import *
 from pysnmp.proto.errind import ErrorIndication
@@ -60,7 +61,7 @@ class Slim:
         *varBinds,
         timeout: int = 1,
         retries: int = 5,
-    ) -> "tuple[ErrorIndication, Integer32 | int, Integer32 | int, tuple[ObjectType]]":
+    ) -> "Iterator[tuple[ErrorIndication, Integer32 | int, Integer32 | int, tuple[ObjectType]]]":
         """
         Creates a generator to perform SNMP GET query.
 
@@ -115,12 +116,12 @@ class Slim:
         --------
         >>> from pysnmp.hlapi.asyncio.sync.slim import Slim
         >>> with Slim() as slim:
-        ...     errorIndication, errorStatus, errorIndex, varBinds = await slim.get(
+        ...     errorIndication, errorStatus, errorIndex, varBinds = next(slim.get(
         ...         'public',
         ...         'demo.pysnmp.com',
         ...         161,
         ...         ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0))
-        ...     )
+        ...     ))
         ...     print(errorIndication, errorStatus, errorIndex, varBinds)
         (None, 0, 0, [ObjectType(ObjectIdentity(ObjectName('1.3.6.1.2.1.1.1.0')), DisplayString('SunOS zeus.pysnmp.com 4.1.3_U1 1 sun4m'))])
         >>>
@@ -144,7 +145,7 @@ class Slim:
         *varBinds,
         timeout: int = 1,
         retries: int = 5,
-    ) -> "tuple[ErrorIndication, Integer32 | int, Integer32 | int, tuple[ObjectType]]":
+    ) -> "Iterator[tuple[ErrorIndication, Integer32 | int, Integer32 | int, tuple[ObjectType]]]":
         """
         Creates a generator to perform SNMP GETNEXT query.
 
@@ -203,12 +204,12 @@ class Slim:
         --------
         >>> from pysnmp.hlapi.asyncio.sync.slim import Slim
         >>> with Slim() as slim:
-        ...     errorIndication, errorStatus, errorIndex, varBinds = slim.next(
+        ...     errorIndication, errorStatus, errorIndex, varBinds = next(slim.next(
         ...         'public',
         ...         'demo.pysnmp.com',
         ...         161,
         ...         ObjectType(ObjectIdentity('SNMPv2-MIB', 'system'))
-        ...     )
+        ...     ))
         ...     print(errorIndication, errorStatus, errorIndex, varBinds)
         >>>
         (None, 0, 0, [[ObjectType(ObjectIdentity('1.3.6.1.2.1.1.1.0'), DisplayString('Linux i386'))]])
@@ -234,7 +235,7 @@ class Slim:
         *varBinds,
         timeout: int = 1,
         retries: int = 5,
-    ) -> "tuple[ErrorIndication, Integer32 | int, Integer32 | int, tuple[ObjectType]]":
+    ) -> "Iterator[tuple[ErrorIndication, Integer32 | int, Integer32 | int, tuple[ObjectType]]]":
         r"""Creates a generator to perform SNMP GETBULK query.
 
         When iterator gets advanced by :py:mod:`asyncio` main loop,
@@ -317,14 +318,14 @@ class Slim:
         --------
         >>> from pysnmp.hlapi.asyncio.sync.slim import Slim
         >>> with Slim() as slim:
-        ...     errorIndication, errorStatus, errorIndex, varBinds = await slim.bulk(
+        ...     errorIndication, errorStatus, errorIndex, varBinds = next(slim.bulk(
         ...         'public',
         ...         'demo.pysnmp.com',
         ...         161,
         ...         0,
         ...         2,
         ...         ObjectType(ObjectIdentity('SNMPv2-MIB', 'system'))
-        ...     )
+        ...     ))
         ...     print(errorIndication, errorStatus, errorIndex, varBinds)
         >>>
         (None, 0, 0, [[ObjectType(ObjectIdentity(ObjectName('1.3.6.1.2.1.1.1.0')), DisplayString('SunOS zeus.pysnmp.com 4.1.3_U1 1 sun4m'))], [ObjectType(ObjectIdentity(ObjectName('1.3.6.1.2.1.1.2.0')), ObjectIdentifier('1.3.6.1.4.1.424242.1.1'))]])
@@ -355,7 +356,7 @@ class Slim:
         *varBinds,
         timeout: int = 1,
         retries: int = 5,
-    ) -> "tuple[ErrorIndication, Integer32 | int, Integer32 | int, tuple[ObjectType]]":
+    ) -> "Iterator[tuple[ErrorIndication, Integer32 | int, Integer32 | int, tuple[ObjectType]]]":
         """
         Creates a generator to perform SNMP SET query.
 
@@ -407,12 +408,12 @@ class Slim:
         --------
         >>> from pysnmp.hlapi.asyncio.sync.slim import Slim
         >>> with Slim() as slim:
-        ...     errorIndication, errorStatus, errorIndex, varBinds = await slim.set(
+        ...     errorIndication, errorStatus, errorIndex, varBinds = next(slim.set(
         ...         'public',
         ...         'demo.pysnmp.com',
         ...         161,
         ...         ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0), 'Linux i386')
-        ...     )
+        ...     ))
         ...     print(errorIndication, errorStatus, errorIndex, varBinds)
         >>>
         (None, 0, 0, [ObjectType(ObjectIdentity(ObjectName('1.3.6.1.2.1.1.1.0')), DisplayString('Linux i386'))])
