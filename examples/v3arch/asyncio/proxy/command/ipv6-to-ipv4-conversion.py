@@ -42,26 +42,20 @@ snmpEngine = engine.SnmpEngine()
 
 # UDP over IPv6
 config.addTransport(
-    snmpEngine,
-    udp6.DOMAIN_NAME,
-    udp6.Udp6Transport().openServerMode(('::1', 161))
+    snmpEngine, udp6.DOMAIN_NAME, udp6.Udp6Transport().openServerMode(("::1", 161))
 )
 
 # Manager section
 
 # UDP over IPv4
-config.addTransport(
-    snmpEngine,
-    udp.DOMAIN_NAME,
-    udp.UdpTransport().openClientMode()
-)
+config.addTransport(snmpEngine, udp.DOMAIN_NAME, udp.UdpTransport().openClientMode())
 
 #
 # SNMPv1/2c setup (Agent role)
 #
 
 # SecurityName <-> CommunityName mapping
-config.addV1System(snmpEngine, '1-my-area', 'public')
+config.addV1System(snmpEngine, "1-my-area", "public")
 
 #
 # SNMPv1/v2c setup (Manager role)
@@ -70,24 +64,28 @@ config.addV1System(snmpEngine, '1-my-area', 'public')
 # to let it match first in snmpCommunityTable on response processing.
 #
 
-config.addV1System(snmpEngine, '0-distant-area', 'public', transportTag='remote')
+config.addV1System(snmpEngine, "0-distant-area", "public", transportTag="remote")
 
 #
 # Transport target used by Manager
 #
 
 config.addTargetParams(
-    snmpEngine, 'distant-agent-auth', '0-distant-area', 'noAuthNoPriv', 1
+    snmpEngine, "distant-agent-auth", "0-distant-area", "noAuthNoPriv", 1
 )
 
 config.addTargetAddr(
-    snmpEngine, 'distant-agent',
-    udp.DOMAIN_NAME, ('127.0.0.1', 161),
-    'distant-agent-auth', retryCount=0, tagList='remote'
+    snmpEngine,
+    "distant-agent",
+    udp.DOMAIN_NAME,
+    ("127.0.0.1", 161),
+    "distant-agent-auth",
+    retryCount=0,
+    tagList="remote",
 )
 
 # Default SNMP context
-config.addContext(snmpEngine, '')
+config.addContext(snmpEngine, "")
 
 
 class CommandResponder(cmdrsp.CommandResponderBase):
@@ -95,41 +93,40 @@ class CommandResponder(cmdrsp.CommandResponderBase):
         v2c.GetRequestPDU.tagSet: cmdgen.GetCommandGenerator(),
         v2c.SetRequestPDU.tagSet: cmdgen.SetCommandGenerator(),
         v2c.GetNextRequestPDU.tagSet: cmdgen.NextCommandGeneratorSingleRun(),
-        v2c.GetBulkRequestPDU.tagSet: cmdgen.BulkCommandGeneratorSingleRun()
+        v2c.GetBulkRequestPDU.tagSet: cmdgen.BulkCommandGeneratorSingleRun(),
     }
     SUPPORTED_PDU_TYPES = tuple(CMDGEN_MAP)  # This app will handle these PDUs
 
     # SNMP request relay
-    def handleMgmtOperation(self, snmpEngine, stateReference, contextName,
-                            PDU, acInfo):
+    def handleMgmtOperation(self, snmpEngine, stateReference, contextName, PDU, acInfo):
         cbCtx = stateReference, PDU
         contextEngineId = None  # address authoritative SNMP Engine
         try:
             self.CMDGEN_MAP[PDU.tagSet].sendPdu(
-                snmpEngine, 'distant-agent',
-                contextEngineId, contextName,
+                snmpEngine,
+                "distant-agent",
+                contextEngineId,
+                contextName,
                 PDU,
-                self.handleResponsePdu, cbCtx
+                self.handleResponsePdu,
+                cbCtx,
             )
 
         except error.PySnmpError:
-            self.handleResponsePdu(
-                snmpEngine, stateReference, 'error', None, cbCtx
-            )
+            self.handleResponsePdu(snmpEngine, stateReference, "error", None, cbCtx)
 
     # SNMP response relay
     # noinspection PyUnusedLocal
-    def handleResponsePdu(self, snmpEngine, sendRequestHandle,
-                          errorIndication, PDU, cbCtx):
+    def handleResponsePdu(
+        self, snmpEngine, sendRequestHandle, errorIndication, PDU, cbCtx
+    ):
         stateReference, reqPDU = cbCtx
 
         if errorIndication:
             PDU = v2c.apiPDU.getResponse(reqPDU)
             PDU.setErrorStatus(PDU, 5)
 
-        self.sendPdu(
-            snmpEngine, stateReference, PDU
-        )
+        self.sendPdu(snmpEngine, stateReference, PDU)
 
         self.releaseStateInformation(stateReference)
 

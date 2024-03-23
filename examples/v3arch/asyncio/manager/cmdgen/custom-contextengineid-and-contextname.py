@@ -30,12 +30,9 @@ snmpEngine = engine.SnmpEngine()
 #
 
 # user: usr-md5-none, auth: MD5, priv: NONE
-config.addV3User(
-    snmpEngine, 'usr-md5-none',
-    config.USM_AUTH_HMAC96_MD5, 'authkey1'
-)
+config.addV3User(snmpEngine, "usr-md5-none", config.USM_AUTH_HMAC96_MD5, "authkey1")
 
-config.addTargetParams(snmpEngine, 'my-creds', 'usr-md5-none', 'authNoPriv')
+config.addTargetParams(snmpEngine, "my-creds", "usr-md5-none", "authNoPriv")
 
 #
 # Setup transport endpoint and bind it with security settings yielding
@@ -48,38 +45,48 @@ config.addTransport(
 )
 
 config.addTargetAddr(
-    snmpEngine, 'my-router',
-    udp.DOMAIN_NAME, ('127.0.0.1', 161),
-    'my-creds'
+    snmpEngine, "my-router", udp.DOMAIN_NAME, ("127.0.0.1", 161), "my-creds"
 )
 
 
 # Error/response receiver
 # noinspection PyUnusedLocal,PyUnusedLocal,PyUnusedLocal
-def cbFun(snmpEngine, sendRequestHandle, errorIndication,
-          errorStatus, errorIndex, varBinds, cbCtx):
+def cbFun(
+    snmpEngine,
+    sendRequestHandle,
+    errorIndication,
+    errorStatus,
+    errorIndex,
+    varBinds,
+    cbCtx,
+):
     if errorIndication:
         print(errorIndication)
 
     elif errorStatus:
-        print('%s at %s' % (errorStatus.prettyPrint(),
-                            errorIndex and varBinds[int(errorIndex) - 1][0] or '?'))
+        print(
+            "%s at %s"
+            % (
+                errorStatus.prettyPrint(),
+                errorIndex and varBinds[int(errorIndex) - 1][0] or "?",
+            )
+        )
 
     else:
         for oid, val in varBinds:
-            print('%s = %s' % (oid.prettyPrint(), val.prettyPrint()))
+            print(f"{oid.prettyPrint()} = {val.prettyPrint()}")
 
 
 # Prepare and send a request message, pass custom ContextEngineId & ContextName
 cmdgen.GetCommandGenerator().sendVarBinds(
     snmpEngine,
-    'my-router',
+    "my-router",
     # contextEngineId
-    rfc1902.OctetString(hexValue='80004fb805636c6f75644dab22cc'),
+    rfc1902.OctetString(hexValue="80004fb805636c6f75644dab22cc"),
     # contextName
-    rfc1902.OctetString('da761cfc8c94d3aceef4f60f049105ba'),
+    rfc1902.OctetString("da761cfc8c94d3aceef4f60f049105ba"),
     [((1, 3, 6, 1, 2, 1, 1, 1, 0), None)],
-    cbFun
+    cbFun,
 )
 
 # Run I/O dispatcher which would send pending queries and process responses

@@ -27,10 +27,10 @@ snmpEngine = engine.SnmpEngine()
 #
 
 # SecurityName <-> CommunityName mapping
-config.addV1System(snmpEngine, 'my-area', 'public')
+config.addV1System(snmpEngine, "my-area", "public")
 
 # Specify security settings per SecurityName (SNMPv1 - 0, SNMPv2c - 1)
-config.addTargetParams(snmpEngine, 'my-creds', 'my-area', 'noAuthNoPriv', 0)
+config.addTargetParams(snmpEngine, "my-creds", "my-area", "noAuthNoPriv", 0)
 
 #
 # Setup transport endpoint and bind it with security settings yielding
@@ -43,16 +43,21 @@ config.addTransport(
 )
 
 config.addTargetAddr(
-    snmpEngine, 'my-router',
-    udp.DOMAIN_NAME, ('127.0.0.1', 161),
-    'my-creds'
+    snmpEngine, "my-router", udp.DOMAIN_NAME, ("127.0.0.1", 161), "my-creds"
 )
 
 
 # Error/response receiver
 # noinspection PyUnusedLocal,PyUnusedLocal,PyUnusedLocal
-def cbFun(snmpEngine, sendRequestHandle, errorIndication,
-          errorStatus, errorIndex, varBindTable, cbCtx):
+def cbFun(
+    snmpEngine,
+    sendRequestHandle,
+    errorIndication,
+    errorStatus,
+    errorIndex,
+    varBindTable,
+    cbCtx,
+):
     if errorIndication:
         print(errorIndication)
         return
@@ -60,13 +65,18 @@ def cbFun(snmpEngine, sendRequestHandle, errorIndication,
     # SNMPv1 response may contain noSuchName error *and* SNMPv2c exception,
     # so we ignore noSuchName error here
     if errorStatus and errorStatus != 2:
-        print('%s at %s' % (errorStatus.prettyPrint(),
-                            errorIndex and varBindTable[-1][int(errorIndex) - 1][0] or '?'))
+        print(
+            "%s at %s"
+            % (
+                errorStatus.prettyPrint(),
+                errorIndex and varBindTable[-1][int(errorIndex) - 1][0] or "?",
+            )
+        )
         return  # stop on error
 
     for varBindRow in varBindTable:
         for oid, val in varBindRow:
-            print('%s = %s' % (oid.prettyPrint(), val.prettyPrint()))
+            print(f"{oid.prettyPrint()} = {val.prettyPrint()}")
 
     return True  # signal dispatcher to continue
 
@@ -74,11 +84,11 @@ def cbFun(snmpEngine, sendRequestHandle, errorIndication,
 # Prepare initial request to be sent
 cmdgen.NextCommandGenerator().sendVarBinds(
     snmpEngine,
-    'my-router',
-    None, '',  # contextEngineId, contextName
-    [((1, 3, 6, 1, 2, 1, 1), None),
-     ((1, 3, 6, 1, 4, 1, 1), None)],
-    cbFun
+    "my-router",
+    None,
+    "",  # contextEngineId, contextName
+    [((1, 3, 6, 1, 2, 1, 1), None), ((1, 3, 6, 1, 4, 1, 1), None)],
+    cbFun,
 )
 
 # Run I/O dispatcher which would send pending queries and process responses

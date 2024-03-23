@@ -19,19 +19,19 @@ Functionally similar to:
 
 | $ snmpget -v2c -c public demo.snmplabs.com IF-MIB::ifInOctets.1
 
-"""#
+"""  #
 from pysnmp.hlapi.v1arch import *
 
 queue = [
-    [ObjectType(ObjectIdentity('IF-MIB', 'ifInOctets', 1))],
-    [ObjectType(ObjectIdentity('IF-MIB', 'ifOutOctets', 1))]
+    [ObjectType(ObjectIdentity("IF-MIB", "ifInOctets", 1))],
+    [ObjectType(ObjectIdentity("IF-MIB", "ifOutOctets", 1))],
 ]
 
 iterator = getCmd(
     SnmpDispatcher(),
-    CommunityData('public'),
-    UdpTransportTarget(('demo.snmplabs.com', 161)),
-    lookupMib=True
+    CommunityData("public"),
+    UdpTransportTarget(("demo.snmplabs.com", 161)),
+    lookupMib=True,
 )
 
 next(iterator)
@@ -43,9 +43,14 @@ while queue:
         print(errorIndication)
 
     elif errorStatus:
-        print('%s at %s' % (errorStatus.prettyPrint(),
-                            errorIndex and varBinds[int(errorIndex) - 1][0] or '?'))
+        print(
+            "%s at %s"
+            % (
+                errorStatus.prettyPrint(),
+                errorIndex and varBinds[int(errorIndex) - 1][0] or "?",
+            )
+        )
 
     else:
         for varBind in varBinds:
-            print(' = '.join([x.prettyPrint() for x in varBind]))
+            print(" = ".join([x.prettyPrint() for x in varBind]))

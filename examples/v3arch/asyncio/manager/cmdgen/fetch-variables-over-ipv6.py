@@ -27,11 +27,8 @@ snmpEngine = engine.SnmpEngine()
 #
 
 # user: usr-md5-des, auth: MD5, priv NONE
-config.addV3User(
-    snmpEngine, 'usr-md5-none',
-    config.USM_AUTH_HMAC96_MD5, 'authkey1'
-)
-config.addTargetParams(snmpEngine, 'my-creds', 'usr-md5-none', 'authNoPriv')
+config.addV3User(snmpEngine, "usr-md5-none", config.USM_AUTH_HMAC96_MD5, "authkey1")
+config.addTargetParams(snmpEngine, "my-creds", "usr-md5-none", "authNoPriv")
 
 #
 # Setup transport endpoint and bind it with security settings yielding
@@ -46,21 +43,32 @@ config.addTransport(
 
 # Error/response receiver
 # noinspection PyUnusedLocal,PyUnusedLocal,PyUnusedLocal
-def cbFun(snmpEngine, sendRequestHandle, errorIndication,
-          errorStatus, errorIndex, varBindTable, cbCtx):
+def cbFun(
+    snmpEngine,
+    sendRequestHandle,
+    errorIndication,
+    errorStatus,
+    errorIndex,
+    varBindTable,
+    cbCtx,
+):
     if errorIndication:
         print(errorIndication)
         return
 
     if errorStatus:
-        print('%s at %s' % (errorStatus.prettyPrint(),
-                            errorIndex and varBindTable[-1][int(errorIndex) - 1][0] or '?'))
+        print(
+            "%s at %s"
+            % (
+                errorStatus.prettyPrint(),
+                errorIndex and varBindTable[-1][int(errorIndex) - 1][0] or "?",
+            )
+        )
         return  # stop on error
 
     for varBindRow in varBindTable:
-
         for oid, val in varBindRow:
-            print('%s = %s' % (oid.prettyPrint(), val.prettyPrint()))
+            print(f"{oid.prettyPrint()} = {val.prettyPrint()}")
 
     return True  # signal dispatcher to continue
 
@@ -68,11 +76,11 @@ def cbFun(snmpEngine, sendRequestHandle, errorIndication,
 # Prepare initial request to be sent
 cmdgen.NextCommandGenerator().sendVarBinds(
     snmpEngine,
-    'my-router',
-    None, '',  # contextEngineId, contextName
-    [((1, 3, 6, 1, 2, 1, 1), None),
-     ((1, 3, 6, 1, 4, 1, 1), None)],
-    cbFun
+    "my-router",
+    None,
+    "",  # contextEngineId, contextName
+    [((1, 3, 6, 1, 2, 1, 1), None), ((1, 3, 6, 1, 4, 1, 1), None)],
+    cbFun,
 )
 
 # Run I/O dispatcher which would send pending queries and process responses

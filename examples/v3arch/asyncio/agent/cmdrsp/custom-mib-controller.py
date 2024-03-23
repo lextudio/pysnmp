@@ -30,20 +30,23 @@ snmpEngine = engine.SnmpEngine()
 
 # UDP over IPv4
 config.addTransport(
-    snmpEngine,
-    udp.DOMAIN_NAME,
-    udp.UdpTransport().openServerMode(('127.0.0.1', 161))
+    snmpEngine, udp.DOMAIN_NAME, udp.UdpTransport().openServerMode(("127.0.0.1", 161))
 )
 
 # SNMPv3/USM setup
 
 # user: usr-none-none, auth: NONE, priv NONE
-config.addV3User(
-    snmpEngine, 'usr-none-none'
-)
+config.addV3User(snmpEngine, "usr-none-none")
 
 # Allow full MIB access for each user at VACM
-config.addVacmUser(snmpEngine, 3, 'usr-none-none', 'noAuthNoPriv', (1, 3, 6, 1, 2, 1), (1, 3, 6, 1, 2, 1))
+config.addVacmUser(
+    snmpEngine,
+    3,
+    "usr-none-none",
+    "noAuthNoPriv",
+    (1, 3, 6, 1, 2, 1),
+    (1, 3, 6, 1, 2, 1),
+)
 
 # Create an SNMP context
 snmpContext = context.SnmpContext(snmpEngine)
@@ -53,18 +56,23 @@ snmpContext = context.SnmpContext(snmpEngine)
 # any Managed Objects attached. It supports only GET's and
 # always echos request var-binds in response.
 class EchoMibInstrumController(instrum.AbstractMibInstrumController):
-
     def readMibObjects(self, *varBinds, **context):
-        cbFun = context.get('cbFun')
+        cbFun = context.get("cbFun")
         if cbFun:
-            cbFun([(ov[0], v2c.OctetString('You queried OID %s' % ov[0])) for ov in varBinds], **context)
+            cbFun(
+                [
+                    (ov[0], v2c.OctetString("You queried OID %s" % ov[0]))
+                    for ov in varBinds
+                ],
+                **context
+            )
 
 
 # Create a custom Management Instrumentation Controller and register at
 # SNMP Context under ContextName 'my-context'
 snmpContext.registerContextName(
-    v2c.OctetString('my-context'),  # Context Name
-    EchoMibInstrumController()  # Management Instrumentation
+    v2c.OctetString("my-context"),  # Context Name
+    EchoMibInstrumController(),  # Management Instrumentation
 )
 
 # Register GET&SET Applications at the SNMP engine for a custom SNMP context

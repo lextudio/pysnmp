@@ -42,38 +42,40 @@ snmpEngine = engine.SnmpEngine()
 
 # UDP over IPv4
 config.addTransport(
-    snmpEngine,
-    udp.domainName,
-    udp.UdpTransport().openServerMode(('127.0.0.1', 161))
+    snmpEngine, udp.domainName, udp.UdpTransport().openServerMode(("127.0.0.1", 161))
 )
 
 # Register default MIB instrumentation controller with a new SNMP context
 
-contextName = 'abcd'
+contextName = "abcd"
 
 snmpContext = context.SnmpContext(snmpEngine)
 
 snmpContext.registerContextName(
-    contextName, snmpEngine.msgAndPduDsp.mibInstrumController)
+    contextName, snmpEngine.msgAndPduDsp.mibInstrumController
+)
 
 # Add new SNMP community name, map it to a new security name and
 # SNMP context
 
-securityName = 'my-area'
-communityName = 'public'
+securityName = "my-area"
+communityName = "public"
 
 config.addV1System(
-    snmpEngine, securityName, communityName,
+    snmpEngine,
+    securityName,
+    communityName,
     contextEngineId=snmpContext.contextEngineId,
-    contextName=contextName)
+    contextName=contextName,
+)
 
 # VACM configuration settings
 
 securityModel = 2  # SNMPv2c
 securityLevel = 1  # noAuthNoPriv
 
-vacmGroup = 'my-group'
-readViewName = 'my-read-view'
+vacmGroup = "my-group"
+readViewName = "my-read-view"
 
 # We will match by context name prefix
 contextPrefix = contextName[:1]
@@ -82,23 +84,32 @@ contextPrefix = contextName[:1]
 config.addContext(snmpEngine, contextName)
 
 # Populate SNMP-VIEW-BASED-ACM-MIB::vacmSecurityToGroupTable
-config.addVacmGroup(
-    snmpEngine, vacmGroup, securityModel, securityName)
+config.addVacmGroup(snmpEngine, vacmGroup, securityModel, securityName)
 
 # Populate SNMP-VIEW-BASED-ACM-MIB::vacmAccessTable
 config.addVacmAccess(
-    snmpEngine, vacmGroup, contextPrefix, securityModel, securityLevel,
-    'prefix', readViewName, '', '')
+    snmpEngine,
+    vacmGroup,
+    contextPrefix,
+    securityModel,
+    securityLevel,
+    "prefix",
+    readViewName,
+    "",
+    "",
+)
 
 # Populate SNMP-VIEW-BASED-ACM-MIB::vacmViewTreeFamilyTable
 
 # Allow the whole system subtree
 config.addVacmView(
-    snmpEngine, readViewName, 'included', '1.3.6.1.2.1.1.1', '1.1.1.1.1.1.1.0')
+    snmpEngine, readViewName, "included", "1.3.6.1.2.1.1.1", "1.1.1.1.1.1.1.0"
+)
 
 # ...but exclude one sub-branch (just one scalar OID)
 config.addVacmView(
-    snmpEngine, readViewName, 'excluded', '1.3.6.1.2.1.1.3', '1.1.1.1.1.1.1.1')
+    snmpEngine, readViewName, "excluded", "1.3.6.1.2.1.1.3", "1.1.1.1.1.1.1.1"
+)
 
 # Register SNMP Applications at the SNMP engine for particular SNMP context
 cmdrsp.GetCommandResponder(snmpEngine, snmpContext)

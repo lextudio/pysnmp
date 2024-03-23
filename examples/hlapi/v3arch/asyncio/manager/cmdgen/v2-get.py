@@ -18,6 +18,7 @@ Functionally similar to:
 import asyncio
 from pysnmp.hlapi.v3arch.asyncio import *
 
+
 async def run():
     with Slim(1) as slim:
         errorIndication, errorStatus, errorIndex, varBinds = await slim.get(

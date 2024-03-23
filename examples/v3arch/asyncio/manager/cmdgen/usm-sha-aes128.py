@@ -26,12 +26,15 @@ snmpEngine = engine.SnmpEngine()
 
 # user: usr-sha-aes, auth: SHA, priv AES
 config.addV3User(
-    snmpEngine, 'usr-sha-aes',
-    config.USM_AUTH_HMAC96_SHA, 'authkey1',
-    config.USM_PRIV_CFB128_AES, 'privkey1'
+    snmpEngine,
+    "usr-sha-aes",
+    config.USM_AUTH_HMAC96_SHA,
+    "authkey1",
+    config.USM_PRIV_CFB128_AES,
+    "privkey1",
 )
 
-config.addTargetParams(snmpEngine, 'my-creds', 'usr-sha-aes', 'authPriv')
+config.addTargetParams(snmpEngine, "my-creds", "usr-sha-aes", "authPriv")
 
 #
 # Setup transport endpoint and bind it with security settings yielding
@@ -44,35 +47,46 @@ config.addTransport(
 )
 
 config.addTargetAddr(
-    snmpEngine, 'my-router',
-    udp.DOMAIN_NAME, ('127.0.0.1', 161),
-    'my-creds'
+    snmpEngine, "my-router", udp.DOMAIN_NAME, ("127.0.0.1", 161), "my-creds"
 )
 
 
 # Error/response receiver
 # noinspection PyUnusedLocal,PyUnusedLocal,PyUnusedLocal
-def cbFun(snmpEngine, sendRequestHandle, errorIndication,
-          errorStatus, errorIndex, varBinds, cbCtx):
+def cbFun(
+    snmpEngine,
+    sendRequestHandle,
+    errorIndication,
+    errorStatus,
+    errorIndex,
+    varBinds,
+    cbCtx,
+):
     if errorIndication:
         print(errorIndication)
 
     elif errorStatus:
-        print('%s at %s' % (errorStatus.prettyPrint(),
-                            errorIndex and varBinds[int(errorIndex) - 1][0] or '?'))
+        print(
+            "%s at %s"
+            % (
+                errorStatus.prettyPrint(),
+                errorIndex and varBinds[int(errorIndex) - 1][0] or "?",
+            )
+        )
 
     else:
         for oid, val in varBinds:
-            print('%s = %s' % (oid.prettyPrint(), val.prettyPrint()))
+            print(f"{oid.prettyPrint()} = {val.prettyPrint()}")
 
 
 # Prepare and send a request message
 cmdgen.GetCommandGenerator().sendVarBinds(
     snmpEngine,
-    'my-router',
-    None, '',  # contextEngineId, contextName
+    "my-router",
+    None,
+    "",  # contextEngineId, contextName
     [((1, 3, 6, 1, 2, 1, 1, 1, 0), None)],
-    cbFun
+    cbFun,
 )
 
 # Run I/O dispatcher which would send pending queries and process responses

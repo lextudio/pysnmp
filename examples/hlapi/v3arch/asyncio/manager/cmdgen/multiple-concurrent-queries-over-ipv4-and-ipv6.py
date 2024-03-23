@@ -16,7 +16,7 @@ Functionally similar to:
 | $ snmpget -v2c -c public localhost:2161 SNMPv2-MIB::sysDescr.0
 | $ snmpget -v2c -c public localhost:3161 SNMPv2-MIB::sysDescr.0
 
-"""#
+"""  #
 import asyncio
 from pysnmp.hlapi.v3arch.asyncio import *
 
@@ -24,10 +24,10 @@ from pysnmp.hlapi.v3arch.asyncio import *
 async def getone(snmpEngine, hostname):
     get_result = await getCmd(
         snmpEngine,
-        CommunityData('public'),
+        CommunityData("public"),
         UdpTransportTarget(hostname),
         ContextData(),
-        ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0))
+        ObjectType(ObjectIdentity("SNMPv2-MIB", "sysDescr", 0)),
     )
 
     errorIndication, errorStatus, errorIndex, varBinds = await get_result
@@ -35,19 +35,26 @@ async def getone(snmpEngine, hostname):
         print(errorIndication)
 
     elif errorStatus:
-        print('%s at %s' % (
-            errorStatus.prettyPrint(),
-            errorIndex and varBinds[int(errorIndex) - 1][0] or '?'
+        print(
+            "%s at %s"
+            % (
+                errorStatus.prettyPrint(),
+                errorIndex and varBinds[int(errorIndex) - 1][0] or "?",
+            )
         )
-              )
     else:
         for varBind in varBinds:
-            print(' = '.join([x.prettyPrint() for x in varBind]))
+            print(" = ".join([x.prettyPrint() for x in varBind]))
 
 
 snmpEngine = SnmpEngine()
 
-asyncio.run(asyncio.wait([getone(snmpEngine, ('localhost', 161)),
-                  getone(snmpEngine, ('localhost', 162)),
-                  getone(snmpEngine, ('localhost', 163))]))
-
+asyncio.run(
+    asyncio.wait(
+        [
+            getone(snmpEngine, ("localhost", 161)),
+            getone(snmpEngine, ("localhost", 162)),
+            getone(snmpEngine, ("localhost", 163)),
+        ]
+    )
+)

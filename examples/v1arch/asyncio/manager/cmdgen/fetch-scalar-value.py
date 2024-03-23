@@ -72,7 +72,7 @@ transportDispatcher.registerTransport(
 
 # Pass message to dispatcher
 transportDispatcher.sendMessage(
-    encoder.encode(reqMsg), udp.DOMAIN_NAME, ('demo.pysnmp.com', 161)
+    encoder.encode(reqMsg), udp.DOMAIN_NAME, ("demo.pysnmp.com", 161)
 )
 transportDispatcher.jobStarted(1)
 

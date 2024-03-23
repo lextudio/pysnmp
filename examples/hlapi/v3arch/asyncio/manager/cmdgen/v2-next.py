@@ -14,15 +14,16 @@ Functionally similar to:
 
 | $ snmpgetnext -v2c -c public demo.pysnmp.com SNMPv2-MIB::sysDescr.0
 
-"""#
+"""  #
 import asyncio
 from pysnmp.hlapi.v3arch.asyncio import *
+
 
 async def run():
     slim = Slim()
     errorIndication, errorStatus, errorIndex, varBinds = await slim.next(
-        'public',
-        'localhost',
+        "public",
+        "localhost",
         161,
         ObjectType(ObjectIdentity("SNMPv2-MIB", "sysDescr", 0)),
     )

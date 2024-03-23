@@ -40,15 +40,17 @@ async def run(varBinds):
             break
 
         elif errorStatus:
-            print('%s at %s' % (
-                errorStatus.prettyPrint(),
-                errorIndex and varBinds[int(errorIndex) - 1][0] or '?'
+            print(
+                "%s at %s"
+                % (
+                    errorStatus.prettyPrint(),
+                    errorIndex and varBinds[int(errorIndex) - 1][0] or "?",
+                )
             )
-                  )
         else:
             for varBindRow in varBindTable:
                 for varBind in varBindRow:
-                    print(' = '.join([x.prettyPrint() for x in varBind]))
+                    print(" = ".join([x.prettyPrint() for x in varBind]))
 
         varBinds = varBindTable[-1]
         if isEndOfMib(varBinds):
@@ -56,5 +58,6 @@ async def run(varBinds):
     return
 
 
-asyncio.run(run([ObjectType(ObjectIdentity('TCP-MIB')), ObjectType(ObjectIdentity('IP-MIB'))]))
-
+asyncio.run(
+    run([ObjectType(ObjectIdentity("TCP-MIB")), ObjectType(ObjectIdentity("IP-MIB"))])
+)

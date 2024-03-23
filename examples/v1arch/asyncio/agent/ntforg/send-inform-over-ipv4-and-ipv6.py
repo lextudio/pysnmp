@@ -29,7 +29,7 @@ pMod.apiTrapPDU.setDefaults(reqPDU)
 # Build message
 trapMsg = pMod.Message()
 pMod.apiMessage.setDefaults(trapMsg)
-pMod.apiMessage.setCommunity(trapMsg, 'public')
+pMod.apiMessage.setCommunity(trapMsg, "public")
 pMod.apiMessage.setPDU(trapMsg, reqPDU)
 
 
@@ -43,17 +43,16 @@ def cbRecvFun(
 
         # Match response to request
         if pMod.apiPDU.getRequestID(reqPDU) == pMod.apiPDU.getRequestID(rspPDU):
-
             # Check for SNMP errors reported
             errorStatus = pMod.apiPDU.getErrorStatus(rspPDU)
             if errorStatus:
                 print(errorStatus.prettyPrint())
 
             else:
-                print('INFORM message delivered, response var-binds follow')
+                print("INFORM message delivered, response var-binds follow")
 
                 for oid, val in pMod.apiPDU.getVarBinds(rspPDU):
-                    print('%s = %s' % (oid.prettyPrint(), val.prettyPrint()))
+                    print(f"{oid.prettyPrint()} = {val.prettyPrint()}")
 
             transportDispatcher.jobFinished(1)
 
@@ -69,7 +68,7 @@ transportDispatcher.registerTransport(
     udp.DOMAIN_NAME, udp.UdpAsyncioTransport().openClientMode()
 )
 transportDispatcher.sendMessage(
-    encoder.encode(trapMsg), udp.DOMAIN_NAME, ('demo.pysnmp.com', 162)
+    encoder.encode(trapMsg), udp.DOMAIN_NAME, ("demo.pysnmp.com", 162)
 )
 transportDispatcher.jobStarted(1)
 

@@ -22,28 +22,31 @@ from pysnmp.carrier.asyncio.dgram import udp
 from pysnmp.proto import rfc1902
 
 # Create SNMP engine
-snmpEngine = engine.SnmpEngine(rfc1902.OctetString(hexValue='8000000004030201'))
+snmpEngine = engine.SnmpEngine(rfc1902.OctetString(hexValue="8000000004030201"))
 
 # Transport setup
 
 # UDP over IPv4
 config.addTransport(
-    snmpEngine,
-    udp.DOMAIN_NAME,
-    udp.UdpTransport().openServerMode(('127.0.0.1', 161))
+    snmpEngine, udp.DOMAIN_NAME, udp.UdpTransport().openServerMode(("127.0.0.1", 161))
 )
 
 # SNMPv3/USM setup
 
 # user: usr-md5-des, auth: MD5, priv DES
 config.addV3User(
-    snmpEngine, 'usr-md5-des',
-    config.USM_AUTH_HMAC96_MD5, 'authkey1',
-    config.USM_PRIV_CBC56_DES, 'privkey1'
+    snmpEngine,
+    "usr-md5-des",
+    config.USM_AUTH_HMAC96_MD5,
+    "authkey1",
+    config.USM_PRIV_CBC56_DES,
+    "privkey1",
 )
 
 # Allow full MIB access for each user at VACM
-config.addVacmUser(snmpEngine, 3, 'usr-md5-des', 'authPriv', (1, 3, 6, 1, 2, 1), (1, 3, 6, 1, 2, 1))
+config.addVacmUser(
+    snmpEngine, 3, "usr-md5-des", "authPriv", (1, 3, 6, 1, 2, 1), (1, 3, 6, 1, 2, 1)
+)
 
 # Get default SNMP context this SNMP engine serves
 snmpContext = context.SnmpContext(snmpEngine)

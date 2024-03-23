@@ -31,34 +31,30 @@ snmpEngine = engine.SnmpEngine()
 
 # UDP over IPv4
 config.addTransport(
-    snmpEngine,
-    udp.DOMAIN_NAME,
-    udp.UdpTransport().openServerMode(('127.0.0.1', 1161))
+    snmpEngine, udp.DOMAIN_NAME, udp.UdpTransport().openServerMode(("127.0.0.1", 1161))
 )
 
 # SNMPv3/USM setup
 
 # user: usr-md5-none, auth: MD5, priv NONE
-config.addV3User(
-    snmpEngine, 'usr-md5-none',
-    config.USM_AUTH_HMAC96_MD5, 'authkey1'
-)
+config.addV3User(snmpEngine, "usr-md5-none", config.USM_AUTH_HMAC96_MD5, "authkey1")
 
 # Allow full MIB access for each user at VACM
-config.addVacmUser(snmpEngine, 3, 'usr-md5-none', 'authNoPriv',
-                   (1, 3, 6, 1, 2, 1), (1, 3, 6, 1, 2, 1))
+config.addVacmUser(
+    snmpEngine, 3, "usr-md5-none", "authNoPriv", (1, 3, 6, 1, 2, 1), (1, 3, 6, 1, 2, 1)
+)
 
 # Create an SNMP context with ContextEngineId = 8000000001020304
 snmpContext = context.SnmpContext(
-    snmpEngine, contextEngineId=v2c.OctetString(hexValue='8000000001020304')
+    snmpEngine, contextEngineId=v2c.OctetString(hexValue="8000000001020304")
 )
 
 # Create an [empty] set of Managed Objects (MibBuilder), pass it to
 # Management Instrumentation Controller and register at SNMP Context
 # under ContextName 'my-context'
 snmpContext.registerContextName(
-    v2c.OctetString('my-context'),  # Context Name
-    instrum.MibInstrumController(builder.MibBuilder())  # Managed Objects
+    v2c.OctetString("my-context"),  # Context Name
+    instrum.MibInstrumController(builder.MibBuilder()),  # Managed Objects
 )
 
 # Register SNMP Applications at the SNMP engine for particular SNMP context

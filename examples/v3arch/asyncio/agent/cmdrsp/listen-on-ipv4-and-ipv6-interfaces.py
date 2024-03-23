@@ -29,25 +29,23 @@ snmpEngine = engine.SnmpEngine()
 
 # UDP over IPv4 at 127.0.0.1:161
 config.addTransport(
-    snmpEngine,
-    udp.DOMAIN_NAME,
-    udp.UdpTransport().openServerMode(('127.0.0.1', 161))
+    snmpEngine, udp.DOMAIN_NAME, udp.UdpTransport().openServerMode(("127.0.0.1", 161))
 )
 
 # UDP over IPv6 at [::1]:161
 config.addTransport(
-    snmpEngine,
-    udp6.DOMAIN_NAME,
-    udp6.Udp6Transport().openServerMode(('::1', 161))
+    snmpEngine, udp6.DOMAIN_NAME, udp6.Udp6Transport().openServerMode(("::1", 161))
 )
 
 # SNMPv2c setup
 
 # SecurityName <-> CommunityName mapping.
-config.addV1System(snmpEngine, 'my-area', 'public')
+config.addV1System(snmpEngine, "my-area", "public")
 
 # Allow full MIB access for this user / securityModels at VACM
-config.addVacmUser(snmpEngine, 2, 'my-area', 'noAuthNoPriv', (1, 3, 6, 1, 2, 1), (1, 3, 6, 1, 2, 1))
+config.addVacmUser(
+    snmpEngine, 2, "my-area", "noAuthNoPriv", (1, 3, 6, 1, 2, 1), (1, 3, 6, 1, 2, 1)
+)
 
 # Get default SNMP context this SNMP engine serves
 snmpContext = context.SnmpContext(snmpEngine)

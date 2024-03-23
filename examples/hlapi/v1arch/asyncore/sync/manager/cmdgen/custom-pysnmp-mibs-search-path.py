@@ -18,34 +18,39 @@ Functionally similar to:
 
 | $ snmpbulkwalk -v2c -c public -Cn0 -Cr50 demo.snmplabs.com TCP-MIB::tcpConnTable
 
-"""#
+"""  #
 from pysnmp.hlapi.v1arch import *
 
 iterator = bulkCmd(
     SnmpDispatcher(),
-    CommunityData('public'),
-    UdpTransportTarget(('demo.snmplabs.com', 161)),
-    0, 50,
+    CommunityData("public"),
+    UdpTransportTarget(("demo.snmplabs.com", 161)),
+    0,
+    50,
     ObjectType(
-      ObjectIdentity('TCP-MIB', 'tcpConnTable').addMibSource(
-          '/opt/mibs/pysnmp').addMibSource(
-          'python_packaged_mibs')
-    ).addAsn1MibSource('http://mibs.snmplabs.com/asn1/@mib@'),
+        ObjectIdentity("TCP-MIB", "tcpConnTable")
+        .addMibSource("/opt/mibs/pysnmp")
+        .addMibSource("python_packaged_mibs")
+    ).addAsn1MibSource("http://mibs.snmplabs.com/asn1/@mib@"),
     lookupMib=True,
-    lexicographicMode=False
+    lexicographicMode=False,
 )
 
 for errorIndication, errorStatus, errorIndex, varBinds in iterator:
-
     if errorIndication:
         print(errorIndication)
         break
 
     elif errorStatus:
-        print('%s at %s' % (errorStatus.prettyPrint(),
-                            errorIndex and varBinds[int(errorIndex) - 1][0] or '?'))
+        print(
+            "%s at %s"
+            % (
+                errorStatus.prettyPrint(),
+                errorIndex and varBinds[int(errorIndex) - 1][0] or "?",
+            )
+        )
         break
 
     else:
         for varBind in varBinds:
-            print(' = '.join([x.prettyPrint() for x in varBind]))
+            print(" = ".join([x.prettyPrint() for x in varBind]))

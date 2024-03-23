@@ -31,30 +31,31 @@ snmpEngine = engine.SnmpEngine()
 config.addTransport(
     snmpEngine,
     udp.DOMAIN_NAME + (1,),
-    udp.UdpTransport().openServerMode(('127.0.0.1', 162))
+    udp.UdpTransport().openServerMode(("127.0.0.1", 162)),
 )
 
 # UDP over IPv4, second listening interface/port
 config.addTransport(
     snmpEngine,
     udp.DOMAIN_NAME + (2,),
-    udp.UdpTransport().openServerMode(('127.0.0.1', 2162))
+    udp.UdpTransport().openServerMode(("127.0.0.1", 2162)),
 )
 
 # SNMPv1/2c setup
 
 # SecurityName <-> CommunityName mapping
-config.addV1System(snmpEngine, 'my-area', 'public')
+config.addV1System(snmpEngine, "my-area", "public")
 
 
 # Callback function for receiving notifications
 # noinspection PyUnusedLocal,PyUnusedLocal,PyUnusedLocal
-def cbFun(snmpEngine, stateReference, contextEngineId, contextName,
-          varBinds, cbCtx):
-    print('Notification from ContextEngineId "%s", ContextName "%s"' % (contextEngineId.prettyPrint(),
-                                                                        contextName.prettyPrint()))
+def cbFun(snmpEngine, stateReference, contextEngineId, contextName, varBinds, cbCtx):
+    print(
+        'Notification from ContextEngineId "%s", ContextName "%s"'
+        % (contextEngineId.prettyPrint(), contextName.prettyPrint())
+    )
     for name, val in varBinds:
-        print('%s = %s' % (name.prettyPrint(), val.prettyPrint()))
+        print(f"{name.prettyPrint()} = {val.prettyPrint()}")
 
 
 # Register SNMP Application at the SNMP engine

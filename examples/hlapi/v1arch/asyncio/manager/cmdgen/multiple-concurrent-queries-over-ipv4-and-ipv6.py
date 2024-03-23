@@ -16,7 +16,7 @@ Functionally similar to:
 | $ snmpget -v2c -c public demo.pysnmp.com:2161 SNMPv2-MIB::sysDescr.0
 | $ snmpget -v2c -c public demo.pysnmp.com:3161 SNMPv2-MIB::sysDescr.0
 
-"""#
+"""  #
 import asyncio
 
 from pysnmp.hlapi.v1arch.asyncio import *
@@ -24,12 +24,11 @@ from pysnmp.hlapi.v1arch.asyncio import *
 
 @asyncio.coroutine
 def getone(snmpDispatcher, hostname):
-
     iterator = getCmd(
         snmpDispatcher,
-        CommunityData('public'),
+        CommunityData("public"),
         UdpTransportTarget(hostname),
-        ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0))
+        ObjectType(ObjectIdentity("SNMPv2-MIB", "sysDescr", 0)),
     )
 
     errorIndication, errorStatus, errorIndex, varBinds = yield from iterator
@@ -38,14 +37,16 @@ def getone(snmpDispatcher, hostname):
         print(errorIndication)
 
     elif errorStatus:
-        print('%s at %s' % (
-            errorStatus.prettyPrint(),
-            errorIndex and varBinds[int(errorIndex) - 1][0] or '?'
+        print(
+            "%s at %s"
+            % (
+                errorStatus.prettyPrint(),
+                errorIndex and varBinds[int(errorIndex) - 1][0] or "?",
+            )
         )
-              )
     else:
         for varBind in varBinds:
-            print(' = '.join([x.prettyPrint() for x in varBind]))
+            print(" = ".join([x.prettyPrint() for x in varBind]))
 
 
 snmpDispatcher = SnmpDispatcher()
@@ -53,8 +54,10 @@ snmpDispatcher = SnmpDispatcher()
 loop = asyncio.get_event_loop()
 loop.run_until_complete(
     asyncio.wait(
-        [getone(snmpDispatcher, ('demo.pysnmp.com', 1161)),
-         getone(snmpDispatcher, ('demo.pysnmp.com', 2161)),
-         getone(snmpDispatcher, ('demo.pysnmp.com', 3161))]
+        [
+            getone(snmpDispatcher, ("demo.pysnmp.com", 1161)),
+            getone(snmpDispatcher, ("demo.pysnmp.com", 2161)),
+            getone(snmpDispatcher, ("demo.pysnmp.com", 3161)),
+        ]
     )
 )

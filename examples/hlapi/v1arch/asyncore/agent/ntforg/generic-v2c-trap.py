@@ -16,7 +16,7 @@ Functionally similar to:
 
 | $ snmptrap -v2c -c public demo.snmplabs.com 12345 1.3.6.1.6.3.1.1.5.2 1.3.6.1.2.1.1.1.0 s "my system"
 
-"""#
+"""  #
 from pysnmp.hlapi.v1arch.asyncore import *
 
 
@@ -29,16 +29,16 @@ snmpDispatcher = SnmpDispatcher()
 
 sendNotification(
     snmpDispatcher,
-    CommunityData('public'),
-    UdpTransportTarget(('demo.snmplabs.com', 162)),
-    'trap',
+    CommunityData("public"),
+    UdpTransportTarget(("demo.snmplabs.com", 162)),
+    "trap",
     # SNMPv2-MIB::sysUpTime.0 = 12345
-    ('1.3.6.1.2.1.1.3.0', TimeTicks(12345)),
+    ("1.3.6.1.2.1.1.3.0", TimeTicks(12345)),
     # SNMPv2-SMI::snmpTrapOID.0 = SNMPv2-MIB::warmStart
-    ('1.3.6.1.6.3.1.1.4.1.0', ObjectIdentifier('1.3.6.1.6.3.1.1.5.2')),
+    ("1.3.6.1.6.3.1.1.4.1.0", ObjectIdentifier("1.3.6.1.6.3.1.1.5.2")),
     # SNMPv2-MIB::sysName.0
-    ('1.3.6.1.2.1.1.1.0', OctetString('my system')),
-    cbFun=cbFun
+    ("1.3.6.1.2.1.1.1.0", OctetString("my system")),
+    cbFun=cbFun,
 )
 
 snmpDispatcher.transportDispatcher.runDispatcher()

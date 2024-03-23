@@ -12,7 +12,7 @@ Send a series of SNMP GETBULK requests using the following options:
 Functionally similar to:
 
 | $ snmpwalk -v2c -c public demo.snmplabs.com 1.3.6.1.4.1
-"""#
+"""  #
 from pysnmp.hlapi.v1arch.asyncore import *
 
 
@@ -21,25 +21,33 @@ def cbFun(errorIndication, errorStatus, errorIndex, varBindTable, **context):
         print(errorIndication)
 
     elif errorStatus:
-        print('%s at %s' % (errorStatus.prettyPrint(),
-                            errorIndex and varBinds[int(errorIndex) - 1][0] or '?'))
+        print(
+            "%s at %s"
+            % (
+                errorStatus.prettyPrint(),
+                errorIndex and varBinds[int(errorIndex) - 1][0] or "?",
+            )
+        )
 
     else:
         for varBindRow in varBindTable:
             for varBind in varBindRow:
-                print(' = '.join([x.prettyPrint() for x in varBind]))
+                print(" = ".join([x.prettyPrint() for x in varBind]))
 
-        return context.get('nextVarBinds')
+        return context.get("nextVarBinds")
 
 
 snmpDispatcher = SnmpDispatcher()
 
 # Submit initial GETBULK request
-bulkCmd(snmpDispatcher,
-        CommunityData('public'),
-        UdpTransportTarget(('demo.snmplabs.com', 161)),
-        0, 25,
-        ('1.3.6.1.4.1', None),
-        cbFun=cbFun)
+bulkCmd(
+    snmpDispatcher,
+    CommunityData("public"),
+    UdpTransportTarget(("demo.snmplabs.com", 161)),
+    0,
+    25,
+    ("1.3.6.1.4.1", None),
+    cbFun=cbFun,
+)
 
 snmpDispatcher.transportDispatcher.runDispatcher()

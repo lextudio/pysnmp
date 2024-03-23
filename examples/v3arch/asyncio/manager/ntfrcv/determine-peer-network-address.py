@@ -30,31 +30,35 @@ snmpEngine = engine.SnmpEngine()
 config.addTransport(
     snmpEngine,
     udp.DOMAIN_NAME + (1,),
-    udp.UdpTransport().openServerMode(('127.0.0.1', 162))
+    udp.UdpTransport().openServerMode(("127.0.0.1", 162)),
 )
 
 # SNMPv1/2c setup
 
 # SecurityName <-> CommunityName mapping
-config.addV1System(snmpEngine, 'my-area', 'public')
+config.addV1System(snmpEngine, "my-area", "public")
 
 
 # Callback function for receiving notifications
 # noinspection PyUnusedLocal,PyUnusedLocal
-def cbFun(snmpEngine, stateReference, contextEngineId, contextName,
-          varBinds, cbCtx):
+def cbFun(snmpEngine, stateReference, contextEngineId, contextName, varBinds, cbCtx):
     # Get an execution context...
     execContext = snmpEngine.observer.getExecutionContext(
-        'rfc3412.receiveMessage:request'
+        "rfc3412.receiveMessage:request"
     )
 
     # ... and use inner SNMP engine data to figure out peer address
-    print('Notification from %s, ContextEngineId "%s", '
-          'ContextName "%s"' % ('@'.join([str(x) for x in execContext['transportAddress']]),
-                                contextEngineId.prettyPrint(),
-                                contextName.prettyPrint()))
+    print(
+        'Notification from %s, ContextEngineId "%s", '
+        'ContextName "%s"'
+        % (
+            "@".join([str(x) for x in execContext["transportAddress"]]),
+            contextEngineId.prettyPrint(),
+            contextName.prettyPrint(),
+        )
+    )
     for name, val in varBinds:
-        print('%s = %s' % (name.prettyPrint(), val.prettyPrint()))
+        print(f"{name.prettyPrint()} = {val.prettyPrint()}")
 
 
 # Register SNMP Application at the SNMP engine

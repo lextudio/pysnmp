@@ -30,40 +30,44 @@ snmpEngine = engine.SnmpEngine()
 
 # UDP over IPv4
 config.addTransport(
-    snmpEngine,
-    udp.DOMAIN_NAME,
-    udp.UdpTransport().openServerMode(('127.0.0.1', 161))
+    snmpEngine, udp.DOMAIN_NAME, udp.UdpTransport().openServerMode(("127.0.0.1", 161))
 )
 
 # SNMPv3/USM setup
 
 # user: usr-md5-des, auth: MD5, priv DES
 config.addV3User(
-    snmpEngine, 'usr-md5-des',
-    config.USM_AUTH_HMAC96_MD5, 'authkey1',
-    config.USM_PRIV_CBC56_DES, 'privkey1'
+    snmpEngine,
+    "usr-md5-des",
+    config.USM_AUTH_HMAC96_MD5,
+    "authkey1",
+    config.USM_PRIV_CBC56_DES,
+    "privkey1",
 )
 
 # user: usr-sha-none, auth: SHA, priv NONE
-config.addV3User(
-    snmpEngine, 'usr-sha-none',
-    config.USM_AUTH_HMAC96_SHA, 'authkey1'
-)
+config.addV3User(snmpEngine, "usr-sha-none", config.USM_AUTH_HMAC96_SHA, "authkey1")
 
 # user: usr-sha-none, auth: SHA, priv AES
 config.addV3User(
-    snmpEngine, 'usr-sha-aes128',
-    config.USM_AUTH_HMAC96_SHA, 'authkey1',
-    config.USM_PRIV_CFB128_AES, 'privkey1'
+    snmpEngine,
+    "usr-sha-aes128",
+    config.USM_AUTH_HMAC96_SHA,
+    "authkey1",
+    config.USM_PRIV_CFB128_AES,
+    "privkey1",
 )
 
 # Allow full MIB access for each user at VACM
-config.addVacmUser(snmpEngine, 3, 'usr-md5-des', 'authPriv',
-                   (1, 3, 6, 1, 2, 1), (1, 3, 6, 1, 2, 1))
-config.addVacmUser(snmpEngine, 3, 'usr-sha-none', 'authNoPriv',
-                   (1, 3, 6, 1, 2, 1), (1, 3, 6, 1, 2, 1))
-config.addVacmUser(snmpEngine, 3, 'usr-sha-aes128', 'authPriv',
-                   (1, 3, 6, 1, 2, 1), (1, 3, 6, 1, 2, 1))
+config.addVacmUser(
+    snmpEngine, 3, "usr-md5-des", "authPriv", (1, 3, 6, 1, 2, 1), (1, 3, 6, 1, 2, 1)
+)
+config.addVacmUser(
+    snmpEngine, 3, "usr-sha-none", "authNoPriv", (1, 3, 6, 1, 2, 1), (1, 3, 6, 1, 2, 1)
+)
+config.addVacmUser(
+    snmpEngine, 3, "usr-sha-aes128", "authPriv", (1, 3, 6, 1, 2, 1), (1, 3, 6, 1, 2, 1)
+)
 
 # Get default SNMP context this SNMP engine serves
 snmpContext = context.SnmpContext(snmpEngine)

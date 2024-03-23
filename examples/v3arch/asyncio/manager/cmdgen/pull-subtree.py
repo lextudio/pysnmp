@@ -20,7 +20,7 @@ from pysnmp.entity.rfc3413 import cmdgen
 from pysnmp.proto import rfc1902
 
 # Initial OID prefix
-initialOID = rfc1902.ObjectName('1.3.6.1.2.1.1')
+initialOID = rfc1902.ObjectName("1.3.6.1.2.1.1")
 
 # Create SNMP engine instance
 snmpEngine = engine.SnmpEngine()
@@ -31,10 +31,11 @@ snmpEngine = engine.SnmpEngine()
 
 # user: usr-none-none, auth: none, priv: none
 config.addV3User(
-    snmpEngine, 'usr-none-none',
+    snmpEngine,
+    "usr-none-none",
 )
 
-config.addTargetParams(snmpEngine, 'my-creds', 'usr-none-none', 'noAuthNoPriv')
+config.addTargetParams(snmpEngine, "my-creds", "usr-none-none", "noAuthNoPriv")
 
 #
 # Setup transport endpoint and bind it with security settings yielding
@@ -47,29 +48,39 @@ config.addTransport(
 )
 
 config.addTargetAddr(
-    snmpEngine, 'my-router',
-    udp.DOMAIN_NAME, ('127.0.0.1', 161),
-    'my-creds'
+    snmpEngine, "my-router", udp.DOMAIN_NAME, ("127.0.0.1", 161), "my-creds"
 )
 
 
 # Error/response receiver
 # noinspection PyUnusedLocal,PyUnusedLocal,PyUnusedLocal
-def cbFun(snmpEngine, sendRequestHandle, errorIndication,
-          errorStatus, errorIndex, varBindTable, cbCtx):
+def cbFun(
+    snmpEngine,
+    sendRequestHandle,
+    errorIndication,
+    errorStatus,
+    errorIndex,
+    varBindTable,
+    cbCtx,
+):
     if errorIndication:
         print(errorIndication)
         return
 
     if errorStatus:
-        print('%s at %s' % (errorStatus.prettyPrint(),
-                            errorIndex and varBindTable[-1][int(errorIndex) - 1][0] or '?'))
+        print(
+            "%s at %s"
+            % (
+                errorStatus.prettyPrint(),
+                errorIndex and varBindTable[-1][int(errorIndex) - 1][0] or "?",
+            )
+        )
         return False  # stop on error
 
     for varBindRow in varBindTable:
         for oid, val in varBindRow:
             if initialOID.isPrefixOf(oid):
-                print('%s = %s' % (oid.prettyPrint(), val.prettyPrint()))
+                print(f"{oid.prettyPrint()} = {val.prettyPrint()}")
 
             else:
                 return False  # signal dispatcher to stop
@@ -80,10 +91,11 @@ def cbFun(snmpEngine, sendRequestHandle, errorIndication,
 # Prepare initial request to be sent
 cmdgen.NextCommandGenerator().sendVarBinds(
     snmpEngine,
-    'my-router',
-    None, '',  # contextEngineId, contextName
+    "my-router",
+    None,
+    "",  # contextEngineId, contextName
     [(initialOID, None)],
-    cbFun
+    cbFun,
 )
 
 # Run I/O dispatcher which would send pending queries and process responses

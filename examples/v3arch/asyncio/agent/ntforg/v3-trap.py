@@ -26,17 +26,20 @@ from pysnmp.proto.api import v2c
 # SnmpEngineId -- it must also be known to the receiving party
 # and configured at its VACM users table.
 snmpEngine = engine.SnmpEngine(
-    snmpEngineID=v2c.OctetString(hexValue='8000000001020304')
+    snmpEngineID=v2c.OctetString(hexValue="8000000001020304")
 )
 
 # Add USM user
 config.addV3User(
-    snmpEngine, 'usr-md5-des',
-    config.USM_AUTH_HMAC96_MD5, 'authkey1',
-    config.USM_PRIV_CBC56_DES, 'privkey1'
+    snmpEngine,
+    "usr-md5-des",
+    config.USM_AUTH_HMAC96_MD5,
+    "authkey1",
+    config.USM_PRIV_CBC56_DES,
+    "privkey1",
 )
 
-config.addTargetParams(snmpEngine, 'my-creds', 'usr-md5-des', 'authPriv')
+config.addTargetParams(snmpEngine, "my-creds", "usr-md5-des", "authPriv")
 
 # Setup transport endpoint and bind it with security settings yielding
 # a target name
@@ -45,45 +48,51 @@ config.addTransport(
 )
 
 config.addTargetAddr(
-    snmpEngine, 'my-nms',
-    udp.DOMAIN_NAME, ('127.0.0.1', 162),
-    'my-creds',
-    tagList='all-my-managers'
+    snmpEngine,
+    "my-nms",
+    udp.DOMAIN_NAME,
+    ("127.0.0.1", 162),
+    "my-creds",
+    tagList="all-my-managers",
 )
 
 # Specify what kind of notification should be sent (TRAP or INFORM),
 # to what targets (chosen by tag) and what filter should apply to
 # the set of targets (selected by tag)
 config.addNotificationTarget(
-    snmpEngine, 'my-notification', 'my-filter', 'all-my-managers', 'trap'
+    snmpEngine, "my-notification", "my-filter", "all-my-managers", "trap"
 )
 
 # Allow NOTIFY access to Agent's MIB by this SNMP model (3), securityLevel
 # and SecurityName
-config.addContext(snmpEngine, '')
-config.addVacmUser(snmpEngine, 3, 'usr-md5-des', 'authPriv', (), (), (1, 3, 6))
+config.addContext(snmpEngine, "")
+config.addVacmUser(snmpEngine, 3, "usr-md5-des", "authPriv", (), (), (1, 3, 6))
 
 # *** SNMP engine configuration is complete by this line ***
 
-# Create Notification Originator App instance. 
+# Create Notification Originator App instance.
 ntfOrg = ntforg.NotificationOriginator()
 
 # Build and submit notification message to dispatcher
 ntfOrg.sendVarBinds(
     snmpEngine,
     # Notification targets
-    'my-notification',  # notification targets
-    None, '',  # contextEngineId, contextName
+    "my-notification",  # notification targets
+    None,
+    "",  # contextEngineId, contextName
     # var-binds
     [
         # SNMPv2-SMI::snmpTrapOID.0 = SNMPv2-MIB::coldStart
-        ((1, 3, 6, 1, 6, 3, 1, 1, 4, 1, 0), v2c.ObjectIdentifier((1, 3, 6, 1, 6, 3, 1, 1, 5, 1))),
+        (
+            (1, 3, 6, 1, 6, 3, 1, 1, 4, 1, 0),
+            v2c.ObjectIdentifier((1, 3, 6, 1, 6, 3, 1, 1, 5, 1)),
+        ),
         # additional var-binds: ( (oid, value), ... )
-        ((1, 3, 6, 1, 2, 1, 1, 5, 0), v2c.OctetString('Notificator Example'))
-    ]
+        ((1, 3, 6, 1, 2, 1, 1, 5, 0), v2c.OctetString("Notificator Example")),
+    ],
 )
 
-print('Notification is scheduled to be sent')
+print("Notification is scheduled to be sent")
 
 # Run I/O dispatcher which would send pending message and process response
 snmpEngine.transportDispatcher.runDispatcher()

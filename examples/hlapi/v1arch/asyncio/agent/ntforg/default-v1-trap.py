@@ -28,17 +28,15 @@ async def run():
     snmpDispatcher = SnmpDispatcher()
     errorIndication, errorStatus, errorIndex, varBinds = await sendNotification(
         snmpDispatcher,
-        CommunityData('public', mpModel=0),
-        UdpTransportTarget(('demo.pysnmp.com', 162)),
-        'trap',
-        NotificationType(
-            ObjectIdentity('1.3.6.1.6.3.1.1.5.2')
-        ).loadMibs(
-            'SNMPv2-MIB'
-        ).addVarBinds(
-            ('1.3.6.1.6.3.1.1.4.3.0', '1.3.6.1.4.1.20408.4.1.1.2'),
-            ('1.3.6.1.2.1.1.1.0', OctetString('my system'))
-        )
+        CommunityData("public", mpModel=0),
+        UdpTransportTarget(("demo.pysnmp.com", 162)),
+        "trap",
+        NotificationType(ObjectIdentity("1.3.6.1.6.3.1.1.5.2"))
+        .loadMibs("SNMPv2-MIB")
+        .addVarBinds(
+            ("1.3.6.1.6.3.1.1.4.3.0", "1.3.6.1.4.1.20408.4.1.1.2"),
+            ("1.3.6.1.2.1.1.1.0", OctetString("my system")),
+        ),
     )
 
     if errorIndication:

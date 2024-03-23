@@ -24,24 +24,26 @@ from pysnmp.hlapi.v3arch.asyncio import *
 async def getone(snmpEngine, hostname):
     errorIndication, errorStatus, errorIndex, varBinds = await getCmd(
         snmpEngine,
-        CommunityData('public'),
+        CommunityData("public"),
         UdpTransportTarget(hostname),
         ContextData(),
-        ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0))
+        ObjectType(ObjectIdentity("SNMPv2-MIB", "sysDescr", 0)),
     )
 
     if errorIndication:
         print(errorIndication)
 
     elif errorStatus:
-        print('%s at %s' % (
-            errorStatus.prettyPrint(),
-            errorIndex and varBinds[int(errorIndex) - 1][0] or '?'
+        print(
+            "%s at %s"
+            % (
+                errorStatus.prettyPrint(),
+                errorIndex and varBinds[int(errorIndex) - 1][0] or "?",
+            )
         )
-              )
     else:
         for varBind in varBinds:
-            print(' = '.join([x.prettyPrint() for x in varBind]))
+            print(" = ".join([x.prettyPrint() for x in varBind]))
 
 
 async def getall(snmpEngine, hostnames):
