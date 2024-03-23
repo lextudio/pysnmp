@@ -305,13 +305,17 @@ class AbstractTransportAddress:
 
 
 class AbstractTransport:
-    protoTransportDispatcher = None
+    PROTO_TRANSPORT_DISPATCHER = None
     addressType = AbstractTransportAddress
     _cbFun = None
 
     @classmethod
     def isCompatibleWithDispatcher(cls, transportDispatcher):
-        return isinstance(transportDispatcher, cls.protoTransportDispatcher)
+        if cls.PROTO_TRANSPORT_DISPATCHER is None:
+            raise error.CarrierError(
+                f"Protocol transport dispatcher not specified for {cls}"
+            )
+        return isinstance(transportDispatcher, cls.PROTO_TRANSPORT_DISPATCHER)
 
     def registerCbFun(self, cbFun):
         if self._cbFun:

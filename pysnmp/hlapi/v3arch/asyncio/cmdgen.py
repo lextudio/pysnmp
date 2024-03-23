@@ -735,7 +735,7 @@ async def walkCmd(
 
     vbProcessor = CommandGeneratorVarBinds()
 
-    initialVars = [x[0] for x in vbProcessor.makeVarBinds(snmpEngine, varBinds)]
+    initialVars = [x[0] for x in vbProcessor.makeVarBinds(snmpEngine.cache, varBinds)]
 
     totalRows = totalCalls = 0
 
@@ -797,7 +797,9 @@ async def walkCmd(
 
         if initialVarBinds:
             varBinds = initialVarBinds
-            initialVars = [x[0] for x in vbProcessor.makeVarBinds(snmpEngine, varBinds)]
+            initialVars = [
+                x[0] for x in vbProcessor.makeVarBinds(snmpEngine.cache, varBinds)
+            ]
 
         if maxRows and totalRows >= maxRows:
             return
@@ -935,7 +937,7 @@ async def bulkWalkCmd(
 
     vbProcessor = CommandGeneratorVarBinds()
 
-    initialVars = [x[0] for x in vbProcessor.makeVarBinds(snmpEngine, varBinds)]
+    initialVars = [x[0] for x in vbProcessor.makeVarBinds(snmpEngine.cache, varBinds)]
     nullVarBinds = [False] * len(initialVars)
 
     totalRows = totalCalls = 0
@@ -1035,6 +1037,7 @@ async def bulkWalkCmd(
                 if initialVarBinds:
                     varBinds = initialVarBinds
                     initialVars = [
-                        x[0] for x in vbProcessor.makeVarBinds(snmpEngine, varBinds)
+                        x[0]
+                        for x in vbProcessor.makeVarBinds(snmpEngine.cache, varBinds)
                     ]
                     nullVarBinds = [False] * len(initialVars)
