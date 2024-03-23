@@ -171,7 +171,7 @@ class TextualConvention:
                     octetLength += displayHint[0]
                     displayHint = displayHint[1:]
 
-                # length is manatory, but people ignore that
+                # length is mandatory, but people ignore that
                 if not octetLength:
                     octetLength = len(runningValue)
 

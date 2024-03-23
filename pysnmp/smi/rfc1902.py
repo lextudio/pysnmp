@@ -15,6 +15,8 @@ from pysnmp.smi.error import SmiError
 from pyasn1.error import PyAsn1Error
 from pyasn1.type.base import AbstractSimpleAsn1Item
 
+from pysnmp.smi.view import MibViewController
+
 __all__ = ["ObjectIdentity", "ObjectType", "NotificationType"]
 
 
@@ -313,7 +315,7 @@ class ObjectIdentity:
 
     # this would eventually be called by an entity which posses a
     # reference to MibViewController
-    def resolveWithMib(self, mibViewController, ignoreErrors=True):
+    def resolveWithMib(self, mibViewController: MibViewController, ignoreErrors=True):
         """Perform MIB variable ID conversion.
 
         Parameters

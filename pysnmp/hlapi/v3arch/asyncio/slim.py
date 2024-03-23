@@ -35,6 +35,8 @@ class Slim:
 
     """
 
+    snmpEngine: SnmpEngine
+
     def __init__(self, version=2):
         self.snmpEngine = SnmpEngine()
         if version not in (1, 2):
