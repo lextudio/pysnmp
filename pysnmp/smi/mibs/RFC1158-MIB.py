@@ -11,23 +11,20 @@
 # unique to SMIv1 and have no analogues in SMIv2
 #
 
-if 'mibBuilder' not in globals():
+if "mibBuilder" not in globals():
     import sys
 
     sys.stderr.write(__doc__)
     sys.exit(1)
 
-(Counter32,
- MibScalar) = mibBuilder.importSymbols(
-    "SNMPv2-SMI",
-    "Counter32",
-    "MibScalar")
+(Counter32, MibScalar) = mibBuilder.importSymbols(
+    "SNMPv2-SMI", "Counter32", "MibScalar"
+)
 
 _SnmpInBadTypes_Type = Counter32
 _SnmpInBadTypes_Object = MibScalar
 snmpInBadTypes = _SnmpInBadTypes_Object(
-    (1, 3, 6, 1, 2, 1, 11, 7),
-    _SnmpInBadTypes_Type()
+    (1, 3, 6, 1, 2, 1, 11, 7), _SnmpInBadTypes_Type()
 )
 snmpInBadTypes.setMaxAccess("read-only")
 if mibBuilder.loadTexts:
@@ -36,8 +33,7 @@ if mibBuilder.loadTexts:
 _SnmpOutReadOnlys_Type = Counter32
 _SnmpOutReadOnlys_Object = MibScalar
 snmpOutReadOnlys = _SnmpOutReadOnlys_Object(
-    (1, 3, 6, 1, 2, 1, 11, 23),
-    _SnmpOutReadOnlys_Type()
+    (1, 3, 6, 1, 2, 1, 11, 23), _SnmpOutReadOnlys_Type()
 )
 snmpOutReadOnlys.setMaxAccess("read-only")
 if mibBuilder.loadTexts:
@@ -45,6 +41,5 @@ if mibBuilder.loadTexts:
 
 mibBuilder.exportSymbols(
     "RFC1158-MIB",
-    **{"snmpInBadTypes": snmpInBadTypes,
-       "snmpOutReadOnlys": snmpOutReadOnlys}
+    **{"snmpInBadTypes": snmpInBadTypes, "snmpOutReadOnlys": snmpOutReadOnlys}
 )

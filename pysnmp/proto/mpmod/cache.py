@@ -8,9 +8,9 @@ from pysnmp import nextid
 from pysnmp.proto import error
 
 
-class Cache(object):
-    __stateReference = nextid.Integer(0xffffff)
-    __msgID = nextid.Integer(0xffffff)
+class Cache:
+    __stateReference = nextid.Integer(0xFFFFFF)
+    __msgID = nextid.Integer(0xFFFFFF)
 
     def __init__(self):
         self.__msgIdIndex = {}
@@ -28,7 +28,8 @@ class Cache(object):
     def pushByStateRef(self, stateReference, **msgInfo):
         if stateReference in self.__stateReferenceIndex:
             raise error.ProtocolError(
-                'Cache dup for stateReference=%s at %s' % (stateReference, self))
+                f"Cache dup for stateReference={stateReference} at {self}"
+            )
 
         expireAt = self.__expirationTimer + 600
 
@@ -38,10 +39,10 @@ class Cache(object):
         if expireAt not in self.__expirationQueue:
             self.__expirationQueue[expireAt] = {}
 
-        if 'stateReference' not in self.__expirationQueue[expireAt]:
-            self.__expirationQueue[expireAt]['stateReference'] = {}
+        if "stateReference" not in self.__expirationQueue[expireAt]:
+            self.__expirationQueue[expireAt]["stateReference"] = {}
 
-        self.__expirationQueue[expireAt]['stateReference'][stateReference] = 1
+        self.__expirationQueue[expireAt]["stateReference"][stateReference] = 1
 
     def popByStateRef(self, stateReference):
         if stateReference in self.__stateReferenceIndex:
@@ -49,14 +50,14 @@ class Cache(object):
 
         else:
             raise error.ProtocolError(
-                'Cache miss for stateReference=%s at '
-                '%s' % (stateReference, self))
+                "Cache miss for stateReference=%s at " "%s" % (stateReference, self)
+            )
 
         del self.__stateReferenceIndex[stateReference]
 
         cacheEntry, expireAt = cacheInfo
 
-        del self.__expirationQueue[expireAt]['stateReference'][stateReference]
+        del self.__expirationQueue[expireAt]["stateReference"][stateReference]
 
         return cacheEntry
 
@@ -67,40 +68,38 @@ class Cache(object):
 
     def pushByMsgId(self, msgId, **msgInfo):
         if msgId in self.__msgIdIndex:
-            raise error.ProtocolError(
-                'Cache dup for msgId=%s at %s' % (msgId, self))
+            raise error.ProtocolError(f"Cache dup for msgId={msgId} at {self}")
 
         expireAt = self.__expirationTimer + 600
 
         self.__msgIdIndex[msgId] = msgInfo, expireAt
 
-        self.__sendPduHandleIdx[msgInfo['sendPduHandle']] = msgId
+        self.__sendPduHandleIdx[msgInfo["sendPduHandle"]] = msgId
 
         # Schedule to expire
         if expireAt not in self.__expirationQueue:
             self.__expirationQueue[expireAt] = {}
 
-        if 'msgId' not in self.__expirationQueue[expireAt]:
-            self.__expirationQueue[expireAt]['msgId'] = {}
+        if "msgId" not in self.__expirationQueue[expireAt]:
+            self.__expirationQueue[expireAt]["msgId"] = {}
 
-        self.__expirationQueue[expireAt]['msgId'][msgId] = 1
+        self.__expirationQueue[expireAt]["msgId"][msgId] = 1
 
     def popByMsgId(self, msgId):
         if msgId in self.__msgIdIndex:
             cacheInfo = self.__msgIdIndex[msgId]
 
         else:
-            raise error.ProtocolError(
-                'Cache miss for msgId=%s at %s' % (msgId, self))
+            raise error.ProtocolError(f"Cache miss for msgId={msgId} at {self}")
 
         msgInfo, expireAt = cacheInfo
 
-        del self.__sendPduHandleIdx[msgInfo['sendPduHandle']]
+        del self.__sendPduHandleIdx[msgInfo["sendPduHandle"]]
         del self.__msgIdIndex[msgId]
 
         cacheEntry, expireAt = cacheInfo
 
-        del self.__expirationQueue[expireAt]['msgId'][msgId]
+        del self.__expirationQueue[expireAt]["msgId"][msgId]
 
         return cacheEntry
 
@@ -113,12 +112,12 @@ class Cache(object):
         if self.__expirationTimer in self.__expirationQueue:
             cacheInfo = self.__expirationQueue[self.__expirationTimer]
 
-            if 'stateReference' in cacheInfo:
-                for stateReference in cacheInfo['stateReference']:
+            if "stateReference" in cacheInfo:
+                for stateReference in cacheInfo["stateReference"]:
                     del self.__stateReferenceIndex[stateReference]
 
-            if 'msgId' in cacheInfo:
-                for msgId in cacheInfo['msgId']:
+            if "msgId" in cacheInfo:
+                for msgId in cacheInfo["msgId"]:
                     del self.__msgIdIndex[msgId]
 
             del self.__expirationQueue[self.__expirationTimer]

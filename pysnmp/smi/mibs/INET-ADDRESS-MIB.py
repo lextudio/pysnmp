@@ -8,60 +8,57 @@
 # Produced by pysmi-0.4.0 at Thu Feb 14 23:06:46 2019
 #
 
-if 'mibBuilder' not in globals():
+if "mibBuilder" not in globals():
     import sys
 
     sys.stderr.write(__doc__)
     sys.exit(1)
 
-(Integer,
- OctetString,
- ObjectIdentifier) = mibBuilder.importSymbols(
-    "ASN1",
-    "Integer",
-    "OctetString",
-    "ObjectIdentifier")
+(Integer, OctetString, ObjectIdentifier) = mibBuilder.importSymbols(
+    "ASN1", "Integer", "OctetString", "ObjectIdentifier"
+)
 
-(NamedValues,) = mibBuilder.importSymbols(
-    "ASN1-ENUMERATION",
-    "NamedValues")
+(NamedValues,) = mibBuilder.importSymbols("ASN1-ENUMERATION", "NamedValues")
 
-(ConstraintsIntersection,
- SingleValueConstraint,
- ValueRangeConstraint,
- ValueSizeConstraint,
- ConstraintsUnion) = mibBuilder.importSymbols(
+(
+    ConstraintsIntersection,
+    SingleValueConstraint,
+    ValueRangeConstraint,
+    ValueSizeConstraint,
+    ConstraintsUnion,
+) = mibBuilder.importSymbols(
     "ASN1-REFINEMENT",
     "ConstraintsIntersection",
     "SingleValueConstraint",
     "ValueRangeConstraint",
     "ValueSizeConstraint",
-    "ConstraintsUnion")
+    "ConstraintsUnion",
+)
 
-(ModuleCompliance,
- NotificationGroup) = mibBuilder.importSymbols(
-    "SNMPv2-CONF",
-    "ModuleCompliance",
-    "NotificationGroup")
+(ModuleCompliance, NotificationGroup) = mibBuilder.importSymbols(
+    "SNMPv2-CONF", "ModuleCompliance", "NotificationGroup"
+)
 
-(TimeTicks,
- Gauge32,
- Integer32,
- Counter64,
- MibScalar,
- MibTable,
- MibTableRow,
- MibTableColumn,
- Bits,
- Counter32,
- ModuleIdentity,
- mib_2,
- Unsigned32,
- NotificationType,
- IpAddress,
- iso,
- MibIdentifier,
- ObjectIdentity) = mibBuilder.importSymbols(
+(
+    TimeTicks,
+    Gauge32,
+    Integer32,
+    Counter64,
+    MibScalar,
+    MibTable,
+    MibTableRow,
+    MibTableColumn,
+    Bits,
+    Counter32,
+    ModuleIdentity,
+    mib_2,
+    Unsigned32,
+    NotificationType,
+    IpAddress,
+    iso,
+    MibIdentifier,
+    ObjectIdentity,
+) = mibBuilder.importSymbols(
     "SNMPv2-SMI",
     "TimeTicks",
     "Gauge32",
@@ -80,63 +77,57 @@ if 'mibBuilder' not in globals():
     "IpAddress",
     "iso",
     "MibIdentifier",
-    "ObjectIdentity")
-
-(TextualConvention,
- DisplayString) = mibBuilder.importSymbols(
-    "SNMPv2-TC",
-    "TextualConvention",
-    "DisplayString")
-
-inetAddressMIB = ModuleIdentity(
-    (1, 3, 6, 1, 2, 1, 76)
+    "ObjectIdentity",
 )
+
+(TextualConvention, DisplayString) = mibBuilder.importSymbols(
+    "SNMPv2-TC", "TextualConvention", "DisplayString"
+)
+
+inetAddressMIB = ModuleIdentity((1, 3, 6, 1, 2, 1, 76))
 inetAddressMIB.setRevisions(
-        ("2005-02-04 00:00",
-         "2002-05-09 00:00",
-         "2000-06-08 00:00")
+    ("2005-02-04 00:00", "2002-05-09 00:00", "2000-06-08 00:00")
 )
 inetAddressMIB.setLastUpdated("200502040000Z")
 if mibBuilder.loadTexts:
-    inetAddressMIB.setOrganization("""\
+    inetAddressMIB.setOrganization(
+        """\
 IETF Operations and Management Area
-""")
-inetAddressMIB.setContactInfo("""\
+"""
+    )
+inetAddressMIB.setContactInfo(
+    """\
 Juergen Schoenwaelder (Editor) International University Bremen P.O. Box 750 561
 28725 Bremen, Germany Phone: +49 421 200-3587 EMail: j.schoenwaelder@iu-
 bremen.de Send comments to <ietfmibs@ops.ietf.org>.
-""")
+"""
+)
 if mibBuilder.loadTexts:
-    inetAddressMIB.setDescription("""\
+    inetAddressMIB.setDescription(
+        """\
 This MIB module defines textual conventions for representing Internet
 addresses. An Internet address can be an IPv4 address, an IPv6 address, or a
 DNS domain name. This module also defines textual conventions for Internet port
 numbers, autonomous system numbers, and the length of an Internet address
 prefix. Copyright (C) The Internet Society (2005). This version of this MIB
 module is part of RFC 4001, see the RFC itself for full legal notices.
-""")
+"""
+    )
 
 
 class InetAddressType(TextualConvention, Integer32):
     status = "current"
     subtypeSpec = Integer32.subtypeSpec
-    subtypeSpec += ConstraintsUnion(
-        SingleValueConstraint(
-            *(0,
-              1,
-              2,
-              3,
-              4,
-              16)
-        )
-    )
+    subtypeSpec += ConstraintsUnion(SingleValueConstraint(*(0, 1, 2, 3, 4, 16)))
     namedValues = NamedValues(
-        *(("dns", 16),
-          ("ipv4", 1),
-          ("ipv4z", 3),
-          ("ipv6", 2),
-          ("ipv6z", 4),
-          ("unknown", 0))
+        *(
+            ("dns", 16),
+            ("ipv4", 1),
+            ("ipv4z", 3),
+            ("ipv6", 2),
+            ("ipv6z", 4),
+            ("unknown", 0),
+        )
     )
 
     if mibBuilder.loadTexts:
@@ -304,7 +295,7 @@ there is no single DESCRIPTION clause that is appropriate.
         InetAddressType.namedValues.getValue("ipv6"): InetAddressIPv6(),
         InetAddressType.namedValues.getValue("ipv4z"): InetAddressIPv4z(),
         InetAddressType.namedValues.getValue("ipv6z"): InetAddressIPv6z(),
-        InetAddressType.namedValues.getValue("dns"): InetAddressDNS()
+        InetAddressType.namedValues.getValue("dns"): InetAddressDNS(),
     }
 
     @classmethod
@@ -313,13 +304,19 @@ there is no single DESCRIPTION clause that is appropriate.
             if isinstance(parentIndex, InetAddressType):
                 try:
                     return parentRow.oidToValue(
-                        cls.TYPE_MAP[int(parentIndex)], value, impliedFlag, parentIndices)
+                        cls.TYPE_MAP[int(parentIndex)],
+                        value,
+                        impliedFlag,
+                        parentIndices,
+                    )
 
                 except KeyError:
                     pass
 
-        raise error.SmiError('%s object encountered without preceding '
-                             'InetAddressType-like index: %r' % (cls.__name__, value))
+        raise error.SmiError(
+            "%s object encountered without preceding "
+            "InetAddressType-like index: %r" % (cls.__name__, value)
+        )
 
     def cloneAsName(self, impliedFlag, parentRow, parentIndices):
         for parentIndex in reversed(parentIndices):
@@ -327,13 +324,19 @@ there is no single DESCRIPTION clause that is appropriate.
                 try:
                     return parentRow.valueToOid(
                         self.TYPE_MAP[int(parentIndex)].clone(
-                            self.asOctets().decode('ascii')), impliedFlag, parentIndices)
+                            self.asOctets().decode("ascii")
+                        ),
+                        impliedFlag,
+                        parentIndices,
+                    )
 
                 except KeyError:
                     pass
 
-        raise error.SmiError('%s object encountered without preceding '
-                             'InetAddressType-like index: %r' % (self.__class__.__name__, self))
+        raise error.SmiError(
+            "%s object encountered without preceding "
+            "InetAddressType-like index: %r" % (self.__class__.__name__, self)
+        )
 
 
 class InetAddressPrefixLength(TextualConvention, Unsigned32):
@@ -408,25 +411,17 @@ autonomous system number space.
 class InetScopeType(TextualConvention, Integer32):
     status = "current"
     subtypeSpec = Integer32.subtypeSpec
-    subtypeSpec += ConstraintsUnion(
-        SingleValueConstraint(
-            *(1,
-              2,
-              3,
-              4,
-              5,
-              8,
-              14)
-        )
-    )
+    subtypeSpec += ConstraintsUnion(SingleValueConstraint(*(1, 2, 3, 4, 5, 8, 14)))
     namedValues = NamedValues(
-        *(("adminLocal", 4),
-          ("global", 14),
-          ("interfaceLocal", 1),
-          ("linkLocal", 2),
-          ("organizationLocal", 8),
-          ("siteLocal", 5),
-          ("subnetLocal", 3))
+        *(
+            ("adminLocal", 4),
+            ("global", 14),
+            ("interfaceLocal", 1),
+            ("linkLocal", 2),
+            ("organizationLocal", 8),
+            ("siteLocal", 5),
+            ("subnetLocal", 3),
+        )
     )
 
     if mibBuilder.loadTexts:
@@ -460,18 +455,8 @@ out in cases where the zone index for a non-global IPv6 address is known.
 class InetVersion(TextualConvention, Integer32):
     status = "current"
     subtypeSpec = Integer32.subtypeSpec
-    subtypeSpec += ConstraintsUnion(
-        SingleValueConstraint(
-            *(0,
-              1,
-              2)
-        )
-    )
-    namedValues = NamedValues(
-        *(("ipv4", 1),
-          ("ipv6", 2),
-          ("unknown", 0))
-    )
+    subtypeSpec += ConstraintsUnion(SingleValueConstraint(*(0, 1, 2)))
+    namedValues = NamedValues(*(("ipv4", 1), ("ipv6", 2), ("unknown", 0)))
 
     if mibBuilder.loadTexts:
         description = """\
@@ -483,20 +468,23 @@ types associated with IP protocols. The InetAddressType has been designed for
 this purpose.
 """
 
+
 mibBuilder.exportSymbols(
     "INET-ADDRESS-MIB",
-    **{"InetAddressType": InetAddressType,
-       "InetAddress": InetAddress,
-       "InetAddressIPv4": InetAddressIPv4,
-       "InetAddressIPv6": InetAddressIPv6,
-       "InetAddressIPv4z": InetAddressIPv4z,
-       "InetAddressIPv6z": InetAddressIPv6z,
-       "InetAddressDNS": InetAddressDNS,
-       "InetAddressPrefixLength": InetAddressPrefixLength,
-       "InetPortNumber": InetPortNumber,
-       "InetAutonomousSystemNumber": InetAutonomousSystemNumber,
-       "InetScopeType": InetScopeType,
-       "InetZoneIndex": InetZoneIndex,
-       "InetVersion": InetVersion,
-       "inetAddressMIB": inetAddressMIB}
+    **{
+        "InetAddressType": InetAddressType,
+        "InetAddress": InetAddress,
+        "InetAddressIPv4": InetAddressIPv4,
+        "InetAddressIPv6": InetAddressIPv6,
+        "InetAddressIPv4z": InetAddressIPv4z,
+        "InetAddressIPv6z": InetAddressIPv6z,
+        "InetAddressDNS": InetAddressDNS,
+        "InetAddressPrefixLength": InetAddressPrefixLength,
+        "InetPortNumber": InetPortNumber,
+        "InetAutonomousSystemNumber": InetAutonomousSystemNumber,
+        "InetScopeType": InetScopeType,
+        "InetZoneIndex": InetZoneIndex,
+        "InetVersion": InetVersion,
+        "inetAddressMIB": inetAddressMIB,
+    }
 )

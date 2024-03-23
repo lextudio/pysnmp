@@ -12,14 +12,15 @@ from pysnmp.hlapi.varbinds import *
 from pysnmp.entity.rfc3413 import ntforg
 from pysnmp.smi.rfc1902 import *
 
-__all__ = ['sendNotification']
+__all__ = ["sendNotification"]
 
 VB_PROCESSOR = NotificationOriginatorVarBinds()
 LCD = NotificationOriginatorLcdConfigurator()
 
 
-def sendNotification(snmpEngine, authData, transportTarget, contextData,
-                     notifyType, *varBinds, **options):
+def sendNotification(
+    snmpEngine, authData, transportTarget, contextData, notifyType, *varBinds, **options
+):
     """Send SNMP notification.
 
     Based on passed parameters, prepares SNMP TRAP or INFORM
@@ -150,25 +151,41 @@ def sendNotification(snmpEngine, authData, transportTarget, contextData,
     """
 
     # noinspection PyShadowingNames
-    def __cbFun(snmpEngine, sendRequestHandle, errorIndication,
-                errorStatus, errorIndex, varBinds, cbCtx):
-
+    def __cbFun(
+        snmpEngine,
+        sendRequestHandle,
+        errorIndication,
+        errorStatus,
+        errorIndex,
+        varBinds,
+        cbCtx,
+    ):
         lookupMib, cbFun, cbCtx = cbCtx
 
-        varBinds = VB_PROCESSOR.unmakeVarBinds(
-            snmpEngine.cache, varBinds, lookupMib)
+        varBinds = VB_PROCESSOR.unmakeVarBinds(snmpEngine.cache, varBinds, lookupMib)
 
         return cbFun and cbFun(
-            snmpEngine, sendRequestHandle, errorIndication,
-            errorStatus, errorIndex, varBinds, cbCtx)
+            snmpEngine,
+            sendRequestHandle,
+            errorIndication,
+            errorStatus,
+            errorIndex,
+            varBinds,
+            cbCtx,
+        )
 
-    notifyName = LCD.configure(snmpEngine, authData, transportTarget,
-                               notifyType, contextData.contextName)
+    notifyName = LCD.configure(
+        snmpEngine, authData, transportTarget, notifyType, contextData.contextName
+    )
 
     varBinds = VB_PROCESSOR.makeVarBinds(snmpEngine.cache, varBinds)
 
     return ntforg.NotificationOriginator().sendVarBinds(
-        snmpEngine, notifyName,
-        contextData.contextEngineId, contextData.contextName,
-        varBinds, __cbFun, (options.get('lookupMib', True),
-                            options.get('cbFun'), options.get('cbCtx')))
+        snmpEngine,
+        notifyName,
+        contextData.contextEngineId,
+        contextData.contextName,
+        varBinds,
+        __cbFun,
+        (options.get("lookupMib", True), options.get("cbFun"), options.get("cbCtx")),
+    )

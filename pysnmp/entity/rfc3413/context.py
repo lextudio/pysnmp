@@ -11,11 +11,13 @@ from pysnmp import debug
 from pysnmp import error
 
 
-class SnmpContext(object):
+class SnmpContext:
     def __init__(self, snmpEngine, contextEngineId=None):
         mibBuilder = snmpEngine.msgAndPduDsp.mibInstrumController.mibBuilder
 
-        snmpEngineId, = mibBuilder.importSymbols('__SNMP-FRAMEWORK-MIB', 'snmpEngineID')
+        (snmpEngineId,) = mibBuilder.importSymbols(
+            "__SNMP-FRAMEWORK-MIB", "snmpEngineID"
+        )
 
         if contextEngineId is None:
             # Default to local snmpEngineId
@@ -25,7 +27,8 @@ class SnmpContext(object):
             self.contextEngineId = snmpEngineId.syntax.clone(contextEngineId)
 
         debug.logger & debug.FLAG_INS and debug.logger(
-            'SnmpContext: contextEngineId %r' % (self.contextEngineId,))
+            f"SnmpContext: contextEngineId {self.contextEngineId!r}"
+        )
 
         self.contextNames = {
             null: snmpEngine.msgAndPduDsp.mibInstrumController  # Default name
@@ -34,11 +37,12 @@ class SnmpContext(object):
     def registerContextName(self, contextName, mibInstrum=None):
         contextName = univ.OctetString(contextName).asOctets()
         if contextName in self.contextNames:
-            raise error.PySnmpError(
-                'Duplicate contextName %s' % contextName)
+            raise error.PySnmpError("Duplicate contextName %s" % contextName)
 
         debug.logger & debug.FLAG_INS and debug.logger(
-            'registerContextName: registered contextName %r, mibInstrum %r' % (contextName, mibInstrum))
+            "registerContextName: registered contextName %r, mibInstrum %r"
+            % (contextName, mibInstrum)
+        )
 
         if mibInstrum is None:
             self.contextNames[contextName] = self.contextNames[null]
@@ -51,19 +55,24 @@ class SnmpContext(object):
 
         if contextName in self.contextNames:
             debug.logger & debug.FLAG_INS and debug.logger(
-                'unregisterContextName: unregistered contextName %r' % contextName)
+                "unregisterContextName: unregistered contextName %r" % contextName
+            )
 
             del self.contextNames[contextName]
 
     def getMibInstrum(self, contextName=null):
         contextName = univ.OctetString(contextName).asOctets()
         if contextName not in self.contextNames:
-            debug.logger & debug.FLAG_INS and debug.logger('getMibInstrum: contextName %r not registered' % contextName)
+            debug.logger & debug.FLAG_INS and debug.logger(
+                "getMibInstrum: contextName %r not registered" % contextName
+            )
 
-            raise error.PySnmpError('Missing contextName %s' % contextName)
+            raise error.PySnmpError("Missing contextName %s" % contextName)
 
         else:
             debug.logger & debug.FLAG_INS and debug.logger(
-                'getMibInstrum: contextName %r, mibInstum %r' % (contextName, self.contextNames[contextName]))
+                "getMibInstrum: contextName %r, mibInstum %r"
+                % (contextName, self.contextNames[contextName])
+            )
 
             return self.contextNames[contextName]

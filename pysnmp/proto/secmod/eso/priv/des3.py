@@ -29,16 +29,18 @@ random.seed()
 
 # 5.1.1
 
+
 class Des3(base.AbstractEncryptionService):
     """Reeder 3DES-EDE for USM (Internet draft).
 
-       https://tools.ietf.org/html/draft-reeder-snmpv3-usm-3desede-00
+    https://tools.ietf.org/html/draft-reeder-snmpv3-usm-3desede-00
     """
+
     # usm3DESEDEPrivProtocol
     SERVICE_ID = (1, 3, 6, 1, 6, 3, 10, 1, 2, 3)
     KEY_SIZE = 32
 
-    local_int = random.randrange(0, 0xffffffff)
+    local_int = random.randrange(0, 0xFFFFFFFF)
 
     def hashPassphrase(self, authProtocol, privKey):
         if authProtocol == hmacmd5.HmacMd5.SERVICE_ID:
@@ -51,8 +53,7 @@ class Des3(base.AbstractEncryptionService):
             hashAlgo = hmacsha2.HmacSha2.HASH_ALGORITHM[authProtocol]
 
         else:
-            raise error.ProtocolError(
-                'Unknown auth protocol %s' % (authProtocol,))
+            raise error.ProtocolError(f"Unknown auth protocol {authProtocol}")
 
         return localkey.hashPassphrase(privKey, hashAlgo)
 
@@ -68,8 +69,7 @@ class Des3(base.AbstractEncryptionService):
             hashAlgo = hmacsha2.HmacSha2.HASH_ALGORITHM[authProtocol]
 
         else:
-            raise error.ProtocolError(
-                'Unknown auth protocol %s' % (authProtocol,))
+            raise error.ProtocolError(f"Unknown auth protocol {authProtocol}")
 
         localPrivKey = localkey.localizeKey(privKey, snmpEngineID, hashAlgo)
 
@@ -79,7 +79,7 @@ class Des3(base.AbstractEncryptionService):
             newKey = localkey.hashPassphrase(localPrivKey, hashAlgo)
             localPrivKey += localkey.localizeKey(newKey, snmpEngineID, hashAlgo)
 
-        return localPrivKey[:self.KEY_SIZE]
+        return localPrivKey[: self.KEY_SIZE]
 
     # 5.1.1.1
     def _getEncryptionKey(self, privKey, snmpEngineBoots):
@@ -90,16 +90,16 @@ class Des3(base.AbstractEncryptionService):
         securityEngineBoots = int(snmpEngineBoots)
 
         salt = [
-            securityEngineBoots >> 24 & 0xff,
-            securityEngineBoots >> 16 & 0xff,
-            securityEngineBoots >> 8 & 0xff,
-            securityEngineBoots & 0xff,
-            self.local_int >> 24 & 0xff,
-            self.local_int >> 16 & 0xff,
-            self.local_int >> 8 & 0xff,
-            self.local_int & 0xff
+            securityEngineBoots >> 24 & 0xFF,
+            securityEngineBoots >> 16 & 0xFF,
+            securityEngineBoots >> 8 & 0xFF,
+            securityEngineBoots & 0xFF,
+            self.local_int >> 24 & 0xFF,
+            self.local_int >> 16 & 0xFF,
+            self.local_int >> 8 & 0xFF,
+            self.local_int & 0xFF,
         ]
-        if self.local_int == 0xffffffff:
+        if self.local_int == 0xFFFFFFFF:
             self.local_int = 0
 
         else:
@@ -109,34 +109,33 @@ class Des3(base.AbstractEncryptionService):
 
         iv = map(lambda x, y: x ^ y, salt, preIV.asNumbers())
 
-        return (des3Key.asOctets(),
-                univ.OctetString(salt).asOctets(),
-                univ.OctetString(iv).asOctets())
+        return (
+            des3Key.asOctets(),
+            univ.OctetString(salt).asOctets(),
+            univ.OctetString(iv).asOctets(),
+        )
 
     @staticmethod
     def _getDecryptionKey(privKey, salt):
-        iv = map(
-            lambda x, y: x ^ y, salt.asNumbers(), privKey[24:32].asNumbers())
+        iv = map(lambda x, y: x ^ y, salt.asNumbers(), privKey[24:32].asNumbers())
 
-        return (privKey[:24].asOctets(),
-                univ.OctetString(iv).asOctets())
+        return (privKey[:24].asOctets(), univ.OctetString(iv).asOctets())
 
     # 5.1.1.2
     def encryptData(self, encryptKey, privParameters, dataToEncrypt):
         if des3 is None:
-            raise error.StatusInformation(
-                errorIndication=errind.encryptionError
-            )
+            raise error.StatusInformation(errorIndication=errind.encryptionError)
 
         snmpEngineBoots, snmpEngineTime, salt = privParameters
 
-        des3Key, salt, iv = self._getEncryptionKey(
-            encryptKey, snmpEngineBoots
-        )
+        des3Key, salt, iv = self._getEncryptionKey(encryptKey, snmpEngineBoots)
 
         privParameters = univ.OctetString(salt)
 
-        plaintext = dataToEncrypt + univ.OctetString((0,) * (8 - len(dataToEncrypt) % 8)).asOctets()
+        plaintext = (
+            dataToEncrypt
+            + univ.OctetString((0,) * (8 - len(dataToEncrypt) % 8)).asOctets()
+        )
 
         try:
             ciphertext = des3.encrypt(plaintext, des3Key, iv)
@@ -151,21 +150,16 @@ class Des3(base.AbstractEncryptionService):
     # 5.1.1.3
     def decryptData(self, decryptKey, privParameters, encryptedData):
         if des3 is None:
-            raise error.StatusInformation(
-                errorIndication=errind.decryptionError
-            )
+            raise error.StatusInformation(errorIndication=errind.decryptionError)
         snmpEngineBoots, snmpEngineTime, salt = privParameters
 
         if len(salt) != 8:
-            raise error.StatusInformation(
-                errorIndication=errind.decryptionError)
+            raise error.StatusInformation(errorIndication=errind.decryptionError)
 
         des3Key, iv = self._getDecryptionKey(decryptKey, salt)
 
         if len(encryptedData) % 8 != 0:
-            raise error.StatusInformation(
-                errorIndication=errind.decryptionError
-            )
+            raise error.StatusInformation(errorIndication=errind.decryptionError)
 
         ciphertext = encryptedData.asOctets()
 

@@ -7,72 +7,63 @@
 # ASN.1 source file:///usr/share/snmp/mibs/SNMP-NOTIFICATION-MIB.txt
 # Produced by pysmi-0.4.0 at Sat Feb 16 12:12:15 2019
 #
-if 'mibBuilder' not in globals():
+if "mibBuilder" not in globals():
     import sys
 
     sys.stderr.write(__doc__)
     sys.exit(1)
 
-(Integer,
- OctetString,
- ObjectIdentifier) = mibBuilder.importSymbols(
-    "ASN1",
-    "Integer",
-    "OctetString",
-    "ObjectIdentifier")
+(Integer, OctetString, ObjectIdentifier) = mibBuilder.importSymbols(
+    "ASN1", "Integer", "OctetString", "ObjectIdentifier"
+)
 
-(NamedValues,) = mibBuilder.importSymbols(
-    "ASN1-ENUMERATION",
-    "NamedValues")
+(NamedValues,) = mibBuilder.importSymbols("ASN1-ENUMERATION", "NamedValues")
 
-(ConstraintsIntersection,
- SingleValueConstraint,
- ValueRangeConstraint,
- ValueSizeConstraint,
- ConstraintsUnion) = mibBuilder.importSymbols(
+(
+    ConstraintsIntersection,
+    SingleValueConstraint,
+    ValueRangeConstraint,
+    ValueSizeConstraint,
+    ConstraintsUnion,
+) = mibBuilder.importSymbols(
     "ASN1-REFINEMENT",
     "ConstraintsIntersection",
     "SingleValueConstraint",
     "ValueRangeConstraint",
     "ValueSizeConstraint",
-    "ConstraintsUnion")
+    "ConstraintsUnion",
+)
 
-(SnmpAdminString,) = mibBuilder.importSymbols(
-    "SNMP-FRAMEWORK-MIB",
-    "SnmpAdminString")
+(SnmpAdminString,) = mibBuilder.importSymbols("SNMP-FRAMEWORK-MIB", "SnmpAdminString")
 
-(SnmpTagValue,
- snmpTargetParamsName) = mibBuilder.importSymbols(
-    "SNMP-TARGET-MIB",
-    "SnmpTagValue",
-    "snmpTargetParamsName")
+(SnmpTagValue, snmpTargetParamsName) = mibBuilder.importSymbols(
+    "SNMP-TARGET-MIB", "SnmpTagValue", "snmpTargetParamsName"
+)
 
-(ModuleCompliance,
- ObjectGroup,
- NotificationGroup) = mibBuilder.importSymbols(
-    "SNMPv2-CONF",
-    "ModuleCompliance",
-    "ObjectGroup",
-    "NotificationGroup")
+(ModuleCompliance, ObjectGroup, NotificationGroup) = mibBuilder.importSymbols(
+    "SNMPv2-CONF", "ModuleCompliance", "ObjectGroup", "NotificationGroup"
+)
 
-(ModuleIdentity,
- iso,
- Counter64,
- MibScalar,
- MibTable,
- MibTableRow,
- MibTableColumn,
- Gauge32,
- NotificationType,
- Bits,
- snmpModules,
- IpAddress,
- Integer32,
- ObjectIdentity,
- Unsigned32,
- MibIdentifier,
- Counter32,
- TimeTicks) = mibBuilder.importSymbols(
+(
+    ModuleIdentity,
+    iso,
+    Counter64,
+    MibScalar,
+    MibTable,
+    MibTableRow,
+    MibTableColumn,
+    Gauge32,
+    NotificationType,
+    Bits,
+    snmpModules,
+    IpAddress,
+    Integer32,
+    ObjectIdentity,
+    Unsigned32,
+    MibIdentifier,
+    Counter32,
+    TimeTicks,
+) = mibBuilder.importSymbols(
     "SNMPv2-SMI",
     "ModuleIdentity",
     "iso",
@@ -91,32 +82,26 @@ if 'mibBuilder' not in globals():
     "Unsigned32",
     "MibIdentifier",
     "Counter32",
-    "TimeTicks")
-
-(RowStatus,
- DisplayString,
- TextualConvention,
- StorageType) = mibBuilder.importSymbols(
-    "SNMPv2-TC",
-    "RowStatus",
-    "DisplayString",
-    "TextualConvention",
-    "StorageType")
-
-snmpNotificationMIB = ModuleIdentity(
-    (1, 3, 6, 1, 6, 3, 13)
+    "TimeTicks",
 )
+
+(RowStatus, DisplayString, TextualConvention, StorageType) = mibBuilder.importSymbols(
+    "SNMPv2-TC", "RowStatus", "DisplayString", "TextualConvention", "StorageType"
+)
+
+snmpNotificationMIB = ModuleIdentity((1, 3, 6, 1, 6, 3, 13))
 snmpNotificationMIB.setRevisions(
-        ("2002-10-14 00:00",
-         "1998-08-04 00:00",
-         "1997-07-14 00:00")
+    ("2002-10-14 00:00", "1998-08-04 00:00", "1997-07-14 00:00")
 )
 snmpNotificationMIB.setLastUpdated("200210140000Z")
 if mibBuilder.loadTexts:
-    snmpNotificationMIB.setOrganization("""\
+    snmpNotificationMIB.setOrganization(
+        """\
 IETF SNMPv3 Working Group
-""")
-snmpNotificationMIB.setContactInfo("""\
+"""
+    )
+snmpNotificationMIB.setContactInfo(
+    """\
 WG-email: snmpv3@lists.tislabs.com Subscribe: majordomo@lists.tislabs.com In
 message body: subscribe snmpv3 Co-Chair: Russ Mundy Network Associates
 Laboratories Postal: 15204 Omega Drive, Suite 300 Rockville, MD 20850-4601 USA
@@ -128,51 +113,53 @@ Tennessee 37918 EMail: dlevi@nortelnetworks.com Phone: +1 865 686 0432 Co-
 editor: Paul Meyer Secure Computing Corporation Postal: 2675 Long Lake Road
 Roseville, Minnesota 55113 EMail: paul_meyer@securecomputing.com Phone: +1 651
 628 1592 Co-editor: Bob Stewart Retired
-""")
+"""
+)
 if mibBuilder.loadTexts:
-    snmpNotificationMIB.setDescription("""\
+    snmpNotificationMIB.setDescription(
+        """\
 This MIB module defines MIB objects which provide mechanisms to remotely
 configure the parameters used by an SNMP entity for the generation of
 notifications. Copyright (C) The Internet Society (2002). This version of this
 MIB module is part of RFC 3413; see the RFC itself for full legal notices.
-""")
+"""
+    )
 
 _SnmpNotifyObjects_ObjectIdentity = ObjectIdentity
-snmpNotifyObjects = _SnmpNotifyObjects_ObjectIdentity(
-    (1, 3, 6, 1, 6, 3, 13, 1)
-)
+snmpNotifyObjects = _SnmpNotifyObjects_ObjectIdentity((1, 3, 6, 1, 6, 3, 13, 1))
 _SnmpNotifyTable_Object = MibTable
-snmpNotifyTable = _SnmpNotifyTable_Object(
-    (1, 3, 6, 1, 6, 3, 13, 1, 1)
-)
+snmpNotifyTable = _SnmpNotifyTable_Object((1, 3, 6, 1, 6, 3, 13, 1, 1))
 if mibBuilder.loadTexts:
     snmpNotifyTable.setStatus("current")
 if mibBuilder.loadTexts:
-    snmpNotifyTable.setDescription("""\
+    snmpNotifyTable.setDescription(
+        """\
 This table is used to select management targets which should receive
 notifications, as well as the type of notification which should be sent to each
 selected management target.
-""")
+"""
+    )
 _SnmpNotifyEntry_Object = MibTableRow
-snmpNotifyEntry = _SnmpNotifyEntry_Object(
-    (1, 3, 6, 1, 6, 3, 13, 1, 1, 1)
-)
+snmpNotifyEntry = _SnmpNotifyEntry_Object((1, 3, 6, 1, 6, 3, 13, 1, 1, 1))
 snmpNotifyEntry.setIndexNames(
     (1, "SNMP-NOTIFICATION-MIB", "snmpNotifyName"),
 )
 if mibBuilder.loadTexts:
     snmpNotifyEntry.setStatus("current")
 if mibBuilder.loadTexts:
-    snmpNotifyEntry.setDescription("""\
+    snmpNotifyEntry.setDescription(
+        """\
 An entry in this table selects a set of management targets which should receive
 notifications, as well as the type of notification which should be sent to each
 selected management target. Entries in the snmpNotifyTable are created and
 deleted using the snmpNotifyRowStatus object.
-""")
+"""
+    )
 
 
 class _SnmpNotifyName_Type(SnmpAdminString):
     """Custom type snmpNotifyName based on SnmpAdminString"""
+
     subtypeSpec = SnmpAdminString.subtypeSpec
     subtypeSpec += ConstraintsUnion(
         ValueSizeConstraint(1, 32),
@@ -182,63 +169,58 @@ class _SnmpNotifyName_Type(SnmpAdminString):
 _SnmpNotifyName_Type.__name__ = "SnmpAdminString"
 _SnmpNotifyName_Object = MibTableColumn
 snmpNotifyName = _SnmpNotifyName_Object(
-    (1, 3, 6, 1, 6, 3, 13, 1, 1, 1, 1),
-    _SnmpNotifyName_Type()
+    (1, 3, 6, 1, 6, 3, 13, 1, 1, 1, 1), _SnmpNotifyName_Type()
 )
 snmpNotifyName.setMaxAccess("not-accessible")
 if mibBuilder.loadTexts:
     snmpNotifyName.setStatus("current")
 if mibBuilder.loadTexts:
-    snmpNotifyName.setDescription("""\
+    snmpNotifyName.setDescription(
+        """\
 The locally arbitrary, but unique identifier associated with this
 snmpNotifyEntry.
-""")
+"""
+    )
 _SnmpNotifyTag_Type = SnmpTagValue
 _SnmpNotifyTag_Object = MibTableColumn
 snmpNotifyTag = _SnmpNotifyTag_Object(
-    (1, 3, 6, 1, 6, 3, 13, 1, 1, 1, 2),
-    _SnmpNotifyTag_Type()
+    (1, 3, 6, 1, 6, 3, 13, 1, 1, 1, 2), _SnmpNotifyTag_Type()
 )
 snmpNotifyTag.setMaxAccess("read-create")
 if mibBuilder.loadTexts:
     snmpNotifyTag.setStatus("current")
 if mibBuilder.loadTexts:
-    snmpNotifyTag.setDescription("""\
+    snmpNotifyTag.setDescription(
+        """\
 This object contains a single tag value which is used to select entries in the
 snmpTargetAddrTable. Any entry in the snmpTargetAddrTable which contains a tag
 value which is equal to the value of an instance of this object is selected. If
 this object contains a value of zero length, no entries are selected.
-""")
+"""
+    )
 
 
 class _SnmpNotifyType_Type(Integer32):
     """Custom type snmpNotifyType based on Integer32"""
+
     defaultValue = 1
 
     subtypeSpec = Integer32.subtypeSpec
-    subtypeSpec += ConstraintsUnion(
-        SingleValueConstraint(
-            *(1,
-              2)
-        )
-    )
-    namedValues = NamedValues(
-        *(("inform", 2),
-          ("trap", 1))
-    )
+    subtypeSpec += ConstraintsUnion(SingleValueConstraint(*(1, 2)))
+    namedValues = NamedValues(*(("inform", 2), ("trap", 1)))
 
 
 _SnmpNotifyType_Type.__name__ = "Integer32"
 _SnmpNotifyType_Object = MibTableColumn
 snmpNotifyType = _SnmpNotifyType_Object(
-    (1, 3, 6, 1, 6, 3, 13, 1, 1, 1, 3),
-    _SnmpNotifyType_Type().clone('trap')
+    (1, 3, 6, 1, 6, 3, 13, 1, 1, 1, 3), _SnmpNotifyType_Type().clone("trap")
 )
 snmpNotifyType.setMaxAccess("read-create")
 if mibBuilder.loadTexts:
     snmpNotifyType.setStatus("current")
 if mibBuilder.loadTexts:
-    snmpNotifyType.setDescription("""\
+    snmpNotifyType.setDescription(
+        """\
 This object determines the type of notification to be generated for entries in
 the snmpTargetAddrTable selected by the corresponding instance of
 snmpNotifyTag. This value is only used when generating notifications, and is
@@ -248,7 +230,8 @@ contain Unconfirmed-Class PDUs. If the value of this object is inform(2), then
 any messages generated for selected rows will contain Confirmed-Class PDUs.
 Note that if an SNMP entity only supports generation of Unconfirmed-Class PDUs
 (and not Confirmed-Class PDUs), then this object may be read-only.
-""")
+"""
+    )
 
 
 class _SnmpNotifyStorageType_Type(StorageType):
@@ -258,30 +241,33 @@ class _SnmpNotifyStorageType_Type(StorageType):
 _SnmpNotifyStorageType_Object = MibTableColumn
 snmpNotifyStorageType = _SnmpNotifyStorageType_Object(
     (1, 3, 6, 1, 6, 3, 13, 1, 1, 1, 4),
-    _SnmpNotifyStorageType_Type().clone('nonVolatile')
+    _SnmpNotifyStorageType_Type().clone("nonVolatile"),
 )
 snmpNotifyStorageType.setMaxAccess("read-create")
 if mibBuilder.loadTexts:
     snmpNotifyStorageType.setStatus("current")
 if mibBuilder.loadTexts:
-    snmpNotifyStorageType.setDescription("""\
+    snmpNotifyStorageType.setDescription(
+        """\
 The storage type for this conceptual row. Conceptual rows having the value
 'permanent' need not allow write-access to any columnar objects in the row.
-""")
+"""
+    )
 _SnmpNotifyRowStatus_Type = RowStatus
 _SnmpNotifyRowStatus_Object = MibTableColumn
 snmpNotifyRowStatus = _SnmpNotifyRowStatus_Object(
-    (1, 3, 6, 1, 6, 3, 13, 1, 1, 1, 5),
-    _SnmpNotifyRowStatus_Type()
+    (1, 3, 6, 1, 6, 3, 13, 1, 1, 1, 5), _SnmpNotifyRowStatus_Type()
 )
 snmpNotifyRowStatus.setMaxAccess("read-create")
 if mibBuilder.loadTexts:
     snmpNotifyRowStatus.setStatus("current")
 if mibBuilder.loadTexts:
-    snmpNotifyRowStatus.setDescription("""\
+    snmpNotifyRowStatus.setDescription(
+        """\
 The status of this conceptual row. To create a row in this table, a manager
 must set this object to either createAndGo(4) or createAndWait(5).
-""")
+"""
+    )
 _SnmpNotifyFilterProfileTable_Object = MibTable
 snmpNotifyFilterProfileTable = _SnmpNotifyFilterProfileTable_Object(
     (1, 3, 6, 1, 6, 3, 13, 1, 2)
@@ -289,10 +275,12 @@ snmpNotifyFilterProfileTable = _SnmpNotifyFilterProfileTable_Object(
 if mibBuilder.loadTexts:
     snmpNotifyFilterProfileTable.setStatus("current")
 if mibBuilder.loadTexts:
-    snmpNotifyFilterProfileTable.setDescription("""\
+    snmpNotifyFilterProfileTable.setDescription(
+        """\
 This table is used to associate a notification filter profile with a particular
 set of target parameters.
-""")
+"""
+    )
 _SnmpNotifyFilterProfileEntry_Object = MibTableRow
 snmpNotifyFilterProfileEntry = _SnmpNotifyFilterProfileEntry_Object(
     (1, 3, 6, 1, 6, 3, 13, 1, 2, 1)
@@ -303,16 +291,19 @@ snmpNotifyFilterProfileEntry.setIndexNames(
 if mibBuilder.loadTexts:
     snmpNotifyFilterProfileEntry.setStatus("current")
 if mibBuilder.loadTexts:
-    snmpNotifyFilterProfileEntry.setDescription("""\
+    snmpNotifyFilterProfileEntry.setDescription(
+        """\
 An entry in this table indicates the name of the filter profile to be used when
 generating notifications using the corresponding entry in the
 snmpTargetParamsTable. Entries in the snmpNotifyFilterProfileTable are created
 and deleted using the snmpNotifyFilterProfileRowStatus object.
-""")
+"""
+    )
 
 
 class _SnmpNotifyFilterProfileName_Type(SnmpAdminString):
     """Custom type snmpNotifyFilterProfileName based on SnmpAdminString"""
+
     subtypeSpec = SnmpAdminString.subtypeSpec
     subtypeSpec += ConstraintsUnion(
         ValueSizeConstraint(1, 32),
@@ -322,17 +313,18 @@ class _SnmpNotifyFilterProfileName_Type(SnmpAdminString):
 _SnmpNotifyFilterProfileName_Type.__name__ = "SnmpAdminString"
 _SnmpNotifyFilterProfileName_Object = MibTableColumn
 snmpNotifyFilterProfileName = _SnmpNotifyFilterProfileName_Object(
-    (1, 3, 6, 1, 6, 3, 13, 1, 2, 1, 1),
-    _SnmpNotifyFilterProfileName_Type()
+    (1, 3, 6, 1, 6, 3, 13, 1, 2, 1, 1), _SnmpNotifyFilterProfileName_Type()
 )
 snmpNotifyFilterProfileName.setMaxAccess("read-create")
 if mibBuilder.loadTexts:
     snmpNotifyFilterProfileName.setStatus("current")
 if mibBuilder.loadTexts:
-    snmpNotifyFilterProfileName.setDescription("""\
+    snmpNotifyFilterProfileName.setDescription(
+        """\
 The name of the filter profile to be used when generating notifications using
 the corresponding entry in the snmpTargetAddrTable.
-""")
+"""
+    )
 
 
 class _SnmpNotifyFilterProfileStorType_Type(StorageType):
@@ -342,42 +334,44 @@ class _SnmpNotifyFilterProfileStorType_Type(StorageType):
 _SnmpNotifyFilterProfileStorType_Object = MibTableColumn
 snmpNotifyFilterProfileStorType = _SnmpNotifyFilterProfileStorType_Object(
     (1, 3, 6, 1, 6, 3, 13, 1, 2, 1, 2),
-    _SnmpNotifyFilterProfileStorType_Type().clone('nonVolatile')
+    _SnmpNotifyFilterProfileStorType_Type().clone("nonVolatile"),
 )
 snmpNotifyFilterProfileStorType.setMaxAccess("read-create")
 if mibBuilder.loadTexts:
     snmpNotifyFilterProfileStorType.setStatus("current")
 if mibBuilder.loadTexts:
-    snmpNotifyFilterProfileStorType.setDescription("""\
+    snmpNotifyFilterProfileStorType.setDescription(
+        """\
 The storage type for this conceptual row. Conceptual rows having the value
 'permanent' need not allow write-access to any columnar objects in the row.
-""")
+"""
+    )
 _SnmpNotifyFilterProfileRowStatus_Type = RowStatus
 _SnmpNotifyFilterProfileRowStatus_Object = MibTableColumn
 snmpNotifyFilterProfileRowStatus = _SnmpNotifyFilterProfileRowStatus_Object(
-    (1, 3, 6, 1, 6, 3, 13, 1, 2, 1, 3),
-    _SnmpNotifyFilterProfileRowStatus_Type()
+    (1, 3, 6, 1, 6, 3, 13, 1, 2, 1, 3), _SnmpNotifyFilterProfileRowStatus_Type()
 )
 snmpNotifyFilterProfileRowStatus.setMaxAccess("read-create")
 if mibBuilder.loadTexts:
     snmpNotifyFilterProfileRowStatus.setStatus("current")
 if mibBuilder.loadTexts:
-    snmpNotifyFilterProfileRowStatus.setDescription("""\
+    snmpNotifyFilterProfileRowStatus.setDescription(
+        """\
 The status of this conceptual row. To create a row in this table, a manager
 must set this object to either createAndGo(4) or createAndWait(5). Until
 instances of all corresponding columns are appropriately configured, the value
 of the corresponding instance of the snmpNotifyFilterProfileRowStatus column is
 'notReady'. In particular, a newly created row cannot be made active until the
 corresponding instance of snmpNotifyFilterProfileName has been set.
-""")
+"""
+    )
 _SnmpNotifyFilterTable_Object = MibTable
-snmpNotifyFilterTable = _SnmpNotifyFilterTable_Object(
-    (1, 3, 6, 1, 6, 3, 13, 1, 3)
-)
+snmpNotifyFilterTable = _SnmpNotifyFilterTable_Object((1, 3, 6, 1, 6, 3, 13, 1, 3))
 if mibBuilder.loadTexts:
     snmpNotifyFilterTable.setStatus("current")
 if mibBuilder.loadTexts:
-    snmpNotifyFilterTable.setDescription("""\
+    snmpNotifyFilterTable.setDescription(
+        """\
 The table of filter profiles. Filter profiles are used to determine whether
 particular management targets should receive particular notifications. When a
 notification is generated, it must be compared with the filters associated with
@@ -385,11 +379,10 @@ each management target which is configured to receive notifications, in order
 to determine whether it may be sent to each such management target. A more
 complete discussion of notification filtering can be found in section 6. of
 [SNMP-APPL].
-""")
+"""
+    )
 _SnmpNotifyFilterEntry_Object = MibTableRow
-snmpNotifyFilterEntry = _SnmpNotifyFilterEntry_Object(
-    (1, 3, 6, 1, 6, 3, 13, 1, 3, 1)
-)
+snmpNotifyFilterEntry = _SnmpNotifyFilterEntry_Object((1, 3, 6, 1, 6, 3, 13, 1, 3, 1))
 snmpNotifyFilterEntry.setIndexNames(
     (0, "SNMP-NOTIFICATION-MIB", "snmpNotifyFilterProfileName"),
     (1, "SNMP-NOTIFICATION-MIB", "snmpNotifyFilterSubtree"),
@@ -397,29 +390,33 @@ snmpNotifyFilterEntry.setIndexNames(
 if mibBuilder.loadTexts:
     snmpNotifyFilterEntry.setStatus("current")
 if mibBuilder.loadTexts:
-    snmpNotifyFilterEntry.setDescription("""\
+    snmpNotifyFilterEntry.setDescription(
+        """\
 An element of a filter profile. Entries in the snmpNotifyFilterTable are
 created and deleted using the snmpNotifyFilterRowStatus object.
-""")
+"""
+    )
 _SnmpNotifyFilterSubtree_Type = ObjectIdentifier
 _SnmpNotifyFilterSubtree_Object = MibTableColumn
 snmpNotifyFilterSubtree = _SnmpNotifyFilterSubtree_Object(
-    (1, 3, 6, 1, 6, 3, 13, 1, 3, 1, 1),
-    _SnmpNotifyFilterSubtree_Type()
+    (1, 3, 6, 1, 6, 3, 13, 1, 3, 1, 1), _SnmpNotifyFilterSubtree_Type()
 )
 snmpNotifyFilterSubtree.setMaxAccess("not-accessible")
 if mibBuilder.loadTexts:
     snmpNotifyFilterSubtree.setStatus("current")
 if mibBuilder.loadTexts:
-    snmpNotifyFilterSubtree.setDescription("""\
+    snmpNotifyFilterSubtree.setDescription(
+        """\
 The MIB subtree which, when combined with the corresponding instance of
 snmpNotifyFilterMask, defines a family of subtrees which are included in or
 excluded from the filter profile.
-""")
+"""
+    )
 
 
 class _SnmpNotifyFilterMask_Type(OctetString):
     """Custom type snmpNotifyFilterMask based on OctetString"""
+
     defaultHexValue = ""
 
     subtypeSpec = OctetString.subtypeSpec
@@ -431,14 +428,14 @@ class _SnmpNotifyFilterMask_Type(OctetString):
 _SnmpNotifyFilterMask_Type.__name__ = "OctetString"
 _SnmpNotifyFilterMask_Object = MibTableColumn
 snmpNotifyFilterMask = _SnmpNotifyFilterMask_Object(
-    (1, 3, 6, 1, 6, 3, 13, 1, 3, 1, 2),
-    _SnmpNotifyFilterMask_Type()
+    (1, 3, 6, 1, 6, 3, 13, 1, 3, 1, 2), _SnmpNotifyFilterMask_Type()
 )
 snmpNotifyFilterMask.setMaxAccess("read-create")
 if mibBuilder.loadTexts:
     snmpNotifyFilterMask.setStatus("current")
 if mibBuilder.loadTexts:
-    snmpNotifyFilterMask.setDescription("""\
+    snmpNotifyFilterMask.setDescription(
+        """\
 The bit mask which, in combination with the corresponding instance of
 snmpNotifyFilterSubtree, defines a family of subtrees which are included in or
 excluded from the filter profile. Each bit of this bit mask corresponds to a
@@ -462,41 +459,36 @@ object is the zero-length string, this extension rule results in a mask of
 all-1's being used (i.e., no 'wild card'), and the family of filter subtrees is
 the one subtree uniquely identified by the corresponding instance of
 snmpNotifyFilterSubtree.
-""")
+"""
+    )
 
 
 class _SnmpNotifyFilterType_Type(Integer32):
     """Custom type snmpNotifyFilterType based on Integer32"""
+
     defaultValue = 1
 
     subtypeSpec = Integer32.subtypeSpec
-    subtypeSpec += ConstraintsUnion(
-        SingleValueConstraint(
-            *(1,
-              2)
-        )
-    )
-    namedValues = NamedValues(
-        *(("excluded", 2),
-          ("included", 1))
-    )
+    subtypeSpec += ConstraintsUnion(SingleValueConstraint(*(1, 2)))
+    namedValues = NamedValues(*(("excluded", 2), ("included", 1)))
 
 
 _SnmpNotifyFilterType_Type.__name__ = "Integer32"
 _SnmpNotifyFilterType_Object = MibTableColumn
 snmpNotifyFilterType = _SnmpNotifyFilterType_Object(
-    (1, 3, 6, 1, 6, 3, 13, 1, 3, 1, 3),
-    _SnmpNotifyFilterType_Type().clone('included')
+    (1, 3, 6, 1, 6, 3, 13, 1, 3, 1, 3), _SnmpNotifyFilterType_Type().clone("included")
 )
 snmpNotifyFilterType.setMaxAccess("read-create")
 if mibBuilder.loadTexts:
     snmpNotifyFilterType.setStatus("current")
 if mibBuilder.loadTexts:
-    snmpNotifyFilterType.setDescription("""\
+    snmpNotifyFilterType.setDescription(
+        """\
 This object indicates whether the family of filter subtrees defined by this
 entry are included in or excluded from a filter. A more detailed discussion of
 the use of this object can be found in section 6. of [SNMP-APPL].
-""")
+"""
+    )
 
 
 class _SnmpNotifyFilterStorageType_Type(StorageType):
@@ -505,153 +497,151 @@ class _SnmpNotifyFilterStorageType_Type(StorageType):
 
 _SnmpNotifyFilterStorageType_Object = MibTableColumn
 snmpNotifyFilterStorageType = _SnmpNotifyFilterStorageType_Object(
-    (1, 3, 6, 1, 6, 3, 13, 1, 3, 1, 4),
-    _SnmpNotifyFilterStorageType_Type()
+    (1, 3, 6, 1, 6, 3, 13, 1, 3, 1, 4), _SnmpNotifyFilterStorageType_Type()
 )
 snmpNotifyFilterStorageType.setMaxAccess("read-create")
 if mibBuilder.loadTexts:
     snmpNotifyFilterStorageType.setStatus("current")
 if mibBuilder.loadTexts:
-    snmpNotifyFilterStorageType.setDescription("""\
+    snmpNotifyFilterStorageType.setDescription(
+        """\
 The storage type for this conceptual row. Conceptual rows having the value
 'permanent' need not allow write-access to any columnar objects in the row.
-""")
+"""
+    )
 _SnmpNotifyFilterRowStatus_Type = RowStatus
 _SnmpNotifyFilterRowStatus_Object = MibTableColumn
 snmpNotifyFilterRowStatus = _SnmpNotifyFilterRowStatus_Object(
-    (1, 3, 6, 1, 6, 3, 13, 1, 3, 1, 5),
-    _SnmpNotifyFilterRowStatus_Type()
+    (1, 3, 6, 1, 6, 3, 13, 1, 3, 1, 5), _SnmpNotifyFilterRowStatus_Type()
 )
 snmpNotifyFilterRowStatus.setMaxAccess("read-create")
 if mibBuilder.loadTexts:
     snmpNotifyFilterRowStatus.setStatus("current")
 if mibBuilder.loadTexts:
-    snmpNotifyFilterRowStatus.setDescription("""\
+    snmpNotifyFilterRowStatus.setDescription(
+        """\
 The status of this conceptual row. To create a row in this table, a manager
 must set this object to either createAndGo(4) or createAndWait(5).
-""")
+"""
+    )
 _SnmpNotifyConformance_ObjectIdentity = ObjectIdentity
-snmpNotifyConformance = _SnmpNotifyConformance_ObjectIdentity(
-    (1, 3, 6, 1, 6, 3, 13, 3)
-)
+snmpNotifyConformance = _SnmpNotifyConformance_ObjectIdentity((1, 3, 6, 1, 6, 3, 13, 3))
 _SnmpNotifyCompliances_ObjectIdentity = ObjectIdentity
 snmpNotifyCompliances = _SnmpNotifyCompliances_ObjectIdentity(
     (1, 3, 6, 1, 6, 3, 13, 3, 1)
 )
 _SnmpNotifyGroups_ObjectIdentity = ObjectIdentity
-snmpNotifyGroups = _SnmpNotifyGroups_ObjectIdentity(
-    (1, 3, 6, 1, 6, 3, 13, 3, 2)
-)
+snmpNotifyGroups = _SnmpNotifyGroups_ObjectIdentity((1, 3, 6, 1, 6, 3, 13, 3, 2))
 
-snmpNotifyGroup = ObjectGroup(
-    (1, 3, 6, 1, 6, 3, 13, 3, 2, 1)
-)
+snmpNotifyGroup = ObjectGroup((1, 3, 6, 1, 6, 3, 13, 3, 2, 1))
 snmpNotifyGroup.setObjects(
-      *(("SNMP-NOTIFICATION-MIB", "snmpNotifyTag"),
+    *(
+        ("SNMP-NOTIFICATION-MIB", "snmpNotifyTag"),
         ("SNMP-NOTIFICATION-MIB", "snmpNotifyType"),
         ("SNMP-NOTIFICATION-MIB", "snmpNotifyStorageType"),
-        ("SNMP-NOTIFICATION-MIB", "snmpNotifyRowStatus"))
+        ("SNMP-NOTIFICATION-MIB", "snmpNotifyRowStatus"),
+    )
 )
 if mibBuilder.loadTexts:
     snmpNotifyGroup.setStatus("current")
 if mibBuilder.loadTexts:
-    snmpNotifyGroup.setDescription("""\
+    snmpNotifyGroup.setDescription(
+        """\
 A collection of objects for selecting which management targets are used for
 generating notifications, and the type of notification to be generated for each
 selected management target.
-""")
+"""
+    )
 
-snmpNotifyFilterGroup = ObjectGroup(
-    (1, 3, 6, 1, 6, 3, 13, 3, 2, 2)
-)
+snmpNotifyFilterGroup = ObjectGroup((1, 3, 6, 1, 6, 3, 13, 3, 2, 2))
 snmpNotifyFilterGroup.setObjects(
-      *(("SNMP-NOTIFICATION-MIB", "snmpNotifyFilterProfileName"),
+    *(
+        ("SNMP-NOTIFICATION-MIB", "snmpNotifyFilterProfileName"),
         ("SNMP-NOTIFICATION-MIB", "snmpNotifyFilterProfileStorType"),
         ("SNMP-NOTIFICATION-MIB", "snmpNotifyFilterProfileRowStatus"),
         ("SNMP-NOTIFICATION-MIB", "snmpNotifyFilterMask"),
         ("SNMP-NOTIFICATION-MIB", "snmpNotifyFilterType"),
         ("SNMP-NOTIFICATION-MIB", "snmpNotifyFilterStorageType"),
-        ("SNMP-NOTIFICATION-MIB", "snmpNotifyFilterRowStatus"))
+        ("SNMP-NOTIFICATION-MIB", "snmpNotifyFilterRowStatus"),
+    )
 )
 if mibBuilder.loadTexts:
     snmpNotifyFilterGroup.setStatus("current")
 if mibBuilder.loadTexts:
-    snmpNotifyFilterGroup.setDescription("""\
+    snmpNotifyFilterGroup.setDescription(
+        """\
 A collection of objects providing remote configuration of notification filters.
-""")
-
-snmpNotifyBasicCompliance = ModuleCompliance(
-    (1, 3, 6, 1, 6, 3, 13, 3, 1, 1)
-)
-if mibBuilder.loadTexts:
-    snmpNotifyBasicCompliance.setStatus(
-        "current"
+"""
     )
+
+snmpNotifyBasicCompliance = ModuleCompliance((1, 3, 6, 1, 6, 3, 13, 3, 1, 1))
 if mibBuilder.loadTexts:
-    snmpNotifyBasicCompliance.setDescription("""\
+    snmpNotifyBasicCompliance.setStatus("current")
+if mibBuilder.loadTexts:
+    snmpNotifyBasicCompliance.setDescription(
+        """\
 The compliance statement for minimal SNMP entities which implement only SNMP
 Unconfirmed-Class notifications and read-create operations on only the
 snmpTargetAddrTable.
-""")
-
-snmpNotifyBasicFiltersCompliance = ModuleCompliance(
-    (1, 3, 6, 1, 6, 3, 13, 3, 1, 2)
-)
-if mibBuilder.loadTexts:
-    snmpNotifyBasicFiltersCompliance.setStatus(
-        "current"
+"""
     )
+
+snmpNotifyBasicFiltersCompliance = ModuleCompliance((1, 3, 6, 1, 6, 3, 13, 3, 1, 2))
 if mibBuilder.loadTexts:
-    snmpNotifyBasicFiltersCompliance.setDescription("""\
+    snmpNotifyBasicFiltersCompliance.setStatus("current")
+if mibBuilder.loadTexts:
+    snmpNotifyBasicFiltersCompliance.setDescription(
+        """\
 The compliance statement for SNMP entities which implement SNMP Unconfirmed-
 Class notifications with filtering, and read-create operations on all related
 tables.
-""")
-
-snmpNotifyFullCompliance = ModuleCompliance(
-    (1, 3, 6, 1, 6, 3, 13, 3, 1, 3)
-)
-if mibBuilder.loadTexts:
-    snmpNotifyFullCompliance.setStatus(
-        "current"
+"""
     )
+
+snmpNotifyFullCompliance = ModuleCompliance((1, 3, 6, 1, 6, 3, 13, 3, 1, 3))
 if mibBuilder.loadTexts:
-    snmpNotifyFullCompliance.setDescription("""\
+    snmpNotifyFullCompliance.setStatus("current")
+if mibBuilder.loadTexts:
+    snmpNotifyFullCompliance.setDescription(
+        """\
 The compliance statement for SNMP entities which either implement only SNMP
 Confirmed-Class notifications, or both SNMP Unconfirmed-Class and Confirmed-
 Class notifications, plus filtering and read-create operations on all related
 tables.
-""")
+"""
+    )
 
 mibBuilder.exportSymbols(
     "SNMP-NOTIFICATION-MIB",
-    **{"snmpNotificationMIB": snmpNotificationMIB,
-       "snmpNotifyObjects": snmpNotifyObjects,
-       "snmpNotifyTable": snmpNotifyTable,
-       "snmpNotifyEntry": snmpNotifyEntry,
-       "snmpNotifyName": snmpNotifyName,
-       "snmpNotifyTag": snmpNotifyTag,
-       "snmpNotifyType": snmpNotifyType,
-       "snmpNotifyStorageType": snmpNotifyStorageType,
-       "snmpNotifyRowStatus": snmpNotifyRowStatus,
-       "snmpNotifyFilterProfileTable": snmpNotifyFilterProfileTable,
-       "snmpNotifyFilterProfileEntry": snmpNotifyFilterProfileEntry,
-       "snmpNotifyFilterProfileName": snmpNotifyFilterProfileName,
-       "snmpNotifyFilterProfileStorType": snmpNotifyFilterProfileStorType,
-       "snmpNotifyFilterProfileRowStatus": snmpNotifyFilterProfileRowStatus,
-       "snmpNotifyFilterTable": snmpNotifyFilterTable,
-       "snmpNotifyFilterEntry": snmpNotifyFilterEntry,
-       "snmpNotifyFilterSubtree": snmpNotifyFilterSubtree,
-       "snmpNotifyFilterMask": snmpNotifyFilterMask,
-       "snmpNotifyFilterType": snmpNotifyFilterType,
-       "snmpNotifyFilterStorageType": snmpNotifyFilterStorageType,
-       "snmpNotifyFilterRowStatus": snmpNotifyFilterRowStatus,
-       "snmpNotifyConformance": snmpNotifyConformance,
-       "snmpNotifyCompliances": snmpNotifyCompliances,
-       "snmpNotifyBasicCompliance": snmpNotifyBasicCompliance,
-       "snmpNotifyBasicFiltersCompliance": snmpNotifyBasicFiltersCompliance,
-       "snmpNotifyFullCompliance": snmpNotifyFullCompliance,
-       "snmpNotifyGroups": snmpNotifyGroups,
-       "snmpNotifyGroup": snmpNotifyGroup,
-       "snmpNotifyFilterGroup": snmpNotifyFilterGroup}
+    **{
+        "snmpNotificationMIB": snmpNotificationMIB,
+        "snmpNotifyObjects": snmpNotifyObjects,
+        "snmpNotifyTable": snmpNotifyTable,
+        "snmpNotifyEntry": snmpNotifyEntry,
+        "snmpNotifyName": snmpNotifyName,
+        "snmpNotifyTag": snmpNotifyTag,
+        "snmpNotifyType": snmpNotifyType,
+        "snmpNotifyStorageType": snmpNotifyStorageType,
+        "snmpNotifyRowStatus": snmpNotifyRowStatus,
+        "snmpNotifyFilterProfileTable": snmpNotifyFilterProfileTable,
+        "snmpNotifyFilterProfileEntry": snmpNotifyFilterProfileEntry,
+        "snmpNotifyFilterProfileName": snmpNotifyFilterProfileName,
+        "snmpNotifyFilterProfileStorType": snmpNotifyFilterProfileStorType,
+        "snmpNotifyFilterProfileRowStatus": snmpNotifyFilterProfileRowStatus,
+        "snmpNotifyFilterTable": snmpNotifyFilterTable,
+        "snmpNotifyFilterEntry": snmpNotifyFilterEntry,
+        "snmpNotifyFilterSubtree": snmpNotifyFilterSubtree,
+        "snmpNotifyFilterMask": snmpNotifyFilterMask,
+        "snmpNotifyFilterType": snmpNotifyFilterType,
+        "snmpNotifyFilterStorageType": snmpNotifyFilterStorageType,
+        "snmpNotifyFilterRowStatus": snmpNotifyFilterRowStatus,
+        "snmpNotifyConformance": snmpNotifyConformance,
+        "snmpNotifyCompliances": snmpNotifyCompliances,
+        "snmpNotifyBasicCompliance": snmpNotifyBasicCompliance,
+        "snmpNotifyBasicFiltersCompliance": snmpNotifyBasicFiltersCompliance,
+        "snmpNotifyFullCompliance": snmpNotifyFullCompliance,
+        "snmpNotifyGroups": snmpNotifyGroups,
+        "snmpNotifyGroup": snmpNotifyGroup,
+        "snmpNotifyFilterGroup": snmpNotifyFilterGroup,
+    }
 )

@@ -7,39 +7,32 @@
 # This file instantiates some of the MIB managed objects for SNMP engine use
 #
 
-if 'mibBuilder' not in globals():
+if "mibBuilder" not in globals():
     import sys
 
     sys.stderr.write(__doc__)
     sys.exit(1)
 
-MibScalarInstance, = mibBuilder.importSymbols(
-    'SNMPv2-SMI',
-    'MibScalarInstance'
-)
+(MibScalarInstance,) = mibBuilder.importSymbols("SNMPv2-SMI", "MibScalarInstance")
 
-(pysnmpUsmDiscoverable,
- pysnmpUsmDiscovery,
- pysnmpUsmKeyType) = mibBuilder.importSymbols(
-    'PYSNMP-USM-MIB',
-    'pysnmpUsmDiscoverable',
-    'pysnmpUsmDiscovery',
-    'pysnmpUsmKeyType'
+(
+    pysnmpUsmDiscoverable,
+    pysnmpUsmDiscovery,
+    pysnmpUsmKeyType,
+) = mibBuilder.importSymbols(
+    "PYSNMP-USM-MIB", "pysnmpUsmDiscoverable", "pysnmpUsmDiscovery", "pysnmpUsmKeyType"
 )
 
 _pysnmpUsmDiscoverable = MibScalarInstance(
-    pysnmpUsmDiscoverable.name, (0,),
-    pysnmpUsmDiscoverable.syntax
+    pysnmpUsmDiscoverable.name, (0,), pysnmpUsmDiscoverable.syntax
 )
 
 _pysnmpUsmDiscovery = MibScalarInstance(
-    pysnmpUsmDiscovery.name, (0,),
-    pysnmpUsmDiscovery.syntax
+    pysnmpUsmDiscovery.name, (0,), pysnmpUsmDiscovery.syntax
 )
 
 _pysnmpUsmKeyType = MibScalarInstance(
-    pysnmpUsmKeyType.name, (0,),
-    pysnmpUsmKeyType.syntax
+    pysnmpUsmKeyType.name, (0,), pysnmpUsmKeyType.syntax
 )
 
 
@@ -47,5 +40,5 @@ mibBuilder.exportSymbols(
     "__PYSNMP-USM-MIB",
     pysnmpUsmDiscoverable=_pysnmpUsmDiscoverable,
     pysnmpUsmDiscovery=_pysnmpUsmDiscovery,
-    pysnmpUsmKeyType = _pysnmpUsmKeyType
+    pysnmpUsmKeyType=_pysnmpUsmKeyType,
 )

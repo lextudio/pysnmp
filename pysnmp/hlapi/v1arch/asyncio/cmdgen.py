@@ -16,7 +16,7 @@ from pysnmp.hlapi.v1arch.asyncio.transport import *
 from pysnmp.smi.rfc1902 import *
 from pysnmp.proto import api
 
-__all__ = ['getCmd', 'nextCmd', 'setCmd', 'bulkCmd', 'isEndOfMib']
+__all__ = ["getCmd", "nextCmd", "setCmd", "bulkCmd", "isEndOfMib"]
 
 VB_PROCESSOR = CommandGeneratorVarBinds()
 
@@ -24,8 +24,7 @@ isEndOfMib = lambda varBinds: not api.v2c.apiPDU.getNextVarBinds(varBinds)[1]
 
 
 @asyncio.coroutine
-def getCmd(snmpDispatcher, authData, transportTarget,
-           *varBinds, **options):
+def getCmd(snmpDispatcher, authData, transportTarget, *varBinds, **options):
     """Creates a generator to perform SNMP GET query.
 
     When iterator gets advanced by :py:mod:`asyncio` main loop,
@@ -119,17 +118,16 @@ def getCmd(snmpDispatcher, authData, transportTarget,
         if lookupMib:
             try:
                 varBinds = VB_PROCESSOR.unmakeVarBinds(
-                    snmpDispatcher.cache, varBinds, lookupMib)
+                    snmpDispatcher.cache, varBinds, lookupMib
+                )
 
             except Exception as e:
                 future.set_exception(e)
                 return
 
-        future.set_result(
-            (errorIndication, errorStatus, errorIndex, varBinds)
-        )
+        future.set_result((errorIndication, errorStatus, errorIndex, varBinds))
 
-    lookupMib = options.get('lookupMib')
+    lookupMib = options.get("lookupMib")
 
     if not lookupMib and any(isinstance(x, ObjectType) for x in varBinds):
         lookupMib = True
@@ -151,8 +149,7 @@ def getCmd(snmpDispatcher, authData, transportTarget,
 
 
 @asyncio.coroutine
-def setCmd(snmpDispatcher, authData, transportTarget,
-           *varBinds, **options):
+def setCmd(snmpDispatcher, authData, transportTarget, *varBinds, **options):
     """Creates a generator to perform SNMP SET query.
 
     When iterator gets advanced by :py:mod:`asyncio` main loop,
@@ -246,17 +243,16 @@ def setCmd(snmpDispatcher, authData, transportTarget,
         if lookupMib:
             try:
                 varBinds = VB_PROCESSOR.unmakeVarBinds(
-                    snmpDispatcher.cache, varBinds, lookupMib)
+                    snmpDispatcher.cache, varBinds, lookupMib
+                )
 
             except Exception as e:
                 future.set_exception(e)
                 return
 
-        future.set_result(
-            (errorIndication, errorStatus, errorIndex, varBinds)
-        )
+        future.set_result((errorIndication, errorStatus, errorIndex, varBinds))
 
-    lookupMib = options.get('lookupMib')
+    lookupMib = options.get("lookupMib")
 
     if not lookupMib and any(isinstance(x, ObjectType) for x in varBinds):
         lookupMib = True
@@ -278,8 +274,7 @@ def setCmd(snmpDispatcher, authData, transportTarget,
 
 
 @asyncio.coroutine
-def nextCmd(snmpDispatcher, authData, transportTarget,
-            *varBinds, **options):
+def nextCmd(snmpDispatcher, authData, transportTarget, *varBinds, **options):
     """Creates a generator to perform SNMP GETNEXT query.
 
     When iterator gets advanced by :py:mod:`asyncio` main loop,
@@ -364,6 +359,7 @@ def nextCmd(snmpDispatcher, authData, transportTarget,
     (None, 0, 0, [[ObjectType(ObjectIdentity('1.3.6.1.2.1.1.1.0'), DisplayString('Linux i386'))]])
     >>>
     """
+
     def _cbFun(snmpDispatcher, stateHandle, errorIndication, rspPdu, _cbCtx):
         if future.cancelled():
             return
@@ -376,8 +372,9 @@ def nextCmd(snmpDispatcher, authData, transportTarget,
         if lookupMib:
             try:
                 varBindTable = [
-                    VB_PROCESSOR.unmakeVarBinds(snmpDispatcher.cache,
-                                                varBindTableRow, lookupMib)
+                    VB_PROCESSOR.unmakeVarBinds(
+                        snmpDispatcher.cache, varBindTableRow, lookupMib
+                    )
                     for varBindTableRow in varBindTable
                 ]
 
@@ -385,11 +382,9 @@ def nextCmd(snmpDispatcher, authData, transportTarget,
                 future.set_exception(e)
                 return
 
-        future.set_result(
-            (errorIndication, errorStatus, errorIndex, varBindTable)
-        )
+        future.set_result((errorIndication, errorStatus, errorIndex, varBindTable))
 
-    lookupMib = options.get('lookupMib')
+    lookupMib = options.get("lookupMib")
 
     if not lookupMib and any(isinstance(x, ObjectType) for x in varBinds):
         lookupMib = True
@@ -411,8 +406,15 @@ def nextCmd(snmpDispatcher, authData, transportTarget,
 
 
 @asyncio.coroutine
-def bulkCmd(snmpDispatcher, authData, transportTarget,
-            nonRepeaters, maxRepetitions, *varBinds, **options):
+def bulkCmd(
+    snmpDispatcher,
+    authData,
+    transportTarget,
+    nonRepeaters,
+    maxRepetitions,
+    *varBinds,
+    **options
+):
     """Creates a generator to perform SNMP GETBULK query.
 
     When iterator gets advanced by :py:mod:`asyncio` main loop,
@@ -519,6 +521,7 @@ def bulkCmd(snmpDispatcher, authData, transportTarget,
     (None, 0, 0, [[ObjectType(ObjectIdentity(ObjectName('1.3.6.1.2.1.1.1.0')), DisplayString('SunOS zeus.snmplabs.com 4.1.3_U1 1 sun4m'))], [ObjectType(ObjectIdentity(ObjectName('1.3.6.1.2.1.1.2.0')), ObjectIdentifier('1.3.6.1.4.1.424242.1.1'))]])
     >>>
     """
+
     def _cbFun(snmpDispatcher, stateHandle, errorIndication, rspPdu, _cbCtx):
         if future.cancelled():
             return
@@ -531,8 +534,9 @@ def bulkCmd(snmpDispatcher, authData, transportTarget,
         if lookupMib:
             try:
                 varBindTable = [
-                    VB_PROCESSOR.unmakeVarBinds(snmpDispatcher.cache,
-                                                varBindTableRow, lookupMib)
+                    VB_PROCESSOR.unmakeVarBinds(
+                        snmpDispatcher.cache, varBindTableRow, lookupMib
+                    )
                     for varBindTableRow in varBindTable
                 ]
 
@@ -540,11 +544,9 @@ def bulkCmd(snmpDispatcher, authData, transportTarget,
                 future.set_exception(e)
                 return
 
-        future.set_result(
-            (errorIndication, errorStatus, errorIndex, varBindTable)
-        )
+        future.set_result((errorIndication, errorStatus, errorIndex, varBindTable))
 
-    lookupMib = options.get('lookupMib')
+    lookupMib = options.get("lookupMib")
 
     if not lookupMib and any(isinstance(x, ObjectType) for x in varBinds):
         lookupMib = True

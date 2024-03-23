@@ -17,14 +17,15 @@ from pysnmp.smi.rfc1902 import *
 from pysnmp.proto.api import v2c
 from pysnmp.proto.proxy import rfc2576
 
-__all__ = ['sendNotification']
+__all__ = ["sendNotification"]
 
 VB_PROCESSOR = NotificationOriginatorVarBinds()
 
 
 @asyncio.coroutine
-def sendNotification(snmpDispatcher, authData, transportTarget,
-                     notifyType, *varBinds, **options):
+def sendNotification(
+    snmpDispatcher, authData, transportTarget, notifyType, *varBinds, **options
+):
     """Creates a generator to send SNMP notification.
 
     When iterator gets advanced by :py:mod:`asyncio` main loop,
@@ -145,8 +146,10 @@ def sendNotification(snmpDispatcher, authData, transportTarget,
                 break
 
         if len(varBinds) < 2:
-            raise error.PySnmpError('SNMP notification PDU requires '
-                                    'SNMPv2-MIB::snmpTrapOID.0 to be present')
+            raise error.PySnmpError(
+                "SNMP notification PDU requires "
+                "SNMPv2-MIB::snmpTrapOID.0 to be present"
+            )
 
         # Search for and reposition snmpTrapOID if it's elsewhere
         for idx, varBind in enumerate(varBinds[2:]):
@@ -160,8 +163,10 @@ def sendNotification(snmpDispatcher, authData, transportTarget,
 
         # Fail on missing snmpTrapOID
         if varBinds[1][0] != snmpTrapOID:
-            raise error.PySnmpError('SNMP notification PDU requires '
-                                    'SNMPv2-MIB::snmpTrapOID.0 to be present')
+            raise error.PySnmpError(
+                "SNMP notification PDU requires "
+                "SNMPv2-MIB::snmpTrapOID.0 to be present"
+            )
 
         return varBinds
 
@@ -175,8 +180,9 @@ def sendNotification(snmpDispatcher, authData, transportTarget,
         varBinds = v2c.apiTrapPDU.getVarBinds(rspPdu)
 
         try:
-            varBindsUnmade = VB_PROCESSOR.unmakeVarBinds(snmpDispatcher.cache, varBinds,
-                                                         lookupMib)
+            varBindsUnmade = VB_PROCESSOR.unmakeVarBinds(
+                snmpDispatcher.cache, varBinds, lookupMib
+            )
         except Exception as e:
             future.set_exception(e)
 
@@ -185,16 +191,17 @@ def sendNotification(snmpDispatcher, authData, transportTarget,
                 (errorIndication, errorStatus, errorIndex, varBindsUnmade)
             )
 
-    lookupMib = options.get('lookupMib')
+    lookupMib = options.get("lookupMib")
 
-    if not lookupMib and any(isinstance(x, (NotificationType, ObjectType))
-                             for x in varBinds):
+    if not lookupMib and any(
+        isinstance(x, (NotificationType, ObjectType)) for x in varBinds
+    ):
         lookupMib = True
 
     if lookupMib:
         varBinds = VB_PROCESSOR.makeVarBinds(snmpDispatcher.cache, varBinds)
 
-    if notifyType == 'trap':
+    if notifyType == "trap":
         reqPdu = v2c.TrapPDU()
     else:
         reqPdu = v2c.InformRequestPDU()
@@ -213,7 +220,8 @@ def sendNotification(snmpDispatcher, authData, transportTarget,
 
     snmpDispatcher.sendPdu(authData, transportTarget, reqPdu, cbFun=_cbFun)
 
-    if notifyType == 'trap':
+    if notifyType == "trap":
+
         def __trapFun(future):
             if future.cancelled():
                 return

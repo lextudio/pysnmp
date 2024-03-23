@@ -10,16 +10,26 @@ from pysnmp import error
 from pysnmp.entity import config
 
 __all__ = [
-    'CommunityData', 'UsmUserData',
-    'USM_AUTH_NONE', 'USM_AUTH_HMAC96_MD5',
-    'USM_AUTH_HMAC96_SHA', 'USM_AUTH_HMAC128_SHA224',
-    'USM_AUTH_HMAC192_SHA256', 'USM_AUTH_HMAC256_SHA384',
-    'USM_AUTH_HMAC384_SHA512', 'USM_PRIV_NONE',
-    'USM_PRIV_CBC56_DES', 'USM_PRIV_CBC168_3DES',
-    'USM_PRIV_CFB128_AES', 'USM_PRIV_CFB192_AES',
-    'USM_PRIV_CFB256_AES', 'USM_PRIV_CFB192_AES_BLUMENTHAL',
-    'USM_PRIV_CFB256_AES_BLUMENTHAL', 'USM_KEY_TYPE_PASSPHRASE',
-    'USM_KEY_TYPE_MASTER', 'USM_KEY_TYPE_LOCALIZED'
+    "CommunityData",
+    "UsmUserData",
+    "USM_AUTH_NONE",
+    "USM_AUTH_HMAC96_MD5",
+    "USM_AUTH_HMAC96_SHA",
+    "USM_AUTH_HMAC128_SHA224",
+    "USM_AUTH_HMAC192_SHA256",
+    "USM_AUTH_HMAC256_SHA384",
+    "USM_AUTH_HMAC384_SHA512",
+    "USM_PRIV_NONE",
+    "USM_PRIV_CBC56_DES",
+    "USM_PRIV_CBC168_3DES",
+    "USM_PRIV_CFB128_AES",
+    "USM_PRIV_CFB192_AES",
+    "USM_PRIV_CFB256_AES",
+    "USM_PRIV_CFB192_AES_BLUMENTHAL",
+    "USM_PRIV_CFB256_AES_BLUMENTHAL",
+    "USM_KEY_TYPE_PASSPHRASE",
+    "USM_KEY_TYPE_MASTER",
+    "USM_KEY_TYPE_LOCALIZED",
 ]
 
 
@@ -88,7 +98,7 @@ USM_KEY_TYPE_LOCALIZED = config.USM_KEY_TYPE_LOCALIZED
 (:RFC:`3414#section-2.6`)"""
 
 
-class CommunityData(object):
+class CommunityData:
     """Creates SNMP v1/v2c configuration entry.
 
     This object can be used by
@@ -168,16 +178,23 @@ class CommunityData(object):
     >>>
 
     """
+
     mpModel = 1  # Default is SMIv2
     securityModel = mpModel + 1
-    securityLevel = 'noAuthNoPriv'
+    securityLevel = "noAuthNoPriv"
     contextName = null
     tag = null
 
-    def __init__(self, communityIndex, communityName=None, mpModel=None,
-                 contextEngineId=None, contextName=None, tag=None,
-                 securityName=None):
-
+    def __init__(
+        self,
+        communityIndex,
+        communityName=None,
+        mpModel=None,
+        contextEngineId=None,
+        contextName=None,
+        tag=None,
+        securityName=None,
+    ):
         if mpModel is not None:
             self.mpModel = mpModel
             self.securityModel = mpModel + 1
@@ -198,9 +215,15 @@ class CommunityData(object):
 
         # Autogenerate communityIndex if not specified
         if communityIndex is None:
-            self.securityName = 's%s' % hash(
-                (self.communityName, self.mpModel, self.contextEngineId,
-                 self.contextName, self.tag))
+            self.securityName = "s%s" % hash(
+                (
+                    self.communityName,
+                    self.mpModel,
+                    self.contextEngineId,
+                    self.contextName,
+                    self.tag,
+                )
+            )
 
             self.communityIndex = self.securityName
 
@@ -214,19 +237,33 @@ class CommunityData(object):
                 self.securityName = securityName
 
     def __hash__(self):
-        raise TypeError('%s is not hashable' % self.__class__.__name__)
+        raise TypeError("%s is not hashable" % self.__class__.__name__)
 
     def __repr__(self):
-        return ('%s(communityIndex=%r, communityName=<COMMUNITY>, mpModel=%r, '
-                'contextEngineId=%r, contextName=%r, tag=%r, securityName='
-                '%r)') % (self.__class__.__name__, self.communityIndex,
-                          self.mpModel, self.contextEngineId, self.contextName,
-                          self.tag, self.securityName)
+        return (
+            "%s(communityIndex=%r, communityName=<COMMUNITY>, mpModel=%r, "
+            "contextEngineId=%r, contextName=%r, tag=%r, securityName="
+            "%r)"
+        ) % (
+            self.__class__.__name__,
+            self.communityIndex,
+            self.mpModel,
+            self.contextEngineId,
+            self.contextName,
+            self.tag,
+            self.securityName,
+        )
 
-    def clone(self, communityIndex=None, communityName=None,
-              mpModel=None, contextEngineId=None,
-              contextName=None, tag=None, securityName=None):
-
+    def clone(
+        self,
+        communityIndex=None,
+        communityName=None,
+        mpModel=None,
+        contextEngineId=None,
+        contextName=None,
+        tag=None,
+        securityName=None,
+    ):
         # a single arg is considered as a community name
         if communityName is None:
             communityName, communityIndex = communityIndex, None
@@ -238,10 +275,11 @@ class CommunityData(object):
             contextEngineId is None and self.contextEngineId or contextEngineId,
             contextName is None and self.contextName or contextName,
             tag is None and self.tag or tag,
-            securityName is None and self.securityName or securityName)
+            securityName is None and self.securityName or securityName,
+        )
 
 
-class UsmUserData(object):
+class UsmUserData:
     """Creates SNMP v3 User Security Model (USM) configuration entry.
 
     This object can be used by
@@ -367,21 +405,27 @@ class UsmUserData(object):
     >>>
 
     """
+
     authKey = privKey = None
     authProtocol = config.USM_AUTH_NONE
     privProtocol = config.USM_PRIV_NONE
-    securityLevel = 'noAuthNoPriv'
+    securityLevel = "noAuthNoPriv"
     securityModel = 3
     mpModel = 3
     contextName = null
 
-    def __init__(self, userName,
-                 authKey=None, privKey=None,
-                 authProtocol=None, privProtocol=None,
-                 securityEngineId=None,
-                 securityName=None,
-                 authKeyType=USM_KEY_TYPE_PASSPHRASE,
-                 privKeyType=USM_KEY_TYPE_PASSPHRASE):
+    def __init__(
+        self,
+        userName,
+        authKey=None,
+        privKey=None,
+        authProtocol=None,
+        privProtocol=None,
+        securityEngineId=None,
+        securityName=None,
+        authKeyType=USM_KEY_TYPE_PASSPHRASE,
+        privKeyType=USM_KEY_TYPE_PASSPHRASE,
+    ):
         self.userName = userName
 
         if securityName is None:
@@ -399,16 +443,16 @@ class UsmUserData(object):
             else:
                 self.authProtocol = authProtocol
 
-            if self.securityLevel != 'authPriv':
-                self.securityLevel = 'authNoPriv'
+            if self.securityLevel != "authPriv":
+                self.securityLevel = "authNoPriv"
 
         if privKey is not None:
             self.privKey = privKey
 
             if self.authProtocol == config.USM_AUTH_NONE:
-                raise error.PySnmpError('Privacy implies authenticity')
+                raise error.PySnmpError("Privacy implies authenticity")
 
-            self.securityLevel = 'authPriv'
+            self.securityLevel = "authPriv"
 
             if privProtocol is None:
                 self.privProtocol = config.USM_PRIV_CBC56_DES
@@ -421,27 +465,36 @@ class UsmUserData(object):
         self.privKeyType = privKeyType
 
     def __hash__(self):
-        raise TypeError('%s is not hashable' % self.__class__.__name__)
+        raise TypeError("%s is not hashable" % self.__class__.__name__)
 
     def __repr__(self):
-        return ('%s(userName=%r, authKey=<AUTHKEY>, privKey=<PRIVKEY>, '
-                'authProtocol=%r, privProtocol=%r, securityEngineId=%r, '
-                'securityName=%r, authKeyType=%r, privKeyType=%r)') % (
+        return (
+            "%s(userName=%r, authKey=<AUTHKEY>, privKey=<PRIVKEY>, "
+            "authProtocol=%r, privProtocol=%r, securityEngineId=%r, "
+            "securityName=%r, authKeyType=%r, privKeyType=%r)"
+        ) % (
             self.__class__.__name__,
             self.userName,
             self.authProtocol,
             self.privProtocol,
-            self.securityEngineId is None and '<DEFAULT>' or self.securityEngineId,
+            self.securityEngineId is None and "<DEFAULT>" or self.securityEngineId,
             self.securityName,
             self.authKeyType,
-            self.privKeyType
+            self.privKeyType,
         )
 
-    def clone(self, userName=None,
-              authKey=None, privKey=None,
-              authProtocol=None, privProtocol=None,
-              securityEngineId=None, securityName=None,
-              authKeyType=None, privKeyType=None):
+    def clone(
+        self,
+        userName=None,
+        authKey=None,
+        privKey=None,
+        authProtocol=None,
+        privProtocol=None,
+        securityEngineId=None,
+        securityName=None,
+        authKeyType=None,
+        privKeyType=None,
+    ):
         return self.__class__(
             userName is None and self.userName or userName,
             authKey is None and self.authKey or authKey,
@@ -451,7 +504,7 @@ class UsmUserData(object):
             securityEngineId is None and self.securityEngineId or securityEngineId,
             securityName is None and self.securityName or securityName,
             authKeyType is None and self.authKeyType or USM_KEY_TYPE_PASSPHRASE,
-            privKeyType is None and self.privKeyType or USM_KEY_TYPE_PASSPHRASE
+            privKeyType is None and self.privKeyType or USM_KEY_TYPE_PASSPHRASE,
         )
 
 
@@ -478,22 +531,24 @@ usmKeyTypeMaster = USM_KEY_TYPE_MASTER
 usmKeyTypeLocalized = USM_KEY_TYPE_LOCALIZED
 
 __all__.extend(
-    ['usm3DESEDEPrivProtocol',
-     'usmAesCfb128Protocol',
-     'usmAesCfb192Protocol',
-     'usmAesCfb256Protocol',
-     'usmAesBlumenthalCfb192Protocol',
-     'usmAesBlumenthalCfb256Protocol',
-     'usmDESPrivProtocol',
-     'usmHMACMD5AuthProtocol',
-     'usmHMACSHAAuthProtocol',
-     'usmHMAC128SHA224AuthProtocol',
-     'usmHMAC192SHA256AuthProtocol',
-     'usmHMAC256SHA384AuthProtocol',
-     'usmHMAC384SHA512AuthProtocol',
-     'usmNoAuthProtocol',
-     'usmNoPrivProtocol',
-     'usmKeyTypePassphrase',
-     'usmKeyTypeMaster',
-     'usmKeyTypeLocalized']
+    [
+        "usm3DESEDEPrivProtocol",
+        "usmAesCfb128Protocol",
+        "usmAesCfb192Protocol",
+        "usmAesCfb256Protocol",
+        "usmAesBlumenthalCfb192Protocol",
+        "usmAesBlumenthalCfb256Protocol",
+        "usmDESPrivProtocol",
+        "usmHMACMD5AuthProtocol",
+        "usmHMACSHAAuthProtocol",
+        "usmHMAC128SHA224AuthProtocol",
+        "usmHMAC192SHA256AuthProtocol",
+        "usmHMAC256SHA384AuthProtocol",
+        "usmHMAC384SHA512AuthProtocol",
+        "usmNoAuthProtocol",
+        "usmNoPrivProtocol",
+        "usmKeyTypePassphrase",
+        "usmKeyTypeMaster",
+        "usmKeyTypeLocalized",
+    ]
 )

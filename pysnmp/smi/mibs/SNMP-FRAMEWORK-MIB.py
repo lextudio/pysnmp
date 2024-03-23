@@ -10,62 +10,57 @@
 import platform
 import time
 
-if 'mibBuilder' not in globals():
+if "mibBuilder" not in globals():
     import sys
 
     sys.stderr.write(__doc__)
     sys.exit(1)
 
-(Integer,
- OctetString,
- ObjectIdentifier) = mibBuilder.importSymbols(
-    "ASN1",
-    "Integer",
-    "OctetString",
-    "ObjectIdentifier")
+(Integer, OctetString, ObjectIdentifier) = mibBuilder.importSymbols(
+    "ASN1", "Integer", "OctetString", "ObjectIdentifier"
+)
 
-(NamedValues,) = mibBuilder.importSymbols(
-    "ASN1-ENUMERATION",
-    "NamedValues")
+(NamedValues,) = mibBuilder.importSymbols("ASN1-ENUMERATION", "NamedValues")
 
-(ConstraintsIntersection,
- SingleValueConstraint,
- ValueRangeConstraint,
- ValueSizeConstraint,
- ConstraintsUnion) = mibBuilder.importSymbols(
+(
+    ConstraintsIntersection,
+    SingleValueConstraint,
+    ValueRangeConstraint,
+    ValueSizeConstraint,
+    ConstraintsUnion,
+) = mibBuilder.importSymbols(
     "ASN1-REFINEMENT",
     "ConstraintsIntersection",
     "SingleValueConstraint",
     "ValueRangeConstraint",
     "ValueSizeConstraint",
-    "ConstraintsUnion")
+    "ConstraintsUnion",
+)
 
-(NotificationGroup,
- ObjectGroup,
- ModuleCompliance) = mibBuilder.importSymbols(
-    "SNMPv2-CONF",
-    "NotificationGroup",
-    "ObjectGroup",
-    "ModuleCompliance")
+(NotificationGroup, ObjectGroup, ModuleCompliance) = mibBuilder.importSymbols(
+    "SNMPv2-CONF", "NotificationGroup", "ObjectGroup", "ModuleCompliance"
+)
 
-(IpAddress,
- Unsigned32,
- Counter64,
- ModuleIdentity,
- TimeTicks,
- MibScalar,
- MibTable,
- MibTableRow,
- MibTableColumn,
- snmpModules,
- Integer32,
- NotificationType,
- Gauge32,
- iso,
- MibIdentifier,
- Bits,
- Counter32,
- ObjectIdentity) = mibBuilder.importSymbols(
+(
+    IpAddress,
+    Unsigned32,
+    Counter64,
+    ModuleIdentity,
+    TimeTicks,
+    MibScalar,
+    MibTable,
+    MibTableRow,
+    MibTableColumn,
+    snmpModules,
+    Integer32,
+    NotificationType,
+    Gauge32,
+    iso,
+    MibIdentifier,
+    Bits,
+    Counter32,
+    ObjectIdentity,
+) = mibBuilder.importSymbols(
     "SNMPv2-SMI",
     "IpAddress",
     "Unsigned32",
@@ -84,29 +79,27 @@ if 'mibBuilder' not in globals():
     "MibIdentifier",
     "Bits",
     "Counter32",
-    "ObjectIdentity")
-
-(TextualConvention,
- DisplayString) = mibBuilder.importSymbols(
-    "SNMPv2-TC",
-    "TextualConvention",
-    "DisplayString")
-
-
-snmpFrameworkMIB = ModuleIdentity(
-    (1, 3, 6, 1, 6, 3, 10)
+    "ObjectIdentity",
 )
+
+(TextualConvention, DisplayString) = mibBuilder.importSymbols(
+    "SNMPv2-TC", "TextualConvention", "DisplayString"
+)
+
+
+snmpFrameworkMIB = ModuleIdentity((1, 3, 6, 1, 6, 3, 10))
 snmpFrameworkMIB.setRevisions(
-        ("2002-10-14 00:00",
-         "1999-01-19 00:00",
-         "1997-11-20 00:00")
+    ("2002-10-14 00:00", "1999-01-19 00:00", "1997-11-20 00:00")
 )
 snmpFrameworkMIB.setLastUpdated("200210140000Z")
 if mibBuilder.loadTexts:
-    snmpFrameworkMIB.setOrganization("""\
+    snmpFrameworkMIB.setOrganization(
+        """\
 SNMPv3 Working Group
-""")
-snmpFrameworkMIB.setContactInfo("""\
+"""
+    )
+snmpFrameworkMIB.setContactInfo(
+    """\
 WG-EMail: snmpv3@lists.tislabs.com Subscribe: snmpv3-request@lists.tislabs.com
 Co-Chair: Russ Mundy Network Associates Laboratories postal: 15204 Omega Drive,
 Suite 300 Rockville, MD 20850-4601 USA EMail: mundy@tislabs.com phone: +1
@@ -117,13 +110,16 @@ Inc. postal: 2141 North First Street San Jose, California 95131 USA EMail:
 randy_presuhn@bmc.com phone: +1 408-546-1006 Co-editor: Bert Wijnen Lucent
 Technologies postal: Schagen 33 3461 GL Linschoten Netherlands EMail:
 bwijnen@lucent.com phone: +31 348-680-485
-""")
+"""
+)
 if mibBuilder.loadTexts:
-    snmpFrameworkMIB.setDescription("""\
+    snmpFrameworkMIB.setDescription(
+        """\
 The SNMP Management Architecture MIB Copyright (C) The Internet Society (2002).
 This version of this MIB module is part of RFC 3411; see the RFC itself for
 full legal notices.
-""")
+"""
+    )
 
 
 class SnmpAdminString(TextualConvention, OctetString):
@@ -161,7 +157,7 @@ class SnmpAdminString(TextualConvention, OctetString):
     characters.
     """
 
-    encoding = 'utf-8'
+    encoding = "utf-8"
 
 
 class SnmpEngineID(TextualConvention, OctetString):
@@ -222,13 +218,13 @@ class SnmpEngineID(TextualConvention, OctetString):
         pass
     try:
         # Attempt to base engine ID on PID
-        defaultValue += [os.getpid() >> 8 & 0xff, os.getpid() & 0xff]
+        defaultValue += [os.getpid() >> 8 & 0xFF, os.getpid() & 0xFF]
 
     except Exception:
         pass
 
     # add pseudo-random text ID
-    defaultValue += [id(defaultValue) >> 8 & 0xff, id(defaultValue) & 0xff]
+    defaultValue += [id(defaultValue) >> 8 & 0xFF, id(defaultValue) & 0xFF]
     defaultValue = OctetString(defaultValue).asOctets()
 
 
@@ -252,8 +248,7 @@ class _SnmpEngineTime_Type(Integer32):
 _SnmpEngineTime_Type.__name__ = "Integer32"
 _SnmpEngineTime_Object = MibScalar
 snmpEngineTime = _SnmpEngineTime_Object(
-    (1, 3, 6, 1, 6, 3, 10, 2, 1, 3),
-    _SnmpEngineTime_Type()
+    (1, 3, 6, 1, 6, 3, 10, 2, 1, 3), _SnmpEngineTime_Type()
 )
 snmpEngineTime.setMaxAccess("read-only")
 if mibBuilder.loadTexts:
@@ -261,12 +256,14 @@ if mibBuilder.loadTexts:
 if mibBuilder.loadTexts:
     snmpEngineTime.setUnits("seconds")
 if mibBuilder.loadTexts:
-    snmpEngineTime.setDescription("""\
+    snmpEngineTime.setDescription(
+        """\
 The number of seconds since the value of the snmpEngineBoots object last
 changed. When incrementing this object's value would cause it to exceed its
 maximum, snmpEngineBoots is incremented as if a re-initialization had occurred,
 and this object's value consequently reverts to zero.
-""")
+"""
+    )
 
 
 class SnmpSecurityModel(TextualConvention, Integer32):
@@ -353,17 +350,9 @@ and SNMPv2* 3 reserved for SNMPv3
 class SnmpSecurityLevel(TextualConvention, Integer32):
     status = "current"
     subtypeSpec = Integer32.subtypeSpec
-    subtypeSpec += ConstraintsUnion(
-        SingleValueConstraint(
-            *(1,
-              2,
-              3)
-        )
-    )
+    subtypeSpec += ConstraintsUnion(SingleValueConstraint(*(1, 2, 3)))
     namedValues = NamedValues(
-        *(("authNoPriv", 2),
-          ("authPriv", 3),
-          ("noAuthNoPriv", 1))
+        *(("authNoPriv", 2), ("authPriv", 3), ("noAuthNoPriv", 1))
     )
 
     if mibBuilder.loadTexts:
@@ -378,54 +367,51 @@ authNoPriv is less than authPriv.
 
 
 _SnmpFrameworkAdmin_ObjectIdentity = ObjectIdentity
-snmpFrameworkAdmin = _SnmpFrameworkAdmin_ObjectIdentity(
-    (1, 3, 6, 1, 6, 3, 10, 1)
-)
+snmpFrameworkAdmin = _SnmpFrameworkAdmin_ObjectIdentity((1, 3, 6, 1, 6, 3, 10, 1))
 _SnmpAuthProtocols_ObjectIdentity = ObjectIdentity
-snmpAuthProtocols = _SnmpAuthProtocols_ObjectIdentity(
-    (1, 3, 6, 1, 6, 3, 10, 1, 1)
-)
+snmpAuthProtocols = _SnmpAuthProtocols_ObjectIdentity((1, 3, 6, 1, 6, 3, 10, 1, 1))
 if mibBuilder.loadTexts:
     snmpAuthProtocols.setStatus("current")
 if mibBuilder.loadTexts:
-    snmpAuthProtocols.setDescription("""\
+    snmpAuthProtocols.setDescription(
+        """\
 Registration point for standards-track authentication protocols used in SNMP
 Management Frameworks.
-""")
+"""
+    )
 _SnmpPrivProtocols_ObjectIdentity = ObjectIdentity
-snmpPrivProtocols = _SnmpPrivProtocols_ObjectIdentity(
-    (1, 3, 6, 1, 6, 3, 10, 1, 2)
-)
+snmpPrivProtocols = _SnmpPrivProtocols_ObjectIdentity((1, 3, 6, 1, 6, 3, 10, 1, 2))
 if mibBuilder.loadTexts:
     snmpPrivProtocols.setStatus("current")
 if mibBuilder.loadTexts:
-    snmpPrivProtocols.setDescription("""\
+    snmpPrivProtocols.setDescription(
+        """\
 Registration point for standards-track privacy protocols used in SNMP
 Management Frameworks.
-""")
+"""
+    )
 _SnmpFrameworkMIBObjects_ObjectIdentity = ObjectIdentity
 snmpFrameworkMIBObjects = _SnmpFrameworkMIBObjects_ObjectIdentity(
     (1, 3, 6, 1, 6, 3, 10, 2)
 )
 _SnmpEngine_ObjectIdentity = ObjectIdentity
-snmpEngine = _SnmpEngine_ObjectIdentity(
-    (1, 3, 6, 1, 6, 3, 10, 2, 1)
-)
+snmpEngine = _SnmpEngine_ObjectIdentity((1, 3, 6, 1, 6, 3, 10, 2, 1))
 _SnmpEngineID_Type = SnmpEngineID
 _SnmpEngineID_Object = MibScalar
 snmpEngineID = _SnmpEngineID_Object(
-    (1, 3, 6, 1, 6, 3, 10, 2, 1, 1),
-    _SnmpEngineID_Type()
+    (1, 3, 6, 1, 6, 3, 10, 2, 1, 1), _SnmpEngineID_Type()
 )
 snmpEngineID.setMaxAccess("read-only")
 if mibBuilder.loadTexts:
     snmpEngineID.setStatus("current")
 if mibBuilder.loadTexts:
-    snmpEngineID.setDescription("""\
+    snmpEngineID.setDescription(
+        """\
 An SNMP engine's administratively-unique identifier. This information SHOULD be
 stored in non-volatile storage so that it remains constant across re-
 initializations of the SNMP engine.
-""")
+"""
+    )
 
 
 class _SnmpEngineBoots_Type(Integer32):
@@ -438,17 +424,18 @@ class _SnmpEngineBoots_Type(Integer32):
 _SnmpEngineBoots_Type.__name__ = "Integer32"
 _SnmpEngineBoots_Object = MibScalar
 snmpEngineBoots = _SnmpEngineBoots_Object(
-    (1, 3, 6, 1, 6, 3, 10, 2, 1, 2),
-    _SnmpEngineBoots_Type()
+    (1, 3, 6, 1, 6, 3, 10, 2, 1, 2), _SnmpEngineBoots_Type()
 )
 snmpEngineBoots.setMaxAccess("read-only")
 if mibBuilder.loadTexts:
     snmpEngineBoots.setStatus("current")
 if mibBuilder.loadTexts:
-    snmpEngineBoots.setDescription("""\
+    snmpEngineBoots.setDescription(
+        """\
 The number of times that the SNMP engine has (re-)initialized itself since
 snmpEngineID was last configured.
-""")
+"""
+    )
 
 
 class _SnmpEngineTime_Type(Integer32):
@@ -461,8 +448,7 @@ class _SnmpEngineTime_Type(Integer32):
 _SnmpEngineTime_Type.__name__ = "Integer32"
 _SnmpEngineTime_Object = MibScalar
 snmpEngineTime = _SnmpEngineTime_Object(
-    (1, 3, 6, 1, 6, 3, 10, 2, 1, 3),
-    _SnmpEngineTime_Type()
+    (1, 3, 6, 1, 6, 3, 10, 2, 1, 3), _SnmpEngineTime_Type()
 )
 snmpEngineTime.setMaxAccess("read-only")
 if mibBuilder.loadTexts:
@@ -470,12 +456,14 @@ if mibBuilder.loadTexts:
 if mibBuilder.loadTexts:
     snmpEngineTime.setUnits("seconds")
 if mibBuilder.loadTexts:
-    snmpEngineTime.setDescription("""\
+    snmpEngineTime.setDescription(
+        """\
 The number of seconds since the value of the snmpEngineBoots object last
 changed. When incrementing this object's value would cause it to exceed its
 maximum, snmpEngineBoots is incremented as if a re-initialization had occurred,
 and this object's value consequently reverts to zero.
-""")
+"""
+    )
 
 
 class _SnmpEngineMaxMessageSize_Type(Integer32):
@@ -488,19 +476,20 @@ class _SnmpEngineMaxMessageSize_Type(Integer32):
 _SnmpEngineMaxMessageSize_Type.__name__ = "Integer32"
 _SnmpEngineMaxMessageSize_Object = MibScalar
 snmpEngineMaxMessageSize = _SnmpEngineMaxMessageSize_Object(
-    (1, 3, 6, 1, 6, 3, 10, 2, 1, 4),
-    _SnmpEngineMaxMessageSize_Type()
+    (1, 3, 6, 1, 6, 3, 10, 2, 1, 4), _SnmpEngineMaxMessageSize_Type()
 )
 snmpEngineMaxMessageSize.setMaxAccess("read-only")
 if mibBuilder.loadTexts:
     snmpEngineMaxMessageSize.setStatus("current")
 if mibBuilder.loadTexts:
-    snmpEngineMaxMessageSize.setDescription("""\
+    snmpEngineMaxMessageSize.setDescription(
+        """\
 The maximum length in octets of an SNMP message which this SNMP engine can send
 or receive and process, determined as the minimum of the maximum message size
 values supported among all of the transports available to and supported by the
 engine.
-""")
+"""
+    )
 _SnmpFrameworkMIBConformance_ObjectIdentity = ObjectIdentity
 snmpFrameworkMIBConformance = _SnmpFrameworkMIBConformance_ObjectIdentity(
     (1, 3, 6, 1, 6, 3, 10, 3)
@@ -514,56 +503,58 @@ snmpFrameworkMIBGroups = _SnmpFrameworkMIBGroups_ObjectIdentity(
     (1, 3, 6, 1, 6, 3, 10, 3, 2)
 )
 
-snmpEngineGroup = ObjectGroup(
-    (1, 3, 6, 1, 6, 3, 10, 3, 2, 1)
-)
+snmpEngineGroup = ObjectGroup((1, 3, 6, 1, 6, 3, 10, 3, 2, 1))
 snmpEngineGroup.setObjects(
-      *(("SNMP-FRAMEWORK-MIB", "snmpEngineID"),
+    *(
+        ("SNMP-FRAMEWORK-MIB", "snmpEngineID"),
         ("SNMP-FRAMEWORK-MIB", "snmpEngineBoots"),
         ("SNMP-FRAMEWORK-MIB", "snmpEngineTime"),
-        ("SNMP-FRAMEWORK-MIB", "snmpEngineMaxMessageSize"))
+        ("SNMP-FRAMEWORK-MIB", "snmpEngineMaxMessageSize"),
+    )
 )
 if mibBuilder.loadTexts:
     snmpEngineGroup.setStatus("current")
 if mibBuilder.loadTexts:
-    snmpEngineGroup.setDescription("""\
+    snmpEngineGroup.setDescription(
+        """\
 A collection of objects for identifying and determining the configuration and
 current timeliness values of an SNMP engine.
-""")
-
-snmpFrameworkMIBCompliance = ModuleCompliance(
-    (1, 3, 6, 1, 6, 3, 10, 3, 1, 1)
-)
-if mibBuilder.loadTexts:
-    snmpFrameworkMIBCompliance.setStatus(
-        "current"
+"""
     )
+
+snmpFrameworkMIBCompliance = ModuleCompliance((1, 3, 6, 1, 6, 3, 10, 3, 1, 1))
 if mibBuilder.loadTexts:
-    snmpFrameworkMIBCompliance.setDescription("""\
+    snmpFrameworkMIBCompliance.setStatus("current")
+if mibBuilder.loadTexts:
+    snmpFrameworkMIBCompliance.setDescription(
+        """\
 The compliance statement for SNMP engines which implement the SNMP Management
 Framework MIB.
-""")
+"""
+    )
 
 mibBuilder.exportSymbols(
     "SNMP-FRAMEWORK-MIB",
-    **{"SnmpEngineID": SnmpEngineID,
-       "SnmpSecurityModel": SnmpSecurityModel,
-       "SnmpMessageProcessingModel": SnmpMessageProcessingModel,
-       "SnmpSecurityLevel": SnmpSecurityLevel,
-       "SnmpAdminString": SnmpAdminString,
-       "snmpFrameworkMIB": snmpFrameworkMIB,
-       "snmpFrameworkAdmin": snmpFrameworkAdmin,
-       "snmpAuthProtocols": snmpAuthProtocols,
-       "snmpPrivProtocols": snmpPrivProtocols,
-       "snmpFrameworkMIBObjects": snmpFrameworkMIBObjects,
-       "snmpEngine": snmpEngine,
-       "snmpEngineID": snmpEngineID,
-       "snmpEngineBoots": snmpEngineBoots,
-       "snmpEngineTime": snmpEngineTime,
-       "snmpEngineMaxMessageSize": snmpEngineMaxMessageSize,
-       "snmpFrameworkMIBConformance": snmpFrameworkMIBConformance,
-       "snmpFrameworkMIBCompliances": snmpFrameworkMIBCompliances,
-       "snmpFrameworkMIBCompliance": snmpFrameworkMIBCompliance,
-       "snmpFrameworkMIBGroups": snmpFrameworkMIBGroups,
-       "snmpEngineGroup": snmpEngineGroup}
+    **{
+        "SnmpEngineID": SnmpEngineID,
+        "SnmpSecurityModel": SnmpSecurityModel,
+        "SnmpMessageProcessingModel": SnmpMessageProcessingModel,
+        "SnmpSecurityLevel": SnmpSecurityLevel,
+        "SnmpAdminString": SnmpAdminString,
+        "snmpFrameworkMIB": snmpFrameworkMIB,
+        "snmpFrameworkAdmin": snmpFrameworkAdmin,
+        "snmpAuthProtocols": snmpAuthProtocols,
+        "snmpPrivProtocols": snmpPrivProtocols,
+        "snmpFrameworkMIBObjects": snmpFrameworkMIBObjects,
+        "snmpEngine": snmpEngine,
+        "snmpEngineID": snmpEngineID,
+        "snmpEngineBoots": snmpEngineBoots,
+        "snmpEngineTime": snmpEngineTime,
+        "snmpEngineMaxMessageSize": snmpEngineMaxMessageSize,
+        "snmpFrameworkMIBConformance": snmpFrameworkMIBConformance,
+        "snmpFrameworkMIBCompliances": snmpFrameworkMIBCompliances,
+        "snmpFrameworkMIBCompliance": snmpFrameworkMIBCompliance,
+        "snmpFrameworkMIBGroups": snmpFrameworkMIBGroups,
+        "snmpEngineGroup": snmpEngineGroup,
+    }
 )

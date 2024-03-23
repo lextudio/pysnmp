@@ -12,7 +12,7 @@ from pysnmp.carrier.base import AbstractTransport
 __all__ = []
 
 
-class AbstractTransportTarget(object):
+class AbstractTransportTarget:
     TRANSPORT_DOMAIN = None
     PROTO_TRANSPORT = AbstractTransport
 
@@ -25,9 +25,13 @@ class AbstractTransportTarget(object):
         self.transport = None
 
     def __repr__(self):
-        return '%s(%r, timeout=%r, retries=%r, tagList=%r)' % (
-            self.__class__.__name__, self.transportAddr,
-            self.timeout, self.retries, self.tagList)
+        return "{}({!r}, timeout={!r}, retries={!r}, tagList={!r})".format(
+            self.__class__.__name__,
+            self.transportAddr,
+            self.timeout,
+            self.retries,
+            self.tagList,
+        )
 
     def getTransportInfo(self):
         return self.TRANSPORT_DOMAIN, self.transportAddr
@@ -55,10 +59,12 @@ class AbstractTransportTarget(object):
 
     def verifyDispatcherCompatibility(self, snmpEngine):
         if not self.PROTO_TRANSPORT.isCompatibleWithDispatcher(
-                snmpEngine.transportDispatcher):
+            snmpEngine.transportDispatcher
+        ):
             raise error.PySnmpError(
-                'Transport %r is not compatible with dispatcher '
-                '%r' % (self.PROTO_TRANSPORT, snmpEngine.transportDispatcher))
+                "Transport %r is not compatible with dispatcher "
+                "%r" % (self.PROTO_TRANSPORT, snmpEngine.transportDispatcher)
+            )
 
     def _resolveAddr(self, transportAddr):
         raise NotImplementedError()

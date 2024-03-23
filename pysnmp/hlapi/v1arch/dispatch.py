@@ -16,7 +16,7 @@ from pysnmp.proto.api import verdec
 __all__ = []
 
 
-class AbstractSnmpDispatcher(object):
+class AbstractSnmpDispatcher:
     """Creates SNMP message dispatcher object.
 
     `SnmpDispatcher` object manages send and receives SNMP PDU
@@ -53,7 +53,10 @@ class AbstractSnmpDispatcher(object):
         self.cache = {}
 
     def __repr__(self):
-        return '%s(transportDispatcher=%s)' % (self.__class__.__name__, self.transportDispatcher)
+        return "{}(transportDispatcher={})".format(
+            self.__class__.__name__,
+            self.transportDispatcher,
+        )
 
     def close(self):
         self.transportDispatcher.unregisterRecvCbFun()
@@ -62,19 +65,22 @@ class AbstractSnmpDispatcher(object):
             self.transportDispatcher.close()
 
         for requestId, stateInfo in self._pendingReqs.items():
-            cbFun = stateInfo['cbFun']
-            cbCtx = stateInfo['cbCtx']
+            cbFun = stateInfo["cbFun"]
+            cbCtx = stateInfo["cbCtx"]
 
             if cbFun:
-                cbFun(self, 'Request #%d terminated' % requestId, None, cbCtx)
+                cbFun(self, "Request #%d terminated" % requestId, None, cbCtx)
 
         self._pendingReqs.clear()
 
     def sendPdu(self, authData, transportTarget, reqPdu, cbFun=None, cbCtx=None):
-        if (self._automaticDispatcher and
-                transportTarget.TRANSPORT_DOMAIN not in self._configuredTransports):
+        if (
+            self._automaticDispatcher
+            and transportTarget.TRANSPORT_DOMAIN not in self._configuredTransports
+        ):
             self.transportDispatcher.registerTransport(
-                transportTarget.TRANSPORT_DOMAIN, transportTarget.PROTO_TRANSPORT().openClientMode()
+                transportTarget.TRANSPORT_DOMAIN,
+                transportTarget.PROTO_TRANSPORT().openClientMode(),
             )
             self._configuredTransports.add(transportTarget.TRANSPORT_DOMAIN)
 
@@ -92,16 +98,19 @@ class AbstractSnmpDispatcher(object):
         self._pendingReqs[requestId] = dict(
             outgoingMsg=outgoingMsg,
             transportTarget=transportTarget,
-            cbFun=cbFun, cbCtx=cbCtx,
-            timestamp=time() + transportTarget.timeout, retries=0
+            cbFun=cbFun,
+            cbCtx=cbCtx,
+            timestamp=time() + transportTarget.timeout,
+            retries=0,
         )
 
         self.transportDispatcher.sendMessage(
             outgoingMsg, transportTarget.TRANSPORT_DOMAIN, transportTarget.transportAddr
         )
 
-        if (reqPdu.__class__ is getattr(pMod, 'SNMPv2TrapPDU', None) or
-                reqPdu.__class__ is getattr(pMod, 'TrapPDU', None)):
+        if reqPdu.__class__ is getattr(
+            pMod, "SNMPv2TrapPDU", None
+        ) or reqPdu.__class__ is getattr(pMod, "TrapPDU", None):
             return requestId
 
         self.transportDispatcher.jobStarted(id(self))
@@ -115,7 +124,9 @@ class AbstractSnmpDispatcher(object):
         except error.ProtocolError:
             return null  # n.b the whole buffer gets dropped
 
-        debug.logger & debug.FLAG_DSP and debug.logger('receiveMessage: msgVersion %s, msg decoded' % mpModel)
+        debug.logger & debug.FLAG_DSP and debug.logger(
+            "receiveMessage: msgVersion %s, msg decoded" % mpModel
+        )
 
         pMod = api.PROTOCOL_MODULES[mpModel]
 
@@ -133,8 +144,8 @@ class AbstractSnmpDispatcher(object):
 
             self.transportDispatcher.jobFinished(id(self))
 
-            cbFun = stateInfo['cbFun']
-            cbCtx = stateInfo['cbCtx']
+            cbFun = stateInfo["cbFun"]
+            cbCtx = stateInfo["cbCtx"]
 
             if cbFun:
                 cbFun(self, requestId, None, rspPdu, cbCtx)
@@ -143,27 +154,35 @@ class AbstractSnmpDispatcher(object):
 
     def _timerCb(self, timeNow):
         for requestId, stateInfo in tuple(self._pendingReqs.items()):
-            if stateInfo['timestamp'] > timeNow:
+            if stateInfo["timestamp"] > timeNow:
                 continue
 
-            retries = stateInfo['retries']
-            transportTarget = stateInfo['transportTarget']
+            retries = stateInfo["retries"]
+            transportTarget = stateInfo["transportTarget"]
 
             if retries == transportTarget.retries:
-                cbFun = stateInfo['cbFun']
-                cbCtx = stateInfo['cbCtx']
+                cbFun = stateInfo["cbFun"]
+                cbCtx = stateInfo["cbCtx"]
 
                 if cbFun:
                     del self._pendingReqs[requestId]
-                    cbFun(self, requestId, 'Request #%d timed out' % requestId, None, cbCtx)
+                    cbFun(
+                        self,
+                        requestId,
+                        "Request #%d timed out" % requestId,
+                        None,
+                        cbCtx,
+                    )
                     self.transportDispatcher.jobFinished(id(self))
                     continue
 
-            stateInfo['retries'] += 1
-            stateInfo['timestamp'] = timeNow + transportTarget.timeout
+            stateInfo["retries"] += 1
+            stateInfo["timestamp"] = timeNow + transportTarget.timeout
 
-            outgoingMsg = stateInfo['outgoingMsg']
+            outgoingMsg = stateInfo["outgoingMsg"]
 
             self.transportDispatcher.sendMessage(
-                outgoingMsg, transportTarget.TRANSPORT_DOMAIN, transportTarget.transportAddr
+                outgoingMsg,
+                transportTarget.TRANSPORT_DOMAIN,
+                transportTarget.transportAddr,
             )

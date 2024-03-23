@@ -19,6 +19,7 @@ FORTY_FOUR_ZEROS = (0,) * 44
 
 # 7.2.4
 
+
 class HmacSha(base.AbstractAuthenticationService):
     SERVICE_ID = (1, 3, 6, 1, 6, 3, 10, 1, 1, 3)  # usmHMACSHAAuthProtocol
 
@@ -44,10 +45,10 @@ class HmacSha(base.AbstractAuthenticationService):
         # Yes, that's ugly but that's rfc...
         ln = wholeMsg.find(TWELVE_ZEROS)
         if ln == -1:
-            raise error.ProtocolError('Cant locate digest placeholder')
+            raise error.ProtocolError("Cant locate digest placeholder")
 
         wholeHead = wholeMsg[:ln]
-        wholeTail = wholeMsg[ln + 12:]
+        wholeTail = wholeMsg[ln + 12 :]
 
         # 7.3.1.2a
         extendedAuthKey = authKey.asNumbers() + FORTY_FOUR_ZEROS
@@ -55,14 +56,12 @@ class HmacSha(base.AbstractAuthenticationService):
         # 7.3.1.2b -- no-op
 
         # 7.3.1.2c
-        k1 = univ.OctetString(
-            map(lambda x, y: x ^ y, extendedAuthKey, self.IPAD))
+        k1 = univ.OctetString(map(lambda x, y: x ^ y, extendedAuthKey, self.IPAD))
 
         # 7.3.1.2d -- no-op
 
         # 7.3.1.2e
-        k2 = univ.OctetString(
-            map(lambda x, y: x ^ y, extendedAuthKey, self.OPAD))
+        k2 = univ.OctetString(map(lambda x, y: x ^ y, extendedAuthKey, self.OPAD))
 
         # 7.3.1.3
         d1 = sha1(k1.asOctets() + wholeMsg).digest()
@@ -78,16 +77,15 @@ class HmacSha(base.AbstractAuthenticationService):
     def authenticateIncomingMsg(self, authKey, authParameters, wholeMsg):
         # 7.3.2.1 & 2
         if len(authParameters) != 12:
-            raise error.StatusInformation(
-                errorIndication=errind.authenticationError)
+            raise error.StatusInformation(errorIndication=errind.authenticationError)
 
         # 7.3.2.3
         ln = wholeMsg.find(authParameters.asOctets())
         if ln == -1:
-            raise error.ProtocolError('Cant locate digest in wholeMsg')
+            raise error.ProtocolError("Cant locate digest in wholeMsg")
 
         wholeHead = wholeMsg[:ln]
-        wholeTail = wholeMsg[ln + 12:]
+        wholeTail = wholeMsg[ln + 12 :]
 
         authenticatedWholeMsg = wholeHead + TWELVE_ZEROS + wholeTail
 
@@ -97,14 +95,12 @@ class HmacSha(base.AbstractAuthenticationService):
         # 7.3.2.4b --> no-op
 
         # 7.3.2.4c
-        k1 = univ.OctetString(
-            map(lambda x, y: x ^ y, extendedAuthKey, self.IPAD))
+        k1 = univ.OctetString(map(lambda x, y: x ^ y, extendedAuthKey, self.IPAD))
 
         # 7.3.2.4d --> no-op
 
         # 7.3.2.4e
-        k2 = univ.OctetString(
-            map(lambda x, y: x ^ y, extendedAuthKey, self.OPAD))
+        k2 = univ.OctetString(map(lambda x, y: x ^ y, extendedAuthKey, self.OPAD))
 
         # 7.3.2.5a
         d1 = sha1(k1.asOctets() + authenticatedWholeMsg).digest()
@@ -117,7 +113,6 @@ class HmacSha(base.AbstractAuthenticationService):
 
         # 7.3.2.6
         if mac != authParameters:
-            raise error.StatusInformation(
-                errorIndication=errind.authenticationFailure)
+            raise error.StatusInformation(errorIndication=errind.authenticationFailure)
 
         return authenticatedWholeMsg

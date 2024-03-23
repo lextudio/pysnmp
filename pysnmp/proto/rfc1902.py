@@ -7,9 +7,21 @@
 from pyasn1.type import univ, tag, constraint, namedtype, namedval
 from pysnmp.proto import rfc1155, error
 
-__all__ = ['Opaque', 'TimeTicks', 'Bits', 'Integer', 'OctetString',
-           'IpAddress', 'Counter64', 'Unsigned32', 'Gauge32', 'Integer32',
-           'ObjectIdentifier', 'Counter32', 'Null']
+__all__ = [
+    "Opaque",
+    "TimeTicks",
+    "Bits",
+    "Integer",
+    "OctetString",
+    "IpAddress",
+    "Counter64",
+    "Unsigned32",
+    "Gauge32",
+    "Integer32",
+    "ObjectIdentifier",
+    "Counter32",
+    "Null",
+]
 
 
 class Null(univ.Null):
@@ -79,30 +91,29 @@ class Integer32(univ.Integer):
         >>>
 
     """
+
     subtypeSpec = univ.Integer.subtypeSpec + constraint.ValueRangeConstraint(
         -2147483648, 2147483647
     )
 
     @classmethod
     def withValues(cls, *values):
-        """Creates a subclass with discreet values constraint.
-        """
+        """Creates a subclass with discreet values constraint."""
 
         class X(cls):
-            subtypeSpec = cls.subtypeSpec + constraint.SingleValueConstraint(
-                *values)
+            subtypeSpec = cls.subtypeSpec + constraint.SingleValueConstraint(*values)
 
         X.__name__ = cls.__name__
         return X
 
     @classmethod
     def withRange(cls, minimum, maximum):
-        """Creates a subclass with value range constraint.
-        """
+        """Creates a subclass with value range constraint."""
 
         class X(cls):
             subtypeSpec = cls.subtypeSpec + constraint.ValueRangeConstraint(
-                minimum, maximum)
+                minimum, maximum
+            )
 
         X.__name__ = cls.__name__
         return X
@@ -164,7 +175,8 @@ class Integer(Integer32):
         class X(cls):
             namedValues = namedval.NamedValues(*enums)
             subtypeSpec = cls.subtypeSpec + constraint.SingleValueConstraint(
-                *values.values())
+                *values.values()
+            )
 
         X.__name__ = cls.__name__
 
@@ -210,6 +222,7 @@ class OctetString(univ.OctetString):
         >>>
 
     """
+
     subtypeSpec = univ.OctetString.subtypeSpec + constraint.ValueSizeConstraint(
         0, 65535
     )
@@ -231,21 +244,23 @@ class OctetString(univ.OctetString):
         return self.fixedLength
 
     def clone(self, *args, **kwargs):
-        return univ.OctetString.clone(
-            self, *args, **kwargs).setFixedLength(self.getFixedLength())
+        return univ.OctetString.clone(self, *args, **kwargs).setFixedLength(
+            self.getFixedLength()
+        )
 
     def subtype(self, *args, **kwargs):
-        return univ.OctetString.subtype(
-            self, *args, **kwargs).setFixedLength(self.getFixedLength())
+        return univ.OctetString.subtype(self, *args, **kwargs).setFixedLength(
+            self.getFixedLength()
+        )
 
     @classmethod
     def withSize(cls, minimum, maximum):
-        """Creates a subclass with value size constraint.
-        """
+        """Creates a subclass with value size constraint."""
 
         class X(cls):
             subtypeSpec = cls.subtypeSpec + constraint.ValueSizeConstraint(
-                minimum, maximum)
+                minimum, maximum
+            )
 
         X.__name__ = cls.__name__
         return X
@@ -316,37 +331,34 @@ class IpAddress(OctetString):
         >>>
 
     """
+
     tagSet = OctetString.tagSet.tagImplicitly(
         tag.Tag(tag.tagClassApplication, tag.tagFormatSimple, 0x00)
     )
-    subtypeSpec = OctetString.subtypeSpec + constraint.ValueSizeConstraint(
-        4, 4
-    )
+    subtypeSpec = OctetString.subtypeSpec + constraint.ValueSizeConstraint(4, 4)
     fixedLength = 4
 
     def prettyIn(self, value):
         if isinstance(value, str) and len(value) != 4:
             try:
-                value = [int(x) for x in value.split('.')]
+                value = [int(x) for x in value.split(".")]
 
             except Exception:
-                raise error.ProtocolError('Bad IP address syntax %s' % value)
+                raise error.ProtocolError("Bad IP address syntax %s" % value)
 
         value = OctetString.prettyIn(self, value)
 
         if len(value) != 4:
-            raise error.ProtocolError('Bad IP address syntax')
+            raise error.ProtocolError("Bad IP address syntax")
 
         return value
 
     def prettyOut(self, value):
         if value:
-            return '.'.join(
-                ['%d' % x for x in self.__class__(value).asNumbers()]
-            )
+            return ".".join(["%d" % x for x in self.__class__(value).asNumbers()])
 
         else:
-            return ''
+            return ""
 
 
 class Counter32(univ.Integer):
@@ -380,6 +392,7 @@ class Counter32(univ.Integer):
         >>>
 
     """
+
     tagSet = univ.Integer.tagSet.tagImplicitly(
         tag.Tag(tag.tagClassApplication, tag.tagFormatSimple, 0x01)
     )
@@ -419,6 +432,7 @@ class Gauge32(univ.Integer):
         >>>
 
     """
+
     tagSet = univ.Integer.tagSet.tagImplicitly(
         tag.Tag(tag.tagClassApplication, tag.tagFormatSimple, 0x02)
     )
@@ -457,6 +471,7 @@ class Unsigned32(univ.Integer):
         >>>
 
     """
+
     tagSet = univ.Integer.tagSet.tagImplicitly(
         tag.Tag(tag.tagClassApplication, tag.tagFormatSimple, 0x02)
     )
@@ -495,6 +510,7 @@ class TimeTicks(univ.Integer):
         >>>
 
     """
+
     tagSet = univ.Integer.tagSet.tagImplicitly(
         tag.Tag(tag.tagClassApplication, tag.tagFormatSimple, 0x03)
     )
@@ -543,6 +559,7 @@ class Opaque(univ.OctetString):
         >>>
 
     """
+
     tagSet = univ.OctetString.tagSet.tagImplicitly(
         tag.Tag(tag.tagClassApplication, tag.tagFormatSimple, 0x04)
     )
@@ -579,6 +596,7 @@ class Counter64(univ.Integer):
         >>>
 
     """
+
     tagSet = univ.Integer.tagSet.tagImplicitly(
         tag.Tag(tag.tagClassApplication, tag.tagFormatSimple, 0x06)
     )
@@ -636,11 +654,12 @@ class Bits(OctetString):
         >>>
 
     """
+
     namedValues = namedval.NamedValues()
 
     def __new__(cls, *args, **kwargs):
-        if 'namedValues' in kwargs:
-            Bits = cls.withNamedBits(**kwargs.pop('namedValues'))
+        if "namedValues" in kwargs:
+            Bits = cls.withNamedBits(**kwargs.pop("namedValues"))
             return Bits(*args, **kwargs)
 
         return OctetString.__new__(cls)
@@ -655,7 +674,7 @@ class Bits(OctetString):
             v = self.namedValues.getValue(bit)
 
             if v is None:
-                raise error.ProtocolError('Unknown named bit %s' % bit)
+                raise error.ProtocolError("Unknown named bit %s" % bit)
 
             d, m = divmod(v, 8)
             if d >= len(octets):
@@ -680,13 +699,13 @@ class Bits(OctetString):
                     name = self.namedValues.getName(i * 8 + 7 - j)
 
                     if name is None:
-                        name = 'UnknownBit-%s' % (i * 8 + 7 - j,)
+                        name = f"UnknownBit-{i * 8 + 7 - j}"
 
                     names.append(name)
 
                 j -= 1
 
-        return ', '.join([str(x) for x in names])
+        return ", ".join([str(x) for x in names])
 
     @classmethod
     def withNamedBits(cls, **values):
@@ -710,27 +729,27 @@ class ObjectName(univ.ObjectIdentifier):
 
 class SimpleSyntax(rfc1155.TypeCoercionHackMixIn, univ.Choice):
     componentType = namedtype.NamedTypes(
-        namedtype.NamedType('integer-value', Integer()),
-        namedtype.NamedType('string-value', OctetString()),
-        namedtype.NamedType('objectID-value', univ.ObjectIdentifier())
+        namedtype.NamedType("integer-value", Integer()),
+        namedtype.NamedType("string-value", OctetString()),
+        namedtype.NamedType("objectID-value", univ.ObjectIdentifier()),
     )
 
 
 class ApplicationSyntax(rfc1155.TypeCoercionHackMixIn, univ.Choice):
     componentType = namedtype.NamedTypes(
-        namedtype.NamedType('ipAddress-value', IpAddress()),
-        namedtype.NamedType('counter-value', Counter32()),
-        namedtype.NamedType('timeticks-value', TimeTicks()),
-        namedtype.NamedType('arbitrary-value', Opaque()),
-        namedtype.NamedType('big-counter-value', Counter64()),
+        namedtype.NamedType("ipAddress-value", IpAddress()),
+        namedtype.NamedType("counter-value", Counter32()),
+        namedtype.NamedType("timeticks-value", TimeTicks()),
+        namedtype.NamedType("arbitrary-value", Opaque()),
+        namedtype.NamedType("big-counter-value", Counter64()),
         # This conflicts with Counter32
         # namedtype.NamedType('unsigned-integer-value', Unsigned32()),
-        namedtype.NamedType('gauge32-value', Gauge32())
+        namedtype.NamedType("gauge32-value", Gauge32()),
     )  # BITS misplaced?
 
 
 class ObjectSyntax(univ.Choice):
     componentType = namedtype.NamedTypes(
-        namedtype.NamedType('simple', SimpleSyntax()),
-        namedtype.NamedType('application-wide', ApplicationSyntax())
+        namedtype.NamedType("simple", SimpleSyntax()),
+        namedtype.NamedType("application-wide", ApplicationSyntax()),
     )

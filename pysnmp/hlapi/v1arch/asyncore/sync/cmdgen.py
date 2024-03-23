@@ -9,13 +9,12 @@ from pysnmp.hlapi.varbinds import *
 from pysnmp.proto.rfc1905 import endOfMibView
 from pysnmp.proto.rfc1902 import Null
 
-__all__ = ['getCmd', 'nextCmd', 'setCmd', 'bulkCmd']
+__all__ = ["getCmd", "nextCmd", "setCmd", "bulkCmd"]
 
 VB_PROCESSOR = CommandGeneratorVarBinds()
 
 
-def getCmd(snmpDispatcher, authData, transportTarget,
-           *varBinds, **options):
+def getCmd(snmpDispatcher, authData, transportTarget, *varBinds, **options):
     """Creates a generator to perform one or more SNMP GET queries.
 
     On each iteration, new SNMP GET request is send (:RFC:`1905#section-4.2.1`).
@@ -86,15 +85,16 @@ def getCmd(snmpDispatcher, authData, transportTarget,
     def cbFun(*args, **kwargs):
         response[:] = args
 
-    options['cbFun'] = cbFun
+    options["cbFun"] = cbFun
 
     errorIndication, errorStatus, errorIndex = None, 0, 0
     response = []
 
     while True:
         if varBinds:
-            cmdgen.getCmd(snmpDispatcher, authData, transportTarget,
-                          *varBinds, **options)
+            cmdgen.getCmd(
+                snmpDispatcher, authData, transportTarget, *varBinds, **options
+            )
 
             snmpDispatcher.transportDispatcher.runDispatcher()
 
@@ -106,8 +106,7 @@ def getCmd(snmpDispatcher, authData, transportTarget,
             break
 
 
-def setCmd(snmpDispatcher, authData, transportTarget,
-           *varBinds, **options):
+def setCmd(snmpDispatcher, authData, transportTarget, *varBinds, **options):
     """Creates a generator to perform one or more SNMP SET queries.
 
     On each iteration, new SNMP SET request is send (:RFC:`1905#section-4.2.5`).
@@ -178,15 +177,16 @@ def setCmd(snmpDispatcher, authData, transportTarget,
     def cbFun(*args, **kwargs):
         response[:] = args
 
-    options['cbFun'] = cbFun
+    options["cbFun"] = cbFun
 
     errorIndication, errorStatus, errorIndex = None, 0, 0
     response = []
 
     while True:
         if varBinds:
-            cmdgen.setCmd(snmpDispatcher, authData, transportTarget,
-                          *varBinds, **options)
+            cmdgen.setCmd(
+                snmpDispatcher, authData, transportTarget, *varBinds, **options
+            )
 
             snmpDispatcher.transportDispatcher.runDispatcher()
 
@@ -198,8 +198,7 @@ def setCmd(snmpDispatcher, authData, transportTarget,
             break
 
 
-def nextCmd(snmpDispatcher, authData, transportTarget,
-            *varBinds, **options):
+def nextCmd(snmpDispatcher, authData, transportTarget, *varBinds, **options):
     """Create a generator to perform one or more SNMP GETNEXT queries.
 
     On each iteration, new SNMP GETNEXT request is send
@@ -292,13 +291,13 @@ def nextCmd(snmpDispatcher, authData, transportTarget,
     """
 
     def cbFun(*args, **kwargs):
-        response[:] = args + (kwargs.get('nextVarBinds', ()),)
+        response[:] = args + (kwargs.get("nextVarBinds", ()),)
 
-    options['cbFun'] = cbFun
+    options["cbFun"] = cbFun
 
-    lexicographicMode = options.pop('lexicographicMode', True)
-    maxRows = options.pop('maxRows', 0)
-    maxCalls = options.pop('maxCalls', 0)
+    lexicographicMode = options.pop("lexicographicMode", True)
+    maxRows = options.pop("maxRows", 0)
+    maxCalls = options.pop("maxCalls", 0)
 
     initialVarBinds = VB_PROCESSOR.makeVarBinds(snmpDispatcher.cache, varBinds)
 
@@ -309,20 +308,33 @@ def nextCmd(snmpDispatcher, authData, transportTarget,
 
     while True:
         if not varBinds:
-            yield (errorIndication, errorStatus, errorIndex,
-                   varBindTable and varBindTable[0] or [])
+            yield (
+                errorIndication,
+                errorStatus,
+                errorIndex,
+                varBindTable and varBindTable[0] or [],
+            )
             return
 
-        cmdgen.nextCmd(snmpDispatcher, authData, transportTarget,
-                       *[(x[0], Null('')) for x in varBinds], **options)
+        cmdgen.nextCmd(
+            snmpDispatcher,
+            authData,
+            transportTarget,
+            *[(x[0], Null("")) for x in varBinds],
+            **options
+        )
 
         snmpDispatcher.transportDispatcher.runDispatcher()
 
         errorIndication, errorStatus, errorIndex, varBindTable, varBinds = response
 
         if errorIndication:
-            yield (errorIndication, errorStatus, errorIndex,
-                   varBindTable and varBindTable[0] or [])
+            yield (
+                errorIndication,
+                errorStatus,
+                errorIndex,
+                varBindTable and varBindTable[0] or [],
+            )
             return
 
         elif errorStatus:
@@ -331,8 +343,12 @@ def nextCmd(snmpDispatcher, authData, transportTarget,
                 # from SNMPv1 Agent through internal pysnmp proxy.
                 errorStatus = errorStatus.clone(0)
                 errorIndex = errorIndex.clone(0)
-            yield (errorIndication, errorStatus, errorIndex,
-                   varBindTable and varBindTable[0] or [])
+            yield (
+                errorIndication,
+                errorStatus,
+                errorIndex,
+                varBindTable and varBindTable[0] or [],
+            )
             return
 
         else:
@@ -348,10 +364,17 @@ def nextCmd(snmpDispatcher, authData, transportTarget,
                     return
 
             for varBindRow in varBindTable:
-                nextVarBinds = (yield errorIndication, errorStatus, errorIndex, varBindRow)
+                nextVarBinds = (
+                    yield errorIndication,
+                    errorStatus,
+                    errorIndex,
+                    varBindRow,
+                )
 
                 if nextVarBinds:
-                    initialVarBinds = varBinds = VB_PROCESSOR.makeVarBinds(snmpDispatcher.cache, nextVarBinds)
+                    initialVarBinds = varBinds = VB_PROCESSOR.makeVarBinds(
+                        snmpDispatcher.cache, nextVarBinds
+                    )
 
                 totalRows += 1
                 totalCalls += 1
@@ -363,8 +386,15 @@ def nextCmd(snmpDispatcher, authData, transportTarget,
                     return
 
 
-def bulkCmd(snmpDispatcher, authData, transportTarget,
-            nonRepeaters, maxRepetitions, *varBinds, **options):
+def bulkCmd(
+    snmpDispatcher,
+    authData,
+    transportTarget,
+    nonRepeaters,
+    maxRepetitions,
+    *varBinds,
+    **options
+):
     """Creates a generator to perform one or more SNMP GETBULK queries.
 
     On each iteration, new SNMP GETBULK request is send
@@ -472,13 +502,13 @@ def bulkCmd(snmpDispatcher, authData, transportTarget,
     """
 
     def cbFun(*args, **kwargs):
-        response[:] = args + (kwargs.get('nextVarBinds', ()),)
+        response[:] = args + (kwargs.get("nextVarBinds", ()),)
 
-    options['cbFun'] = cbFun
+    options["cbFun"] = cbFun
 
-    lexicographicMode = options.pop('lexicographicMode', True)
-    maxRows = options.pop('maxRows', 0)
-    maxCalls = options.pop('maxCalls', 0)
+    lexicographicMode = options.pop("lexicographicMode", True)
+    maxRows = options.pop("maxRows", 0)
+    maxCalls = options.pop("maxCalls", 0)
 
     initialVarBinds = VB_PROCESSOR.makeVarBinds(snmpDispatcher.cache, varBinds)
 
@@ -499,9 +529,15 @@ def bulkCmd(snmpDispatcher, authData, transportTarget,
         if maxRows and totalRows < maxRows:
             maxRepetitions = min(maxRepetitions, maxRows - totalRows)
 
-        cmdgen.bulkCmd(snmpDispatcher, authData, transportTarget,
-                       nonRepeaters, maxRepetitions,
-                       *[(x[0], Null('')) for x in varBinds], **options)
+        cmdgen.bulkCmd(
+            snmpDispatcher,
+            authData,
+            transportTarget,
+            nonRepeaters,
+            maxRepetitions,
+            *[(x[0], Null("")) for x in varBinds],
+            **options
+        )
 
         snmpDispatcher.transportDispatcher.runDispatcher()
 
@@ -517,14 +553,19 @@ def bulkCmd(snmpDispatcher, authData, transportTarget,
                 # from SNMPv1 Agent through internal pysnmp proxy.
                 errorStatus = errorStatus.clone(0)
                 errorIndex = errorIndex.clone(0)
-            yield (errorIndication, errorStatus, errorIndex, varBindTable and varBindTable[0] or [])
+            yield (
+                errorIndication,
+                errorStatus,
+                errorIndex,
+                varBindTable and varBindTable[0] or [],
+            )
             return
 
         else:
             for rowIdx, varBindRow in enumerate(varBindTable):
                 stopFlag = True
                 if len(varBindRow) != len(initialVarBinds):
-                    varBindTable = rowIdx and varBindTable[:rowIdx - 1] or []
+                    varBindTable = rowIdx and varBindTable[: rowIdx - 1] or []
                     break
 
                 for colIdx, varBind in enumerate(varBindRow):
@@ -538,12 +579,14 @@ def bulkCmd(snmpDispatcher, authData, transportTarget,
                     if isinstance(val, Null):
                         nullVarBinds[colIdx] = True
 
-                    elif not lexicographicMode and not initialVarBinds[colIdx][0].isPrefixOf(name):
+                    elif not lexicographicMode and not initialVarBinds[colIdx][
+                        0
+                    ].isPrefixOf(name):
                         varBindRow[colIdx] = name, endOfMibView
                         nullVarBinds[colIdx] = True
 
                 if stopFlag:
-                    varBindTable = rowIdx and varBindTable[:rowIdx - 1] or []
+                    varBindTable = rowIdx and varBindTable[: rowIdx - 1] or []
                     break
 
             totalRows += len(varBindTable)
@@ -551,14 +594,21 @@ def bulkCmd(snmpDispatcher, authData, transportTarget,
 
             if maxRows and totalRows >= maxRows:
                 if totalRows > maxRows:
-                    varBindTable = varBindTable[:-(totalRows - maxRows)]
+                    varBindTable = varBindTable[: -(totalRows - maxRows)]
                 stopFlag = True
 
             if maxCalls and totalCalls >= maxCalls:
                 stopFlag = True
 
             for varBindRow in varBindTable:
-                nextVarBinds = (yield errorIndication, errorStatus, errorIndex, varBindRow)
+                nextVarBinds = (
+                    yield errorIndication,
+                    errorStatus,
+                    errorIndex,
+                    varBindRow,
+                )
 
                 if nextVarBinds:
-                    initialVarBinds = varBinds = VB_PROCESSOR.makeVarBinds(snmpDispatcher.cache, nextVarBinds)
+                    initialVarBinds = varBinds = VB_PROCESSOR.makeVarBinds(
+                        snmpDispatcher.cache, nextVarBinds
+                    )

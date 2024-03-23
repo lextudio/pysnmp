@@ -23,10 +23,10 @@ from pysnmp.proto.secmod.rfc2576 import SnmpV1SecurityModel
 from pysnmp.proto.secmod.rfc2576 import SnmpV2cSecurityModel
 from pysnmp.proto.secmod.rfc3414 import SnmpUSMSecurityModel
 
-__all__ = ['SnmpEngine']
+__all__ = ["SnmpEngine"]
 
 
-class SnmpEngine(object):
+class SnmpEngine:
     """Creates SNMP engine object.
 
     SNMP engine object is central in SNMP v3 architecture. It is an umbrella
@@ -57,8 +57,7 @@ class SnmpEngine(object):
 
     """
 
-    def __init__(self, snmpEngineID=None, maxMessageSize=65507,
-                 msgAndPduDsp=None):
+    def __init__(self, snmpEngineID=None, maxMessageSize=65507, msgAndPduDsp=None):
         self.cache = {}
 
         self.observer = observer.MetaObserver()
@@ -72,42 +71,44 @@ class SnmpEngine(object):
         mibBuilder = self.msgAndPduDsp.mibInstrumController.mibBuilder
 
         self.messageProcessingSubsystems = {
-            SnmpV1MessageProcessingModel.MESSAGE_PROCESSING_MODEL_ID:
-                SnmpV1MessageProcessingModel(),
-            SnmpV2cMessageProcessingModel.MESSAGE_PROCESSING_MODEL_ID:
-                SnmpV2cMessageProcessingModel(),
-            SnmpV3MessageProcessingModel.MESSAGE_PROCESSING_MODEL_ID:
-                SnmpV3MessageProcessingModel()
+            SnmpV1MessageProcessingModel.MESSAGE_PROCESSING_MODEL_ID: SnmpV1MessageProcessingModel(),
+            SnmpV2cMessageProcessingModel.MESSAGE_PROCESSING_MODEL_ID: SnmpV2cMessageProcessingModel(),
+            SnmpV3MessageProcessingModel.MESSAGE_PROCESSING_MODEL_ID: SnmpV3MessageProcessingModel(),
         }
 
         self.securityModels = {
             SnmpV1SecurityModel.SECURITY_MODEL_ID: SnmpV1SecurityModel(),
             SnmpV2cSecurityModel.SECURITY_MODEL_ID: SnmpV2cSecurityModel(),
-            SnmpUSMSecurityModel.SECURITY_MODEL_ID: SnmpUSMSecurityModel()
+            SnmpUSMSecurityModel.SECURITY_MODEL_ID: SnmpUSMSecurityModel(),
         }
 
         self.accessControlModel = {
             void.Vacm.ACCESS_MODEL_ID: void.Vacm(),
-            rfc3415.Vacm.ACCESS_MODEL_ID: rfc3415.Vacm()
+            rfc3415.Vacm.ACCESS_MODEL_ID: rfc3415.Vacm(),
         }
 
         self.transportDispatcher = None
 
         if self.msgAndPduDsp.mibInstrumController is None:
-            raise error.PySnmpError('MIB instrumentation does not yet exist')
+            raise error.PySnmpError("MIB instrumentation does not yet exist")
 
-        snmpEngineMaxMessageSize, = mibBuilder.importSymbols(
-            '__SNMP-FRAMEWORK-MIB', 'snmpEngineMaxMessageSize')
+        (snmpEngineMaxMessageSize,) = mibBuilder.importSymbols(
+            "__SNMP-FRAMEWORK-MIB", "snmpEngineMaxMessageSize"
+        )
 
-        snmpEngineMaxMessageSize.syntax = snmpEngineMaxMessageSize.syntax.clone(maxMessageSize)
+        snmpEngineMaxMessageSize.syntax = snmpEngineMaxMessageSize.syntax.clone(
+            maxMessageSize
+        )
 
-        snmpEngineBoots, = mibBuilder.importSymbols(
-            '__SNMP-FRAMEWORK-MIB', 'snmpEngineBoots')
+        (snmpEngineBoots,) = mibBuilder.importSymbols(
+            "__SNMP-FRAMEWORK-MIB", "snmpEngineBoots"
+        )
 
         snmpEngineBoots.syntax += 1
 
-        origSnmpEngineID, = mibBuilder.importSymbols(
-            '__SNMP-FRAMEWORK-MIB', 'snmpEngineID')
+        (origSnmpEngineID,) = mibBuilder.importSymbols(
+            "__SNMP-FRAMEWORK-MIB", "snmpEngineID"
+        )
 
         if snmpEngineID is None:
             self.snmpEngineID = origSnmpEngineID.syntax
@@ -117,17 +118,20 @@ class SnmpEngine(object):
             self.snmpEngineID = origSnmpEngineID.syntax
 
             debug.logger & debug.FLAG_APP and debug.logger(
-                'SnmpEngine: using custom SNMP Engine '
-                'ID: %s' % self.snmpEngineID.prettyPrint())
+                "SnmpEngine: using custom SNMP Engine "
+                "ID: %s" % self.snmpEngineID.prettyPrint()
+            )
 
             # Attempt to make some of snmp Engine settings persistent.
             # This should probably be generalized as a non-volatile MIB store.
 
-            persistentPath = os.path.join(tempfile.gettempdir(), '__pysnmp',
-                                          self.snmpEngineID.prettyPrint())
+            persistentPath = os.path.join(
+                tempfile.gettempdir(), "__pysnmp", self.snmpEngineID.prettyPrint()
+            )
 
             debug.logger & debug.FLAG_APP and debug.logger(
-                'SnmpEngine: using persistent directory: %s' % persistentPath)
+                "SnmpEngine: using persistent directory: %s" % persistentPath
+            )
 
             if not os.path.exists(persistentPath):
                 try:
@@ -136,7 +140,7 @@ class SnmpEngine(object):
                 except OSError:
                     return
 
-            f = os.path.join(persistentPath, 'boots')
+            f = os.path.join(persistentPath, "boots")
 
             try:
                 snmpEngineBoots.syntax = snmpEngineBoots.syntax.clone(open(f).read())
@@ -158,20 +162,23 @@ class SnmpEngine(object):
 
             except Exception as exc:
                 debug.logger & debug.FLAG_APP and debug.logger(
-                    'SnmpEngine: could not stored SNMP Engine Boots: %s' % exc)
+                    "SnmpEngine: could not stored SNMP Engine Boots: %s" % exc
+                )
 
             else:
                 debug.logger & debug.FLAG_APP and debug.logger(
-                    'SnmpEngine: stored SNMP Engine Boots: '
-                    '%s' % snmpEngineBoots.syntax.prettyPrint())
+                    "SnmpEngine: stored SNMP Engine Boots: "
+                    "%s" % snmpEngineBoots.syntax.prettyPrint()
+                )
 
     def __repr__(self):
-        return '%s(snmpEngineID=%r)' % (self.__class__.__name__, self.snmpEngineID)
+        return f"{self.__class__.__name__}(snmpEngineID={self.snmpEngineID!r})"
 
     # Transport dispatcher bindings
 
-    def __receiveMessageCbFun(self, transportDispatcher, transportDomain,
-                              transportAddress, wholeMsg):
+    def __receiveMessageCbFun(
+        self, transportDispatcher, transportDomain, transportAddress, wholeMsg
+    ):
         self.msgAndPduDsp.receiveMessage(
             self, transportDomain, transportAddress, wholeMsg
         )
@@ -186,9 +193,11 @@ class SnmpEngine(object):
             smHandler.receiveTimerTick(self, timeNow)
 
     def registerTransportDispatcher(self, transportDispatcher, recvId=None):
-        if (self.transportDispatcher and
-                self.transportDispatcher is not transportDispatcher):
-            raise error.PySnmpError('Transport dispatcher already registered')
+        if (
+            self.transportDispatcher
+            and self.transportDispatcher is not transportDispatcher
+        ):
+            raise error.PySnmpError("Transport dispatcher already registered")
 
         transportDispatcher.registerRecvCbFun(self.__receiveMessageCbFun, recvId)
 
@@ -198,7 +207,7 @@ class SnmpEngine(object):
 
     def unregisterTransportDispatcher(self, recvId=None):
         if self.transportDispatcher is None:
-            raise error.PySnmpError('Transport dispatcher not registered')
+            raise error.PySnmpError("Transport dispatcher not registered")
 
         self.transportDispatcher.unregisterRecvCbFun(recvId)
         self.transportDispatcher.unregisterTimerCbFun()
@@ -209,14 +218,14 @@ class SnmpEngine(object):
 
     # User app may attach opaque objects to SNMP Engine
     def setUserContext(self, **kwargs):
-        self.cache.update(dict([('__%s' % k, kwargs[k]) for k in kwargs]))
+        self.cache.update({"__%s" % k: kwargs[k] for k in kwargs})
 
     def getUserContext(self, arg):
-        return self.cache.get('__%s' % arg)
+        return self.cache.get("__%s" % arg)
 
     def delUserContext(self, arg):
         try:
-            del self.cache['__%s' % arg]
+            del self.cache["__%s" % arg]
 
         except KeyError:
             pass

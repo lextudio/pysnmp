@@ -46,6 +46,7 @@ from pysnmp.carrier.asyncio.base import AbstractAsyncioTransport
 
 class DgramAsyncioProtocol(asyncio.DatagramProtocol, AbstractAsyncioTransport):
     """Base Asyncio datagram Transport, to be used with AsyncioDispatcher"""
+
     SOCK_FAMILY = None
     ADDRESS_TYPE = lambda x: x
 
@@ -62,7 +63,7 @@ class DgramAsyncioProtocol(asyncio.DatagramProtocol, AbstractAsyncioTransport):
 
     def datagram_received(self, datagram, transportAddress):
         if self._cbFun is None:
-            raise error.CarrierError('Unable to call cbFun')
+            raise error.CarrierError("Unable to call cbFun")
 
         else:
             self.loop.call_soon(self._cbFun, self, transportAddress, datagram)
@@ -70,39 +71,47 @@ class DgramAsyncioProtocol(asyncio.DatagramProtocol, AbstractAsyncioTransport):
     def connection_made(self, transport):
         self.transport = transport
 
-        debug.logger & debug.FLAG_IO and debug.logger('connection_made: invoked')
+        debug.logger & debug.FLAG_IO and debug.logger("connection_made: invoked")
 
         while self._writeQ:
             outgoingMessage, transportAddress = self._writeQ.pop(0)
 
             debug.logger & debug.FLAG_IO and debug.logger(
-                'connection_made: transportAddress %r outgoingMessage %s' % (
-                    transportAddress, debug.hexdump(outgoingMessage)))
+                "connection_made: transportAddress %r outgoingMessage %s"
+                % (transportAddress, debug.hexdump(outgoingMessage))
+            )
 
             try:
                 self.transport.sendto(
-                    outgoingMessage, self.normalizeAddress(transportAddress))
+                    outgoingMessage, self.normalizeAddress(transportAddress)
+                )
 
             except Exception:
                 raise error.CarrierError(
-                    ';'.join(traceback.format_exception(*sys.exc_info())))
+                    ";".join(traceback.format_exception(*sys.exc_info()))
+                )
 
     def connection_lost(self, exc):
-        debug.logger & debug.FLAG_IO and debug.logger('connection_lost: invoked')
+        debug.logger & debug.FLAG_IO and debug.logger("connection_lost: invoked")
 
     # AbstractAsyncioTransport API
 
     def openClientMode(self, iface=None, allow_broadcast=False):
         try:
             c = self.loop.create_datagram_endpoint(
-                lambda: self, local_addr=iface, family=self.SOCK_FAMILY, allow_broadcast=allow_broadcast
+                lambda: self,
+                local_addr=iface,
+                family=self.SOCK_FAMILY,
+                allow_broadcast=allow_broadcast,
             )
 
             # Avoid deprecation warning for asyncio.async()
             self._lport = asyncio.ensure_future(c)
 
         except Exception:
-            raise error.CarrierError(';'.join(traceback.format_exception(*sys.exc_info())))
+            raise error.CarrierError(
+                ";".join(traceback.format_exception(*sys.exc_info()))
+            )
 
         return self
 
@@ -115,7 +124,9 @@ class DgramAsyncioProtocol(asyncio.DatagramProtocol, AbstractAsyncioTransport):
             # Avoid deprecation warning for asyncio.async()
             self._lport = asyncio.ensure_future(c)
         except Exception:
-            raise error.CarrierError(';'.join(traceback.format_exception(*sys.exc_info())))
+            raise error.CarrierError(
+                ";".join(traceback.format_exception(*sys.exc_info()))
+            )
 
         return self
 
@@ -130,9 +141,14 @@ class DgramAsyncioProtocol(asyncio.DatagramProtocol, AbstractAsyncioTransport):
 
     def sendMessage(self, outgoingMessage, transportAddress):
         debug.logger & debug.FLAG_IO and debug.logger(
-            'sendMessage: %s transportAddress %r outgoingMessage '
-            '%s' % (self.transport is None and "queuing" or "sending",
-                    transportAddress, debug.hexdump(outgoingMessage)))
+            "sendMessage: %s transportAddress %r outgoingMessage "
+            "%s"
+            % (
+                self.transport is None and "queuing" or "sending",
+                transportAddress,
+                debug.hexdump(outgoingMessage),
+            )
+        )
 
         if self.transport is None:
             self._writeQ.append((outgoingMessage, transportAddress))
@@ -140,11 +156,13 @@ class DgramAsyncioProtocol(asyncio.DatagramProtocol, AbstractAsyncioTransport):
         else:
             try:
                 self.transport.sendto(
-                    outgoingMessage, self.normalizeAddress(transportAddress))
+                    outgoingMessage, self.normalizeAddress(transportAddress)
+                )
 
             except Exception:
                 raise error.CarrierError(
-                    ';'.join(traceback.format_exception(*sys.exc_info())))
+                    ";".join(traceback.format_exception(*sys.exc_info()))
+                )
 
     def normalizeAddress(self, transportAddress):
         if not isinstance(transportAddress, self.ADDRESS_TYPE):

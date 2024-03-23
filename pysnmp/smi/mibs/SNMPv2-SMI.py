@@ -22,7 +22,7 @@ from pysnmp.smi import error
 from pysnmp.smi import exval
 from pysnmp.smi.indices import OidOrderedDict
 
-if 'mibBuilder' not in globals():
+if "mibBuilder" not in globals():
     import sys
 
     sys.stderr.write(__doc__)
@@ -30,27 +30,26 @@ if 'mibBuilder' not in globals():
 
 # ASN.1 types
 
-(Integer,
- OctetString,
- ObjectIdentifier) = mibBuilder.importSymbols(
-    "ASN1",
-    "Integer",
-    "OctetString",
-    "ObjectIdentifier")
+(Integer, OctetString, ObjectIdentifier) = mibBuilder.importSymbols(
+    "ASN1", "Integer", "OctetString", "ObjectIdentifier"
+)
 
 # ASN.1 harness
 
-(ConstraintsIntersection,
- SingleValueConstraint,
- ValueRangeConstraint,
- ValueSizeConstraint,
- ConstraintsUnion) = mibBuilder.importSymbols(
+(
+    ConstraintsIntersection,
+    SingleValueConstraint,
+    ValueRangeConstraint,
+    ValueSizeConstraint,
+    ConstraintsUnion,
+) = mibBuilder.importSymbols(
     "ASN1-REFINEMENT",
     "ConstraintsIntersection",
     "SingleValueConstraint",
     "ValueRangeConstraint",
     "ValueSizeConstraint",
-    "ConstraintsUnion")
+    "ConstraintsUnion",
+)
 
 # SNMP types
 
@@ -68,14 +67,15 @@ Null = rfc1902.Null
 
 
 class ExtUTCTime(OctetString):
-    subtypeSpec = (OctetString.subtypeSpec +
-                   ConstraintsUnion(ValueSizeConstraint(11, 11),
-                                    ValueSizeConstraint(13, 13)))
+    subtypeSpec = OctetString.subtypeSpec + ConstraintsUnion(
+        ValueSizeConstraint(11, 11), ValueSizeConstraint(13, 13)
+    )
 
 
 # MIB tree foundation class
 
-class MibNode(object):
+
+class MibNode:
     """MIB object base.
 
     Logically binds object identifier, which addresses MIB object in MIB tree,
@@ -83,13 +83,14 @@ class MibNode(object):
 
     Serves as a foundation for more specialized MIB objects.
     """
-    label = ''
+
+    label = ""
 
     def __init__(self, name):
         self.name = name
 
     def __repr__(self):
-        return '%s(%r)' % (self.__class__.__name__, self.name)
+        return f"{self.__class__.__name__}({self.name!r})"
 
     def getName(self):
         return self.name
@@ -112,12 +113,13 @@ class MibNode(object):
 
 # definitions for information modules
 
+
 class ModuleIdentity(MibNode):
-    status = 'current'
-    lastUpdated = ''
-    organization = ''
-    contactInfo = ''
-    description = ''
+    status = "current"
+    lastUpdated = ""
+    organization = ""
+    contactInfo = ""
+    description = ""
     revisions = ()
     revisionsDescriptions = ()
 
@@ -173,21 +175,23 @@ class ModuleIdentity(MibNode):
     def asn1Print(self):
         return """\
 MODULE-IDENTITY
-  LAST-UPDATED %s
-  ORGANIZATION "%s"
-  CONTACT-INFO "%s"
-  DESCRIPTION "%s"
-  %s""" % (self.getLastUpdated(),
-           self.getOrganization(),
-           self.getContactInfo(),
-           self.getDescription(),
-           ''.join(['REVISION "%s"\n' % x for x in self.getRevisions()]))
+  LAST-UPDATED {}
+  ORGANIZATION "{}"
+  CONTACT-INFO "{}"
+  DESCRIPTION "{}"
+  {}""".format(
+            self.getLastUpdated(),
+            self.getOrganization(),
+            self.getContactInfo(),
+            self.getDescription(),
+            "".join(['REVISION "%s"\n' % x for x in self.getRevisions()]),
+        )
 
 
 class ObjectIdentity(MibNode):
-    status = 'current'
-    description = ''
-    reference = ''
+    status = "current"
+    description = ""
+    reference = ""
 
     def getStatus(self):
         return self.status
@@ -213,27 +217,30 @@ class ObjectIdentity(MibNode):
     def asn1Print(self):
         return """\
 OBJECT-IDENTITY
-  STATUS %s
-  DESCRIPTION "%s"
-  REFERENCE "%s"
-""" % (self.getStatus(),
-       self.getDescription(),
-       self.getReference())
+  STATUS {}
+  DESCRIPTION "{}"
+  REFERENCE "{}"
+""".format(
+            self.getStatus(),
+            self.getDescription(),
+            self.getReference(),
+        )
 
 
 # definition for objects
 
+
 class NotificationType(MibNode):
     objects = ()
-    status = 'current'
-    description = ''
-    reference = ''
+    status = "current"
+    description = ""
+    reference = ""
 
     def getObjects(self):
         return self.objects
 
     def setObjects(self, *args, **kwargs):
-        if kwargs.get('append'):
+        if kwargs.get("append"):
             self.objects += args
         else:
             self.objects = args
@@ -263,28 +270,30 @@ class NotificationType(MibNode):
     def asn1Print(self):
         return """\
 NOTIFICATION-TYPE
-  OBJECTS { %s }
-  STATUS %s
-  DESCRIPTION "%s"
-  REFERENCE "%s"
-""" % (', '.join([x for x in self.getObjects()]),
-           self.getStatus(),
-           self.getDescription(),
-           self.getReference())
+  OBJECTS {{ {} }}
+  STATUS {}
+  DESCRIPTION "{}"
+  REFERENCE "{}"
+""".format(
+            ", ".join([x for x in self.getObjects()]),
+            self.getStatus(),
+            self.getDescription(),
+            self.getReference(),
+        )
 
 
 class MibIdentifier(MibNode):
     @staticmethod
     def asn1Print():
-        return 'OBJECT IDENTIFIER'
+        return "OBJECT IDENTIFIER"
 
 
 class ObjectType(MibNode):
-    units = ''
-    maxAccess = 'not-accessible'
-    status = 'current'
-    description = ''
-    reference = ''
+    units = ""
+    maxAccess = "not-accessible"
+    status = "current"
+    description = ""
+    reference = ""
 
     def __init__(self, name, syntax=None):
         MibNode.__init__(self, name)
@@ -310,12 +319,12 @@ class ObjectType(MibNode):
         return self.syntax >= other
 
     def __repr__(self):
-        representation = '%s(%s' % (self.__class__.__name__, self.name)
+        representation = f"{self.__class__.__name__}({self.name}"
 
         if self.syntax is not None:
-            representation += ', %r' % self.syntax
+            representation += ", %r" % self.syntax
 
-        representation += ')'
+        representation += ")"
         return representation
 
     def getSyntax(self):
@@ -363,17 +372,19 @@ class ObjectType(MibNode):
     def asn1Print(self):
         return """
 OBJECT-TYPE
-  SYNTAX %s
-  UNITS "%s"
-  MAX-ACCESS %s
-  STATUS %s
-  DESCRIPTION "%s"
-  REFERENCE "%s" """ % (self.getSyntax().__class__.__name__,
-                        self.getUnits(),
-                        self.getMaxAccess(),
-                        self.getStatus(),
-                        self.getDescription(),
-                        self.getReference())
+  SYNTAX {}
+  UNITS "{}"
+  MAX-ACCESS {}
+  STATUS {}
+  DESCRIPTION "{}"
+  REFERENCE "{}" """.format(
+            self.getSyntax().__class__.__name__,
+            self.getUnits(),
+            self.getMaxAccess(),
+            self.getStatus(),
+            self.getDescription(),
+            self.getReference(),
+        )
 
 
 class ManagedMibObject(ObjectType):
@@ -412,11 +423,12 @@ class ManagedMibObject(ObjectType):
     and *write* of Managed Objects Instances. The latter covers creation
     and removal of the columnar Managed Objects Instances.
     """
-    branchVersionId = 0  # changes on tree structure change
-    maxAccess = 'not-accessible'
 
-    ST_CREATE = 'create'
-    ST_DESTROY = 'destroy'
+    branchVersionId = 0  # changes on tree structure change
+    maxAccess = "not-accessible"
+
+    ST_CREATE = "create"
+    ST_DESTROY = "destroy"
 
     def __init__(self, name, syntax=None):
         ObjectType.__init__(self, name, syntax)
@@ -429,7 +441,7 @@ class ManagedMibObject(ObjectType):
         for subTree in subTrees:
             if subTree.name in self._vars:
                 raise error.SmiError(
-                    'MIB subtree %s already registered at %s' % (subTree.name, self)
+                    f"MIB subtree {subTree.name} already registered at {self}"
                 )
             self._vars[subTree.name] = subTree
 
@@ -439,9 +451,7 @@ class ManagedMibObject(ObjectType):
             # This may fail if you fill a table by exporting MibScalarInstances
             # but later drop them through SNMP.
             if name not in self._vars:
-                raise error.SmiError(
-                    'MIB subtree %s not registered at %s' % (name, self)
-                )
+                raise error.SmiError(f"MIB subtree {name} not registered at {self}")
             del self._vars[name]
 
     #
@@ -459,7 +469,7 @@ class ManagedMibObject(ObjectType):
             if subName in self._vars:
                 return self._vars[subName]
 
-        raise error.NoSuchObjectError(name=name, idx=context.get('idx'))
+        raise error.NoSuchObjectError(name=name, idx=context.get("idx"))
 
     def getNextBranch(self, name, **context):
         # Start from the beginning
@@ -473,7 +483,7 @@ class ManagedMibObject(ObjectType):
             try:
                 return self._vars[self._vars.nextKey(name)]
             except KeyError:
-                raise error.NoSuchObjectError(name=name, idx=context.get('idx'))
+                raise error.NoSuchObjectError(name=name, idx=context.get("idx"))
 
     def getNode(self, name, **context):
         """Return tree node found by name"""
@@ -495,7 +505,7 @@ class ManagedMibObject(ObjectType):
                 try:
                     return self._vars[self._vars.nextKey(nextNode.name)]
                 except KeyError:
-                    raise error.NoSuchObjectError(name=name, idx=context.get('idx'))
+                    raise error.NoSuchObjectError(name=name, idx=context.get("idx"))
 
     # MIB instrumentation
 
@@ -541,10 +551,12 @@ class ManagedMibObject(ObjectType):
         """
         name, val = varBind
 
-        (debug.logger & debug.FLAG_INS and
-         debug.logger('%s: readTest(%s, %r)' % (self, name, val)))
+        (
+            debug.logger & debug.FLAG_INS
+            and debug.logger(f"{self}: readTest({name}, {val!r})")
+        )
 
-        cbFun = context['cbFun']
+        cbFun = context["cbFun"]
 
         if name == self.name:
             cbFun((name, exval.noSuchInstance), **context)
@@ -562,8 +574,10 @@ class ManagedMibObject(ObjectType):
             val = exval.noSuchInstance
 
         except error.SmiError as exc:
-            (debug.logger & debug.FLAG_INS and
-             debug.logger('%s: exception %r' % (self, exc)))
+            (
+                debug.logger & debug.FLAG_INS
+                and debug.logger(f"{self}: exception {exc!r}")
+            )
 
         if not node:
             cbFun((name, val), **dict(context, error=exc))
@@ -612,10 +626,12 @@ class ManagedMibObject(ObjectType):
         """
         name, val = varBind
 
-        (debug.logger & debug.FLAG_INS and
-         debug.logger('%s: readGet(%s, %r)' % (self, name, val)))
+        (
+            debug.logger & debug.FLAG_INS
+            and debug.logger(f"{self}: readGet({name}, {val!r})")
+        )
 
-        cbFun = context['cbFun']
+        cbFun = context["cbFun"]
 
         if name == self.name:
             cbFun((name, exval.noSuchInstance), **context)
@@ -633,8 +649,10 @@ class ManagedMibObject(ObjectType):
             val = exval.noSuchInstance
 
         except error.SmiError as exc:
-            (debug.logger & debug.FLAG_INS and
-             debug.logger('%s: exception %r' % (self, exc)))
+            (
+                debug.logger & debug.FLAG_INS
+                and debug.logger(f"{self}: exception {exc!r}")
+            )
 
         if not node:
             cbFun((name, val), **dict(context, error=exc))
@@ -657,13 +675,12 @@ class ManagedMibObject(ObjectType):
     def _readNext(self, meth, varBind, **context):
         name, val = varBind
 
-        cbFun = context['cbFun']
+        cbFun = context["cbFun"]
 
         try:
             node = self.getBranch(name, **context)
 
         except (error.NoSuchInstanceError, error.NoSuchObjectError):
-
             node = exc = None
 
             try:
@@ -676,11 +693,13 @@ class ManagedMibObject(ObjectType):
                 val = exval.noSuchInstance
 
             except error.SmiError as exc:
-                (debug.logger & debug.FLAG_INS and
-                 debug.logger('%s: exception %r' % (self, exc)))
+                (
+                    debug.logger & debug.FLAG_INS
+                    and debug.logger(f"{self}: exception {exc!r}")
+                )
 
             if not node:
-                nextName = context.get('nextName')
+                nextName = context.get("nextName")
                 if nextName:
                     varBind = nextName, val
 
@@ -692,7 +711,7 @@ class ManagedMibObject(ObjectType):
 
         nextName = self._getNextName(node.name)
         if nextName:
-            context['nextName'] = nextName
+            context["nextName"] = nextName
 
         actionFun = getattr(node, meth)
         actionFun(varBind, **context)
@@ -745,10 +764,12 @@ class ManagedMibObject(ObjectType):
         """
         name, val = varBind
 
-        (debug.logger & debug.FLAG_INS and
-         debug.logger('%s: readTestNext(%s, %r)' % (self, name, val)))
+        (
+            debug.logger & debug.FLAG_INS
+            and debug.logger(f"{self}: readTestNext({name}, {val!r})")
+        )
 
-        self._readNext('readTestNext', varBind, **context)
+        self._readNext("readTestNext", varBind, **context)
 
     def readGetNext(self, varBind, **context):
         """Read the next Managed Object Instance.
@@ -792,10 +813,12 @@ class ManagedMibObject(ObjectType):
         """
         name, val = varBind
 
-        (debug.logger & debug.FLAG_INS and
-         debug.logger('%s: readGetNext(%s, %r)' % (self, name, val)))
+        (
+            debug.logger & debug.FLAG_INS
+            and debug.logger(f"{self}: readGetNext({name}, {val!r})")
+        )
 
-        self._readNext('readGetNext', varBind, **context)
+        self._readNext("readGetNext", varBind, **context)
 
     # Write operation
 
@@ -845,8 +868,10 @@ class ManagedMibObject(ObjectType):
         """
         name, val = varBind
 
-        (debug.logger & debug.FLAG_INS and
-         debug.logger('%s: writeTest(%s, %r)' % (self, name, val)))
+        (
+            debug.logger & debug.FLAG_INS
+            and debug.logger(f"{self}: writeTest({name}, {val!r})")
+        )
 
         try:
             node = self.getBranch(name, **context)
@@ -899,18 +924,22 @@ class ManagedMibObject(ObjectType):
         """
         name, val = varBind
 
-        (debug.logger & debug.FLAG_INS and
-         debug.logger('%s: writeCommit(%s, %r)' % (self, name, val)))
+        (
+            debug.logger & debug.FLAG_INS
+            and debug.logger(f"{self}: writeCommit({name}, {val!r})")
+        )
 
-        cbFun = context['cbFun']
+        cbFun = context["cbFun"]
 
-        instances = context['instances'].setdefault(self.name, {self.ST_CREATE: {}, self.ST_DESTROY: {}})
-        idx = context['idx']
+        instances = context["instances"].setdefault(
+            self.name, {self.ST_CREATE: {}, self.ST_DESTROY: {}}
+        )
+        idx = context["idx"]
 
         if idx in instances[self.ST_CREATE]:
             self.createCommit(varBind, **context)
             return
- 
+
         if idx in instances[self.ST_DESTROY]:
             self.destroyCommit(varBind, **context)
             return
@@ -963,15 +992,19 @@ class ManagedMibObject(ObjectType):
         """
         name, val = varBind
 
-        (debug.logger & debug.FLAG_INS and
-         debug.logger('%s: writeCleanup(%s, %r)' % (self, name, val)))
+        (
+            debug.logger & debug.FLAG_INS
+            and debug.logger(f"{self}: writeCleanup({name}, {val!r})")
+        )
 
-        cbFun = context['cbFun']
+        cbFun = context["cbFun"]
 
         self.branchVersionId += 1
 
-        instances = context['instances'].setdefault(self.name, {self.ST_CREATE: {}, self.ST_DESTROY: {}})
-        idx = context['idx']
+        instances = context["instances"].setdefault(
+            self.name, {self.ST_CREATE: {}, self.ST_DESTROY: {}}
+        )
+        idx = context["idx"]
 
         if idx in instances[self.ST_CREATE]:
             self.createCleanup(varBind, **context)
@@ -1029,13 +1062,17 @@ class ManagedMibObject(ObjectType):
         """
         name, val = varBind
 
-        (debug.logger & debug.FLAG_INS and
-         debug.logger('%s: writeUndo(%s, %r)' % (self, name, val)))
+        (
+            debug.logger & debug.FLAG_INS
+            and debug.logger(f"{self}: writeUndo({name}, {val!r})")
+        )
 
-        cbFun = context['cbFun']
+        cbFun = context["cbFun"]
 
-        instances = context['instances'].setdefault(self.name, {self.ST_CREATE: {}, self.ST_DESTROY: {}})
-        idx = context['idx']
+        instances = context["instances"].setdefault(
+            self.name, {self.ST_CREATE: {}, self.ST_DESTROY: {}}
+        )
+        idx = context["idx"]
 
         if idx in instances[self.ST_CREATE]:
             self.createUndo(varBind, **context)
@@ -1096,7 +1133,8 @@ class MibScalar(ManagedMibObject):
                     |
                     +-----MibScalarInstance
     """
-    maxAccess = 'read-only'
+
+    maxAccess = "read-only"
 
     _suffix = (0,)
 
@@ -1111,28 +1149,28 @@ class MibScalar(ManagedMibObject):
             return ManagedMibObject.getBranch(self, name, **context)
 
         except (error.NoSuchInstanceError, error.NoSuchObjectError):
-            raise error.NoSuchInstanceError(name=name, idx=context.get('idx'))
+            raise error.NoSuchInstanceError(name=name, idx=context.get("idx"))
 
     def getNextBranch(self, name, **context):
         try:
             return ManagedMibObject.getNextBranch(self, name, **context)
 
         except (error.NoSuchInstanceError, error.NoSuchObjectError):
-            raise error.NoSuchInstanceError(name=name, idx=context.get('idx'))
+            raise error.NoSuchInstanceError(name=name, idx=context.get("idx"))
 
     def getNode(self, name, **context):
         try:
             return ManagedMibObject.getNode(self, name, **context)
 
         except (error.NoSuchInstanceError, error.NoSuchObjectError):
-            raise error.NoSuchInstanceError(name=name, idx=context.get('idx'))
+            raise error.NoSuchInstanceError(name=name, idx=context.get("idx"))
 
     def getNextNode(self, name, **context):
         try:
             return ManagedMibObject.getNextNode(self, name, **context)
 
         except (error.NoSuchInstanceError, error.NoSuchObjectError):
-            raise error.NoSuchInstanceError(name=name, idx=context.get('idx'))
+            raise error.NoSuchInstanceError(name=name, idx=context.get("idx"))
 
     # MIB instrumentation methods
 
@@ -1184,19 +1222,24 @@ class MibScalar(ManagedMibObject):
         """
         name, val = varBind
 
-        (debug.logger & debug.FLAG_INS and
-         debug.logger('%s: readGet(%s, %r)' % (self, name, val)))
+        (
+            debug.logger & debug.FLAG_INS
+            and debug.logger(f"{self}: readGet({name}, {val!r})")
+        )
 
-        cbFun = context['cbFun']
+        cbFun = context["cbFun"]
 
         if name == self.name:
             cbFun((name, exval.noSuchInstance), **context)
             return
 
-        acFun = context.get('acFun')
+        acFun = context.get("acFun")
         if acFun:
-            if (self.maxAccess not in ('read-only', 'read-write', 'read-create') or
-                    acFun('read', (name, self.syntax), **context)):
+            if self.maxAccess not in (
+                "read-only",
+                "read-write",
+                "read-create",
+            ) or acFun("read", (name, self.syntax), **context):
                 cbFun((name, exval.noSuchInstance), **context)
                 return
 
@@ -1254,20 +1297,25 @@ class MibScalar(ManagedMibObject):
         """
         name, val = varBind
 
-        (debug.logger & debug.FLAG_INS and
-         debug.logger('%s: readGetNext(%s, %r)' % (self, name, val)))
+        (
+            debug.logger & debug.FLAG_INS
+            and debug.logger(f"{self}: readGetNext({name}, {val!r})")
+        )
 
-        acFun = context.get('acFun')
+        acFun = context.get("acFun")
         if acFun:
-            if (self.maxAccess not in ('read-only', 'read-write', 'read-create') or
-                    acFun('read', (name, self.syntax), **context)):
-                nextName = context.get('nextName')
+            if self.maxAccess not in (
+                "read-only",
+                "read-write",
+                "read-create",
+            ) or acFun("read", (name, self.syntax), **context):
+                nextName = context.get("nextName")
                 if nextName:
                     varBind = nextName, exval.noSuchInstance
                 else:
                     varBind = name, exval.endOfMibView
 
-                cbFun = context['cbFun']
+                cbFun = context["cbFun"]
                 cbFun(varBind, **context)
                 return
 
@@ -1323,22 +1371,25 @@ class MibScalar(ManagedMibObject):
         """
         name, val = varBind
 
-        (debug.logger & debug.FLAG_INS and
-         debug.logger('%s: writeTest(%s, %r)' % (self, name, val)))
+        (
+            debug.logger & debug.FLAG_INS
+            and debug.logger(f"{self}: writeTest({name}, {val!r})")
+        )
 
-        acFun = context.get('acFun')
+        acFun = context.get("acFun")
         if acFun:
-            if (self.maxAccess not in ('read-write', 'read-create') or
-                    acFun('write', (name, self.syntax), **context)):
-                exc = error.NotWritableError(name=name, idx=context.get('idx'))
-                cbFun = context['cbFun']
+            if self.maxAccess not in ("read-write", "read-create") or acFun(
+                "write", (name, self.syntax), **context
+            ):
+                exc = error.NotWritableError(name=name, idx=context.get("idx"))
+                cbFun = context["cbFun"]
                 cbFun(varBind, **dict(context, error=exc))
                 return
 
         ManagedMibObject.writeTest(self, varBind, **context)
 
     def _checkSuffix(self, name):
-        suffix = name[:len(self.name)]
+        suffix = name[: len(self.name)]
         return suffix == (0,)
 
     def createTest(self, varBind, **context):
@@ -1385,35 +1436,43 @@ class MibScalar(ManagedMibObject):
         """
         name, val = varBind
 
-        (debug.logger & debug.FLAG_INS and
-         debug.logger('%s: createTest(%s, %r)' % (self, name, val)))
+        (
+            debug.logger & debug.FLAG_INS
+            and debug.logger(f"{self}: createTest({name}, {val!r})")
+        )
 
-        cbFun = context['cbFun']
+        cbFun = context["cbFun"]
 
         if not self._checkSuffix(name):
-            exc = error.NoCreationError(name=name, idx=context.get('idx'))
+            exc = error.NoCreationError(name=name, idx=context.get("idx"))
             cbFun(varBind, **dict(context, error=exc))
             return
 
-        acFun = context.get('acFun')
+        acFun = context.get("acFun")
         if acFun:
-            if self.maxAccess != 'read-create' or acFun('write', varBind, **context):
+            if self.maxAccess != "read-create" or acFun("write", varBind, **context):
                 debug.logger & debug.FLAG_ACL and debug.logger(
-                    'createTest: %s=%r %s at %s' % (name, val, self.maxAccess, self.name))
-                exc = error.NoCreationError(name=name, idx=context.get('idx'))
+                    "createTest: %s=%r %s at %s"
+                    % (name, val, self.maxAccess, self.name)
+                )
+                exc = error.NoCreationError(name=name, idx=context.get("idx"))
                 cbFun(varBind, **dict(context, error=exc))
                 return
 
-        instances = context['instances'].setdefault(self.name, {self.ST_CREATE: {}, self.ST_DESTROY: {}})
-        idx = context['idx']
+        instances = context["instances"].setdefault(
+            self.name, {self.ST_CREATE: {}, self.ST_DESTROY: {}}
+        )
+        idx = context["idx"]
 
-        instId = name[len(self.name):]
+        instId = name[len(self.name) :]
 
         if name in self._vars:
             cbFun(varBind, **context)
             return
 
-        instances[self.ST_CREATE][idx] = MibScalarInstance(self.name, instId, self.syntax.clone())
+        instances[self.ST_CREATE][idx] = MibScalarInstance(
+            self.name, instId, self.syntax.clone()
+        )
 
         instances[self.ST_CREATE][idx].writeTest((name, val), **context)
 
@@ -1462,13 +1521,17 @@ class MibScalar(ManagedMibObject):
         """
         name, val = varBind
 
-        (debug.logger & debug.FLAG_INS and
-         debug.logger('%s: writeCommit(%s, %r)' % (self, name, val)))
+        (
+            debug.logger & debug.FLAG_INS
+            and debug.logger(f"{self}: writeCommit({name}, {val!r})")
+        )
 
-        cbFun = context['cbFun']
+        cbFun = context["cbFun"]
 
-        instances = context['instances'].setdefault(self.name, {self.ST_CREATE: {}, self.ST_DESTROY: {}})
-        idx = context['idx']
+        instances = context["instances"].setdefault(
+            self.name, {self.ST_CREATE: {}, self.ST_DESTROY: {}}
+        )
+        idx = context["idx"]
 
         if name in self._vars:
             cbFun(varBind, **context)
@@ -1476,7 +1539,9 @@ class MibScalar(ManagedMibObject):
 
         # NOTE: multiple names are possible in a single PDU, that could collide
         # Therefore let's keep old object indexed by (negative) var-bind index
-        self._vars[name], instances[self.ST_CREATE][-idx - 1] = instances[self.ST_CREATE][idx], self._vars.get(name)
+        self._vars[name], instances[self.ST_CREATE][-idx - 1] = instances[
+            self.ST_CREATE
+        ][idx], self._vars.get(name)
 
         instances[self.ST_CREATE][idx].writeCommit(varBind, **context)
 
@@ -1521,11 +1586,15 @@ class MibScalar(ManagedMibObject):
         """
         name, val = varBind
 
-        (debug.logger & debug.FLAG_INS and
-         debug.logger('%s: createCleanup(%s, %r)' % (self, name, val)))
+        (
+            debug.logger & debug.FLAG_INS
+            and debug.logger(f"{self}: createCleanup({name}, {val!r})")
+        )
 
-        instances = context['instances'].setdefault(self.name, {self.ST_CREATE: {}, self.ST_DESTROY: {}})
-        idx = context['idx']
+        instances = context["instances"].setdefault(
+            self.name, {self.ST_CREATE: {}, self.ST_DESTROY: {}}
+        )
+        idx = context["idx"]
 
         self.branchVersionId += 1
 
@@ -1575,11 +1644,15 @@ class MibScalar(ManagedMibObject):
         """
         name, val = varBind
 
-        (debug.logger & debug.FLAG_INS and
-         debug.logger('%s: createUndo(%s, %r)' % (self, name, val)))
+        (
+            debug.logger & debug.FLAG_INS
+            and debug.logger(f"{self}: createUndo({name}, {val!r})")
+        )
 
-        instances = context['instances'].setdefault(self.name, {self.ST_CREATE: {}, self.ST_DESTROY: {}})
-        idx = context['idx']
+        instances = context["instances"].setdefault(
+            self.name, {self.ST_CREATE: {}, self.ST_DESTROY: {}}
+        )
+        idx = context["idx"]
 
         instances[self.ST_CREATE].pop(-idx - 1, None)
 
@@ -1588,7 +1661,7 @@ class MibScalar(ManagedMibObject):
             obj.writeUndo(varBind, **context)
 
         else:
-            cbFun = context['cbFun']
+            cbFun = context["cbFun"]
             cbFun(varBind, **context)
 
 
@@ -1610,6 +1683,7 @@ class MibScalarInstance(ManagedMibObject):
                     |
                     +-----MibScalarInstance
     """
+
     def __init__(self, typeName, instId, syntax):
         ManagedMibObject.__init__(self, typeName + instId, syntax)
         self.typeName = typeName
@@ -1620,7 +1694,9 @@ class MibScalarInstance(ManagedMibObject):
     #
 
     def getValue(self, name, **context):
-        debug.logger & debug.FLAG_INS and debug.logger('getValue: returning %r for %s' % (self.syntax, self.name))
+        debug.logger & debug.FLAG_INS and debug.logger(
+            f"getValue: returning {self.syntax!r} for {self.name}"
+        )
         return self.syntax.clone()
 
     def setValue(self, value, name, **context):
@@ -1628,18 +1704,20 @@ class MibScalarInstance(ManagedMibObject):
             value = univ.noValue
 
         try:
-            if hasattr(self.syntax, 'setValue'):
+            if hasattr(self.syntax, "setValue"):
                 return self.syntax.setValue(value)
             else:
                 return self.syntax.clone(value)
 
         except PyAsn1Error as exc:
-            debug.logger & debug.FLAG_INS and debug.logger('setValue: %s=%r failed with traceback %s' % (
-                self.name, value, traceback.format_exception(*sys.exc_info())))
+            debug.logger & debug.FLAG_INS and debug.logger(
+                "setValue: %s=%r failed with traceback %s"
+                % (self.name, value, traceback.format_exception(*sys.exc_info()))
+            )
             if isinstance(exc, error.TableRowManagement):
                 raise exc
             else:
-                raise error.WrongValueError(name=name, idx=context.get('idx'), msg=exc)
+                raise error.WrongValueError(name=name, idx=context.get("idx"), msg=exc)
 
     #
     # Subtree traversal
@@ -1652,23 +1730,23 @@ class MibScalarInstance(ManagedMibObject):
             return ManagedMibObject.getBranch(self, name, **context)
 
         except (error.NoSuchInstanceError, error.NoSuchObjectError):
-            raise error.NoSuchInstanceError(name=name, idx=context.get('idx'))
+            raise error.NoSuchInstanceError(name=name, idx=context.get("idx"))
 
     def getNextBranch(self, name, **context):
         try:
             return ManagedMibObject.getNextBranch(self, name, **context)
 
         except (error.NoSuchInstanceError, error.NoSuchObjectError):
-            raise error.NoSuchInstanceError(name=name, idx=context.get('idx'))
+            raise error.NoSuchInstanceError(name=name, idx=context.get("idx"))
 
     def getNode(self, name, **context):
         # Recursion terminator
         if name == self.name:
             return self
-        raise error.NoSuchInstanceError(name=name, idx=context.get('idx'))
+        raise error.NoSuchInstanceError(name=name, idx=context.get("idx"))
 
     def getNextNode(self, name, **context):
-        raise error.NoSuchInstanceError(name=name, idx=context.get('idx'))
+        raise error.NoSuchInstanceError(name=name, idx=context.get("idx"))
 
     # MIB instrumentation methods
 
@@ -1711,13 +1789,15 @@ class MibScalarInstance(ManagedMibObject):
         """
         name, val = varBind
 
-        (debug.logger & debug.FLAG_INS and
-         debug.logger('%s: readTest(%s, %r)' % (self, name, val)))
+        (
+            debug.logger & debug.FLAG_INS
+            and debug.logger(f"{self}: readTest({name}, {val!r})")
+        )
 
-        cbFun = context['cbFun']
+        cbFun = context["cbFun"]
 
         if name != self.name or not self.syntax.isValue:
-            exc = error.NoSuchInstanceError(name=name, idx=context.get('idx'))
+            exc = error.NoSuchInstanceError(name=name, idx=context.get("idx"))
             cbFun(varBind, **dict(context, error=exc))
             return
 
@@ -1762,13 +1842,15 @@ class MibScalarInstance(ManagedMibObject):
         """
         name, val = varBind
 
-        (debug.logger & debug.FLAG_INS and
-         debug.logger('%s: readGet(%s, %r)' % (self, name, val)))
+        (
+            debug.logger & debug.FLAG_INS
+            and debug.logger(f"{self}: readGet({name}, {val!r})")
+        )
 
-        cbFun = context['cbFun']
+        cbFun = context["cbFun"]
 
         if name != self.name or not self.syntax.isValue:
-            exc = error.NoSuchInstanceError(name=name, idx=context.get('idx'))
+            exc = error.NoSuchInstanceError(name=name, idx=context.get("idx"))
             cbFun(varBind, **dict(context, error=exc))
             return
 
@@ -1821,13 +1903,15 @@ class MibScalarInstance(ManagedMibObject):
         """
         name, val = varBind
 
-        (debug.logger & debug.FLAG_INS and
-         debug.logger('%s: readTestNext(%s, %r)' % (self, name, val)))
+        (
+            debug.logger & debug.FLAG_INS
+            and debug.logger(f"{self}: readTestNext({name}, {val!r})")
+        )
 
-        cbFun = context['cbFun']
+        cbFun = context["cbFun"]
 
         if name >= self.name or not self.syntax.isValue:
-            nextName = context.get('nextName')
+            nextName = context.get("nextName")
             if nextName:
                 varBind = nextName, exval.noSuchInstance
             else:
@@ -1879,13 +1963,15 @@ class MibScalarInstance(ManagedMibObject):
         """
         name, val = varBind
 
-        (debug.logger & debug.FLAG_INS and
-         debug.logger('%s: readGetNext(%s, %r)' % (self, name, val)))
+        (
+            debug.logger & debug.FLAG_INS
+            and debug.logger(f"{self}: readGetNext({name}, {val!r})")
+        )
 
-        cbFun = context['cbFun']
+        cbFun = context["cbFun"]
 
         if name >= self.name or not self.syntax.isValue:
-            nextName = context.get('nextName')
+            nextName = context.get("nextName")
             if nextName:
                 varBind = nextName, exval.noSuchInstance
             else:
@@ -1944,16 +2030,20 @@ class MibScalarInstance(ManagedMibObject):
         """
         name, val = varBind
 
-        (debug.logger & debug.FLAG_INS and
-         debug.logger('%s: writeTest(%s, %r)' % (self, name, val)))
+        (
+            debug.logger & debug.FLAG_INS
+            and debug.logger(f"{self}: writeTest({name}, {val!r})")
+        )
 
-        cbFun = context['cbFun']
+        cbFun = context["cbFun"]
 
-        instances = context['instances'].setdefault(self.name, {self.ST_CREATE: {}, self.ST_DESTROY: {}})
-        idx = context['idx']
+        instances = context["instances"].setdefault(
+            self.name, {self.ST_CREATE: {}, self.ST_DESTROY: {}}
+        )
+        idx = context["idx"]
 
         if name != self.name:
-            exc = error.NoSuchInstanceError(name=name, idx=context.get('idx'))
+            exc = error.NoSuchInstanceError(name=name, idx=context.get("idx"))
             cbFun(varBind, **dict(context, error=exc))
 
         # Make sure write's allowed
@@ -1962,13 +2052,13 @@ class MibScalarInstance(ManagedMibObject):
 
         except error.MibOperationError as exc:
             # SMI exceptions may carry additional content
-            if 'syntax' in exc:
-                instances[self.ST_CREATE][idx] = exc['syntax']
+            if "syntax" in exc:
+                instances[self.ST_CREATE][idx] = exc["syntax"]
                 cbFun(varBind, **dict(context, error=exc))
                 return
 
             else:
-                exc = error.WrongValueError(name=name, idx=context.get('idx'), msg=exc)
+                exc = error.WrongValueError(name=name, idx=context.get("idx"), msg=exc)
                 cbFun(varBind, **dict(context, error=exc))
                 return
 
@@ -2018,15 +2108,22 @@ class MibScalarInstance(ManagedMibObject):
         """
         name, val = varBind
 
-        (debug.logger & debug.FLAG_INS and
-         debug.logger('%s: writeCommit(%s, %r)' % (self, name, val)))
+        (
+            debug.logger & debug.FLAG_INS
+            and debug.logger(f"{self}: writeCommit({name}, {val!r})")
+        )
 
-        instances = context['instances'].setdefault(self.name, {self.ST_CREATE: {}, self.ST_DESTROY: {}})
-        idx = context['idx']
+        instances = context["instances"].setdefault(
+            self.name, {self.ST_CREATE: {}, self.ST_DESTROY: {}}
+        )
+        idx = context["idx"]
 
-        instances[self.ST_CREATE][-idx - 1], self.syntax = self.syntax, instances[self.ST_CREATE][idx]
+        instances[self.ST_CREATE][-idx - 1], self.syntax = (
+            self.syntax,
+            instances[self.ST_CREATE][idx],
+        )
 
-        cbFun = context['cbFun']
+        cbFun = context["cbFun"]
         cbFun((self.name, self.syntax), **context)
 
     def writeCleanup(self, varBind, **context):
@@ -2070,18 +2167,22 @@ class MibScalarInstance(ManagedMibObject):
         """
         name, val = varBind
 
-        (debug.logger & debug.FLAG_INS and
-         debug.logger('%s: writeCleanup(%s, %r)' % (self, name, val)))
+        (
+            debug.logger & debug.FLAG_INS
+            and debug.logger(f"{self}: writeCleanup({name}, {val!r})")
+        )
 
-        instances = context['instances'].setdefault(self.name, {self.ST_CREATE: {}, self.ST_DESTROY: {}})
-        idx = context['idx']
+        instances = context["instances"].setdefault(
+            self.name, {self.ST_CREATE: {}, self.ST_DESTROY: {}}
+        )
+        idx = context["idx"]
 
         self.branchVersionId += 1
 
         instances[self.ST_CREATE].pop(idx, None)
         instances[self.ST_CREATE].pop(-idx - 1, None)
 
-        cbFun = context['cbFun']
+        cbFun = context["cbFun"]
         cbFun((self.name, self.syntax), **context)
 
     def writeUndo(self, varBind, **context):
@@ -2125,20 +2226,25 @@ class MibScalarInstance(ManagedMibObject):
         """
         name, val = varBind
 
-        (debug.logger & debug.FLAG_INS and
-         debug.logger('%s: writeUndo(%s, %r)' % (self, name, val)))
+        (
+            debug.logger & debug.FLAG_INS
+            and debug.logger(f"{self}: writeUndo({name}, {val!r})")
+        )
 
-        instances = context['instances'].setdefault(self.name, {self.ST_CREATE: {}, self.ST_DESTROY: {}})
-        idx = context['idx']
+        instances = context["instances"].setdefault(
+            self.name, {self.ST_CREATE: {}, self.ST_DESTROY: {}}
+        )
+        idx = context["idx"]
 
         self.syntax = instances[self.ST_CREATE].pop(-idx - 1, None)
         instances[self.ST_CREATE].pop(idx, None)
 
-        cbFun = context['cbFun']
+        cbFun = context["cbFun"]
         cbFun((self.name, self.syntax), **context)
 
 
 # Conceptual table classes
+
 
 class MibTableColumn(MibScalar, ObjectType):
     """Managed columnar instance MIB object.
@@ -2174,7 +2280,7 @@ class MibTableColumn(MibScalar, ObjectType):
     def getBranch(self, name, **context):
         if name in self._vars:
             return self._vars[name]
-        raise error.NoSuchInstanceError(name=name, idx=context.get('idx'))
+        raise error.NoSuchInstanceError(name=name, idx=context.get("idx"))
 
     # Column creation (this should probably be converted into some state
     # machine for clarity). Also, it might be a good idea to indicate
@@ -2182,7 +2288,7 @@ class MibTableColumn(MibScalar, ObjectType):
 
     def _checkSuffix(self, name):
         # NOTE: we could have verified the index validity
-        return name[:len(self.name)]
+        return name[: len(self.name)]
 
     # Column destruction
 
@@ -2230,25 +2336,31 @@ class MibTableColumn(MibScalar, ObjectType):
         """
         name, val = varBind
 
-        (debug.logger & debug.FLAG_INS and
-         debug.logger('%s: destroyTest(%s, %r)' % (self, name, val)))
+        (
+            debug.logger & debug.FLAG_INS
+            and debug.logger(f"{self}: destroyTest({name}, {val!r})")
+        )
 
-        cbFun = context['cbFun']
+        cbFun = context["cbFun"]
 
-        instances = context['instances'].setdefault(self.name, {self.ST_CREATE: {}, self.ST_DESTROY: {}})
-        idx = context['idx']
+        instances = context["instances"].setdefault(
+            self.name, {self.ST_CREATE: {}, self.ST_DESTROY: {}}
+        )
+        idx = context["idx"]
 
         if not self._checkSuffix(name):
-            exc = error.NotWritableError(name=name, idx=context.get('idx'))
+            exc = error.NotWritableError(name=name, idx=context.get("idx"))
             cbFun(varBind, **dict(context, error=exc))
             return
 
-        acFun = context.get('acFun')
+        acFun = context.get("acFun")
         if acFun:
-            if self.maxAccess != 'read-create' or acFun('write', varBind, **context):
+            if self.maxAccess != "read-create" or acFun("write", varBind, **context):
                 debug.logger & debug.FLAG_ACL and debug.logger(
-                    'destroyTest: %s=%r %s at %s' % (name, val, self.maxAccess, self.name))
-                exc = error.NotWritableError(name=name, idx=context.get('idx'))
+                    "destroyTest: %s=%r %s at %s"
+                    % (name, val, self.maxAccess, self.name)
+                )
+                exc = error.NotWritableError(name=name, idx=context.get("idx"))
                 cbFun(varBind, **dict(context, error=exc))
                 return
 
@@ -2259,8 +2371,12 @@ class MibTableColumn(MibScalar, ObjectType):
             pass
 
         else:
-            (debug.logger & debug.FLAG_INS and
-             debug.logger('%s: terminated columnar instance %s creation' % (self, name)))
+            (
+                debug.logger & debug.FLAG_INS
+                and debug.logger(
+                    f"{self}: terminated columnar instance {name} creation"
+                )
+            )
 
         cbFun(varBind, **context)
 
@@ -2309,11 +2425,15 @@ class MibTableColumn(MibScalar, ObjectType):
         """
         name, val = varBind
 
-        (debug.logger & debug.FLAG_INS and
-         debug.logger('%s: destroyCommit(%s, %r)' % (self, name, val)))
+        (
+            debug.logger & debug.FLAG_INS
+            and debug.logger(f"{self}: destroyCommit({name}, {val!r})")
+        )
 
-        instances = context['instances'].setdefault(self.name, {self.ST_CREATE: {}, self.ST_DESTROY: {}})
-        idx = context['idx']
+        instances = context["instances"].setdefault(
+            self.name, {self.ST_CREATE: {}, self.ST_DESTROY: {}}
+        )
+        idx = context["idx"]
 
         # NOTE: multiple names are possible in a single PDU, that could collide
         # Therefore let's keep old object indexed by (negative) var-bind index
@@ -2323,7 +2443,7 @@ class MibTableColumn(MibScalar, ObjectType):
         except KeyError:
             pass
 
-        cbFun = context['cbFun']
+        cbFun = context["cbFun"]
         cbFun(varBind, **context)
 
     def destroyCleanup(self, varBind, **context):
@@ -2368,18 +2488,22 @@ class MibTableColumn(MibScalar, ObjectType):
         """
         name, val = varBind
 
-        (debug.logger & debug.FLAG_INS and
-         debug.logger('%s: destroyCleanup(%s, %r)' % (self, name, val)))
+        (
+            debug.logger & debug.FLAG_INS
+            and debug.logger(f"{self}: destroyCleanup({name}, {val!r})")
+        )
 
         self.branchVersionId += 1
 
-        instances = context['instances'].setdefault(self.name, {self.ST_CREATE: {}, self.ST_DESTROY: {}})
-        idx = context['idx']
+        instances = context["instances"].setdefault(
+            self.name, {self.ST_CREATE: {}, self.ST_DESTROY: {}}
+        )
+        idx = context["idx"]
 
         instances[self.ST_DESTROY].pop(idx, None)
         instances[self.ST_DESTROY].pop(-idx - 1, None)
 
-        cbFun = context['cbFun']
+        cbFun = context["cbFun"]
         cbFun(varBind, **context)
 
     def destroyUndo(self, varBind, **context):
@@ -2424,11 +2548,15 @@ class MibTableColumn(MibScalar, ObjectType):
         """
         name, val = varBind
 
-        (debug.logger & debug.FLAG_INS and
-         debug.logger('%s: destroyUndo(%s, %r)' % (self, name, val)))
+        (
+            debug.logger & debug.FLAG_INS
+            and debug.logger(f"{self}: destroyUndo({name}, {val!r})")
+        )
 
-        instances = context['instances'].setdefault(self.name, {self.ST_CREATE: {}, self.ST_DESTROY: {}})
-        idx = context['idx']
+        instances = context["instances"].setdefault(
+            self.name, {self.ST_CREATE: {}, self.ST_DESTROY: {}}
+        )
+        idx = context["idx"]
 
         try:
             self._vars[name] = instances[self.ST_DESTROY].pop(-idx - 1)
@@ -2438,7 +2566,7 @@ class MibTableColumn(MibScalar, ObjectType):
 
         instances[self.ST_DESTROY].pop(idx, None)
 
-        cbFun = context['cbFun']
+        cbFun = context["cbFun"]
         cbFun(varBind, **context)
 
 
@@ -2504,19 +2632,22 @@ class MibTableRow(ManagedMibObject):
         :py:class:`object` - Initialized instance of `syntax`
         """
         if not identifier:
-            raise error.SmiError('Short OID for index %r' % (syntax,))
+            raise error.SmiError(f"Short OID for index {syntax!r}")
 
-        if hasattr(syntax, 'cloneFromName'):
+        if hasattr(syntax, "cloneFromName"):
             return syntax.cloneFromName(
-                identifier, impliedFlag, parentRow=self, parentIndices=parentIndices)
+                identifier, impliedFlag, parentRow=self, parentIndices=parentIndices
+            )
 
         baseTag = syntax.getTagSet().getBaseTag()
         if baseTag == Integer.tagSet.getBaseTag():
             return syntax.clone(identifier[0]), identifier[1:]
 
         elif IpAddress.tagSet.isSuperTagSetOf(syntax.getTagSet()):
-            return syntax.clone(
-                '.'.join([str(x) for x in identifier[:4]])), identifier[4:]
+            return (
+                syntax.clone(".".join([str(x) for x in identifier[:4]])),
+                identifier[4:],
+            )
 
         elif baseTag == OctetString.tagSet.getBaseTag():
             # rfc1902, 7.7
@@ -2528,24 +2659,30 @@ class MibTableRow(ManagedMibObject):
                 return syntax.clone(tuple(identifier[:l])), identifier[l:]
 
             else:
-                return syntax.clone(
-                    tuple(identifier[1:identifier[0] + 1])), identifier[identifier[0] + 1:]
+                return (
+                    syntax.clone(tuple(identifier[1 : identifier[0] + 1])),
+                    identifier[identifier[0] + 1 :],
+                )
 
         elif baseTag == ObjectIdentifier.tagSet.getBaseTag():
             if impliedFlag:
                 return syntax.clone(identifier), ()
 
             else:
-                return syntax.clone(
-                    identifier[1:identifier[0] + 1]), identifier[identifier[0] + 1:]
+                return (
+                    syntax.clone(identifier[1 : identifier[0] + 1]),
+                    identifier[identifier[0] + 1 :],
+                )
 
         # rfc2578, 7.1
         elif baseTag == Bits.tagSet.getBaseTag():
-            return syntax.clone(
-                tuple(identifier[1:identifier[0] + 1])), identifier[identifier[0] + 1:]
+            return (
+                syntax.clone(tuple(identifier[1 : identifier[0] + 1])),
+                identifier[identifier[0] + 1 :],
+            )
 
         else:
-            raise error.SmiError('Unknown value type for index %r' % (syntax,))
+            raise error.SmiError(f"Unknown value type for index {syntax!r}")
 
     setFromName = oidToValue
 
@@ -2577,12 +2714,14 @@ class MibTableRow(ManagedMibObject):
         :py:class:`tuple` - tuple of integers representing the tail piece
             of an OBJECT IDENTIFIER (i.e. tabular object instance ID)
         """
-        if hasattr(value, 'cloneAsName'):
-            return value.cloneAsName(impliedFlag, parentRow=self, parentIndices=parentIndices)
+        if hasattr(value, "cloneAsName"):
+            return value.cloneAsName(
+                impliedFlag, parentRow=self, parentIndices=parentIndices
+            )
 
         baseTag = value.getTagSet().getBaseTag()
         if baseTag == Integer.tagSet.getBaseTag():
-            return int(value),
+            return (int(value),)
 
         elif IpAddress.tagSet.isSuperTagSetOf(value.getTagSet()):
             return value.asNumbers()
@@ -2605,7 +2744,7 @@ class MibTableRow(ManagedMibObject):
             return (len(value),) + value.asNumbers()
 
         else:
-            raise error.SmiError('Unknown value type for index %r' % (value,))
+            raise error.SmiError(f"Unknown value type for index {value!r}")
 
     getAsName = valueToOid
 
@@ -2649,20 +2788,21 @@ class MibTableRow(ManagedMibObject):
         """
         name, val = varBind
 
-        cbFun = context['cbFun']
+        cbFun = context["cbFun"]
 
         if not self._augmentingRows:
             cbFun(varBind, **context)
             return
 
         # Convert OID suffix into index values
-        instId = name[len(self.name) + 1:]
+        instId = name[len(self.name) + 1 :]
         baseIndices = []
         indices = []
         for impliedFlag, modName, symName in self._indexNames:
-            mibObj, = mibBuilder.importSymbols(modName, symName)
-            syntax, instId = self.oidToValue(mibObj.syntax, instId,
-                                             impliedFlag, indices)
+            (mibObj,) = mibBuilder.importSymbols(modName, symName)
+            syntax, instId = self.oidToValue(
+                mibObj.syntax, instId, impliedFlag, indices
+            )
 
             if self.name == mibObj.name[:-1]:
                 baseIndices.append((mibObj.name, syntax))
@@ -2670,7 +2810,9 @@ class MibTableRow(ManagedMibObject):
             indices.append(syntax)
 
         if instId:
-            exc = error.SmiError('Excessive instance identifier sub-OIDs left at %s: %s' % (self, instId))
+            exc = error.SmiError(
+                f"Excessive instance identifier sub-OIDs left at {self}: {instId}"
+            )
             cbFun(varBind, **dict(context, error=exc))
             return
 
@@ -2687,10 +2829,14 @@ class MibTableRow(ManagedMibObject):
                 cbFun(varBind, **context)
 
         for modName, mibSym in self._augmentingRows:
-            mibObj, = mibBuilder.importSymbols(modName, mibSym)
-            mibObj.receiveManagementEvent(action, (baseIndices, val), **dict(context, cbFun=_cbFun))
+            (mibObj,) = mibBuilder.importSymbols(modName, mibSym)
+            mibObj.receiveManagementEvent(
+                action, (baseIndices, val), **dict(context, cbFun=_cbFun)
+            )
 
-            debug.logger & debug.FLAG_INS and debug.logger('announceManagementEvent %s to %s' % (action, mibObj))
+            debug.logger & debug.FLAG_INS and debug.logger(
+                f"announceManagementEvent {action} to {mibObj}"
+            )
 
     def receiveManagementEvent(self, action, varBind, **context):
         """Apply mass operation on extending table's row.
@@ -2737,7 +2883,7 @@ class MibTableRow(ManagedMibObject):
 
         # Resolve indices intersection
         for impliedFlag, modName, symName in self._indexNames:
-            mibObj, = mibBuilder.importSymbols(modName, symName)
+            (mibObj,) = mibBuilder.importSymbols(modName, symName)
             parentIndices = []
             for name, syntax in baseIndices:
                 if name == mibObj.name:
@@ -2746,7 +2892,8 @@ class MibTableRow(ManagedMibObject):
 
         if instId:
             debug.logger & debug.FLAG_INS and debug.logger(
-                'receiveManagementEvent %s for suffix %s' % (action, instId))
+                f"receiveManagementEvent {action} for suffix {instId}"
+            )
 
             self._manageColumns(action, (self.name + (0,) + instId, val), **context)
 
@@ -2771,7 +2918,7 @@ class MibTableRow(ManagedMibObject):
         for name in names:
             if name in self._augmentingRows:
                 raise error.SmiError(
-                    'Row %s already augmented by %s::%s' % (self.name, name[0], name[1])
+                    f"Row {self.name} already augmented by {name[0]}::{name[1]}"
                 )
 
             self._augmentingRows.add(name)
@@ -2822,10 +2969,12 @@ class MibTableRow(ManagedMibObject):
         """
         name, val = varBind
 
-        (debug.logger & debug.FLAG_INS and
-         debug.logger('%s: _manageColumns(%s, %s, %r)' % (self, action, name, val)))
+        (
+            debug.logger & debug.FLAG_INS
+            and debug.logger(f"{self}: _manageColumns({action}, {name}, {val!r})")
+        )
 
-        cbFun = context['cbFun']
+        cbFun = context["cbFun"]
 
         colLen = len(self.name) + 1
 
@@ -2836,8 +2985,10 @@ class MibTableRow(ManagedMibObject):
         indices = []
 
         for impliedFlag, modName, symName in self._indexNames:
-            mibObj, = mibBuilder.importSymbols(modName, symName)
-            syntax, instId = self.oidToValue(mibObj.syntax, instId, impliedFlag, indices)
+            (mibObj,) = mibBuilder.importSymbols(modName, symName)
+            syntax, instId = self.oidToValue(
+                mibObj.syntax, instId, impliedFlag, indices
+            )
             indexVals[mibObj.name] = syntax
             indices.append(syntax)
 
@@ -2853,7 +3004,7 @@ class MibTableRow(ManagedMibObject):
                 cbFun(varBind, **context)
 
         for colName, colObj in self._vars.items():
-            acFun = context.get('acFun')
+            acFun = context.get("acFun")
 
             if colName in indexVals:
                 colInstanceValue = indexVals[colName]
@@ -2871,12 +3022,21 @@ class MibTableRow(ManagedMibObject):
 
             colInstanceName = colName + name[colLen:]
 
-            actionFun((colInstanceName, colInstanceValue),
-                      **dict(context, acFun=acFun, cbFun=_cbFun))
+            actionFun(
+                (colInstanceName, colInstanceValue),
+                **dict(context, acFun=acFun, cbFun=_cbFun),
+            )
 
             debug.logger & debug.FLAG_INS and debug.logger(
-                '_manageColumns: action %s name %s instance %s %svalue %r' % (
-                    action, name, instId, name in indexVals and "index " or "", indexVals.get(name, val)))
+                "_manageColumns: action %s name %s instance %s %svalue %r"
+                % (
+                    action,
+                    name,
+                    instId,
+                    name in indexVals and "index " or "",
+                    indexVals.get(name, val),
+                )
+            )
 
     def _checkColumns(self, varBind, **context):
         """Check the consistency of all columns.
@@ -2909,10 +3069,12 @@ class MibTableRow(ManagedMibObject):
         """
         name, val = varBind
 
-        (debug.logger & debug.FLAG_INS and
-         debug.logger('%s: _checkColumns(%s, %r)' % (self, name, val)))
+        (
+            debug.logger & debug.FLAG_INS
+            and debug.logger(f"{self}: _checkColumns({name}, {val!r})")
+        )
 
-        cbFun = context['cbFun']
+        cbFun = context["cbFun"]
 
         # RowStatus != active
         if val != 1:
@@ -2927,10 +3089,12 @@ class MibTableRow(ManagedMibObject):
             name, val = varBind
 
             if count[0] >= 0:
-                exc = context.get('error')
+                exc = context.get("error")
                 if exc or not val.hasValue():
                     count[0] = -1  # ignore the rest of callbacks
-                    exc = error.InconsistentValueError(msg='Inconsistent column %s: %s' % (name, exc))
+                    exc = error.InconsistentValueError(
+                        msg=f"Inconsistent column {name}: {exc}"
+                    )
                     cbFun(varBind, **dict(context, error=exc))
                     return
 
@@ -2946,7 +3110,8 @@ class MibTableRow(ManagedMibObject):
             colObj.readGet((instName, None), **dict(context, cbFun=_cbFun))
 
             debug.logger & debug.FLAG_INS and debug.logger(
-                '%s: _checkColumns: checking instance %s' % (self, instName))
+                f"{self}: _checkColumns: checking instance {instName}"
+            )
 
     def writeTest(self, varBind, **context):
         """Test the ability to create/destroy or modify Managed Object Instance.
@@ -2996,35 +3161,51 @@ class MibTableRow(ManagedMibObject):
         """
         name, val = varBind
 
-        (debug.logger & debug.FLAG_INS and
-         debug.logger('%s: writeTest(%s, %r)' % (self, name, val)))
+        (
+            debug.logger & debug.FLAG_INS
+            and debug.logger(f"{self}: writeTest({name}, {val!r})")
+        )
 
-        cbFun = context['cbFun']
+        cbFun = context["cbFun"]
 
-        instances = context['instances'].setdefault(self.name, {self.ST_CREATE: {}, self.ST_DESTROY: {}})
-        idx = context['idx']
+        instances = context["instances"].setdefault(
+            self.name, {self.ST_CREATE: {}, self.ST_DESTROY: {}}
+        )
+        idx = context["idx"]
 
         def _cbFun(varBind, **context):
-            exc = context.get('error')
+            exc = context.get("error")
             if exc:
                 instances[idx] = exc
 
                 if isinstance(exc, error.RowCreationWanted):
-                    def _cbFun(*args, **context):
-                        self.announceManagementEvent('createTest', varBind, **dict(context, cbFun=cbFun))
 
-                    self._manageColumns('createTest', varBind, **dict(context, cbFun=_cbFun, error=None))
+                    def _cbFun(*args, **context):
+                        self.announceManagementEvent(
+                            "createTest", varBind, **dict(context, cbFun=cbFun)
+                        )
+
+                    self._manageColumns(
+                        "createTest", varBind, **dict(context, cbFun=_cbFun, error=None)
+                    )
                     return
 
                 if isinstance(exc, error.RowDestructionWanted):
-                    def _cbFun(*args, **context):
-                        self.announceManagementEvent('destroyTest', varBind, **dict(context, cbFun=cbFun))
 
-                    self._manageColumns('destroyTest', varBind, **dict(context, cbFun=_cbFun, error=None))
+                    def _cbFun(*args, **context):
+                        self.announceManagementEvent(
+                            "destroyTest", varBind, **dict(context, cbFun=cbFun)
+                        )
+
+                    self._manageColumns(
+                        "destroyTest",
+                        varBind,
+                        **dict(context, cbFun=_cbFun, error=None),
+                    )
                     return
 
                 if isinstance(exc, error.RowConsistencyWanted):
-                    context['error'] = None
+                    context["error"] = None
 
             cbFun(varBind, **context)
 
@@ -3078,13 +3259,17 @@ class MibTableRow(ManagedMibObject):
         """
         name, val = varBind
 
-        (debug.logger & debug.FLAG_INS and
-         debug.logger('%s: writeCommit(%s, %r)' % (self, name, val)))
+        (
+            debug.logger & debug.FLAG_INS
+            and debug.logger(f"{self}: writeCommit({name}, {val!r})")
+        )
 
-        cbFun = context['cbFun']
+        cbFun = context["cbFun"]
 
-        instances = context['instances'].setdefault(self.name, {self.ST_CREATE: {}, self.ST_DESTROY: {}})
-        idx = context['idx']
+        instances = context["instances"].setdefault(
+            self.name, {self.ST_CREATE: {}, self.ST_DESTROY: {}}
+        )
+        idx = context["idx"]
 
         def _cbFun(varBind, **context):
             if idx in instances:
@@ -3092,24 +3277,33 @@ class MibTableRow(ManagedMibObject):
                 if isinstance(exc, error.RowCreationWanted):
 
                     def _cbFun(*args, **context):
-                        exc = context.get('error')
+                        exc = context.get("error")
                         if exc:
                             cbFun(varBind, **context)
                             return
 
                         def _cbFun(*args, **context):
-                            self.announceManagementEvent('createCommit', varBind, **dict(context, cbFun=cbFun))
+                            self.announceManagementEvent(
+                                "createCommit", varBind, **dict(context, cbFun=cbFun)
+                            )
 
                         self._checkColumns(varBind, **dict(context, cbFun=_cbFun))
 
-                    self._manageColumns('createCommit', varBind, **dict(context, cbFun=_cbFun))
+                    self._manageColumns(
+                        "createCommit", varBind, **dict(context, cbFun=_cbFun)
+                    )
                     return
 
                 if isinstance(exc, error.RowDestructionWanted):
-                    def _cbFun(*args, **context):
-                        self.announceManagementEvent('destroyCommit', varBind, **dict(context, cbFun=cbFun))
 
-                    self._manageColumns('destroyCommit', varBind, **dict(context, cbFun=_cbFun))
+                    def _cbFun(*args, **context):
+                        self.announceManagementEvent(
+                            "destroyCommit", varBind, **dict(context, cbFun=cbFun)
+                        )
+
+                    self._manageColumns(
+                        "destroyCommit", varBind, **dict(context, cbFun=_cbFun)
+                    )
                     return
 
                 if isinstance(exc, error.RowConsistencyWanted):
@@ -3164,29 +3358,43 @@ class MibTableRow(ManagedMibObject):
         """
         name, val = varBind
 
-        (debug.logger & debug.FLAG_INS and
-         debug.logger('%s: writeCleanup(%s, %r)' % (self, name, val)))
+        (
+            debug.logger & debug.FLAG_INS
+            and debug.logger(f"{self}: writeCleanup({name}, {val!r})")
+        )
 
-        cbFun = context['cbFun']
+        cbFun = context["cbFun"]
 
-        instances = context['instances'].setdefault(self.name, {self.ST_CREATE: {}, self.ST_DESTROY: {}})
-        idx = context['idx']
+        instances = context["instances"].setdefault(
+            self.name, {self.ST_CREATE: {}, self.ST_DESTROY: {}}
+        )
+        idx = context["idx"]
 
         def _cbFun(varBind, **context):
             if idx in instances:
                 exc = instances.pop(idx)
                 if isinstance(exc, error.RowCreationWanted):
-                    def _cbFun(*args, **context):
-                        self.announceManagementEvent('createCleanup', varBind, **dict(context, cbFun=cbFun))
 
-                    self._manageColumns('createCleanup', varBind, **dict(context, cbFun=_cbFun))
+                    def _cbFun(*args, **context):
+                        self.announceManagementEvent(
+                            "createCleanup", varBind, **dict(context, cbFun=cbFun)
+                        )
+
+                    self._manageColumns(
+                        "createCleanup", varBind, **dict(context, cbFun=_cbFun)
+                    )
                     return
 
                 if isinstance(exc, error.RowDestructionWanted):
-                    def _cbFun(*args, **context):
-                        self.announceManagementEvent('destroyCleanup', varBind, **dict(context, cbFun=cbFun))
 
-                    self._manageColumns('destroyCleanup', varBind, **dict(context, cbFun=_cbFun))
+                    def _cbFun(*args, **context):
+                        self.announceManagementEvent(
+                            "destroyCleanup", varBind, **dict(context, cbFun=cbFun)
+                        )
+
+                    self._manageColumns(
+                        "destroyCleanup", varBind, **dict(context, cbFun=_cbFun)
+                    )
                     return
 
             cbFun(varBind, **context)
@@ -3237,29 +3445,43 @@ class MibTableRow(ManagedMibObject):
         """
         name, val = varBind
 
-        (debug.logger & debug.FLAG_INS and
-         debug.logger('%s: writeUndo(%s, %r)' % (self, name, val)))
+        (
+            debug.logger & debug.FLAG_INS
+            and debug.logger(f"{self}: writeUndo({name}, {val!r})")
+        )
 
-        cbFun = context['cbFun']
+        cbFun = context["cbFun"]
 
-        instances = context['instances'].setdefault(self.name, {self.ST_CREATE: {}, self.ST_DESTROY: {}})
-        idx = context['idx']
+        instances = context["instances"].setdefault(
+            self.name, {self.ST_CREATE: {}, self.ST_DESTROY: {}}
+        )
+        idx = context["idx"]
 
         def _cbFun(varBind, **context):
             if idx in instances:
                 exc = instances.pop(idx)
                 if isinstance(exc, error.RowCreationWanted):
-                    def _cbFun(*args, **context):
-                        self.announceManagementEvent('createUndo', varBind, **dict(context, cbFun=cbFun))
 
-                    self._manageColumns('createUndo', varBind, **dict(context, cbFun=_cbFun))
+                    def _cbFun(*args, **context):
+                        self.announceManagementEvent(
+                            "createUndo", varBind, **dict(context, cbFun=cbFun)
+                        )
+
+                    self._manageColumns(
+                        "createUndo", varBind, **dict(context, cbFun=_cbFun)
+                    )
                     return
 
                 if isinstance(exc, error.RowDestructionWanted):
-                    def _cbFun(*args, **context):
-                        self.announceManagementEvent('destroyUndo', varBind, **dict(context, cbFun=cbFun))
 
-                    self._manageColumns('destroyUndo', varBind, **dict(context, cbFun=_cbFun))
+                    def _cbFun(*args, **context):
+                        self.announceManagementEvent(
+                            "destroyUndo", varBind, **dict(context, cbFun=cbFun)
+                        )
+
+                    self._manageColumns(
+                        "destroyUndo", varBind, **dict(context, cbFun=_cbFun)
+                    )
                     return
 
             cbFun(varBind, **context)
@@ -3282,12 +3504,16 @@ class MibTableRow(ManagedMibObject):
 
         indices = []
         for impliedFlag, modName, symName in self._indexNames:
-            mibObj, = mibBuilder.importSymbols(modName, symName)
+            (mibObj,) = mibBuilder.importSymbols(modName, symName)
             try:
-                syntax, instId = self.oidToValue(mibObj.syntax, instId, impliedFlag, indices)
+                syntax, instId = self.oidToValue(
+                    mibObj.syntax, instId, impliedFlag, indices
+                )
             except PyAsn1Error as exc:
                 debug.logger & debug.FLAG_INS and debug.logger(
-                    'error resolving table indices at %s, %s: %s' % (self.__class__.__name__, instId, exc))
+                    "error resolving table indices at %s, %s: %s"
+                    % (self.__class__.__name__, instId, exc)
+                )
                 indices = [instId]
                 instId = ()
                 break
@@ -3296,8 +3522,7 @@ class MibTableRow(ManagedMibObject):
 
         if instId:
             raise error.SmiError(
-                'Excessive instance identifier sub-OIDs left at %s: %s' %
-                (self, instId)
+                f"Excessive instance identifier sub-OIDs left at {self}: {instId}"
             )
 
         indices = tuple(indices)
@@ -3319,7 +3544,7 @@ class MibTableRow(ManagedMibObject):
         for impliedFlag, modName, symName in self._indexNames:
             if idx >= len(indices):
                 break
-            mibObj, = mibBuilder.importSymbols(modName, symName)
+            (mibObj,) = mibBuilder.importSymbols(modName, symName)
             syntax = mibObj.syntax.clone(indices[idx])
             instId += self.valueToOid(syntax, impliedFlag, parentIndices)
             parentIndices.append(syntax)
@@ -3338,9 +3563,7 @@ class MibTableRow(ManagedMibObject):
         """Build column instance names from indices"""
         instNames = []
         for columnName in self._vars.keys():
-            instNames.append(
-                self.getInstNameByIndex(*(columnName[-1],) + indices)
-            )
+            instNames.append(self.getInstNameByIndex(*(columnName[-1],) + indices))
 
         return tuple(instNames)
 
@@ -3370,15 +3593,15 @@ class MibTable(ManagedMibObject):
 zeroDotZero = ObjectIdentity((0, 0))
 
 # OID tree
-itu_t = MibScalar((0,)).setLabel('itu-t')
+itu_t = MibScalar((0,)).setLabel("itu-t")
 iso = MibTree((1,))
-#joint_iso_itu_t = MibScalar((2,)).setLabel('joint-iso-itu-t')
+# joint_iso_itu_t = MibScalar((2,)).setLabel('joint-iso-itu-t')
 org = MibIdentifier(iso.name + (3,))
 dod = MibIdentifier(org.name + (6,))
 internet = MibIdentifier(dod.name + (1,))
 directory = MibIdentifier(internet.name + (1,))
 mgmt = MibIdentifier(internet.name + (2,))
-mib_2 = MibIdentifier(mgmt.name + (1,)).setLabel('mib-2')
+mib_2 = MibIdentifier(mgmt.name + (1,)).setLabel("mib-2")
 transmission = MibIdentifier(mib_2.name + (10,))
 experimental = MibIdentifier(internet.name + (3,))
 private = MibIdentifier(internet.name + (4,))
@@ -3392,45 +3615,47 @@ snmpModules = MibIdentifier(snmpV2.name + (3,))
 
 mibBuilder.exportSymbols(
     "SNMPv2-SMI",
-    **{"MibNode": MibNode,
-       "Integer32": Integer32,
-       "Bits": Bits,
-       "IpAddress": IpAddress,
-       "Counter32": Counter32,
-       "Gauge32": Gauge32,
-       "Unsigned32": Unsigned32,
-       "TimeTicks": TimeTicks,
-       "Opaque": Opaque,
-       "Counter64": Counter64,
-       "ExtUTCTime": ExtUTCTime,
-       "ModuleIdentity": ModuleIdentity,
-       "ObjectIdentity": ObjectIdentity,
-       "NotificationType": NotificationType,
-       "MibScalar": MibScalar,
-       "MibScalarInstance": MibScalarInstance,
-       "MibIdentifier": MibIdentifier,
-       "MibTree": MibTree,
-       "MibTableColumn": MibTableColumn,
-       "MibTableRow": MibTableRow,
-       "MibTable": MibTable,
-       "zeroDotZero": zeroDotZero,
-       "itu_t": itu_t,
-       "iso": iso,
-       "org": org,
-       "dod": dod,
-       "internet": internet,
-       "directory": directory,
-       "mgmt": mgmt,
-       "mib-2": mib_2,
-       "transmission": transmission,
-       "experimental": experimental,
-       "private": private,
-       "enterprises": enterprises,
-       "security": security,
-       "snmpV2": snmpV2,
-       "snmpDomains": snmpDomains,
-       "snmpProxys": snmpProxys,
-       "snmpModules": snmpModules}
+    **{
+        "MibNode": MibNode,
+        "Integer32": Integer32,
+        "Bits": Bits,
+        "IpAddress": IpAddress,
+        "Counter32": Counter32,
+        "Gauge32": Gauge32,
+        "Unsigned32": Unsigned32,
+        "TimeTicks": TimeTicks,
+        "Opaque": Opaque,
+        "Counter64": Counter64,
+        "ExtUTCTime": ExtUTCTime,
+        "ModuleIdentity": ModuleIdentity,
+        "ObjectIdentity": ObjectIdentity,
+        "NotificationType": NotificationType,
+        "MibScalar": MibScalar,
+        "MibScalarInstance": MibScalarInstance,
+        "MibIdentifier": MibIdentifier,
+        "MibTree": MibTree,
+        "MibTableColumn": MibTableColumn,
+        "MibTableRow": MibTableRow,
+        "MibTable": MibTable,
+        "zeroDotZero": zeroDotZero,
+        "itu_t": itu_t,
+        "iso": iso,
+        "org": org,
+        "dod": dod,
+        "internet": internet,
+        "directory": directory,
+        "mgmt": mgmt,
+        "mib-2": mib_2,
+        "transmission": transmission,
+        "experimental": experimental,
+        "private": private,
+        "enterprises": enterprises,
+        "security": security,
+        "snmpV2": snmpV2,
+        "snmpDomains": snmpDomains,
+        "snmpProxys": snmpProxys,
+        "snmpModules": snmpModules,
+    },
 )
 
 # XXX

@@ -28,16 +28,16 @@ class UnixTransportAddress(str, AbstractTransportAddress):
 class UnixAsyncioTransport(DgramAsyncioProtocol):
     sockFamily = AF_UNIX
     addressType = UnixTransportAddress
-    _iface = ''
+    _iface = ""
 
     def openClientMode(self, iface=None):
         if iface is None:
             # UNIX domain sockets must be explicitly bound
-            iface = ''
+            iface = ""
             while len(iface) < 8:
                 iface += chr(random.randrange(65, 91))
                 iface += chr(random.randrange(97, 123))
-            iface = os.path.sep + 'tmp' + os.path.sep + 'pysnmp' + iface
+            iface = os.path.sep + "tmp" + os.path.sep + "pysnmp" + iface
         if os.path.exists(iface):
             os.remove(iface)
         DgramAsyncioProtocol.openClientMode(self, iface)

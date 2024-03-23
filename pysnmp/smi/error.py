@@ -26,7 +26,7 @@ class MibOperationError(SmiError):
         self._outArgs = kwargs
 
     def __str__(self):
-        return '%s(%s)' % (self.__class__.__name__, self._outArgs)
+        return f"{self.__class__.__name__}({self._outArgs})"
 
     def __getitem__(self, key):
         return self._outArgs[key]
@@ -45,6 +45,7 @@ class MibOperationError(SmiError):
 
 
 # Aligned with SNMPv2 PDU error-status values
+
 
 class TooBigError(MibOperationError):
     pass
@@ -120,6 +121,7 @@ class InconsistentNameError(MibOperationError):
 
 # Aligned with SNMPv2 PDU exceptions or error-status values
 
+
 class NoSuchObjectError(NoSuchNameError):
     pass
 
@@ -133,6 +135,7 @@ class EndOfMibViewError(NoSuchNameError):
 
 
 # SNMP table management exceptions
+
 
 class TableRowManagement(MibOperationError):
     pass
@@ -151,6 +154,7 @@ class RowConsistencyWanted(TableRowManagement):
 
 
 # MIB instrumentation support for GETNEXT
+
 
 class SuggestedNextObject(MibOperationError):
     pass

@@ -7,11 +7,12 @@
 from pysnmp.hlapi.v1arch.asyncore import ntforg
 from pysnmp.hlapi.varbinds import *
 
-__all__ = ['sendNotification']
+__all__ = ["sendNotification"]
 
 
-def sendNotification(snmpDispatcher, authData, transportTarget,
-                     notifyType, *varBinds, **options):
+def sendNotification(
+    snmpDispatcher, authData, transportTarget, notifyType, *varBinds, **options
+):
     """Creates a generator to send one or more SNMP notifications.
 
     On each iteration, new SNMP TRAP or INFORM notification is send
@@ -112,7 +113,7 @@ def sendNotification(snmpDispatcher, authData, transportTarget,
     def cbFun(*args, **kwargs):
         response[:] = args
 
-    options['cbFun'] = cbFun
+    options["cbFun"] = cbFun
 
     errorIndication, errorStatus, errorIndex = None, 0, 0
 
@@ -120,8 +121,14 @@ def sendNotification(snmpDispatcher, authData, transportTarget,
 
     while True:
         if varBinds:
-            ntforg.sendNotification(snmpDispatcher, authData, transportTarget,
-                                    notifyType, *varBinds, **options)
+            ntforg.sendNotification(
+                snmpDispatcher,
+                authData,
+                transportTarget,
+                notifyType,
+                *varBinds,
+                **options
+            )
 
             snmpDispatcher.transportDispatcher.runDispatcher()
 

@@ -7,10 +7,10 @@
 from pysnmp import debug
 from pysnmp.smi import error
 
-__all__ = ['AbstractMibInstrumController', 'MibInstrumController']
+__all__ = ["AbstractMibInstrumController", "MibInstrumController"]
 
 
-class AbstractMibInstrumController(object):
+class AbstractMibInstrumController:
     def readMibObjects(self, *varBinds, **context):
         raise error.NoSuchInstanceError(idx=0)
 
@@ -22,35 +22,35 @@ class AbstractMibInstrumController(object):
 
 
 class MibInstrumController(AbstractMibInstrumController):
-    STATUS_OK = 'ok'
-    STATUS_ERROR = 'err'
-    
-    STATE_START = 'start'
-    STATE_STOP = 'stop'
-    STATE_ANY = '*'
+    STATUS_OK = "ok"
+    STATUS_ERROR = "err"
+
+    STATE_START = "start"
+    STATE_STOP = "stop"
+    STATE_ANY = "*"
     # These states are actually methods of the MIB objects
-    STATE_READ_TEST = 'readTest'
-    STATE_READ_GET = 'readGet'
-    STATE_READ_TEST_NEXT = 'readTestNext'
-    STATE_READ_GET_NEXT = 'readGetNext'
-    STATE_WRITE_TEST = 'writeTest'
-    STATE_WRITE_COMMIT = 'writeCommit'
-    STATE_WRITE_CLEANUP = 'writeCleanup'
-    STATE_WRITE_UNDO = 'writeUndo'
+    STATE_READ_TEST = "readTest"
+    STATE_READ_GET = "readGet"
+    STATE_READ_TEST_NEXT = "readTestNext"
+    STATE_READ_GET_NEXT = "readGetNext"
+    STATE_WRITE_TEST = "writeTest"
+    STATE_WRITE_COMMIT = "writeCommit"
+    STATE_WRITE_CLEANUP = "writeCleanup"
+    STATE_WRITE_UNDO = "writeUndo"
 
     FSM_READ_VAR = {
         # (state, status) -> newState
         (STATE_START, STATUS_OK): STATE_READ_TEST,
         (STATE_READ_TEST, STATUS_OK): STATE_READ_GET,
         (STATE_READ_GET, STATUS_OK): STATE_STOP,
-        (STATE_ANY, STATUS_ERROR): STATE_STOP
+        (STATE_ANY, STATUS_ERROR): STATE_STOP,
     }
     FSM_READ_NEXT_VAR = {
         # (state, status) -> newState
         (STATE_START, STATUS_OK): STATE_READ_TEST_NEXT,
         (STATE_READ_TEST_NEXT, STATUS_OK): STATE_READ_GET_NEXT,
         (STATE_READ_GET_NEXT, STATUS_OK): STATE_STOP,
-        (STATE_ANY, STATUS_ERROR): STATE_STOP
+        (STATE_ANY, STATUS_ERROR): STATE_STOP,
     }
     FSM_WRITE_VAR = {
         # (state, status) -> newState
@@ -68,7 +68,7 @@ class MibInstrumController(AbstractMibInstrumController):
         # Ignore read errors (removed columns)
         (STATE_READ_TEST, STATUS_ERROR): STATE_STOP,
         (STATE_READ_GET, STATUS_ERROR): STATE_STOP,
-        (STATE_ANY, STATUS_ERROR): STATE_STOP
+        (STATE_ANY, STATUS_ERROR): STATE_STOP,
     }
 
     def __init__(self, mibBuilder):
@@ -108,14 +108,22 @@ class MibInstrumController(AbstractMibInstrumController):
         if self.lastBuildId == self.mibBuilder.lastBuildId:
             return
 
-        (MibScalarInstance, MibScalar,
-         MibTableColumn, MibTableRow,
-         MibTable) = self.mibBuilder.importSymbols(
-            'SNMPv2-SMI', 'MibScalarInstance', 'MibScalar',
-            'MibTableColumn', 'MibTableRow', 'MibTable'
+        (
+            MibScalarInstance,
+            MibScalar,
+            MibTableColumn,
+            MibTableRow,
+            MibTable,
+        ) = self.mibBuilder.importSymbols(
+            "SNMPv2-SMI",
+            "MibScalarInstance",
+            "MibScalar",
+            "MibTableColumn",
+            "MibTableRow",
+            "MibTable",
         )
 
-        mibTree, = self.mibBuilder.importSymbols('SNMPv2-SMI', 'iso')
+        (mibTree,) = self.mibBuilder.importSymbols("SNMPv2-SMI", "iso")
 
         scalars = {}
         instances = {}
@@ -129,9 +137,7 @@ class MibInstrumController(AbstractMibInstrumController):
         mibSymbols.sort(key=lambda x: x[0], reverse=True)
 
         for modName, mibMod in mibSymbols:
-
             for symObj in mibMod.values():
-
                 if isinstance(symObj, MibTable):
                     tables[symObj.name] = symObj
 
@@ -149,7 +155,6 @@ class MibInstrumController(AbstractMibInstrumController):
 
         # Detach items from each other
         for symName, parentName in self.lastBuildSyms.items():
-
             if parentName in scalars:
                 scalars[parentName].unregisterSubtrees(symName)
 
@@ -174,8 +179,8 @@ class MibInstrumController(AbstractMibInstrumController):
 
             else:
                 raise error.SmiError(
-                    'Orphan MIB scalar instance %r at '
-                    '%r' % (inst, self))
+                    "Orphan MIB scalar instance %r at " "%r" % (inst, self)
+                )
 
             lastBuildSyms[inst.name] = inst.typeName
 
@@ -188,8 +193,8 @@ class MibInstrumController(AbstractMibInstrumController):
 
             else:
                 raise error.SmiError(
-                    'Orphan MIB table column %r at '
-                    '%r' % (col, self))
+                    "Orphan MIB table column %r at " "%r" % (col, self)
+                )
 
             lastBuildSyms[col.name] = rowName
 
@@ -212,7 +217,7 @@ class MibInstrumController(AbstractMibInstrumController):
 
         self.lastBuildId = self.mibBuilder.lastBuildId
 
-        debug.logger & debug.FLAG_INS and debug.logger('_indexMib: rebuilt')
+        debug.logger & debug.FLAG_INS and debug.logger("_indexMib: rebuilt")
 
     def flipFlopFsm(self, fsmTable, *varBinds, **context):
         """Read, modify, create or remove Managed Objects Instances.
@@ -258,58 +263,64 @@ class MibInstrumController(AbstractMibInstrumController):
         """
         count = [0]
 
-        cbFun = context.get('cbFun')
+        cbFun = context.get("cbFun")
 
         def _cbFun(varBind, **context):
-            idx = context.pop('idx', None)
+            idx = context.pop("idx", None)
 
-            err = context.pop('error', None)
+            err = context.pop("error", None)
             if err:
                 # Move other errors into the errors sequence
-                errors = context['errors']
+                errors = context["errors"]
 
                 errors.append(
-                    {'error': err,
-                     'idx': idx,
-                     'varbind': varBind,
-                     'state': context['state']})
+                    {
+                        "error": err,
+                        "idx": idx,
+                        "varbind": varBind,
+                        "state": context["state"],
+                    }
+                )
 
-                context['status'] = self.STATUS_ERROR
+                context["status"] = self.STATUS_ERROR
 
             if idx is None:
                 if cbFun:
                     cbFun((), **context)
                 return
 
-            _varBinds = context['varBinds']
+            _varBinds = context["varBinds"]
 
             _varBinds[idx] = varBind
 
             count[0] += 1
 
             debug.logger & debug.FLAG_INS and debug.logger(
-                '_cbFun: var-bind %d, processed %d, expected '
-                '%d' % (idx, count[0], len(varBinds)))
+                "_cbFun: var-bind %d, processed %d, expected "
+                "%d" % (idx, count[0], len(varBinds))
+            )
 
             if count[0] < len(varBinds):
                 return
 
             debug.logger & debug.FLAG_INS and debug.logger(
-                '_cbFun: finished, output var-binds %r' % (_varBinds,))
+                f"_cbFun: finished, output var-binds {_varBinds!r}"
+            )
 
             self.flipFlopFsm(fsmTable, *varBinds, **dict(context, cbFun=cbFun))
 
         debug.logger & debug.FLAG_INS and debug.logger(
-            'flipFlopFsm: input var-binds %r' % (varBinds,))
+            f"flipFlopFsm: input var-binds {varBinds!r}"
+        )
 
-        mibTree, = self.mibBuilder.importSymbols('SNMPv2-SMI', 'iso')
+        (mibTree,) = self.mibBuilder.importSymbols("SNMPv2-SMI", "iso")
 
         try:
-            state = context['state']
-            status = context['status']
-            instances = context['instances']
-            errors = context['errors']
-            _varBinds = context['varBinds']
+            state = context["state"]
+            status = context["status"]
+            instances = context["instances"]
+            errors = context["errors"]
+            _varBinds = context["varBinds"]
 
         except KeyError:
             state, status = self.STATE_START, self.STATUS_OK
@@ -320,7 +331,8 @@ class MibInstrumController(AbstractMibInstrumController):
             self._indexMib()
 
         debug.logger & debug.FLAG_INS and debug.logger(
-            'flipFlopFsm: current state %s, status %s' % (state, status))
+            f"flipFlopFsm: current state {state}, status {status}"
+        )
 
         try:
             newState = fsmTable[(state, status)]
@@ -330,20 +342,20 @@ class MibInstrumController(AbstractMibInstrumController):
                 newState = fsmTable[(self.STATE_ANY, status)]
 
             except KeyError:
-                raise error.SmiError(
-                    'Unresolved FSM state %s, %s' % (state, status))
+                raise error.SmiError(f"Unresolved FSM state {state}, {status}")
 
         debug.logger & debug.FLAG_INS and debug.logger(
-            'flipFlopFsm: state %s status %s -> transitioned into state '
-            '%s' % (state, status, newState))
+            "flipFlopFsm: state %s status %s -> transitioned into state "
+            "%s" % (state, status, newState)
+        )
 
         state = newState
 
         if state == self.STATE_STOP:
-            context.pop('state', None)
-            context.pop('status', None)
-            context.pop('instances', None)
-            context.pop('varBinds', None)
+            context.pop("state", None)
+            context.pop("status", None)
+            context.pop("instances", None)
+            context.pop("varBinds", None)
 
             if cbFun:
                 cbFun(_varBinds, **context)
@@ -358,27 +370,38 @@ class MibInstrumController(AbstractMibInstrumController):
         actionFun = getattr(mibTree, state, None)
         if not actionFun:
             raise error.SmiError(
-                'Unsupported state handler %s at '
-                '%s' % (state, self))
+                "Unsupported state handler %s at " "%s" % (state, self)
+            )
 
         for idx, varBind in enumerate(varBinds):
             actionFun(
                 varBind,
-                **dict(context, cbFun=_cbFun, state=state, status=status,
-                       idx=idx, total=len(varBinds), instances=instances,
-                       errors=errors, varBinds=_varBinds, nextName=None))
+                **dict(
+                    context,
+                    cbFun=_cbFun,
+                    state=state,
+                    status=status,
+                    idx=idx,
+                    total=len(varBinds),
+                    instances=instances,
+                    errors=errors,
+                    varBinds=_varBinds,
+                    nextName=None,
+                ),
+            )
 
             debug.logger & debug.FLAG_INS and debug.logger(
-                'flipFlopFsm: func %s initiated for %r' % (actionFun, varBind))
+                f"flipFlopFsm: func {actionFun} initiated for {varBind!r}"
+            )
 
     @staticmethod
     def _defaultErrorHandler(varBinds, **context):
         """Raise exception on any error if user callback is missing"""
-        errors = context.get('errors')
+        errors = context.get("errors")
 
         if errors:
             err = errors[-1]
-            raise err['error']
+            raise err["error"]
 
     def readMibObjects(self, *varBinds, **context):
         """Read Managed Objects Instances.
@@ -429,8 +452,8 @@ class MibInstrumController(AbstractMibInstrumController):
         :py:class:`NoSuchInstance` (if Managed Object exists, but is not
         instantiated).
         """
-        if 'cbFun' not in context:
-            context['cbFun'] = self._defaultErrorHandler
+        if "cbFun" not in context:
+            context["cbFun"] = self._defaultErrorHandler
 
         self.flipFlopFsm(self.FSM_READ_VAR, *varBinds, **context)
 
@@ -489,8 +512,8 @@ class MibInstrumController(AbstractMibInstrumController):
         or all `varBinds` returned to progress towards the end of the
         implemented MIB.
         """
-        if 'cbFun' not in context:
-            context['cbFun'] = self._defaultErrorHandler
+        if "cbFun" not in context:
+            context["cbFun"] = self._defaultErrorHandler
 
         self.flipFlopFsm(self.FSM_READ_NEXT_VAR, *varBinds, **context)
 
@@ -558,7 +581,7 @@ class MibInstrumController(AbstractMibInstrumController):
         :py:class:`NoSuchInstance` (if Managed Object exists, but can't be
         modified.
         """
-        if 'cbFun' not in context:
-            context['cbFun'] = self._defaultErrorHandler
+        if "cbFun" not in context:
+            context["cbFun"] = self._defaultErrorHandler
 
         self.flipFlopFsm(self.FSM_WRITE_VAR, *varBinds, **context)

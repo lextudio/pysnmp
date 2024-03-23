@@ -7,72 +7,70 @@
 # ASN.1 source http://mibs.pysnmp.com:80/asn1/SNMP-USER-BASED-SM-MIB
 # Produced by pysmi-0.4.0 at Sat Feb 16 23:22:33 2019
 #
-if 'mibBuilder' not in globals():
+if "mibBuilder" not in globals():
     import sys
 
     sys.stderr.write(__doc__)
     sys.exit(1)
 
-(Integer,
- OctetString,
- ObjectIdentifier) = mibBuilder.importSymbols(
-    "ASN1",
-    "Integer",
-    "OctetString",
-    "ObjectIdentifier")
+(Integer, OctetString, ObjectIdentifier) = mibBuilder.importSymbols(
+    "ASN1", "Integer", "OctetString", "ObjectIdentifier"
+)
 
-(NamedValues,) = mibBuilder.importSymbols(
-    "ASN1-ENUMERATION",
-    "NamedValues")
+(NamedValues,) = mibBuilder.importSymbols("ASN1-ENUMERATION", "NamedValues")
 
-(ConstraintsIntersection,
- SingleValueConstraint,
- ValueRangeConstraint,
- ValueSizeConstraint,
- ConstraintsUnion) = mibBuilder.importSymbols(
+(
+    ConstraintsIntersection,
+    SingleValueConstraint,
+    ValueRangeConstraint,
+    ValueSizeConstraint,
+    ConstraintsUnion,
+) = mibBuilder.importSymbols(
     "ASN1-REFINEMENT",
     "ConstraintsIntersection",
     "SingleValueConstraint",
     "ValueRangeConstraint",
     "ValueSizeConstraint",
-    "ConstraintsUnion")
+    "ConstraintsUnion",
+)
 
-(snmpPrivProtocols,
- SnmpAdminString,
- snmpAuthProtocols,
- SnmpEngineID) = mibBuilder.importSymbols(
+(
+    snmpPrivProtocols,
+    SnmpAdminString,
+    snmpAuthProtocols,
+    SnmpEngineID,
+) = mibBuilder.importSymbols(
     "SNMP-FRAMEWORK-MIB",
     "snmpPrivProtocols",
     "SnmpAdminString",
     "snmpAuthProtocols",
-    "SnmpEngineID")
+    "SnmpEngineID",
+)
 
-(NotificationGroup,
- ObjectGroup,
- ModuleCompliance) = mibBuilder.importSymbols(
-    "SNMPv2-CONF",
-    "NotificationGroup",
-    "ObjectGroup",
-    "ModuleCompliance")
+(NotificationGroup, ObjectGroup, ModuleCompliance) = mibBuilder.importSymbols(
+    "SNMPv2-CONF", "NotificationGroup", "ObjectGroup", "ModuleCompliance"
+)
 
-(Counter32,
- Counter64,
- snmpModules,
- TimeTicks,
- ModuleIdentity,
- ObjectIdentity,
- NotificationType,
- IpAddress,
- Unsigned32,
- Integer32,
- MibIdentifier,
- iso,
- Bits,
- MibScalar,
- MibTable,
- MibTableRow,
- MibTableColumn,
- Gauge32) = mibBuilder.importSymbols(
+(
+    Counter32,
+    Counter64,
+    snmpModules,
+    TimeTicks,
+    ModuleIdentity,
+    ObjectIdentity,
+    NotificationType,
+    IpAddress,
+    Unsigned32,
+    Integer32,
+    MibIdentifier,
+    iso,
+    Bits,
+    MibScalar,
+    MibTable,
+    MibTableRow,
+    MibTableColumn,
+    Gauge32,
+) = mibBuilder.importSymbols(
     "SNMPv2-SMI",
     "Counter32",
     "Counter64",
@@ -91,15 +89,18 @@ if 'mibBuilder' not in globals():
     "MibTable",
     "MibTableRow",
     "MibTableColumn",
-    "Gauge32")
+    "Gauge32",
+)
 
-(RowPointer,
- StorageType,
- TestAndIncr,
- DisplayString,
- TextualConvention,
- RowStatus,
- AutonomousType) = mibBuilder.importSymbols(
+(
+    RowPointer,
+    StorageType,
+    TestAndIncr,
+    DisplayString,
+    TextualConvention,
+    RowStatus,
+    AutonomousType,
+) = mibBuilder.importSymbols(
     "SNMPv2-TC",
     "RowPointer",
     "StorageType",
@@ -107,25 +108,23 @@ if 'mibBuilder' not in globals():
     "DisplayString",
     "TextualConvention",
     "RowStatus",
-    "AutonomousType")
+    "AutonomousType",
+)
 
 
 # MODULE-IDENTITY
 
-snmpUsmMIB = ModuleIdentity(
-    (1, 3, 6, 1, 6, 3, 15)
-)
-snmpUsmMIB.setRevisions(
-        ("2002-10-16 00:00",
-         "1999-01-20 00:00",
-         "1997-11-20 00:00")
-)
+snmpUsmMIB = ModuleIdentity((1, 3, 6, 1, 6, 3, 15))
+snmpUsmMIB.setRevisions(("2002-10-16 00:00", "1999-01-20 00:00", "1997-11-20 00:00"))
 snmpUsmMIB.setLastUpdated("200210160000Z")
 if mibBuilder.loadTexts:
-    snmpUsmMIB.setOrganization("""\
+    snmpUsmMIB.setOrganization(
+        """\
 SNMPv3 Working Group
-""")
-snmpUsmMIB.setContactInfo("""\
+"""
+    )
+snmpUsmMIB.setContactInfo(
+    """\
 WG-email: snmpv3@lists.tislabs.com Subscribe: majordomo@lists.tislabs.com In
 msg body: subscribe snmpv3 Chair: Russ Mundy Network Associates Laboratories
 postal: 15204 Omega Drive, Suite 300 Rockville, MD 20850-4601 USA email:
@@ -136,13 +135,16 @@ Blumenthal Lucent Technologies postal: 67 Whippany Rd. Whippany, NJ 07981 USA
 email: uri@lucent.com phone: +1-973-386-2163 Co-editor: Bert Wijnen Lucent
 Technologies postal: Schagen 33 3461 GL Linschoten Netherlands email:
 bwijnen@lucent.com phone: +31-348-480-685
-""")
+"""
+)
 if mibBuilder.loadTexts:
-    snmpUsmMIB.setDescription("""\
+    snmpUsmMIB.setDescription(
+        """\
 The management information definitions for the SNMP User-based Security Model.
 Copyright (C) The Internet Society (2002). This version of this MIB module is
 part of RFC 3414; see the RFC itself for full legal notices.
-""")
+"""
+    )
 
 
 class KeyChange(TextualConvention, OctetString):
@@ -216,15 +218,15 @@ actually succeeded.
 
 
 _UsmNoAuthProtocol_ObjectIdentity = ObjectIdentity
-usmNoAuthProtocol = _UsmNoAuthProtocol_ObjectIdentity(
-    (1, 3, 6, 1, 6, 3, 10, 1, 1, 1)
-)
+usmNoAuthProtocol = _UsmNoAuthProtocol_ObjectIdentity((1, 3, 6, 1, 6, 3, 10, 1, 1, 1))
 if mibBuilder.loadTexts:
     usmNoAuthProtocol.setStatus("current")
 if mibBuilder.loadTexts:
-    usmNoAuthProtocol.setDescription("""\
+    usmNoAuthProtocol.setDescription(
+        """\
 No Authentication Protocol.
-""")
+"""
+    )
 _UsmHMACMD5AuthProtocol_ObjectIdentity = ObjectIdentity
 usmHMACMD5AuthProtocol = _UsmHMACMD5AuthProtocol_ObjectIdentity(
     (1, 3, 6, 1, 6, 3, 10, 1, 1, 2)
@@ -232,15 +234,19 @@ usmHMACMD5AuthProtocol = _UsmHMACMD5AuthProtocol_ObjectIdentity(
 if mibBuilder.loadTexts:
     usmHMACMD5AuthProtocol.setStatus("current")
 if mibBuilder.loadTexts:
-    usmHMACMD5AuthProtocol.setReference("""\
+    usmHMACMD5AuthProtocol.setReference(
+        """\
 - H. Krawczyk, M. Bellare, R. Canetti HMAC: Keyed-Hashing for Message
 Authentication, RFC2104, Feb 1997. - Rivest, R., Message Digest Algorithm MD5,
 RFC1321.
-""")
+"""
+    )
 if mibBuilder.loadTexts:
-    usmHMACMD5AuthProtocol.setDescription("""\
+    usmHMACMD5AuthProtocol.setDescription(
+        """\
 The HMAC-MD5-96 Digest Authentication Protocol.
-""")
+"""
+    )
 _UsmHMACSHAAuthProtocol_ObjectIdentity = ObjectIdentity
 usmHMACSHAAuthProtocol = _UsmHMACSHAAuthProtocol_ObjectIdentity(
     (1, 3, 6, 1, 6, 3, 10, 1, 1, 3)
@@ -248,32 +254,35 @@ usmHMACSHAAuthProtocol = _UsmHMACSHAAuthProtocol_ObjectIdentity(
 if mibBuilder.loadTexts:
     usmHMACSHAAuthProtocol.setStatus("current")
 if mibBuilder.loadTexts:
-    usmHMACSHAAuthProtocol.setReference("""\
+    usmHMACSHAAuthProtocol.setReference(
+        """\
 - H. Krawczyk, M. Bellare, R. Canetti, HMAC: Keyed-Hashing for Message
 Authentication, RFC2104, Feb 1997. - Secure Hash Algorithm. NIST FIPS 180-1.
-""")
+"""
+    )
 if mibBuilder.loadTexts:
-    usmHMACSHAAuthProtocol.setDescription("""\
+    usmHMACSHAAuthProtocol.setDescription(
+        """\
 The HMAC-SHA-96 Digest Authentication Protocol.
-""")
+"""
+    )
 _UsmNoPrivProtocol_ObjectIdentity = ObjectIdentity
-usmNoPrivProtocol = _UsmNoPrivProtocol_ObjectIdentity(
-    (1, 3, 6, 1, 6, 3, 10, 1, 2, 1)
-)
+usmNoPrivProtocol = _UsmNoPrivProtocol_ObjectIdentity((1, 3, 6, 1, 6, 3, 10, 1, 2, 1))
 if mibBuilder.loadTexts:
     usmNoPrivProtocol.setStatus("current")
 if mibBuilder.loadTexts:
-    usmNoPrivProtocol.setDescription("""\
+    usmNoPrivProtocol.setDescription(
+        """\
 No Privacy Protocol.
-""")
+"""
+    )
 _UsmDESPrivProtocol_ObjectIdentity = ObjectIdentity
-usmDESPrivProtocol = _UsmDESPrivProtocol_ObjectIdentity(
-    (1, 3, 6, 1, 6, 3, 10, 1, 2, 2)
-)
+usmDESPrivProtocol = _UsmDESPrivProtocol_ObjectIdentity((1, 3, 6, 1, 6, 3, 10, 1, 2, 2))
 if mibBuilder.loadTexts:
     usmDESPrivProtocol.setStatus("current")
 if mibBuilder.loadTexts:
-    usmDESPrivProtocol.setReference("""\
+    usmDESPrivProtocol.setReference(
+        """\
 - Data Encryption Standard, National Institute of Standards and Technology.
 Federal Information Processing Standard (FIPS) Publication 46-1. Supersedes
 FIPS Publication 46, (January, 1977; reaffirmed January, 1988). - Data
@@ -282,131 +291,134 @@ Encryption Algorithm, American National Standards Institute. ANSI X3.92-1981,
 Technology. Federal Information Processing Standard (FIPS) Publication 81,
 (December, 1980). - Data Encryption Algorithm - Modes of Operation, American
 National Standards Institute. ANSI X3.106-1983, (May 1983).
-""")
+"""
+    )
 if mibBuilder.loadTexts:
-    usmDESPrivProtocol.setDescription("""\
+    usmDESPrivProtocol.setDescription(
+        """\
 The CBC-DES Symmetric Encryption Protocol.
-""")
+"""
+    )
 _UsmMIBObjects_ObjectIdentity = ObjectIdentity
-usmMIBObjects = _UsmMIBObjects_ObjectIdentity(
-    (1, 3, 6, 1, 6, 3, 15, 1)
-)
+usmMIBObjects = _UsmMIBObjects_ObjectIdentity((1, 3, 6, 1, 6, 3, 15, 1))
 _UsmStats_ObjectIdentity = ObjectIdentity
-usmStats = _UsmStats_ObjectIdentity(
-    (1, 3, 6, 1, 6, 3, 15, 1, 1)
-)
+usmStats = _UsmStats_ObjectIdentity((1, 3, 6, 1, 6, 3, 15, 1, 1))
 _UsmStatsUnsupportedSecLevels_Type = Counter32
 _UsmStatsUnsupportedSecLevels_Object = MibScalar
 usmStatsUnsupportedSecLevels = _UsmStatsUnsupportedSecLevels_Object(
-    (1, 3, 6, 1, 6, 3, 15, 1, 1, 1),
-    _UsmStatsUnsupportedSecLevels_Type()
+    (1, 3, 6, 1, 6, 3, 15, 1, 1, 1), _UsmStatsUnsupportedSecLevels_Type()
 )
 usmStatsUnsupportedSecLevels.setMaxAccess("read-only")
 if mibBuilder.loadTexts:
     usmStatsUnsupportedSecLevels.setStatus("current")
 if mibBuilder.loadTexts:
-    usmStatsUnsupportedSecLevels.setDescription("""\
+    usmStatsUnsupportedSecLevels.setDescription(
+        """\
 The total number of packets received by the SNMP engine which were dropped
 because they requested a securityLevel that was unknown to the SNMP engine or
 otherwise unavailable.
-""")
+"""
+    )
 _UsmStatsNotInTimeWindows_Type = Counter32
 _UsmStatsNotInTimeWindows_Object = MibScalar
 usmStatsNotInTimeWindows = _UsmStatsNotInTimeWindows_Object(
-    (1, 3, 6, 1, 6, 3, 15, 1, 1, 2),
-    _UsmStatsNotInTimeWindows_Type()
+    (1, 3, 6, 1, 6, 3, 15, 1, 1, 2), _UsmStatsNotInTimeWindows_Type()
 )
 usmStatsNotInTimeWindows.setMaxAccess("read-only")
 if mibBuilder.loadTexts:
     usmStatsNotInTimeWindows.setStatus("current")
 if mibBuilder.loadTexts:
-    usmStatsNotInTimeWindows.setDescription("""\
+    usmStatsNotInTimeWindows.setDescription(
+        """\
 The total number of packets received by the SNMP engine which were dropped
 because they appeared outside of the authoritative SNMP engine's window.
-""")
+"""
+    )
 _UsmStatsUnknownUserNames_Type = Counter32
 _UsmStatsUnknownUserNames_Object = MibScalar
 usmStatsUnknownUserNames = _UsmStatsUnknownUserNames_Object(
-    (1, 3, 6, 1, 6, 3, 15, 1, 1, 3),
-    _UsmStatsUnknownUserNames_Type()
+    (1, 3, 6, 1, 6, 3, 15, 1, 1, 3), _UsmStatsUnknownUserNames_Type()
 )
 usmStatsUnknownUserNames.setMaxAccess("read-only")
 if mibBuilder.loadTexts:
     usmStatsUnknownUserNames.setStatus("current")
 if mibBuilder.loadTexts:
-    usmStatsUnknownUserNames.setDescription("""\
+    usmStatsUnknownUserNames.setDescription(
+        """\
 The total number of packets received by the SNMP engine which were dropped
 because they referenced a user that was not known to the SNMP engine.
-""")
+"""
+    )
 _UsmStatsUnknownEngineIDs_Type = Counter32
 _UsmStatsUnknownEngineIDs_Object = MibScalar
 usmStatsUnknownEngineIDs = _UsmStatsUnknownEngineIDs_Object(
-    (1, 3, 6, 1, 6, 3, 15, 1, 1, 4),
-    _UsmStatsUnknownEngineIDs_Type()
+    (1, 3, 6, 1, 6, 3, 15, 1, 1, 4), _UsmStatsUnknownEngineIDs_Type()
 )
 usmStatsUnknownEngineIDs.setMaxAccess("read-only")
 if mibBuilder.loadTexts:
     usmStatsUnknownEngineIDs.setStatus("current")
 if mibBuilder.loadTexts:
-    usmStatsUnknownEngineIDs.setDescription("""\
+    usmStatsUnknownEngineIDs.setDescription(
+        """\
 The total number of packets received by the SNMP engine which were dropped
 because they referenced an snmpEngineID that was not known to the SNMP engine.
-""")
+"""
+    )
 _UsmStatsWrongDigests_Type = Counter32
 _UsmStatsWrongDigests_Object = MibScalar
 usmStatsWrongDigests = _UsmStatsWrongDigests_Object(
-    (1, 3, 6, 1, 6, 3, 15, 1, 1, 5),
-    _UsmStatsWrongDigests_Type()
+    (1, 3, 6, 1, 6, 3, 15, 1, 1, 5), _UsmStatsWrongDigests_Type()
 )
 usmStatsWrongDigests.setMaxAccess("read-only")
 if mibBuilder.loadTexts:
     usmStatsWrongDigests.setStatus("current")
 if mibBuilder.loadTexts:
-    usmStatsWrongDigests.setDescription("""\
+    usmStatsWrongDigests.setDescription(
+        """\
 The total number of packets received by the SNMP engine which were dropped
 because they didn't contain the expected digest value.
-""")
+"""
+    )
 _UsmStatsDecryptionErrors_Type = Counter32
 _UsmStatsDecryptionErrors_Object = MibScalar
 usmStatsDecryptionErrors = _UsmStatsDecryptionErrors_Object(
-    (1, 3, 6, 1, 6, 3, 15, 1, 1, 6),
-    _UsmStatsDecryptionErrors_Type()
+    (1, 3, 6, 1, 6, 3, 15, 1, 1, 6), _UsmStatsDecryptionErrors_Type()
 )
 usmStatsDecryptionErrors.setMaxAccess("read-only")
 if mibBuilder.loadTexts:
     usmStatsDecryptionErrors.setStatus("current")
 if mibBuilder.loadTexts:
-    usmStatsDecryptionErrors.setDescription("""\
+    usmStatsDecryptionErrors.setDescription(
+        """\
 The total number of packets received by the SNMP engine which were dropped
 because they could not be decrypted.
-""")
+"""
+    )
 _UsmUser_ObjectIdentity = ObjectIdentity
-usmUser = _UsmUser_ObjectIdentity(
-    (1, 3, 6, 1, 6, 3, 15, 1, 2)
-)
+usmUser = _UsmUser_ObjectIdentity((1, 3, 6, 1, 6, 3, 15, 1, 2))
 _UsmUserSpinLock_Type = TestAndIncr
 _UsmUserSpinLock_Object = MibScalar
 usmUserSpinLock = _UsmUserSpinLock_Object(
-    (1, 3, 6, 1, 6, 3, 15, 1, 2, 1),
-    _UsmUserSpinLock_Type()
+    (1, 3, 6, 1, 6, 3, 15, 1, 2, 1), _UsmUserSpinLock_Type()
 )
 usmUserSpinLock.setMaxAccess("read-write")
 if mibBuilder.loadTexts:
     usmUserSpinLock.setStatus("current")
 if mibBuilder.loadTexts:
-    usmUserSpinLock.setDescription("""\
+    usmUserSpinLock.setDescription(
+        """\
 An advisory lock used to allow several cooperating Command Generator
 Applications to coordinate their use of facilities to alter secrets in the
 usmUserTable.
-""")
+"""
+    )
 _UsmUserTable_Object = MibTable
-usmUserTable = _UsmUserTable_Object(
-    (1, 3, 6, 1, 6, 3, 15, 1, 2, 2)
-)
+usmUserTable = _UsmUserTable_Object((1, 3, 6, 1, 6, 3, 15, 1, 2, 2))
 if mibBuilder.loadTexts:
     usmUserTable.setStatus("current")
 if mibBuilder.loadTexts:
-    usmUserTable.setDescription("""\
+    usmUserTable.setDescription(
+        """\
 The table of users configured in the SNMP engine's Local Configuration
 Datastore (LCD). To create a new user (i.e., to instantiate a new conceptual
 row in this table), it is recommended to follow this procedure: 1)
@@ -432,11 +444,10 @@ available and ready to be used for SNMPv3 communication. Note however that
 access to MIB data must be provided via configuration of the SNMP-VIEW-BASED-
 ACM-MIB. The use of usmUserSpinlock is to avoid conflicts with another SNMP
 command generator application which may also be acting on the usmUserTable.
-""")
+"""
+    )
 _UsmUserEntry_Object = MibTableRow
-usmUserEntry = _UsmUserEntry_Object(
-    (1, 3, 6, 1, 6, 3, 15, 1, 2, 2, 1)
-)
+usmUserEntry = _UsmUserEntry_Object((1, 3, 6, 1, 6, 3, 15, 1, 2, 2, 1))
 usmUserEntry.setIndexNames(
     (0, "SNMP-USER-BASED-SM-MIB", "usmUserEngineID"),
     (0, "SNMP-USER-BASED-SM-MIB", "usmUserName"),
@@ -444,30 +455,34 @@ usmUserEntry.setIndexNames(
 if mibBuilder.loadTexts:
     usmUserEntry.setStatus("current")
 if mibBuilder.loadTexts:
-    usmUserEntry.setDescription("""\
+    usmUserEntry.setDescription(
+        """\
 A user configured in the SNMP engine's Local Configuration Datastore (LCD) for
 the User-based Security Model.
-""")
+"""
+    )
 _UsmUserEngineID_Type = SnmpEngineID
 _UsmUserEngineID_Object = MibTableColumn
 usmUserEngineID = _UsmUserEngineID_Object(
-    (1, 3, 6, 1, 6, 3, 15, 1, 2, 2, 1, 1),
-    _UsmUserEngineID_Type()
+    (1, 3, 6, 1, 6, 3, 15, 1, 2, 2, 1, 1), _UsmUserEngineID_Type()
 )
 usmUserEngineID.setMaxAccess("not-accessible")
 if mibBuilder.loadTexts:
     usmUserEngineID.setStatus("current")
 if mibBuilder.loadTexts:
-    usmUserEngineID.setDescription("""\
+    usmUserEngineID.setDescription(
+        """\
 An SNMP engine's administratively-unique identifier. In a simple agent, this
 value is always that agent's own snmpEngineID value. The value can also take
 the value of the snmpEngineID of a remote SNMP engine with which this user can
 communicate.
-""")
+"""
+    )
 
 
 class _UsmUserName_Type(SnmpAdminString):
     """Custom type usmUserName based on SnmpAdminString"""
+
     subtypeSpec = SnmpAdminString.subtypeSpec
     subtypeSpec += ConstraintsUnion(
         ValueSizeConstraint(1, 32),
@@ -477,44 +492,46 @@ class _UsmUserName_Type(SnmpAdminString):
 _UsmUserName_Type.__name__ = "SnmpAdminString"
 _UsmUserName_Object = MibTableColumn
 usmUserName = _UsmUserName_Object(
-    (1, 3, 6, 1, 6, 3, 15, 1, 2, 2, 1, 2),
-    _UsmUserName_Type()
+    (1, 3, 6, 1, 6, 3, 15, 1, 2, 2, 1, 2), _UsmUserName_Type()
 )
 usmUserName.setMaxAccess("not-accessible")
 if mibBuilder.loadTexts:
     usmUserName.setStatus("current")
 if mibBuilder.loadTexts:
-    usmUserName.setDescription("""\
+    usmUserName.setDescription(
+        """\
 A human readable string representing the name of the user. This is the (User-
 based Security) Model dependent security ID.
-""")
+"""
+    )
 _UsmUserSecurityName_Type = SnmpAdminString
 _UsmUserSecurityName_Object = MibTableColumn
 usmUserSecurityName = _UsmUserSecurityName_Object(
-    (1, 3, 6, 1, 6, 3, 15, 1, 2, 2, 1, 3),
-    _UsmUserSecurityName_Type()
+    (1, 3, 6, 1, 6, 3, 15, 1, 2, 2, 1, 3), _UsmUserSecurityName_Type()
 )
 usmUserSecurityName.setMaxAccess("read-only")
 if mibBuilder.loadTexts:
     usmUserSecurityName.setStatus("current")
 if mibBuilder.loadTexts:
-    usmUserSecurityName.setDescription("""\
+    usmUserSecurityName.setDescription(
+        """\
 A human readable string representing the user in Security Model independent
 format. The default transformation of the User-based Security Model dependent
 security ID to the securityName and vice versa is the identity function so that
 the securityName is the same as the userName.
-""")
+"""
+    )
 _UsmUserCloneFrom_Type = RowPointer
 _UsmUserCloneFrom_Object = MibTableColumn
 usmUserCloneFrom = _UsmUserCloneFrom_Object(
-    (1, 3, 6, 1, 6, 3, 15, 1, 2, 2, 1, 4),
-    _UsmUserCloneFrom_Type()
+    (1, 3, 6, 1, 6, 3, 15, 1, 2, 2, 1, 4), _UsmUserCloneFrom_Type()
 )
 usmUserCloneFrom.setMaxAccess("read-create")
 if mibBuilder.loadTexts:
     usmUserCloneFrom.setStatus("current")
 if mibBuilder.loadTexts:
-    usmUserCloneFrom.setDescription("""\
+    usmUserCloneFrom.setDescription(
+        """\
 A pointer to another conceptual row in this usmUserTable. The user in this
 other conceptual row is called the clone-from user. When a new user is created
 (i.e., a new conceptual row is instantiated in this table), the privacy and
@@ -532,22 +549,25 @@ the receiver. The cloning process fails with an 'inconsistentName' error if the
 conceptual row representing the clone-from user does not exist or is not in an
 active state when the cloning process is invoked. When this object is read, the
 ZeroDotZero OID is returned.
-""")
+"""
+    )
 
 
 class _UsmUserAuthProtocol_Type(AutonomousType):
     """Custom type usmUserAuthProtocol based on AutonomousType"""
 
+
 _UsmUserAuthProtocol_Object = MibTableColumn
 usmUserAuthProtocol = _UsmUserAuthProtocol_Object(
     (1, 3, 6, 1, 6, 3, 15, 1, 2, 2, 1, 5),
-    _UsmUserAuthProtocol_Type().clone((1, 3, 6, 1, 6, 3, 10, 1, 1, 1))
+    _UsmUserAuthProtocol_Type().clone((1, 3, 6, 1, 6, 3, 10, 1, 1, 1)),
 )
 usmUserAuthProtocol.setMaxAccess("read-create")
 if mibBuilder.loadTexts:
     usmUserAuthProtocol.setStatus("current")
 if mibBuilder.loadTexts:
-    usmUserAuthProtocol.setDescription("""\
+    usmUserAuthProtocol.setDescription(
+        """\
 An indication of whether messages sent on behalf of this user to/from the SNMP
 engine identified by usmUserEngineID, can be authenticated, and if so, the type
 of authentication protocol which is used. An instance of this object is created
@@ -567,24 +587,26 @@ row is not equal to usmNoPrivProtocol, then an 'inconsistentValue' error must
 be returned. That means that an SNMP command generator application must first
 ensure that the usmUserPrivProtocol is set to the usmNoPrivProtocol value
 before it can set the usmUserAuthProtocol value to usmNoAuthProtocol.
-""")
+"""
+    )
 
 
 class _UsmUserAuthKeyChange_Type(KeyChange):
     """Custom type usmUserAuthKeyChange based on KeyChange"""
+
     defaultHexValue = ""
 
 
 _UsmUserAuthKeyChange_Object = MibTableColumn
 usmUserAuthKeyChange = _UsmUserAuthKeyChange_Object(
-    (1, 3, 6, 1, 6, 3, 15, 1, 2, 2, 1, 6),
-    _UsmUserAuthKeyChange_Type()
+    (1, 3, 6, 1, 6, 3, 15, 1, 2, 2, 1, 6), _UsmUserAuthKeyChange_Type()
 )
 usmUserAuthKeyChange.setMaxAccess("read-create")
 if mibBuilder.loadTexts:
     usmUserAuthKeyChange.setStatus("current")
 if mibBuilder.loadTexts:
-    usmUserAuthKeyChange.setDescription("""\
+    usmUserAuthKeyChange.setDescription(
+        """\
 An object, which when modified, causes the secret authentication key used for
 messages sent on behalf of this user to/from the SNMP engine identified by
 usmUserEngineID, to be modified via a one-way function. The associated protocol
@@ -610,24 +632,26 @@ randomValue you did send in the SET. If so, then the key change succeeded and
 the new key is active (probably the response got lost). If not, then the SET
 request probably never reached the target and so you can start over with the
 procedure above.
-""")
+"""
+    )
 
 
 class _UsmUserOwnAuthKeyChange_Type(KeyChange):
     """Custom type usmUserOwnAuthKeyChange based on KeyChange"""
+
     defaultHexValue = ""
 
 
 _UsmUserOwnAuthKeyChange_Object = MibTableColumn
 usmUserOwnAuthKeyChange = _UsmUserOwnAuthKeyChange_Object(
-    (1, 3, 6, 1, 6, 3, 15, 1, 2, 2, 1, 7),
-    _UsmUserOwnAuthKeyChange_Type()
+    (1, 3, 6, 1, 6, 3, 15, 1, 2, 2, 1, 7), _UsmUserOwnAuthKeyChange_Type()
 )
 usmUserOwnAuthKeyChange.setMaxAccess("read-create")
 if mibBuilder.loadTexts:
     usmUserOwnAuthKeyChange.setStatus("current")
 if mibBuilder.loadTexts:
-    usmUserOwnAuthKeyChange.setDescription("""\
+    usmUserOwnAuthKeyChange.setDescription(
+        """\
 Behaves exactly as usmUserAuthKeyChange, with one notable difference: in order
 for the set operation to succeed, the usmUserName of the operation requester
 must match the usmUserName that indexes the row which is targeted by this
@@ -639,24 +663,27 @@ usmUserName of the requester is not the same as the umsUserName that indexes
 the row which is targeted by this operation, then a 'noAccess' error must be
 returned. When a set is received and the security model in use is not USM, then
 a 'noAccess' error must be returned.
-""")
+"""
+    )
 
 
 class _UsmUserPrivProtocol_Type(AutonomousType):
     """Custom type usmUserPrivProtocol based on AutonomousType"""
+
     defaultValue = "(1, 3, 6, 1, 6, 3, 10, 1, 2, 1)"
 
 
 _UsmUserPrivProtocol_Object = MibTableColumn
 usmUserPrivProtocol = _UsmUserPrivProtocol_Object(
     (1, 3, 6, 1, 6, 3, 15, 1, 2, 2, 1, 8),
-    _UsmUserPrivProtocol_Type().clone((1, 3, 6, 1, 6, 3, 10, 1, 2, 1))
+    _UsmUserPrivProtocol_Type().clone((1, 3, 6, 1, 6, 3, 10, 1, 2, 1)),
 )
 usmUserPrivProtocol.setMaxAccess("read-create")
 if mibBuilder.loadTexts:
     usmUserPrivProtocol.setStatus("current")
 if mibBuilder.loadTexts:
-    usmUserPrivProtocol.setDescription("""\
+    usmUserPrivProtocol.setDescription(
+        """\
 An indication of whether messages sent on behalf of this user to/from the SNMP
 engine identified by usmUserEngineID, can be protected from disclosure, and if
 so, the type of privacy protocol which is used. An instance of this object is
@@ -676,24 +703,26 @@ usmUserPrivProtocol is set to anything else than usmNoPrivProtocol, then the
 corresponding instance of usmUserAuthProtocol cannot have a value of
 usmNoAuthProtocol. If it does, then an 'inconsistentValue' error must be
 returned.
-""")
+"""
+    )
 
 
 class _UsmUserPrivKeyChange_Type(KeyChange):
     """Custom type usmUserPrivKeyChange based on KeyChange"""
+
     defaultHexValue = ""
 
 
 _UsmUserPrivKeyChange_Object = MibTableColumn
 usmUserPrivKeyChange = _UsmUserPrivKeyChange_Object(
-    (1, 3, 6, 1, 6, 3, 15, 1, 2, 2, 1, 9),
-    _UsmUserPrivKeyChange_Type()
+    (1, 3, 6, 1, 6, 3, 15, 1, 2, 2, 1, 9), _UsmUserPrivKeyChange_Type()
 )
 usmUserPrivKeyChange.setMaxAccess("read-create")
 if mibBuilder.loadTexts:
     usmUserPrivKeyChange.setStatus("current")
 if mibBuilder.loadTexts:
-    usmUserPrivKeyChange.setDescription("""\
+    usmUserPrivKeyChange.setDescription(
+        """\
 An object, which when modified, causes the secret encryption key used for
 messages sent on behalf of this user to/from the SNMP engine identified by
 usmUserEngineID, to be modified via a one-way function. The associated protocol
@@ -707,24 +736,26 @@ usmUserPrivProtocol is usmNoPrivProtocol, then a set is successful, but
 effectively is a no-op. When this object is read, the zero-length (empty)
 string is returned. See the description clause of usmUserAuthKeyChange for a
 recommended procedure to do a key change.
-""")
+"""
+    )
 
 
 class _UsmUserOwnPrivKeyChange_Type(KeyChange):
     """Custom type usmUserOwnPrivKeyChange based on KeyChange"""
+
     defaultHexValue = ""
 
 
 _UsmUserOwnPrivKeyChange_Object = MibTableColumn
 usmUserOwnPrivKeyChange = _UsmUserOwnPrivKeyChange_Object(
-    (1, 3, 6, 1, 6, 3, 15, 1, 2, 2, 1, 10),
-    _UsmUserOwnPrivKeyChange_Type()
+    (1, 3, 6, 1, 6, 3, 15, 1, 2, 2, 1, 10), _UsmUserOwnPrivKeyChange_Type()
 )
 usmUserOwnPrivKeyChange.setMaxAccess("read-create")
 if mibBuilder.loadTexts:
     usmUserOwnPrivKeyChange.setStatus("current")
 if mibBuilder.loadTexts:
-    usmUserOwnPrivKeyChange.setDescription("""\
+    usmUserOwnPrivKeyChange.setDescription(
+        """\
 Behaves exactly as usmUserPrivKeyChange, with one notable difference: in order
 for the Set operation to succeed, the usmUserName of the operation requester
 must match the usmUserName that indexes the row which is targeted by this
@@ -736,11 +767,13 @@ of the requester is not the same as the umsUserName that indexes the row which
 is targeted by this operation, then a 'noAccess' error must be returned. When a
 set is received and the security model in use is not USM, then a 'noAccess'
 error must be returned.
-""")
+"""
+    )
 
 
 class _UsmUserPublic_Type(OctetString):
     """Custom type usmUserPublic based on OctetString"""
+
     defaultHexValue = ""
 
     subtypeSpec = OctetString.subtypeSpec
@@ -752,18 +785,19 @@ class _UsmUserPublic_Type(OctetString):
 _UsmUserPublic_Type.__name__ = "OctetString"
 _UsmUserPublic_Object = MibTableColumn
 usmUserPublic = _UsmUserPublic_Object(
-    (1, 3, 6, 1, 6, 3, 15, 1, 2, 2, 1, 11),
-    _UsmUserPublic_Type()
+    (1, 3, 6, 1, 6, 3, 15, 1, 2, 2, 1, 11), _UsmUserPublic_Type()
 )
 usmUserPublic.setMaxAccess("read-create")
 if mibBuilder.loadTexts:
     usmUserPublic.setStatus("current")
 if mibBuilder.loadTexts:
-    usmUserPublic.setDescription("""\
+    usmUserPublic.setDescription(
+        """\
 A publicly-readable value which can be written as part of the procedure for
 changing a user's secret authentication and/or privacy key, and later read to
 determine whether the change of the secret was effected.
-""")
+"""
+    )
 
 
 class _UsmUserStorageType_Type(StorageType):
@@ -773,13 +807,14 @@ class _UsmUserStorageType_Type(StorageType):
 _UsmUserStorageType_Object = MibTableColumn
 usmUserStorageType = _UsmUserStorageType_Object(
     (1, 3, 6, 1, 6, 3, 15, 1, 2, 2, 1, 12),
-    _UsmUserStorageType_Type().clone('nonVolatile')
+    _UsmUserStorageType_Type().clone("nonVolatile"),
 )
 usmUserStorageType.setMaxAccess("read-create")
 if mibBuilder.loadTexts:
     usmUserStorageType.setStatus("current")
 if mibBuilder.loadTexts:
-    usmUserStorageType.setDescription("""\
+    usmUserStorageType.setDescription(
+        """\
 The storage type for this conceptual row. Conceptual rows having the value
 'permanent' must allow write-access at a minimum to: - usmUserAuthKeyChange,
 usmUserOwnAuthKeyChange and usmUserPublic for a user who employs
@@ -795,18 +830,19 @@ decide if a SET for a readOnly or permanent row is accepted at all. In some
 contexts this may make sense, in others it may not. If a SET for a readOnly or
 permanent row is not accepted at all, then a 'wrongValue' error must be
 returned.
-""")
+"""
+    )
 _UsmUserStatus_Type = RowStatus
 _UsmUserStatus_Object = MibTableColumn
 usmUserStatus = _UsmUserStatus_Object(
-    (1, 3, 6, 1, 6, 3, 15, 1, 2, 2, 1, 13),
-    _UsmUserStatus_Type()
+    (1, 3, 6, 1, 6, 3, 15, 1, 2, 2, 1, 13), _UsmUserStatus_Type()
 )
 usmUserStatus.setMaxAccess("read-create")
 if mibBuilder.loadTexts:
     usmUserStatus.setStatus("current")
 if mibBuilder.loadTexts:
-    usmUserStatus.setDescription("""\
+    usmUserStatus.setDescription(
+        """\
 The status of this conceptual row. Until instances of all corresponding columns
 are appropriately configured, the value of the corresponding instance of the
 usmUserStatus column is 'notReady'. In particular, a newly created row for a
@@ -819,25 +855,19 @@ row can be modified: The value of this object has no effect on whether other
 objects in this conceptual row can be modified, except for
 usmUserOwnAuthKeyChange and usmUserOwnPrivKeyChange. For these 2 objects, the
 value of usmUserStatus MUST be active.
-""")
+"""
+    )
 _UsmMIBConformance_ObjectIdentity = ObjectIdentity
-usmMIBConformance = _UsmMIBConformance_ObjectIdentity(
-    (1, 3, 6, 1, 6, 3, 15, 2)
-)
+usmMIBConformance = _UsmMIBConformance_ObjectIdentity((1, 3, 6, 1, 6, 3, 15, 2))
 _UsmMIBCompliances_ObjectIdentity = ObjectIdentity
-usmMIBCompliances = _UsmMIBCompliances_ObjectIdentity(
-    (1, 3, 6, 1, 6, 3, 15, 2, 1)
-)
+usmMIBCompliances = _UsmMIBCompliances_ObjectIdentity((1, 3, 6, 1, 6, 3, 15, 2, 1))
 _UsmMIBGroups_ObjectIdentity = ObjectIdentity
-usmMIBGroups = _UsmMIBGroups_ObjectIdentity(
-    (1, 3, 6, 1, 6, 3, 15, 2, 2)
-)
+usmMIBGroups = _UsmMIBGroups_ObjectIdentity((1, 3, 6, 1, 6, 3, 15, 2, 2))
 
-usmMIBBasicGroup = ObjectGroup(
-    (1, 3, 6, 1, 6, 3, 15, 2, 2, 1)
-)
+usmMIBBasicGroup = ObjectGroup((1, 3, 6, 1, 6, 3, 15, 2, 2, 1))
 usmMIBBasicGroup.setObjects(
-      *(("SNMP-USER-BASED-SM-MIB", "usmStatsUnsupportedSecLevels"),
+    *(
+        ("SNMP-USER-BASED-SM-MIB", "usmStatsUnsupportedSecLevels"),
         ("SNMP-USER-BASED-SM-MIB", "usmStatsNotInTimeWindows"),
         ("SNMP-USER-BASED-SM-MIB", "usmStatsUnknownUserNames"),
         ("SNMP-USER-BASED-SM-MIB", "usmStatsUnknownEngineIDs"),
@@ -854,66 +884,69 @@ usmMIBBasicGroup.setObjects(
         ("SNMP-USER-BASED-SM-MIB", "usmUserOwnPrivKeyChange"),
         ("SNMP-USER-BASED-SM-MIB", "usmUserPublic"),
         ("SNMP-USER-BASED-SM-MIB", "usmUserStorageType"),
-        ("SNMP-USER-BASED-SM-MIB", "usmUserStatus"))
+        ("SNMP-USER-BASED-SM-MIB", "usmUserStatus"),
+    )
 )
 if mibBuilder.loadTexts:
     usmMIBBasicGroup.setStatus("current")
 if mibBuilder.loadTexts:
-    usmMIBBasicGroup.setDescription("""\
+    usmMIBBasicGroup.setDescription(
+        """\
 A collection of objects providing for configuration of an SNMP engine which
 implements the SNMP User-based Security Model.
-""")
-
-usmMIBCompliance = ModuleCompliance(
-    (1, 3, 6, 1, 6, 3, 15, 2, 1, 1)
-)
-if mibBuilder.loadTexts:
-    usmMIBCompliance.setStatus(
-        "current"
+"""
     )
+
+usmMIBCompliance = ModuleCompliance((1, 3, 6, 1, 6, 3, 15, 2, 1, 1))
 if mibBuilder.loadTexts:
-    usmMIBCompliance.setDescription("""\
+    usmMIBCompliance.setStatus("current")
+if mibBuilder.loadTexts:
+    usmMIBCompliance.setDescription(
+        """\
 The compliance statement for SNMP engines which implement the SNMP-USER-BASED-
 SM-MIB.
-""")
+"""
+    )
 
 mibBuilder.exportSymbols(
     "SNMP-USER-BASED-SM-MIB",
-    **{"KeyChange": KeyChange,
-       "usmNoAuthProtocol": usmNoAuthProtocol,
-       "usmHMACMD5AuthProtocol": usmHMACMD5AuthProtocol,
-       "usmHMACSHAAuthProtocol": usmHMACSHAAuthProtocol,
-       "usmNoPrivProtocol": usmNoPrivProtocol,
-       "usmDESPrivProtocol": usmDESPrivProtocol,
-       "snmpUsmMIB": snmpUsmMIB,
-       "usmMIBObjects": usmMIBObjects,
-       "usmStats": usmStats,
-       "usmStatsUnsupportedSecLevels": usmStatsUnsupportedSecLevels,
-       "usmStatsNotInTimeWindows": usmStatsNotInTimeWindows,
-       "usmStatsUnknownUserNames": usmStatsUnknownUserNames,
-       "usmStatsUnknownEngineIDs": usmStatsUnknownEngineIDs,
-       "usmStatsWrongDigests": usmStatsWrongDigests,
-       "usmStatsDecryptionErrors": usmStatsDecryptionErrors,
-       "usmUser": usmUser,
-       "usmUserSpinLock": usmUserSpinLock,
-       "usmUserTable": usmUserTable,
-       "usmUserEntry": usmUserEntry,
-       "usmUserEngineID": usmUserEngineID,
-       "usmUserName": usmUserName,
-       "usmUserSecurityName": usmUserSecurityName,
-       "usmUserCloneFrom": usmUserCloneFrom,
-       "usmUserAuthProtocol": usmUserAuthProtocol,
-       "usmUserAuthKeyChange": usmUserAuthKeyChange,
-       "usmUserOwnAuthKeyChange": usmUserOwnAuthKeyChange,
-       "usmUserPrivProtocol": usmUserPrivProtocol,
-       "usmUserPrivKeyChange": usmUserPrivKeyChange,
-       "usmUserOwnPrivKeyChange": usmUserOwnPrivKeyChange,
-       "usmUserPublic": usmUserPublic,
-       "usmUserStorageType": usmUserStorageType,
-       "usmUserStatus": usmUserStatus,
-       "usmMIBConformance": usmMIBConformance,
-       "usmMIBCompliances": usmMIBCompliances,
-       "usmMIBCompliance": usmMIBCompliance,
-       "usmMIBGroups": usmMIBGroups,
-       "usmMIBBasicGroup": usmMIBBasicGroup}
+    **{
+        "KeyChange": KeyChange,
+        "usmNoAuthProtocol": usmNoAuthProtocol,
+        "usmHMACMD5AuthProtocol": usmHMACMD5AuthProtocol,
+        "usmHMACSHAAuthProtocol": usmHMACSHAAuthProtocol,
+        "usmNoPrivProtocol": usmNoPrivProtocol,
+        "usmDESPrivProtocol": usmDESPrivProtocol,
+        "snmpUsmMIB": snmpUsmMIB,
+        "usmMIBObjects": usmMIBObjects,
+        "usmStats": usmStats,
+        "usmStatsUnsupportedSecLevels": usmStatsUnsupportedSecLevels,
+        "usmStatsNotInTimeWindows": usmStatsNotInTimeWindows,
+        "usmStatsUnknownUserNames": usmStatsUnknownUserNames,
+        "usmStatsUnknownEngineIDs": usmStatsUnknownEngineIDs,
+        "usmStatsWrongDigests": usmStatsWrongDigests,
+        "usmStatsDecryptionErrors": usmStatsDecryptionErrors,
+        "usmUser": usmUser,
+        "usmUserSpinLock": usmUserSpinLock,
+        "usmUserTable": usmUserTable,
+        "usmUserEntry": usmUserEntry,
+        "usmUserEngineID": usmUserEngineID,
+        "usmUserName": usmUserName,
+        "usmUserSecurityName": usmUserSecurityName,
+        "usmUserCloneFrom": usmUserCloneFrom,
+        "usmUserAuthProtocol": usmUserAuthProtocol,
+        "usmUserAuthKeyChange": usmUserAuthKeyChange,
+        "usmUserOwnAuthKeyChange": usmUserOwnAuthKeyChange,
+        "usmUserPrivProtocol": usmUserPrivProtocol,
+        "usmUserPrivKeyChange": usmUserPrivKeyChange,
+        "usmUserOwnPrivKeyChange": usmUserOwnPrivKeyChange,
+        "usmUserPublic": usmUserPublic,
+        "usmUserStorageType": usmUserStorageType,
+        "usmUserStatus": usmUserStatus,
+        "usmMIBConformance": usmMIBConformance,
+        "usmMIBCompliances": usmMIBCompliances,
+        "usmMIBCompliance": usmMIBCompliance,
+        "usmMIBGroups": usmMIBGroups,
+        "usmMIBBasicGroup": usmMIBBasicGroup,
+    }
 )

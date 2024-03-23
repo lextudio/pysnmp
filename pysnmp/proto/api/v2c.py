@@ -14,7 +14,7 @@ from pysnmp.proto.api import v1
 
 # Shortcuts to SNMP types
 Null = univ.Null
-null = Null('')
+null = Null("")
 ObjectIdentifier = univ.ObjectIdentifier
 
 Integer = rfc1902.Integer
@@ -54,7 +54,8 @@ apiVarBind = v1.apiVarBind
 class PDUAPI(v1.PDUAPI):
     _errorStatus = rfc1905.errorStatus.clone(0)
     _errorIndex = univ.Integer(0).subtype(
-        subtypeSpec=constraint.ValueRangeConstraint(0, rfc1905.max_bindings))
+        subtypeSpec=constraint.ValueRangeConstraint(0, rfc1905.max_bindings)
+    )
 
     def getResponse(self, reqPDU):
         rspPDU = ResponsePDU()
@@ -75,9 +76,10 @@ class PDUAPI(v1.PDUAPI):
 
         for idx, varBind in enumerate(varBinds):
             if varBind[1].tagSet in (
-                    rfc1905.NoSuchObject.tagSet,
-                    rfc1905.NoSuchInstance.tagSet,
-                    rfc1905.EndOfMibView.tagSet):
+                rfc1905.NoSuchObject.tagSet,
+                rfc1905.NoSuchInstance.tagSet,
+                rfc1905.EndOfMibView.tagSet,
+            ):
                 continue
 
             rspVarBinds.append((varBind[0], null))
@@ -87,14 +89,22 @@ class PDUAPI(v1.PDUAPI):
     def setEndOfMibError(self, pdu, errorIndex):
         varBindList = self.getVarBindList(pdu)
         varBindList[errorIndex - 1].setComponentByPosition(
-            1, rfc1905.endOfMibView, verifyConstraints=False, matchTags=False,
-            matchConstraints=False)
+            1,
+            rfc1905.endOfMibView,
+            verifyConstraints=False,
+            matchTags=False,
+            matchConstraints=False,
+        )
 
     def setNoSuchInstanceError(self, pdu, errorIndex):
         varBindList = self.getVarBindList(pdu)
         varBindList[errorIndex - 1].setComponentByPosition(
-            1, rfc1905.noSuchInstance, verifyConstraints=False, matchTags=False,
-            matchConstraints=False)
+            1,
+            rfc1905.noSuchInstance,
+            verifyConstraints=False,
+            matchTags=False,
+            matchConstraints=False,
+        )
 
 
 apiPDU = PDUAPI()
@@ -108,16 +118,28 @@ class BulkPDUAPI(PDUAPI):
         PDUAPI.setDefaults(self, pdu)
 
         pdu.setComponentByPosition(
-            0, getNextRequestID(), verifyConstraints=False, matchTags=False,
-            matchConstraints=False)
+            0,
+            getNextRequestID(),
+            verifyConstraints=False,
+            matchTags=False,
+            matchConstraints=False,
+        )
 
         pdu.setComponentByPosition(
-            1, self._nonRepeaters, verifyConstraints=False, matchTags=False,
-            matchConstraints=False)
+            1,
+            self._nonRepeaters,
+            verifyConstraints=False,
+            matchTags=False,
+            matchConstraints=False,
+        )
 
         pdu.setComponentByPosition(
-            2, self._maxRepetitions, verifyConstraints=False, matchTags=False,
-            matchConstraints=False)
+            2,
+            self._maxRepetitions,
+            verifyConstraints=False,
+            matchTags=False,
+            matchConstraints=False,
+        )
 
         varBindList = pdu.setComponentByPosition(3).getComponentByPosition(3)
         varBindList.clear()
@@ -157,7 +179,7 @@ class BulkPDUAPI(PDUAPI):
 
         if R:
             for i in range(0, len(rspVarBinds) - N, R):
-                varBindRow = rspVarBinds[:N] + rspVarBinds[N + i:N + R + i]
+                varBindRow = rspVarBinds[:N] + rspVarBinds[N + i : N + R + i]
 
                 # ignore stray OIDs / non-rectangular table
                 if len(varBindRow) == N + R:
@@ -184,9 +206,11 @@ class TrapPDUAPI(v1.PDUAPI):
     def setDefaults(self, pdu):
         v1.PDUAPI.setDefaults(self, pdu)
 
-        varBinds = [(self.sysUpTime, self._zeroTime),
-                    # generic trap
-                    (self.snmpTrapOID, self._genTrap)]
+        varBinds = [
+            (self.sysUpTime, self._zeroTime),
+            # generic trap
+            (self.snmpTrapOID, self._genTrap),
+        ]
 
         self.setVarBinds(pdu, varBinds)
 
@@ -199,12 +223,20 @@ class MessageAPI(v1.MessageAPI):
 
     def setDefaults(self, msg):
         msg.setComponentByPosition(
-            0, self._version, verifyConstraints=False, matchTags=False,
-            matchConstraints=False)
+            0,
+            self._version,
+            verifyConstraints=False,
+            matchTags=False,
+            matchConstraints=False,
+        )
 
         msg.setComponentByPosition(
-            1, self._community, verifyConstraints=False, matchTags=False,
-            matchConstraints=False)
+            1,
+            self._community,
+            verifyConstraints=False,
+            matchTags=False,
+            matchConstraints=False,
+        )
 
         return msg
 

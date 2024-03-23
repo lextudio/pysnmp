@@ -15,24 +15,28 @@ from pysnmp.proto.proxy import rfc2576
 
 
 # 3.4
-class NotificationReceiver(object):
-    SUPPORTED_PDU_TYPES = (v1.TrapPDU.tagSet, v2c.SNMPv2TrapPDU.tagSet,
-                           v2c.InformRequestPDU.tagSet)
+class NotificationReceiver:
+    SUPPORTED_PDU_TYPES = (
+        v1.TrapPDU.tagSet,
+        v2c.SNMPv2TrapPDU.tagSet,
+        v2c.InformRequestPDU.tagSet,
+    )
 
     def __init__(self, snmpEngine, cbFun, cbCtx=None):
         snmpEngine.msgAndPduDsp.registerContextEngineId(
             null, self.SUPPORTED_PDU_TYPES, self.processPdu  # '' is a wildcard
         )
 
-        self.__snmpTrapCommunity = ''
+        self.__snmpTrapCommunity = ""
         self.__cbFun = cbFun
         self.__cbCtx = cbCtx
 
         def storeSnmpTrapCommunity(snmpEngine, execpoint, variables, cbCtx):
-            self.__snmpTrapCommunity = variables.get('communityName', '')
+            self.__snmpTrapCommunity = variables.get("communityName", "")
 
         snmpEngine.observer.registerObserver(
-            storeSnmpTrapCommunity, 'rfc2576.processIncomingMsg')
+            storeSnmpTrapCommunity, "rfc2576.processIncomingMsg"
+        )
 
     def close(self, snmpEngine):
         snmpEngine.msgAndPduDsp.unregisterContextEngineId(
@@ -40,11 +44,20 @@ class NotificationReceiver(object):
         )
         self.__cbFun = self.__cbCtx = None
 
-    def processPdu(self, snmpEngine, messageProcessingModel,
-                   securityModel, securityName, securityLevel,
-                   contextEngineId, contextName, pduVersion, PDU,
-                   maxSizeResponseScopedPDU, stateReference):
-
+    def processPdu(
+        self,
+        snmpEngine,
+        messageProcessingModel,
+        securityModel,
+        securityName,
+        securityLevel,
+        contextEngineId,
+        contextName,
+        pduVersion,
+        PDU,
+        maxSizeResponseScopedPDU,
+        stateReference,
+    ):
         # Agent-side API complies with SMIv2
         if messageProcessingModel == 0:
             origPdu = PDU
@@ -53,12 +66,13 @@ class NotificationReceiver(object):
         else:
             origPdu = None
 
-        errorStatus = 'noError'
+        errorStatus = "noError"
         errorIndex = 0
         varBinds = v2c.apiPDU.getVarBinds(PDU)
 
         debug.logger & debug.FLAG_APP and debug.logger(
-            'processPdu: stateReference %s, varBinds %s' % (stateReference, varBinds))
+            f"processPdu: stateReference {stateReference}, varBinds {varBinds}"
+        )
 
         # 3.4
         if PDU.tagSet in rfc3411.CONFIRMED_CLASS_PDUS:
@@ -72,7 +86,9 @@ class NotificationReceiver(object):
             v2c.apiPDU.setVarBinds(rspPDU, varBinds)
 
             debug.logger & debug.FLAG_APP and debug.logger(
-                'processPdu: stateReference %s, confirm PDU %s' % (stateReference, rspPDU.prettyPrint()))
+                "processPdu: stateReference %s, confirm PDU %s"
+                % (stateReference, rspPDU.prettyPrint())
+            )
 
             # Agent-side API complies with SMIv2
             if messageProcessingModel == 0:
@@ -83,19 +99,31 @@ class NotificationReceiver(object):
             # 3.4.3
             try:
                 snmpEngine.msgAndPduDsp.returnResponsePdu(
-                    snmpEngine, messageProcessingModel, securityModel,
-                    securityName, securityLevel, contextEngineId,
-                    contextName, pduVersion, rspPDU, maxSizeResponseScopedPDU,
-                    stateReference, statusInformation)
+                    snmpEngine,
+                    messageProcessingModel,
+                    securityModel,
+                    securityName,
+                    securityLevel,
+                    contextEngineId,
+                    contextName,
+                    pduVersion,
+                    rspPDU,
+                    maxSizeResponseScopedPDU,
+                    stateReference,
+                    statusInformation,
+                )
 
             except error.StatusInformation as exc:
                 debug.logger & debug.FLAG_APP and debug.logger(
-                    'processPdu: stateReference %s, statusInformation %s' % (stateReference, exc))
+                    "processPdu: stateReference %s, statusInformation %s"
+                    % (stateReference, exc)
+                )
 
                 mibBuilder = snmpEngine.msgAndPduDsp.mibInstrumController.mibBuilder
 
-                snmpSilentDrops, = mibBuilder.importSymbols(
-                    '__SNMPv2-MIB', 'snmpSilentDrops')
+                (snmpSilentDrops,) = mibBuilder.importSymbols(
+                    "__SNMPv2-MIB", "snmpSilentDrops"
+                )
 
                 snmpSilentDrops.syntax += 1
 
@@ -103,11 +131,18 @@ class NotificationReceiver(object):
             pass
 
         else:
-            raise error.ProtocolError('Unexpected PDU class %s' % PDU.tagSet)
+            raise error.ProtocolError("Unexpected PDU class %s" % PDU.tagSet)
 
         debug.logger & debug.FLAG_APP and debug.logger(
-            'processPdu: stateReference %s, user cbFun %s, cbCtx %s, varBinds %s' % (
-                stateReference, self.__cbFun, self.__cbCtx, varBinds))
+            "processPdu: stateReference %s, user cbFun %s, cbCtx %s, varBinds %s"
+            % (stateReference, self.__cbFun, self.__cbCtx, varBinds)
+        )
 
-        self.__cbFun(snmpEngine, stateReference, contextEngineId,
-                     contextName, varBinds, self.__cbCtx)
+        self.__cbFun(
+            snmpEngine,
+            stateReference,
+            contextEngineId,
+            contextName,
+            varBinds,
+            self.__cbCtx,
+        )

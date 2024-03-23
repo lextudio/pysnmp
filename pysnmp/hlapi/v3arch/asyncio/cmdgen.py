@@ -43,7 +43,7 @@ from pysnmp.entity.rfc3413 import cmdgen
 from pysnmp.proto.api import v2c
 from pysnmp.smi.rfc1902 import *
 
-__all__ = ['getCmd', 'nextCmd', 'setCmd', 'bulkCmd', 'isEndOfMib']
+__all__ = ["getCmd", "nextCmd", "setCmd", "bulkCmd", "isEndOfMib"]
 
 VB_PROCESSOR = CommandGeneratorVarBinds()
 LCD = CommandGeneratorLcdConfigurator()
@@ -51,9 +51,9 @@ LCD = CommandGeneratorLcdConfigurator()
 isEndOfMib = lambda varBinds: not v2c.apiPDU.getNextVarBinds(varBinds)[1]
 
 
-
-async def getCmd(snmpEngine, authData, transportTarget, contextData,
-           *varBinds, **options):
+async def getCmd(
+    snmpEngine, authData, transportTarget, contextData, *varBinds, **options
+):
     """Creates a generator to perform SNMP GET query.
 
     When iterator gets advanced by :py:mod:`asyncio` main loop,
@@ -126,9 +126,15 @@ async def getCmd(snmpEngine, authData, transportTarget, contextData,
 
     """
 
-    def __cbFun(snmpEngine, sendRequestHandle,
-                errorIndication, errorStatus, errorIndex,
-                varBinds, cbCtx):
+    def __cbFun(
+        snmpEngine,
+        sendRequestHandle,
+        errorIndication,
+        errorStatus,
+        errorIndex,
+        varBinds,
+        cbCtx,
+    ):
         lookupMib, future = cbCtx
 
         if future.cancelled():
@@ -136,31 +142,38 @@ async def getCmd(snmpEngine, authData, transportTarget, contextData,
 
         try:
             varBindsUnmade = VB_PROCESSOR.unmakeVarBinds(
-                snmpEngine.cache, varBinds, lookupMib)
+                snmpEngine.cache, varBinds, lookupMib
+            )
 
         except Exception as e:
             future.set_exception(e)
 
         else:
             future.set_result(
-                (errorIndication, errorStatus, errorIndex, varBindsUnmade))
+                (errorIndication, errorStatus, errorIndex, varBindsUnmade)
+            )
 
     addrName, paramsName = LCD.configure(
-        snmpEngine, authData, transportTarget, contextData.contextName)
+        snmpEngine, authData, transportTarget, contextData.contextName
+    )
 
     future = asyncio.get_running_loop().create_future()
 
     cmdgen.GetCommandGenerator().sendVarBinds(
-        snmpEngine, addrName, contextData.contextEngineId,
+        snmpEngine,
+        addrName,
+        contextData.contextEngineId,
         contextData.contextName,
-        VB_PROCESSOR.makeVarBinds(snmpEngine.cache, varBinds), __cbFun,
-        (options.get('lookupMib', True), future)
+        VB_PROCESSOR.makeVarBinds(snmpEngine.cache, varBinds),
+        __cbFun,
+        (options.get("lookupMib", True), future),
     )
     return await future
 
 
-async def setCmd(snmpEngine, authData, transportTarget, contextData,
-           *varBinds, **options):
+async def setCmd(
+    snmpEngine, authData, transportTarget, contextData, *varBinds, **options
+):
     """Creates a generator to perform SNMP SET query.
 
     When iterator gets advanced by :py:mod:`asyncio` main loop,
@@ -233,9 +246,15 @@ async def setCmd(snmpEngine, authData, transportTarget, contextData,
 
     """
 
-    def __cbFun(snmpEngine, sendRequestHandle,
-                errorIndication, errorStatus, errorIndex,
-                varBinds, cbCtx):
+    def __cbFun(
+        snmpEngine,
+        sendRequestHandle,
+        errorIndication,
+        errorStatus,
+        errorIndex,
+        varBinds,
+        cbCtx,
+    ):
         lookupMib, future = cbCtx
 
         if future.cancelled():
@@ -243,7 +262,8 @@ async def setCmd(snmpEngine, authData, transportTarget, contextData,
 
         try:
             varBindsUnmade = VB_PROCESSOR.unmakeVarBinds(
-                snmpEngine.cache, varBinds, lookupMib)
+                snmpEngine.cache, varBinds, lookupMib
+            )
 
         except Exception as e:
             future.set_exception(e)
@@ -254,21 +274,26 @@ async def setCmd(snmpEngine, authData, transportTarget, contextData,
             )
 
     addrName, paramsName = LCD.configure(
-        snmpEngine, authData, transportTarget, contextData.contextName)
+        snmpEngine, authData, transportTarget, contextData.contextName
+    )
 
     future = asyncio.get_running_loop().create_future()
 
     cmdgen.SetCommandGenerator().sendVarBinds(
-        snmpEngine, addrName, contextData.contextEngineId,
+        snmpEngine,
+        addrName,
+        contextData.contextEngineId,
         contextData.contextName,
-        VB_PROCESSOR.makeVarBinds(snmpEngine.cache, varBinds), __cbFun,
-        (options.get('lookupMib', True), future)
+        VB_PROCESSOR.makeVarBinds(snmpEngine.cache, varBinds),
+        __cbFun,
+        (options.get("lookupMib", True), future),
     )
     return await future
 
 
-async def nextCmd(snmpEngine, authData, transportTarget, contextData,
-            *varBinds, **options):
+async def nextCmd(
+    snmpEngine, authData, transportTarget, contextData, *varBinds, **options
+):
     """Creates a generator to perform SNMP GETNEXT query.
 
     When iterator gets advanced by :py:mod:`asyncio` main loop,
@@ -345,17 +370,24 @@ async def nextCmd(snmpEngine, authData, transportTarget, contextData,
 
     """
 
-    def __cbFun(snmpEngine, sendRequestHandle,
-                errorIndication, errorStatus, errorIndex,
-                varBindTable, cbCtx):
+    def __cbFun(
+        snmpEngine,
+        sendRequestHandle,
+        errorIndication,
+        errorStatus,
+        errorIndex,
+        varBindTable,
+        cbCtx,
+    ):
         lookupMib, future = cbCtx
         if future.cancelled():
             return
 
         try:
             varBindsUnmade = [
-                VB_PROCESSOR.unmakeVarBinds(snmpEngine.cache, varBindTableRow,
-                                            lookupMib)
+                VB_PROCESSOR.unmakeVarBinds(
+                    snmpEngine.cache, varBindTableRow, lookupMib
+                )
                 for varBindTableRow in varBindTable
             ]
 
@@ -364,24 +396,37 @@ async def nextCmd(snmpEngine, authData, transportTarget, contextData,
 
         else:
             future.set_result(
-                (errorIndication, errorStatus, errorIndex, varBindsUnmade))
+                (errorIndication, errorStatus, errorIndex, varBindsUnmade)
+            )
 
     addrName, paramsName = LCD.configure(
-        snmpEngine, authData, transportTarget, contextData.contextName)
+        snmpEngine, authData, transportTarget, contextData.contextName
+    )
 
     future = asyncio.get_running_loop().create_future()
 
     cmdgen.NextCommandGenerator().sendVarBinds(
-        snmpEngine, addrName, contextData.contextEngineId,
+        snmpEngine,
+        addrName,
+        contextData.contextEngineId,
         contextData.contextName,
-        VB_PROCESSOR.makeVarBinds(snmpEngine.cache, varBinds), __cbFun,
-        (options.get('lookupMib', True), future)
+        VB_PROCESSOR.makeVarBinds(snmpEngine.cache, varBinds),
+        __cbFun,
+        (options.get("lookupMib", True), future),
     )
     return await future
 
 
-async def bulkCmd(snmpEngine, authData, transportTarget, contextData,
-            nonRepeaters, maxRepetitions, *varBinds, **options):
+async def bulkCmd(
+    snmpEngine,
+    authData,
+    transportTarget,
+    contextData,
+    nonRepeaters,
+    maxRepetitions,
+    *varBinds,
+    **options
+):
     """Creates a generator to perform SNMP GETBULK query.
 
     When iterator gets advanced by :py:mod:`asyncio` main loop,
@@ -487,9 +532,15 @@ async def bulkCmd(snmpEngine, authData, transportTarget, contextData,
 
     """
 
-    def __cbFun(snmpEngine, sendRequestHandle,
-                errorIndication, errorStatus, errorIndex,
-                varBindTable, cbCtx):
+    def __cbFun(
+        snmpEngine,
+        sendRequestHandle,
+        errorIndication,
+        errorStatus,
+        errorIndex,
+        varBindTable,
+        cbCtx,
+    ):
         lookupMib, future = cbCtx
 
         if future.cancelled():
@@ -498,7 +549,8 @@ async def bulkCmd(snmpEngine, authData, transportTarget, contextData,
         try:
             varBindsUnmade = [
                 VB_PROCESSOR.unmakeVarBinds(
-                    snmpEngine.cache, varBindTableRow, lookupMib)
+                    snmpEngine.cache, varBindTableRow, lookupMib
+                )
                 for varBindTableRow in varBindTable
             ]
 
@@ -507,17 +559,24 @@ async def bulkCmd(snmpEngine, authData, transportTarget, contextData,
 
         else:
             future.set_result(
-                (errorIndication, errorStatus, errorIndex, varBindsUnmade))
+                (errorIndication, errorStatus, errorIndex, varBindsUnmade)
+            )
 
     addrName, paramsName = LCD.configure(
-        snmpEngine, authData, transportTarget, contextData.contextName)
+        snmpEngine, authData, transportTarget, contextData.contextName
+    )
 
     future = asyncio.get_running_loop().create_future()
 
     cmdgen.BulkCommandGenerator().sendVarBinds(
-        snmpEngine, addrName, contextData.contextEngineId,
-        contextData.contextName, nonRepeaters, maxRepetitions,
-        VB_PROCESSOR.makeVarBinds(snmpEngine.cache, varBinds), __cbFun,
-        (options.get('lookupMib', True), future)
+        snmpEngine,
+        addrName,
+        contextData.contextEngineId,
+        contextData.contextName,
+        nonRepeaters,
+        maxRepetitions,
+        VB_PROCESSOR.makeVarBinds(snmpEngine.cache, varBinds),
+        __cbFun,
+        (options.get("lookupMib", True), future),
     )
     return await future

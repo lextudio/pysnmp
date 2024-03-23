@@ -8,7 +8,7 @@
 #
 
 
-class Cache(object):
+class Cache:
     def __init__(self, maxSize=256):
         self._maxSize = maxSize
         self._size = 0
@@ -29,10 +29,9 @@ class Cache(object):
 
     def __setitem__(self, k, v):
         if self._size >= self._maxSize:
-            usageKeys = sorted(
-                self._usage, key=lambda x, d=self._usage: d[x])
+            usageKeys = sorted(self._usage, key=lambda x, d=self._usage: d[x])
 
-            for _k in usageKeys[:self._chopSize]:
+            for _k in usageKeys[: self._chopSize]:
                 del self._cache[_k]
                 del self._usage[_k]
 

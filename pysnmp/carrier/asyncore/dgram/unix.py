@@ -28,18 +28,18 @@ class UnixTransportAddress(str, AbstractTransportAddress):
 class UnixSocketTransport(DgramSocketTransport):
     SOCK_FAMILY = AF_UNIX
     ADDRESS_TYPE = UnixTransportAddress
-    _iface = ''
+    _iface = ""
 
     def openClientMode(self, iface=None):
         if iface is None:
             # UNIX domain sockets must be explicitly bound
-            iface = ''
+            iface = ""
 
             while len(iface) < 8:
                 iface += chr(random.randrange(65, 91))
                 iface += chr(random.randrange(97, 123))
 
-            iface = os.path.join(os.path.sep, 'tmp', 'pysnmp', iface)
+            iface = os.path.join(os.path.sep, "tmp", "pysnmp", iface)
 
         if os.path.exists(iface):
             os.remove(iface)

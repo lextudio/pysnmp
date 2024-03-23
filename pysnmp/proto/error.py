@@ -16,6 +16,7 @@ class ProtocolError(PySnmpError, PyAsn1Error):
 
 # SNMP v3 exceptions
 
+
 class SnmpV3Error(ProtocolError):
     pass
 
@@ -26,9 +27,9 @@ class StatusInformation(SnmpV3Error):
 
         self.__errorIndication = kwargs
 
-        debug.logger & (debug.FLAG_DSP | debug.FLAG_MP |
-                        debug.FLAG_SM | debug.FLAG_ACL) and debug.logger(
-            'StatusInformation: %s' % kwargs)
+        debug.logger & (
+            debug.FLAG_DSP | debug.FLAG_MP | debug.FLAG_SM | debug.FLAG_ACL
+        ) and debug.logger("StatusInformation: %s" % kwargs)
 
     def __str__(self):
         return str(self.__errorIndication)

@@ -11,8 +11,9 @@ from pysnmp.smi.error import NoSuchInstanceError
 
 
 # 3.2
-class Vacm(object):
+class Vacm:
     """View-based Access Control Model"""
+
     ACCESS_MODEL_ID = 3
 
     _powOfTwoSeq = (128, 64, 32, 16, 8, 4, 2, 1)
@@ -28,9 +29,17 @@ class Vacm(object):
         self._accessMap = {}
         self._viewTreeMap = {}
 
-    def _addAccessEntry(self, groupName, contextPrefix, securityModel,
-                        securityLevel, prefixMatch, readView, writeView,
-                        notifyView):
+    def _addAccessEntry(
+        self,
+        groupName,
+        contextPrefix,
+        securityModel,
+        securityLevel,
+        prefixMatch,
+        readView,
+        writeView,
+        notifyView,
+    ):
         if not groupName:
             return
 
@@ -43,9 +52,10 @@ class Vacm(object):
             views = groups[groupName] = {}
 
         for viewType, viewName in (
-                ('read', readView), ('write', writeView),
-                ('notify', notifyView)):
-
+            ("read", readView),
+            ("write", writeView),
+            ("notify", notifyView),
+        ):
             try:
                 matches = views[viewType]
 
@@ -72,7 +82,9 @@ class Vacm(object):
 
             levels[securityLevel] = viewName
 
-    def _getFamilyViewName(self, groupName, contextName, securityModel, securityLevel, viewType):
+    def _getFamilyViewName(
+        self, groupName, contextName, securityModel, securityLevel, viewType
+    ):
         groups = self._accessMap
 
         try:
@@ -99,18 +111,15 @@ class Vacm(object):
         candidates = []
 
         for match, names in matches.items():
-
             for context, models in names.items():
-
                 if match == 1 and contextName != context:
                     continue
 
-                if match == 2 and contextName[:len(context)] != context:
+                if match == 2 and contextName[: len(context)] != context:
                     continue
 
                 for model, levels in models.items():
                     for level, viewName in levels.items():
-
                         # priorities:
                         # - matching securityModel
                         # - exact context name match
@@ -128,32 +137,40 @@ class Vacm(object):
         rating, viewName = candidates[0]
         return viewName
 
-    def isAccessAllowed(self,
-                        snmpEngine,
-                        securityModel,
-                        securityName,
-                        securityLevel,
-                        viewType,
-                        contextName,
-                        variableName):
-
+    def isAccessAllowed(
+        self,
+        snmpEngine,
+        securityModel,
+        securityName,
+        securityLevel,
+        viewType,
+        contextName,
+        variableName,
+    ):
         mibInstrumController = snmpEngine.msgAndPduDsp.mibInstrumController
         mibBuilder = mibInstrumController.mibBuilder
 
         debug.logger & debug.FLAG_ACL and debug.logger(
-            'isAccessAllowed: securityModel %s, securityName %s, '
-            'securityLevel %s, viewType %s, contextName %s for '
-            'variableName %s' % (securityModel, securityName,
-                                 securityLevel, viewType, contextName,
-                                 variableName))
+            "isAccessAllowed: securityModel %s, securityName %s, "
+            "securityLevel %s, viewType %s, contextName %s for "
+            "variableName %s"
+            % (
+                securityModel,
+                securityName,
+                securityLevel,
+                viewType,
+                contextName,
+                variableName,
+            )
+        )
 
         # Rebuild contextName map if changed
 
-        vacmContextName, = mibInstrumController.mibBuilder.importSymbols(
-            'SNMP-VIEW-BASED-ACM-MIB', 'vacmContextName')
+        (vacmContextName,) = mibInstrumController.mibBuilder.importSymbols(
+            "SNMP-VIEW-BASED-ACM-MIB", "vacmContextName"
+        )
 
         if self._contextBranchId != vacmContextName.branchVersionId:
-
             self._contextMap.clear()
 
             nextMibNode = vacmContextName
@@ -175,13 +192,14 @@ class Vacm(object):
 
         # Rebuild groupName map if changed
 
-        vacmGroupName, = mibInstrumController.mibBuilder.importSymbols(
-            'SNMP-VIEW-BASED-ACM-MIB', 'vacmGroupName')
+        (vacmGroupName,) = mibInstrumController.mibBuilder.importSymbols(
+            "SNMP-VIEW-BASED-ACM-MIB", "vacmGroupName"
+        )
 
         if self._groupNameBranchId != vacmGroupName.branchVersionId:
-
-            vacmSecurityToGroupEntry, = mibInstrumController.mibBuilder.importSymbols(
-                'SNMP-VIEW-BASED-ACM-MIB', 'vacmSecurityToGroupEntry')
+            (vacmSecurityToGroupEntry,) = mibInstrumController.mibBuilder.importSymbols(
+                "SNMP-VIEW-BASED-ACM-MIB", "vacmSecurityToGroupEntry"
+            )
 
             self._groupNameMap.clear()
 
@@ -194,7 +212,7 @@ class Vacm(object):
                 except NoSuchInstanceError:
                     break
 
-                instId = nextMibNode.name[len(vacmGroupName.name):]
+                instId = nextMibNode.name[len(vacmGroupName.name) :]
 
                 indices = vacmSecurityToGroupEntry.getIndicesFromInstId(instId)
 
@@ -213,28 +231,31 @@ class Vacm(object):
 
         # Rebuild access map if changed
 
-        vacmAccessStatus, = mibInstrumController.mibBuilder.importSymbols(
-            'SNMP-VIEW-BASED-ACM-MIB', 'vacmAccessStatus')
+        (vacmAccessStatus,) = mibInstrumController.mibBuilder.importSymbols(
+            "SNMP-VIEW-BASED-ACM-MIB", "vacmAccessStatus"
+        )
 
         if self._accessBranchId != vacmAccessStatus.branchVersionId:
-
-            (vacmAccessEntry,
-             vacmAccessContextPrefix,
-             vacmAccessSecurityModel,
-             vacmAccessSecurityLevel,
-             vacmAccessContextMatch,
-             vacmAccessReadViewName,
-             vacmAccessWriteViewName,
-             vacmAccessNotifyViewName) = mibInstrumController.mibBuilder.importSymbols(
-                'SNMP-VIEW-BASED-ACM-MIB',
-                'vacmAccessEntry',
-                'vacmAccessContextPrefix',
-                'vacmAccessSecurityModel',
-                'vacmAccessSecurityLevel',
-                'vacmAccessContextMatch',
-                'vacmAccessReadViewName',
-                'vacmAccessWriteViewName',
-                'vacmAccessNotifyViewName')
+            (
+                vacmAccessEntry,
+                vacmAccessContextPrefix,
+                vacmAccessSecurityModel,
+                vacmAccessSecurityLevel,
+                vacmAccessContextMatch,
+                vacmAccessReadViewName,
+                vacmAccessWriteViewName,
+                vacmAccessNotifyViewName,
+            ) = mibInstrumController.mibBuilder.importSymbols(
+                "SNMP-VIEW-BASED-ACM-MIB",
+                "vacmAccessEntry",
+                "vacmAccessContextPrefix",
+                "vacmAccessSecurityModel",
+                "vacmAccessSecurityLevel",
+                "vacmAccessContextMatch",
+                "vacmAccessReadViewName",
+                "vacmAccessWriteViewName",
+                "vacmAccessNotifyViewName",
+            )
 
             self._accessMap.clear()
 
@@ -250,7 +271,7 @@ class Vacm(object):
                 if nextMibNode.syntax != 1:  # active row
                     continue
 
-                instId = nextMibNode.name[len(vacmAccessStatus.name):]
+                instId = nextMibNode.name[len(vacmAccessStatus.name) :]
 
                 indices = vacmAccessEntry.getIndicesFromInstId(instId)
 
@@ -259,51 +280,63 @@ class Vacm(object):
                 self._addAccessEntry(
                     vacmGroupName,
                     vacmAccessContextPrefix.getNode(
-                        vacmAccessContextPrefix.name + instId).syntax,
+                        vacmAccessContextPrefix.name + instId
+                    ).syntax,
                     vacmAccessSecurityModel.getNode(
-                        vacmAccessSecurityModel.name + instId).syntax,
+                        vacmAccessSecurityModel.name + instId
+                    ).syntax,
                     vacmAccessSecurityLevel.getNode(
-                        vacmAccessSecurityLevel.name + instId).syntax,
+                        vacmAccessSecurityLevel.name + instId
+                    ).syntax,
                     vacmAccessContextMatch.getNode(
-                        vacmAccessContextMatch.name + instId).syntax,
+                        vacmAccessContextMatch.name + instId
+                    ).syntax,
                     vacmAccessReadViewName.getNode(
-                        vacmAccessReadViewName.name + instId).syntax,
+                        vacmAccessReadViewName.name + instId
+                    ).syntax,
                     vacmAccessWriteViewName.getNode(
-                        vacmAccessWriteViewName.name + instId).syntax,
+                        vacmAccessWriteViewName.name + instId
+                    ).syntax,
                     vacmAccessNotifyViewName.getNode(
-                        vacmAccessNotifyViewName.name + instId).syntax
+                        vacmAccessNotifyViewName.name + instId
+                    ).syntax,
                 )
 
             self._accessBranchId = vacmAccessStatus.branchVersionId
 
         viewName = self._getFamilyViewName(
-            groupName, contextName, securityModel, securityLevel, viewType)
+            groupName, contextName, securityModel, securityLevel, viewType
+        )
 
         # Rebuild family subtree map if changed
 
-        vacmViewTreeFamilyViewName, = mibInstrumController.mibBuilder.importSymbols(
-            'SNMP-VIEW-BASED-ACM-MIB', 'vacmViewTreeFamilyViewName')
+        (vacmViewTreeFamilyViewName,) = mibInstrumController.mibBuilder.importSymbols(
+            "SNMP-VIEW-BASED-ACM-MIB", "vacmViewTreeFamilyViewName"
+        )
 
         if self._viewTreeBranchId != vacmViewTreeFamilyViewName.branchVersionId:
-
-            (vacmViewTreeFamilySubtree,
-             vacmViewTreeFamilyMask,
-             vacmViewTreeFamilyType) = mibInstrumController.mibBuilder.importSymbols(
-                'SNMP-VIEW-BASED-ACM-MIB',
-                'vacmViewTreeFamilySubtree',
-                'vacmViewTreeFamilyMask',
-                'vacmViewTreeFamilyType')
+            (
+                vacmViewTreeFamilySubtree,
+                vacmViewTreeFamilyMask,
+                vacmViewTreeFamilyType,
+            ) = mibInstrumController.mibBuilder.importSymbols(
+                "SNMP-VIEW-BASED-ACM-MIB",
+                "vacmViewTreeFamilySubtree",
+                "vacmViewTreeFamilyMask",
+                "vacmViewTreeFamilyType",
+            )
 
             self._viewTreeMap.clear()
 
-            powerOfTwo = [2 ** exp for exp in range(7, -1, -1)]
+            powerOfTwo = [2**exp for exp in range(7, -1, -1)]
 
             nextMibNode = vacmViewTreeFamilyViewName
 
             while True:
                 try:
                     nextMibNode = vacmViewTreeFamilyViewName.getNextNode(
-                        nextMibNode.name)
+                        nextMibNode.name
+                    )
 
                 except NoSuchInstanceError:
                     break
@@ -311,22 +344,26 @@ class Vacm(object):
                 if nextMibNode.syntax not in self._viewTreeMap:
                     self._viewTreeMap[nextMibNode.syntax] = []
 
-                instId = nextMibNode.name[len(vacmViewTreeFamilyViewName.name):]
+                instId = nextMibNode.name[len(vacmViewTreeFamilyViewName.name) :]
 
                 subtree = vacmViewTreeFamilySubtree.getNode(
-                    vacmViewTreeFamilySubtree.name + instId).syntax
+                    vacmViewTreeFamilySubtree.name + instId
+                ).syntax
 
                 mask = vacmViewTreeFamilyMask.getNode(
-                    vacmViewTreeFamilyMask.name + instId).syntax
+                    vacmViewTreeFamilyMask.name + instId
+                ).syntax
 
                 mode = vacmViewTreeFamilyType.getNode(
-                    vacmViewTreeFamilyType.name + instId).syntax
+                    vacmViewTreeFamilyType.name + instId
+                ).syntax
 
                 mask = mask.asNumbers()
                 maskLength = min(len(mask) * 8, len(subtree))
 
                 ignoredSubOids = [
-                    i * 8 + j for i, octet in enumerate(mask)
+                    i * 8 + j
+                    for i, octet in enumerate(mask)
                     for j, bit in enumerate(powerOfTwo)
                     if not (bit & octet) and i * 8 + j < maskLength
                 ]

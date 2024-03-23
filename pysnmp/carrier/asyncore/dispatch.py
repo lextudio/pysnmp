@@ -27,8 +27,7 @@ class AsyncoreDispatcher(AbstractTransportDispatcher):
         self.__sockMap = sockMap
 
     def registerTransport(self, transportDomain, transport):
-        AbstractTransportDispatcher.registerTransport(
-            self, transportDomain, transport)
+        AbstractTransportDispatcher.registerTransport(self, transportDomain, transport)
         transport.registerSocket(self.__sockMap)
 
     def unregisterTransport(self, transportDomain):
@@ -43,14 +42,19 @@ class AsyncoreDispatcher(AbstractTransportDispatcher):
     def runDispatcher(self, timeout=0.0):
         while self.jobsArePending() or self.transportsAreWorking():
             try:
-                loop(timeout or self.getTimerResolution(),
-                     use_poll=True, map=self.__sockMap, count=1)
+                loop(
+                    timeout or self.getTimerResolution(),
+                    use_poll=True,
+                    map=self.__sockMap,
+                    count=1,
+                )
 
             except KeyboardInterrupt:
                 raise
 
             except Exception:
                 raise PySnmpError(
-                    'poll error: %s' % ';'.join(format_exception(*exc_info())))
+                    "poll error: %s" % ";".join(format_exception(*exc_info()))
+                )
 
             self.handleTimerTick(time())

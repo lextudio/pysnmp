@@ -8,17 +8,17 @@
 #
 from pyasn1.type import constraint
 
-if 'mibBuilder' not in globals():
+if "mibBuilder" not in globals():
     import sys
 
     sys.stderr.write(__doc__)
     sys.exit(1)
 
 mibBuilder.exportSymbols(
-    'ASN1-REFINEMENT',
+    "ASN1-REFINEMENT",
     ConstraintsUnion=constraint.ConstraintsUnion,
     ConstraintsIntersection=constraint.ConstraintsIntersection,
     SingleValueConstraint=constraint.SingleValueConstraint,
     ValueRangeConstraint=constraint.ValueRangeConstraint,
-    ValueSizeConstraint=constraint.ValueSizeConstraint
+    ValueSizeConstraint=constraint.ValueSizeConstraint,
 )

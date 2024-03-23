@@ -29,7 +29,7 @@ def hashPassphrase(passphrase, hashFunc):
 
         else:
             chunk = ringBuffer[mark:ringBufferLen]
-            chunk += ringBuffer[0:e - ringBufferLen]
+            chunk += ringBuffer[0 : e - ringBufferLen]
 
             hasher.update(chunk)
 
@@ -41,8 +41,7 @@ def hashPassphrase(passphrase, hashFunc):
 
 
 def passwordToKey(passphrase, snmpEngineId, hashFunc):
-    return localizeKey(
-        hashPassphrase(passphrase, hashFunc), snmpEngineId, hashFunc)
+    return localizeKey(hashPassphrase(passphrase, hashFunc), snmpEngineId, hashFunc)
 
 
 def localizeKey(passKey, snmpEngineId, hashFunc):

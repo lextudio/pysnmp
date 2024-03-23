@@ -22,57 +22,56 @@ except ImportError:
 from pyasn1.compat.octets import int2oct
 from pyasn1.compat.octets import oct2int
 
-if 'mibBuilder' not in globals():
+if "mibBuilder" not in globals():
     import sys
 
     sys.stderr.write(__doc__)
     sys.exit(1)
 
-(Integer,
- OctetString,
- ObjectIdentifier) = mibBuilder.importSymbols(
-    "ASN1",
-    "Integer",
-    "OctetString",
-    "ObjectIdentifier")
+(Integer, OctetString, ObjectIdentifier) = mibBuilder.importSymbols(
+    "ASN1", "Integer", "OctetString", "ObjectIdentifier"
+)
 
-(NamedValues,) = mibBuilder.importSymbols(
-    "ASN1-ENUMERATION",
-    "NamedValues")
+(NamedValues,) = mibBuilder.importSymbols("ASN1-ENUMERATION", "NamedValues")
 
-(ConstraintsIntersection,
- SingleValueConstraint,
- ValueRangeConstraint,
- ValueSizeConstraint,
- ConstraintsUnion) = mibBuilder.importSymbols(
+(
+    ConstraintsIntersection,
+    SingleValueConstraint,
+    ValueRangeConstraint,
+    ValueSizeConstraint,
+    ConstraintsUnion,
+) = mibBuilder.importSymbols(
     "ASN1-REFINEMENT",
     "ConstraintsIntersection",
     "SingleValueConstraint",
     "ValueRangeConstraint",
     "ValueSizeConstraint",
-    "ConstraintsUnion")
+    "ConstraintsUnion",
+)
 
 
-(Counter64,
- iso,
- NotificationType,
- ObjectIdentity,
- Bits,
- ModuleIdentity,
- TimeTicks,
- Counter32,
- IpAddress,
- snmpProxys,
- MibScalar,
- MibTable,
- MibTableRow,
- MibTableColumn,
- Gauge32,
- Unsigned32,
- snmpDomains,
- Integer32,
- MibIdentifier,
- snmpModules) = mibBuilder.importSymbols(
+(
+    Counter64,
+    iso,
+    NotificationType,
+    ObjectIdentity,
+    Bits,
+    ModuleIdentity,
+    TimeTicks,
+    Counter32,
+    IpAddress,
+    snmpProxys,
+    MibScalar,
+    MibTable,
+    MibTableRow,
+    MibTableColumn,
+    Gauge32,
+    Unsigned32,
+    snmpDomains,
+    Integer32,
+    MibIdentifier,
+    snmpModules,
+) = mibBuilder.importSymbols(
     "SNMPv2-SMI",
     "Counter64",
     "iso",
@@ -93,26 +92,22 @@ if 'mibBuilder' not in globals():
     "snmpDomains",
     "Integer32",
     "MibIdentifier",
-    "snmpModules")
-
-(TextualConvention,) = mibBuilder.importSymbols(
-    "SNMPv2-TC",
-    "TextualConvention")
-
-snmpv2tm = ModuleIdentity(
-    (1, 3, 6, 1, 6, 3, 19)
+    "snmpModules",
 )
-snmpv2tm.setRevisions(
-        ("2002-10-16 00:00",
-         "1996-01-01 00:00",
-         "1993-04-01 00:00")
-)
+
+(TextualConvention,) = mibBuilder.importSymbols("SNMPv2-TC", "TextualConvention")
+
+snmpv2tm = ModuleIdentity((1, 3, 6, 1, 6, 3, 19))
+snmpv2tm.setRevisions(("2002-10-16 00:00", "1996-01-01 00:00", "1993-04-01 00:00"))
 snmpv2tm.setLastUpdated("200210160000Z")
 if mibBuilder.loadTexts:
-    snmpv2tm.setOrganization("""\
+    snmpv2tm.setOrganization(
+        """\
 IETF SNMPv3 Working Group
-""")
-snmpv2tm.setContactInfo("""\
+"""
+    )
+snmpv2tm.setContactInfo(
+    """\
 WG-EMail: snmpv3@lists.tislabs.com Subscribe: snmpv3-request@lists.tislabs.com
 Co-Chair: Russ Mundy Network Associates Laboratories postal: 15204 Omega Drive,
 Suite 300 Rockville, MD 20850-4601 USA EMail: mundy@tislabs.com phone: +1 301
@@ -121,13 +116,16 @@ Way P. O. Box 5005 Rochester, NH 03866-5005 USA EMail: dbh@enterasys.com phone:
 +1 603 337-2614 Editor: Randy Presuhn BMC Software, Inc. postal: 2141 North
 First Street San Jose, CA 95131 USA EMail: randy_presuhn@bmc.com phone: +1 408
 546-1006
-""")
+"""
+)
 if mibBuilder.loadTexts:
-    snmpv2tm.setDescription("""\
+    snmpv2tm.setDescription(
+        """\
 The MIB module for SNMP transport mappings. Copyright (C) The Internet Society
 (2002). This version of this MIB module is part of RFC 3417; see the RFC itself
 for full legal notices.
-""")
+"""
+    )
 
 
 class SnmpUDPAddress(TextualConvention, OctetString):
@@ -148,16 +146,20 @@ network-byte order 5-6 UDP-port network-byte order
     def prettyIn(self, value):
         if isinstance(value, tuple):
             # Wild hack -- need to implement TextualConvention.prettyIn
-            value = inet_pton(AF_INET, value[0]) + int2oct((value[1] >> 8) & 0xff) + int2oct(value[1] & 0xff)
+            value = (
+                inet_pton(AF_INET, value[0])
+                + int2oct((value[1] >> 8) & 0xFF)
+                + int2oct(value[1] & 0xFF)
+            )
         return OctetString.prettyIn(self, value)
 
     # Socket address syntax coercion
     def __asSocketAddress(self):
-        if not hasattr(self, '__tuple_value'):
+        if not hasattr(self, "__tuple_value"):
             v = self.asOctets()
             self.__tuple_value = (
                 inet_ntop(AF_INET, v[:4]),
-                oct2int(v[4]) << 8 | oct2int(v[5])
+                oct2int(v[4]) << 8 | oct2int(v[5]),
             )
         return self.__tuple_value
 
@@ -221,88 +223,88 @@ network-byte order
 
 
 _SnmpUDPDomain_ObjectIdentity = ObjectIdentity
-snmpUDPDomain = _SnmpUDPDomain_ObjectIdentity(
-    (1, 3, 6, 1, 6, 1, 1)
-)
+snmpUDPDomain = _SnmpUDPDomain_ObjectIdentity((1, 3, 6, 1, 6, 1, 1))
 if mibBuilder.loadTexts:
     snmpUDPDomain.setStatus("current")
 if mibBuilder.loadTexts:
-    snmpUDPDomain.setDescription("""\
+    snmpUDPDomain.setDescription(
+        """\
 The SNMP over UDP over IPv4 transport domain. The corresponding transport
 address is of type SnmpUDPAddress.
-""")
+"""
+    )
 _SnmpCLNSDomain_ObjectIdentity = ObjectIdentity
-snmpCLNSDomain = _SnmpCLNSDomain_ObjectIdentity(
-    (1, 3, 6, 1, 6, 1, 2)
-)
+snmpCLNSDomain = _SnmpCLNSDomain_ObjectIdentity((1, 3, 6, 1, 6, 1, 2))
 if mibBuilder.loadTexts:
     snmpCLNSDomain.setStatus("current")
 if mibBuilder.loadTexts:
-    snmpCLNSDomain.setDescription("""\
+    snmpCLNSDomain.setDescription(
+        """\
 The SNMP over CLNS transport domain. The corresponding transport address is of
 type SnmpOSIAddress.
-""")
+"""
+    )
 _SnmpCONSDomain_ObjectIdentity = ObjectIdentity
-snmpCONSDomain = _SnmpCONSDomain_ObjectIdentity(
-    (1, 3, 6, 1, 6, 1, 3)
-)
+snmpCONSDomain = _SnmpCONSDomain_ObjectIdentity((1, 3, 6, 1, 6, 1, 3))
 if mibBuilder.loadTexts:
     snmpCONSDomain.setStatus("current")
 if mibBuilder.loadTexts:
-    snmpCONSDomain.setDescription("""\
+    snmpCONSDomain.setDescription(
+        """\
 The SNMP over CONS transport domain. The corresponding transport address is of
 type SnmpOSIAddress.
-""")
+"""
+    )
 _SnmpDDPDomain_ObjectIdentity = ObjectIdentity
-snmpDDPDomain = _SnmpDDPDomain_ObjectIdentity(
-    (1, 3, 6, 1, 6, 1, 4)
-)
+snmpDDPDomain = _SnmpDDPDomain_ObjectIdentity((1, 3, 6, 1, 6, 1, 4))
 if mibBuilder.loadTexts:
     snmpDDPDomain.setStatus("current")
 if mibBuilder.loadTexts:
-    snmpDDPDomain.setDescription("""\
+    snmpDDPDomain.setDescription(
+        """\
 The SNMP over DDP transport domain. The corresponding transport address is of
 type SnmpNBPAddress.
-""")
+"""
+    )
 _SnmpIPXDomain_ObjectIdentity = ObjectIdentity
-snmpIPXDomain = _SnmpIPXDomain_ObjectIdentity(
-    (1, 3, 6, 1, 6, 1, 5)
-)
+snmpIPXDomain = _SnmpIPXDomain_ObjectIdentity((1, 3, 6, 1, 6, 1, 5))
 if mibBuilder.loadTexts:
     snmpIPXDomain.setStatus("current")
 if mibBuilder.loadTexts:
-    snmpIPXDomain.setDescription("""\
+    snmpIPXDomain.setDescription(
+        """\
 The SNMP over IPX transport domain. The corresponding transport address is of
 type SnmpIPXAddress.
-""")
+"""
+    )
 _Rfc1157Proxy_ObjectIdentity = ObjectIdentity
-rfc1157Proxy = _Rfc1157Proxy_ObjectIdentity(
-    (1, 3, 6, 1, 6, 2, 1)
-)
+rfc1157Proxy = _Rfc1157Proxy_ObjectIdentity((1, 3, 6, 1, 6, 2, 1))
 _Rfc1157Domain_ObjectIdentity = ObjectIdentity
-rfc1157Domain = _Rfc1157Domain_ObjectIdentity(
-    (1, 3, 6, 1, 6, 2, 1, 1)
-)
+rfc1157Domain = _Rfc1157Domain_ObjectIdentity((1, 3, 6, 1, 6, 2, 1, 1))
 if mibBuilder.loadTexts:
     rfc1157Domain.setStatus("deprecated")
 if mibBuilder.loadTexts:
-    rfc1157Domain.setDescription("""\
+    rfc1157Domain.setDescription(
+        """\
 The transport domain for SNMPv1 over UDP over IPv4. The corresponding transport
 address is of type SnmpUDPAddress.
-""")
+"""
+    )
 
 mibBuilder.exportSymbols(
     "SNMPv2-TM",
-    **{"SnmpUDPAddress": SnmpUDPAddress,
-       "SnmpOSIAddress": SnmpOSIAddress,
-       "SnmpNBPAddress": SnmpNBPAddress,
-       "SnmpIPXAddress": SnmpIPXAddress,
-       "snmpUDPDomain": snmpUDPDomain,
-       "snmpCLNSDomain": snmpCLNSDomain,
-       "snmpCONSDomain": snmpCONSDomain,
-       "snmpDDPDomain": snmpDDPDomain,
-       "snmpIPXDomain": snmpIPXDomain,
-       "rfc1157Proxy": rfc1157Proxy,
-       "rfc1157Domain": rfc1157Domain,
-       "snmpv2tm": snmpv2tm}
+    **{
+        "SnmpUDPAddress": SnmpUDPAddress,
+        "SnmpOSIAddress": SnmpOSIAddress,
+        "SnmpNBPAddress": SnmpNBPAddress,
+        "SnmpIPXAddress": SnmpIPXAddress,
+        "snmpUDPDomain": snmpUDPDomain,
+        "snmpCLNSDomain": snmpCLNSDomain,
+        "snmpCONSDomain": snmpCONSDomain,
+        "snmpDDPDomain": snmpDDPDomain,
+        "snmpIPXDomain": snmpIPXDomain,
+        "rfc1157Proxy": rfc1157Proxy,
+        "rfc1157Domain": rfc1157Domain,
+        "snmpv2tm": snmpv2tm,
+    }
 )

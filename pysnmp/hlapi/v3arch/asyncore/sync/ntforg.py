@@ -6,11 +6,12 @@
 #
 from pysnmp.hlapi.v3arch.asyncore import ntforg
 
-__all__ = ['sendNotification']
+__all__ = ["sendNotification"]
 
 
-def sendNotification(snmpEngine, authData, transportTarget, contextData,
-                     notifyType, *varBinds, **options):
+def sendNotification(
+    snmpEngine, authData, transportTarget, contextData, notifyType, *varBinds, **options
+):
     """Creates a generator to send one or more SNMP notifications.
 
     On each iteration, new SNMP TRAP or INFORM notification is send
@@ -120,29 +121,42 @@ def sendNotification(snmpEngine, authData, transportTarget, contextData,
     """
 
     # noinspection PyShadowingNames
-    def cbFun(snmpEngine, sendRequestHandle,
-              errorIndication, errorStatus, errorIndex,
-              varBinds, cbCtx):
-        cbCtx['errorIndication'] = errorIndication
-        cbCtx['errorStatus'] = errorStatus
-        cbCtx['errorIndex'] = errorIndex
-        cbCtx['varBinds'] = varBinds
+    def cbFun(
+        snmpEngine,
+        sendRequestHandle,
+        errorIndication,
+        errorStatus,
+        errorIndex,
+        varBinds,
+        cbCtx,
+    ):
+        cbCtx["errorIndication"] = errorIndication
+        cbCtx["errorStatus"] = errorStatus
+        cbCtx["errorIndex"] = errorIndex
+        cbCtx["varBinds"] = varBinds
 
     cbCtx = {}
 
     while True:
         if varBinds:
-            ntforg.sendNotification(snmpEngine, authData, transportTarget,
-                                    contextData, notifyType, *varBinds,
-                                    cbFun=cbFun, cbCtx=cbCtx,
-                                    lookupMib=options.get('lookupMib', True))
+            ntforg.sendNotification(
+                snmpEngine,
+                authData,
+                transportTarget,
+                contextData,
+                notifyType,
+                *varBinds,
+                cbFun=cbFun,
+                cbCtx=cbCtx,
+                lookupMib=options.get("lookupMib", True)
+            )
 
             snmpEngine.transportDispatcher.runDispatcher()
 
-            errorIndication = cbCtx.get('errorIndication')
-            errorStatus = cbCtx.get('errorStatus')
-            errorIndex = cbCtx.get('errorIndex')
-            varBinds = cbCtx.get('varBinds', [])
+            errorIndication = cbCtx.get("errorIndication")
+            errorStatus = cbCtx.get("errorStatus")
+            errorIndex = cbCtx.get("errorIndex")
+            varBinds = cbCtx.get("varBinds", [])
 
         else:
             errorIndication = errorStatus = errorIndex = None

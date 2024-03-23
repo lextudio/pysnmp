@@ -19,6 +19,7 @@ FORTY_EIGHT_ZEROS = (0,) * 48
 
 # rfc3414: 6.2.4
 
+
 class HmacMd5(base.AbstractAuthenticationService):
     SERVICE_ID = (1, 3, 6, 1, 6, 3, 10, 1, 1, 2)  # usmHMACMD5AuthProtocol
 
@@ -44,10 +45,10 @@ class HmacMd5(base.AbstractAuthenticationService):
         ln = wholeMsg.find(TWELVE_ZEROS)
 
         if ln == -1:
-            raise error.ProtocolError('Cant locate digest placeholder')
+            raise error.ProtocolError("Cant locate digest placeholder")
 
         wholeHead = wholeMsg[:ln]
-        wholeTail = wholeMsg[ln + 12:]
+        wholeTail = wholeMsg[ln + 12 :]
 
         # 6.3.1.1
 
@@ -57,14 +58,12 @@ class HmacMd5(base.AbstractAuthenticationService):
         # 6.3.1.2b --> no-op
 
         # 6.3.1.2c
-        k1 = univ.OctetString(
-            map(lambda x, y: x ^ y, extendedAuthKey, self.IPAD))
+        k1 = univ.OctetString(map(lambda x, y: x ^ y, extendedAuthKey, self.IPAD))
 
         # 6.3.1.2d --> no-op
 
         # 6.3.1.2e
-        k2 = univ.OctetString(
-            map(lambda x, y: x ^ y, extendedAuthKey, self.OPAD))
+        k2 = univ.OctetString(map(lambda x, y: x ^ y, extendedAuthKey, self.OPAD))
 
         # 6.3.1.3
         # noinspection PyDeprecation,PyCallingNonCallable
@@ -82,16 +81,15 @@ class HmacMd5(base.AbstractAuthenticationService):
     def authenticateIncomingMsg(self, authKey, authParameters, wholeMsg):
         # 6.3.2.1 & 2
         if len(authParameters) != 12:
-            raise error.StatusInformation(
-                errorIndication=errind.authenticationError)
+            raise error.StatusInformation(errorIndication=errind.authenticationError)
 
         # 6.3.2.3
         ln = wholeMsg.find(authParameters.asOctets())
         if ln == -1:
-            raise error.ProtocolError('Cant locate digest in wholeMsg')
+            raise error.ProtocolError("Cant locate digest in wholeMsg")
 
         wholeHead = wholeMsg[:ln]
-        wholeTail = wholeMsg[ln + 12:]
+        wholeTail = wholeMsg[ln + 12 :]
 
         authenticatedWholeMsg = wholeHead + TWELVE_ZEROS + wholeTail
 
@@ -101,14 +99,12 @@ class HmacMd5(base.AbstractAuthenticationService):
         # 6.3.2.4b --> no-op
 
         # 6.3.2.4c
-        k1 = univ.OctetString(
-            map(lambda x, y: x ^ y, extendedAuthKey, self.IPAD))
+        k1 = univ.OctetString(map(lambda x, y: x ^ y, extendedAuthKey, self.IPAD))
 
         # 6.3.2.4d --> no-op
 
         # 6.3.2.4e
-        k2 = univ.OctetString(
-            map(lambda x, y: x ^ y, extendedAuthKey, self.OPAD))
+        k2 = univ.OctetString(map(lambda x, y: x ^ y, extendedAuthKey, self.OPAD))
 
         # 6.3.2.5a
         # noinspection PyDeprecation,PyCallingNonCallable
@@ -123,7 +119,6 @@ class HmacMd5(base.AbstractAuthenticationService):
 
         # 6.3.2.6
         if mac != authParameters:
-            raise error.StatusInformation(
-                errorIndication=errind.authenticationFailure)
+            raise error.StatusInformation(errorIndication=errind.authenticationFailure)
 
         return authenticatedWholeMsg

@@ -28,19 +28,19 @@ class AbstractSocketTransport(asyncore.dispatcher, AbstractTransport):
         if sock is None:
             if self.SOCK_FAMILY is None:
                 raise error.CarrierError(
-                    'Address family %s not supported' % self.__class__.__name__
+                    "Address family %s not supported" % self.__class__.__name__
                 )
 
             if self.SOCK_TYPE is None:
                 raise error.CarrierError(
-                    'Socket type %s not supported' % self.__class__.__name__
+                    "Socket type %s not supported" % self.__class__.__name__
                 )
 
             try:
                 sock = socket.socket(self.SOCK_FAMILY, self.SOCK_TYPE)
 
-            except socket.error as exc:
-                raise error.CarrierError('socket() failed: %s' % exc)
+            except OSError as exc:
+                raise error.CarrierError("socket() failed: %s" % exc)
 
             try:
                 for b in socket.SO_RCVBUF, socket.SO_SNDBUF:
@@ -48,15 +48,22 @@ class AbstractSocketTransport(asyncore.dispatcher, AbstractTransport):
                     if bsize < self.BUFFER_SIZE:
                         sock.setsockopt(socket.SOL_SOCKET, b, self.BUFFER_SIZE)
                         debug.logger & debug.FLAG_IO and debug.logger(
-                            '%s: socket %d buffer size increased from %d to %d '
-                            'for buffer %d' % (
-                                self.__class__.__name__, sock.fileno(),
-                                bsize, self.BUFFER_SIZE, b))
+                            "%s: socket %d buffer size increased from %d to %d "
+                            "for buffer %d"
+                            % (
+                                self.__class__.__name__,
+                                sock.fileno(),
+                                bsize,
+                                self.BUFFER_SIZE,
+                                b,
+                            )
+                        )
 
             except Exception as exc:
                 debug.logger & debug.FLAG_IO and debug.logger(
-                    '%s: socket buffer size option mangling failure for buffer: '
-                    '%s' % (self.__class__.__name__, exc))
+                    "%s: socket buffer size option mangling failure for buffer: "
+                    "%s" % (self.__class__.__name__, exc)
+                )
 
         # The socket map is managed by the AsyncoreDispatcher on
         # which this transport is registered. Here we just prepare
@@ -99,7 +106,7 @@ class AbstractSocketTransport(asyncore.dispatcher, AbstractTransport):
             self.connected = False
 
     def handle_close(self):
-        raise error.CarrierError('Transport unexpectedly closed')
+        raise error.CarrierError("Transport unexpectedly closed")
 
     def handle_error(self):
         exc = sys.exc_info()[1]

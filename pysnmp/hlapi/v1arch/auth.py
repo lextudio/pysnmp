@@ -5,10 +5,10 @@
 # License: http://snmplabs.com/pysnmp/license.html
 #
 
-__all__ = ['CommunityData']
+__all__ = ["CommunityData"]
 
 
-class CommunityData(object):
+class CommunityData:
     """Creates SNMP v1/v2c configuration entry.
 
     This object can be used by
@@ -38,7 +38,7 @@ class CommunityData(object):
         return hash((self.communityName, self.mpModel))
 
     def __repr__(self):
-        return '%s(communityName=<COMMUNITY>, mpModel=%r)' % (
+        return "{}(communityName=<COMMUNITY>, mpModel={!r})".format(
             self.__class__.__name__,
             self.communityName,
             self.mpModel,

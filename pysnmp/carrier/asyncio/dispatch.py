@@ -42,7 +42,6 @@ from pysnmp.error import PySnmpError
 import asyncio
 
 
-
 class AsyncioDispatcher(AbstractTransportDispatcher):
     """AsyncioDispatcher based on asyncio event loop"""
 
@@ -53,7 +52,7 @@ class AsyncioDispatcher(AbstractTransportDispatcher):
         AbstractTransportDispatcher.__init__(self)
 
         self.__transportCount = 0
-        self.loop = kwargs.pop('loop', asyncio.get_event_loop())
+        self.loop = kwargs.pop("loop", asyncio.get_event_loop())
 
     def runDispatcher(self, timeout: float = 0.0):
         if not self.loop.is_running():
@@ -66,7 +65,7 @@ class AsyncioDispatcher(AbstractTransportDispatcher):
                 raise
 
             except Exception:
-                raise PySnmpError(';'.join(traceback.format_exception(*sys.exc_info())))
+                raise PySnmpError(";".join(traceback.format_exception(*sys.exc_info())))
 
     def __closeDispatcher(self):
         if self.loop.is_running():
@@ -74,9 +73,7 @@ class AsyncioDispatcher(AbstractTransportDispatcher):
         super().closeDispatcher()
 
     def registerTransport(self, tDomain: Tuple[int, ...], transport: AbstractTransport):
-        AbstractTransportDispatcher.registerTransport(
-            self, tDomain, transport
-        )
+        AbstractTransportDispatcher.registerTransport(self, tDomain, transport)
 
         self.__transportCount += 1
 

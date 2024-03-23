@@ -15,20 +15,23 @@ from pysnmp.proto.error import ProtocolError
 def decodeMessageVersion(wholeMsg):
     try:
         seq, wholeMsg = decoder.decode(
-            wholeMsg, asn1Spec=univ.Sequence(),
-            recursiveFlag=False, substrateFun=lambda a, b, c: (a, b[:c])
+            wholeMsg,
+            asn1Spec=univ.Sequence(),
+            recursiveFlag=False,
+            substrateFun=lambda a, b, c: (a, b[:c]),
         )
 
         ver, wholeMsg = decoder.decode(
-            wholeMsg, asn1Spec=univ.Integer(),
-            recursiveFlag=False, substrateFun=lambda a, b, c: (a, b[:c])
+            wholeMsg,
+            asn1Spec=univ.Integer(),
+            recursiveFlag=False,
+            substrateFun=lambda a, b, c: (a, b[:c]),
         )
 
         if eoo.endOfOctets.isSameTypeWith(ver):
-            raise ProtocolError('EOO at SNMP version component')
+            raise ProtocolError("EOO at SNMP version component")
 
         return ver
 
     except PyAsn1Error as exc:
-        raise ProtocolError('Invalid BER at SNMP version '
-                            'component: %s' % exc)
+        raise ProtocolError("Invalid BER at SNMP version " "component: %s" % exc)

@@ -10,9 +10,7 @@ class ErrorIndication(Exception):
     """SNMPv3 error-indication values"""
 
     def __init__(self, descr=None):
-        self._value = (
-                self.__class__.__name__[0].lower() +
-                self.__class__.__name__[1:])
+        self._value = self.__class__.__name__[0].lower() + self.__class__.__name__[1:]
         self._descr = self._value
 
         if descr:
@@ -42,28 +40,26 @@ class ErrorIndication(Exception):
 
 # SNMP message processing errors
 
+
 class SerializationError(ErrorIndication):
     pass
 
 
-serializationError = SerializationError(
-    'SNMP message serialization error')
+serializationError = SerializationError("SNMP message serialization error")
 
 
 class DeserializationError(ErrorIndication):
     pass
 
 
-deserializationError = DeserializationError(
-    'SNMP message deserialization error')
+deserializationError = DeserializationError("SNMP message deserialization error")
 
 
 class ParseError(DeserializationError):
     pass
 
 
-parseError = ParseError(
-    'SNMP message deserialization error')
+parseError = ParseError("SNMP message deserialization error")
 
 
 class UnsupportedMsgProcessingModel(ErrorIndication):
@@ -71,120 +67,109 @@ class UnsupportedMsgProcessingModel(ErrorIndication):
 
 
 unsupportedMsgProcessingModel = UnsupportedMsgProcessingModel(
-    'Unknown SNMP message processing model ID encountered')
+    "Unknown SNMP message processing model ID encountered"
+)
 
 
 class UnknownPDUHandler(ErrorIndication):
     pass
 
 
-unknownPDUHandler = UnknownPDUHandler(
-    'Unhandled PDU type encountered')
+unknownPDUHandler = UnknownPDUHandler("Unhandled PDU type encountered")
 
 
 class UnsupportedPDUtype(ErrorIndication):
     pass
 
 
-unsupportedPDUtype = UnsupportedPDUtype(
-    'Unsupported SNMP PDU type encountered')
+unsupportedPDUtype = UnsupportedPDUtype("Unsupported SNMP PDU type encountered")
 
 
 class RequestTimedOut(ErrorIndication):
     pass
 
 
-requestTimedOut = RequestTimedOut(
-    'No SNMP response received before timeout')
+requestTimedOut = RequestTimedOut("No SNMP response received before timeout")
 
 
 class EmptyResponse(ErrorIndication):
     pass
 
 
-emptyResponse = EmptyResponse(
-    'Empty SNMP response message')
+emptyResponse = EmptyResponse("Empty SNMP response message")
 
 
 class NonReportable(ErrorIndication):
     pass
 
 
-nonReportable = NonReportable(
-    'Report PDU generation not attempted')
+nonReportable = NonReportable("Report PDU generation not attempted")
 
 
 class DataMismatch(ErrorIndication):
     pass
 
 
-dataMismatch = DataMismatch(
-    'SNMP request/response parameters mismatched')
+dataMismatch = DataMismatch("SNMP request/response parameters mismatched")
 
 
 class EngineIDMismatch(ErrorIndication):
     pass
 
 
-engineIDMismatch = EngineIDMismatch(
-    'SNMP engine ID mismatch encountered')
+engineIDMismatch = EngineIDMismatch("SNMP engine ID mismatch encountered")
 
 
 class UnknownEngineID(ErrorIndication):
     pass
 
 
-unknownEngineID = UnknownEngineID(
-    'Unknown SNMP engine ID encountered')
+unknownEngineID = UnknownEngineID("Unknown SNMP engine ID encountered")
 
 
 class TooBig(ErrorIndication):
     pass
 
 
-tooBig = TooBig('SNMP message will be too big')
+tooBig = TooBig("SNMP message will be too big")
 
 
 class LoopTerminated(ErrorIndication):
     pass
 
 
-loopTerminated = LoopTerminated(
-    'Infinite SNMP entities talk terminated')
+loopTerminated = LoopTerminated("Infinite SNMP entities talk terminated")
 
 
 class InvalidMsg(ErrorIndication):
     pass
 
 
-invalidMsg = InvalidMsg(
-    'Invalid SNMP message header parameters encountered')
+invalidMsg = InvalidMsg("Invalid SNMP message header parameters encountered")
 
 
 # SNMP security modules errors
+
 
 class UnknownCommunityName(ErrorIndication):
     pass
 
 
-unknownCommunityName = UnknownCommunityName(
-    'Unknown SNMP community name encountered')
+unknownCommunityName = UnknownCommunityName("Unknown SNMP community name encountered")
 
 
 class NoEncryption(ErrorIndication):
     pass
 
 
-noEncryption = NoEncryption(
-    'No encryption services configured')
+noEncryption = NoEncryption("No encryption services configured")
 
 
 class EncryptionError(ErrorIndication):
     pass
 
 
-encryptionError = EncryptionError(
-    'Ciphering services not available')
+encryptionError = EncryptionError("Ciphering services not available")
 
 
 class DecryptionError(ErrorIndication):
@@ -192,15 +177,15 @@ class DecryptionError(ErrorIndication):
 
 
 decryptionError = DecryptionError(
-    'Ciphering services not available or ciphertext is broken')
+    "Ciphering services not available or ciphertext is broken"
+)
 
 
 class NoAuthentication(ErrorIndication):
     pass
 
 
-noAuthentication = NoAuthentication(
-    'No authentication services configured')
+noAuthentication = NoAuthentication("No authentication services configured")
 
 
 class AuthenticationError(ErrorIndication):
@@ -208,15 +193,15 @@ class AuthenticationError(ErrorIndication):
 
 
 authenticationError = AuthenticationError(
-    'Ciphering services not available or bad parameters')
+    "Ciphering services not available or bad parameters"
+)
 
 
 class AuthenticationFailure(ErrorIndication):
     pass
 
 
-authenticationFailure = AuthenticationFailure(
-    'Authenticator mismatched')
+authenticationFailure = AuthenticationFailure("Authenticator mismatched")
 
 
 class UnsupportedAuthProtocol(ErrorIndication):
@@ -224,39 +209,36 @@ class UnsupportedAuthProtocol(ErrorIndication):
 
 
 unsupportedAuthProtocol = UnsupportedAuthProtocol(
-    'Authentication protocol is not supported')
+    "Authentication protocol is not supported"
+)
 
 
 class UnsupportedPrivProtocol(ErrorIndication):
     pass
 
 
-unsupportedPrivProtocol = UnsupportedPrivProtocol(
-    'Privacy protocol is not supported')
+unsupportedPrivProtocol = UnsupportedPrivProtocol("Privacy protocol is not supported")
 
 
 class UnknownSecurityName(ErrorIndication):
     pass
 
 
-unknownSecurityName = UnknownSecurityName(
-    'Unknown SNMP security name encountered')
+unknownSecurityName = UnknownSecurityName("Unknown SNMP security name encountered")
 
 
 class UnsupportedSecurityModel(ErrorIndication):
     pass
 
 
-unsupportedSecurityModel = UnsupportedSecurityModel(
-    'Unsupported SNMP security model')
+unsupportedSecurityModel = UnsupportedSecurityModel("Unsupported SNMP security model")
 
 
 class UnsupportedSecurityLevel(ErrorIndication):
     pass
 
 
-unsupportedSecurityLevel = UnsupportedSecurityLevel(
-    'Unsupported SNMP security level')
+unsupportedSecurityLevel = UnsupportedSecurityLevel("Unsupported SNMP security level")
 
 
 class NotInTimeWindow(ErrorIndication):
@@ -264,73 +246,67 @@ class NotInTimeWindow(ErrorIndication):
 
 
 notInTimeWindow = NotInTimeWindow(
-    'SNMP message timing parameters not in windows of trust')
+    "SNMP message timing parameters not in windows of trust"
+)
 
 
 class UnknownUserName(ErrorIndication):
     pass
 
 
-unknownUserName = UnknownUserName(
-    'Unknown USM user')
+unknownUserName = UnknownUserName("Unknown USM user")
 
 
 class WrongDigest(ErrorIndication):
     pass
 
 
-wrongDigest = WrongDigest(
-    'Wrong SNMP PDU digest')
+wrongDigest = WrongDigest("Wrong SNMP PDU digest")
 
 
 class ReportPduReceived(ErrorIndication):
     pass
 
 
-reportPduReceived = ReportPduReceived(
-    'Remote SNMP engine reported error')
+reportPduReceived = ReportPduReceived("Remote SNMP engine reported error")
 
 
 # SNMP access-control errors
+
 
 class NoSuchView(ErrorIndication):
     pass
 
 
-noSuchView = NoSuchView(
-    'No such MIB view currently exists')
+noSuchView = NoSuchView("No such MIB view currently exists")
 
 
 class NoAccessEntry(ErrorIndication):
     pass
 
 
-noAccessEntry = NoAccessEntry(
-    'Access to MIB node denined')
+noAccessEntry = NoAccessEntry("Access to MIB node denined")
 
 
 class NoGroupName(ErrorIndication):
     pass
 
 
-noGroupName = NoGroupName(
-    'No such VACM group configured')
+noGroupName = NoGroupName("No such VACM group configured")
 
 
 class NoSuchContext(ErrorIndication):
     pass
 
 
-noSuchContext = NoSuchContext(
-    'SNMP context now found')
+noSuchContext = NoSuchContext("SNMP context now found")
 
 
 class NotInView(ErrorIndication):
     pass
 
 
-notInView = NotInView(
-    'Requested OID is out of MIB view')
+notInView = NotInView("Requested OID is out of MIB view")
 
 
 class AccessAllowed(ErrorIndication):
@@ -344,15 +320,14 @@ class OtherError(ErrorIndication):
     pass
 
 
-otherError = OtherError(
-    'Unspecified SNMP engine error occurred')
+otherError = OtherError("Unspecified SNMP engine error occurred")
 
 
 # SNMP Apps errors
+
 
 class OidNotIncreasing(ErrorIndication):
     pass
 
 
-oidNotIncreasing = OidNotIncreasing(
-    'OID not increasing')
+oidNotIncreasing = OidNotIncreasing("OID not increasing")

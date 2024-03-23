@@ -7,20 +7,20 @@
 from pysnmp import error
 
 
-class MetaObserver(object):
+class MetaObserver:
     """This is a simple facility for exposing internal SNMP Engine
-       working details to pysnmp applications. These details are
-       basically local scope variables at a fixed point of execution.
+    working details to pysnmp applications. These details are
+    basically local scope variables at a fixed point of execution.
 
-       Two modes of operations are offered:
-       1. Consumer: app can request an execution point context by execution point ID.
-       2. Provider: app can register its callback function (and context) to be invoked
-          once execution reaches specified point. All local scope variables
-          will be passed to the callback as in #1.
+    Two modes of operations are offered:
+    1. Consumer: app can request an execution point context by execution point ID.
+    2. Provider: app can register its callback function (and context) to be invoked
+       once execution reaches specified point. All local scope variables
+       will be passed to the callback as in #1.
 
-       It's important to realize that execution context is only guaranteed
-       to exist to functions that are at the same or deeper level of invocation
-       relative to execution point specified.
+    It's important to realize that execution context is only guaranteed
+    to exist to functions that are at the same or deeper level of invocation
+    relative to execution point specified.
     """
 
     def __init__(self):
@@ -30,10 +30,10 @@ class MetaObserver(object):
 
     def registerObserver(self, cbFun, *execpoints, **kwargs):
         if cbFun in self.__contexts:
-            raise error.PySnmpError('duplicate observer %s' % cbFun)
+            raise error.PySnmpError("duplicate observer %s" % cbFun)
 
         else:
-            self.__contexts[cbFun] = kwargs.get('cbCtx')
+            self.__contexts[cbFun] = kwargs.get("cbCtx")
 
         for execpoint in execpoints:
             if execpoint not in self.__observers:

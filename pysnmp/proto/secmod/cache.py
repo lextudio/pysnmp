@@ -8,8 +8,8 @@ from pysnmp import nextid
 from pysnmp.proto import error
 
 
-class Cache(object):
-    __stateReference = nextid.Integer(0xffffff)
+class Cache:
+    __stateReference = nextid.Integer(0xFFFFFF)
 
     def __init__(self):
         self.__cacheEntries = {}
@@ -24,5 +24,5 @@ class Cache(object):
             return self.__cacheEntries.pop(stateReference)
 
         raise error.ProtocolError(
-            'Cache miss for stateReference=%s at '
-            '%s' % (stateReference, self))
+            "Cache miss for stateReference=%s at " "%s" % (stateReference, self)
+        )

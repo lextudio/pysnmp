@@ -11,7 +11,7 @@ class OrderedDict(dict):
     """Ordered dictionary used for indices"""
 
     def __init__(self, *args, **kwargs):
-        super(OrderedDict, self).__init__()
+        super().__init__()
 
         self._keys = []
         self._dirty = True
@@ -24,19 +24,19 @@ class OrderedDict(dict):
             self.update(**kwargs)
 
     def __setitem__(self, key, value):
-        super(OrderedDict, self).__setitem__(key, value)
+        super().__setitem__(key, value)
         if key not in self._keys:
             self._keys.append(key)
             self._dirty = True
 
     def __delitem__(self, key):
-        super(OrderedDict, self).__delitem__(key)
+        super().__delitem__(key)
         if key in self._keys:
             self._keys.remove(key)
             self._dirty = True
 
     def clear(self):
-        super(OrderedDict, self).clear()
+        super().clear()
         self._keys = []
         self._dirty = True
 
@@ -59,7 +59,7 @@ class OrderedDict(dict):
     def update(self, *args, **kwargs):
         if args:
             iterable = args[0]
-            if hasattr(iterable, 'keys'):
+            if hasattr(iterable, "keys"):
                 for k in iterable:
                     self[k] = iterable[k]
 
@@ -77,8 +77,7 @@ class OrderedDict(dict):
     def _order(self):
         self.sortingFun(self._keys)
 
-        self._keysLens = sorted(
-            set(len(k) for k in self._keys), reverse=True)
+        self._keysLens = sorted({len(k) for k in self._keys}, reverse=True)
 
         self._dirty = False
 
@@ -123,7 +122,7 @@ class OidOrderedDict(OrderedDict):
                 self._keysCache[key] = key
 
             else:
-                self._keysCache[key] = [int(x) for x in key.split('.') if x]
+                self._keysCache[key] = [int(x) for x in key.split(".") if x]
 
     def __delitem__(self, key):
         OrderedDict.__delitem__(self, key)

@@ -11,7 +11,7 @@ from pysnmp.smi.rfc1902 import *
 from pysnmp.proto import api
 from pysnmp import error
 
-__all__ = ['getCmd', 'nextCmd', 'setCmd', 'bulkCmd']
+__all__ = ["getCmd", "nextCmd", "setCmd", "bulkCmd"]
 
 VB_PROCESSOR = CommandGeneratorVarBinds()
 
@@ -117,8 +117,15 @@ def getCmd(snmpDispatcher, authData, transportTarget, *varBinds, **options):
             return
 
         if errorIndication:
-            cbFun(errorIndication, pMod.Integer(0), pMod.Integer(0), None,
-                  cbCtx=cbCtx, snmpDispatcher=snmpDispatcher, stateHandle=stateHandle)
+            cbFun(
+                errorIndication,
+                pMod.Integer(0),
+                pMod.Integer(0),
+                None,
+                cbCtx=cbCtx,
+                snmpDispatcher=snmpDispatcher,
+                stateHandle=stateHandle,
+            )
             return
 
         errorStatus = pMod.apiPDU.getErrorStatus(rspPdu)
@@ -131,11 +138,16 @@ def getCmd(snmpDispatcher, authData, transportTarget, *varBinds, **options):
 
         nextStateHandle = pMod.getNextRequestID()
 
-        nextVarBinds = cbFun(errorIndication, errorStatus, errorIndex, varBinds,
-                             cbCtx=cbCtx,
-                             snmpDispatcher=snmpDispatcher,
-                             stateHandle=stateHandle,
-                             nextStateHandle=nextStateHandle)
+        nextVarBinds = cbFun(
+            errorIndication,
+            errorStatus,
+            errorIndex,
+            varBinds,
+            cbCtx=cbCtx,
+            snmpDispatcher=snmpDispatcher,
+            stateHandle=stateHandle,
+            nextStateHandle=nextStateHandle,
+        )
 
         if not nextVarBinds:
             return
@@ -145,7 +157,7 @@ def getCmd(snmpDispatcher, authData, transportTarget, *varBinds, **options):
 
         return snmpDispatcher.sendPdu(authData, transportTarget, reqPdu, cbFun=_cbFun)
 
-    lookupMib, cbFun, cbCtx = [options.get(x) for x in ('lookupMib', 'cbFun', 'cbCtx')]
+    lookupMib, cbFun, cbCtx = (options.get(x) for x in ("lookupMib", "cbFun", "cbCtx"))
 
     if lookupMib:
         varBinds = VB_PROCESSOR.makeVarBinds(snmpDispatcher.cache, varBinds)
@@ -159,8 +171,7 @@ def getCmd(snmpDispatcher, authData, transportTarget, *varBinds, **options):
     return snmpDispatcher.sendPdu(authData, transportTarget, reqPdu, cbFun=_cbFun)
 
 
-def setCmd(snmpDispatcher, authData, transportTarget,
-           *varBinds, **options):
+def setCmd(snmpDispatcher, authData, transportTarget, *varBinds, **options):
     """Initiate SNMP SET query over SNMPv1/v2c.
 
     Based on passed parameters, prepares SNMP SET packet
@@ -261,8 +272,15 @@ def setCmd(snmpDispatcher, authData, transportTarget,
             return
 
         if errorIndication:
-            cbFun(errorIndication, pMod.Integer(0), pMod.Integer(0), None,
-                  cbCtx=cbCtx, snmpDispatcher=snmpDispatcher, stateHandle=stateHandle)
+            cbFun(
+                errorIndication,
+                pMod.Integer(0),
+                pMod.Integer(0),
+                None,
+                cbCtx=cbCtx,
+                snmpDispatcher=snmpDispatcher,
+                stateHandle=stateHandle,
+            )
             return
 
         errorStatus = pMod.apiPDU.getErrorStatus(rspPdu)
@@ -275,11 +293,16 @@ def setCmd(snmpDispatcher, authData, transportTarget,
 
         nextStateHandle = pMod.getNextRequestID()
 
-        nextVarBinds = cbFun(errorIndication, errorStatus, errorIndex, varBinds,
-                             cbCtx=cbCtx,
-                             snmpDispatcher=snmpDispatcher,
-                             stateHandle=stateHandle,
-                             nextStateHandle=nextStateHandle)
+        nextVarBinds = cbFun(
+            errorIndication,
+            errorStatus,
+            errorIndex,
+            varBinds,
+            cbCtx=cbCtx,
+            snmpDispatcher=snmpDispatcher,
+            stateHandle=stateHandle,
+            nextStateHandle=nextStateHandle,
+        )
 
         if not nextVarBinds:
             return
@@ -289,7 +312,7 @@ def setCmd(snmpDispatcher, authData, transportTarget,
 
         return snmpDispatcher.sendPdu(authData, transportTarget, reqPdu, cbFun=_cbFun)
 
-    lookupMib, cbFun, cbCtx = [options.get(x) for x in ('lookupMib', 'cbFun', 'cbCtx')]
+    lookupMib, cbFun, cbCtx = (options.get(x) for x in ("lookupMib", "cbFun", "cbCtx"))
 
     if lookupMib:
         varBinds = VB_PROCESSOR.makeVarBinds(snmpDispatcher.cache, varBinds)
@@ -303,8 +326,7 @@ def setCmd(snmpDispatcher, authData, transportTarget,
     return snmpDispatcher.sendPdu(authData, transportTarget, reqPdu, cbFun=_cbFun)
 
 
-def nextCmd(snmpDispatcher, authData, transportTarget,
-            *varBinds, **options):
+def nextCmd(snmpDispatcher, authData, transportTarget, *varBinds, **options):
     """Initiate SNMP GETNEXT query over SNMPv1/v2c.
 
     Based on passed parameters, prepares SNMP GETNEXT packet
@@ -399,8 +421,15 @@ def nextCmd(snmpDispatcher, authData, transportTarget,
             return
 
         if errorIndication:
-            cbFun(errorIndication, pMod.Integer(0), pMod.Integer(0), None,
-                  cbCtx=cbCtx, snmpDispatcher=snmpDispatcher, stateHandle=stateHandle)
+            cbFun(
+                errorIndication,
+                pMod.Integer(0),
+                pMod.Integer(0),
+                None,
+                cbCtx=cbCtx,
+                snmpDispatcher=snmpDispatcher,
+                stateHandle=stateHandle,
+            )
             return
 
         errorStatus = pMod.apiPDU.getErrorStatus(rspPdu)
@@ -412,19 +441,25 @@ def nextCmd(snmpDispatcher, authData, transportTarget,
             varBindTable[-1], errorIndex=errorIndex
         )
 
-        if options.get('lookupMib'):
+        if options.get("lookupMib"):
             varBindTable = [
-                VB_PROCESSOR.unmakeVarBinds(snmpDispatcher.cache, vbs) for vbs in varBindTable
+                VB_PROCESSOR.unmakeVarBinds(snmpDispatcher.cache, vbs)
+                for vbs in varBindTable
             ]
 
         nextStateHandle = pMod.getNextRequestID()
 
-        nextVarBinds = cbFun(errorIndication, errorStatus, errorIndex, varBindTable,
-                             cbCtx=cbCtx,
-                             snmpDispatcher=snmpDispatcher,
-                             stateHandle=stateHandle,
-                             nextStateHandle=nextStateHandle,
-                             nextVarBinds=nextVarBinds)
+        nextVarBinds = cbFun(
+            errorIndication,
+            errorStatus,
+            errorIndex,
+            varBindTable,
+            cbCtx=cbCtx,
+            snmpDispatcher=snmpDispatcher,
+            stateHandle=stateHandle,
+            nextStateHandle=nextStateHandle,
+            nextVarBinds=nextVarBinds,
+        )
 
         if not nextVarBinds:
             return
@@ -434,7 +469,7 @@ def nextCmd(snmpDispatcher, authData, transportTarget,
 
         return snmpDispatcher.sendPdu(authData, transportTarget, reqPdu, cbFun=_cbFun)
 
-    lookupMib, cbFun, cbCtx = [options.get(x) for x in ('lookupMib', 'cbFun', 'cbCtx')]
+    lookupMib, cbFun, cbCtx = (options.get(x) for x in ("lookupMib", "cbFun", "cbCtx"))
 
     if lookupMib:
         varBinds = VB_PROCESSOR.makeVarBinds(snmpDispatcher.cache, varBinds)
@@ -448,8 +483,15 @@ def nextCmd(snmpDispatcher, authData, transportTarget,
     return snmpDispatcher.sendPdu(authData, transportTarget, reqPdu, cbFun=_cbFun)
 
 
-def bulkCmd(snmpDispatcher, authData, transportTarget,
-            nonRepeaters, maxRepetitions, *varBinds, **options):
+def bulkCmd(
+    snmpDispatcher,
+    authData,
+    transportTarget,
+    nonRepeaters,
+    maxRepetitions,
+    *varBinds,
+    **options
+):
     """Initiate SNMP GETBULK query over SNMPv2c.
 
     Based on passed parameters, prepares SNMP GETBULK packet
@@ -572,8 +614,15 @@ def bulkCmd(snmpDispatcher, authData, transportTarget,
             return
 
         if errorIndication:
-            cbFun(errorIndication, pMod.Integer(0), pMod.Integer(0), None,
-                  cbCtx=cbCtx, snmpDispatcher=snmpDispatcher, stateHandle=stateHandle)
+            cbFun(
+                errorIndication,
+                pMod.Integer(0),
+                pMod.Integer(0),
+                None,
+                cbCtx=cbCtx,
+                snmpDispatcher=snmpDispatcher,
+                stateHandle=stateHandle,
+            )
             return
 
         errorStatus = pMod.apiBulkPDU.getErrorStatus(rspPdu)
@@ -585,19 +634,25 @@ def bulkCmd(snmpDispatcher, authData, transportTarget,
             varBindTable[-1], errorIndex=errorIndex
         )
 
-        if options.get('lookupMib'):
+        if options.get("lookupMib"):
             varBindTable = [
-                VB_PROCESSOR.unmakeVarBinds(snmpDispatcher.cache, vbs) for vbs in varBindTable
+                VB_PROCESSOR.unmakeVarBinds(snmpDispatcher.cache, vbs)
+                for vbs in varBindTable
             ]
 
         nextStateHandle = pMod.getNextRequestID()
 
-        nextVarBinds = cbFun(errorIndication, errorStatus, errorIndex, varBindTable,
-                             cbCtx=cbCtx,
-                             snmpDispatcher=snmpDispatcher,
-                             stateHandle=stateHandle,
-                             nextStateHandle=nextStateHandle,
-                             nextVarBinds=nextVarBinds)
+        nextVarBinds = cbFun(
+            errorIndication,
+            errorStatus,
+            errorIndex,
+            varBindTable,
+            cbCtx=cbCtx,
+            snmpDispatcher=snmpDispatcher,
+            stateHandle=stateHandle,
+            nextStateHandle=nextStateHandle,
+            nextVarBinds=nextVarBinds,
+        )
 
         if not nextVarBinds:
             return
@@ -608,9 +663,9 @@ def bulkCmd(snmpDispatcher, authData, transportTarget,
         return snmpDispatcher.sendPdu(authData, transportTarget, reqPdu, cbFun=_cbFun)
 
     if authData.mpModel < 1:
-        raise error.PySnmpError('GETBULK PDU is only supported in SNMPv2c and SNMPv3')
+        raise error.PySnmpError("GETBULK PDU is only supported in SNMPv2c and SNMPv3")
 
-    lookupMib, cbFun, cbCtx = [options.get(x) for x in ('lookupMib', 'cbFun', 'cbCtx')]
+    lookupMib, cbFun, cbCtx = (options.get(x) for x in ("lookupMib", "cbFun", "cbCtx"))
 
     if lookupMib:
         varBinds = VB_PROCESSOR.makeVarBinds(snmpDispatcher.cache, varBinds)

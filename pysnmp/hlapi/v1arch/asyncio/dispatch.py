@@ -7,7 +7,7 @@
 from pysnmp.carrier.asyncio.dispatch import AsyncioDispatcher
 from pysnmp.hlapi.v1arch.dispatch import AbstractSnmpDispatcher
 
-__all__ = ['SnmpDispatcher']
+__all__ = ["SnmpDispatcher"]
 
 
 class SnmpDispatcher(AbstractSnmpDispatcher):
@@ -26,4 +26,5 @@ class SnmpDispatcher(AbstractSnmpDispatcher):
     application. In a multithreaded environment, each thread that
     works with SNMP must have its own `SnmpDispatcher` instance.
     """
+
     PROTO_DISPATCHER = AsyncioDispatcher

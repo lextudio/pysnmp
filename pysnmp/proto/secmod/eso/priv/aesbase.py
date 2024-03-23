@@ -32,11 +32,9 @@ class AbstractAesBlumenthal(aes.Aes):
             hashAlgo = hmacsha2.HmacSha2.HASH_ALGORITHM[authProtocol]
 
         else:
-            raise error.ProtocolError(
-                'Unknown auth protocol %s' % (authProtocol,))
+            raise error.ProtocolError(f"Unknown auth protocol {authProtocol}")
 
-        localPrivKey = localkey.localizeKey(
-            privKey, snmpEngineID, hashAlgo)
+        localPrivKey = localkey.localizeKey(privKey, snmpEngineID, hashAlgo)
 
         # now extend this key if too short by repeating steps that includes
         # the hashPassphrase step
@@ -44,9 +42,10 @@ class AbstractAesBlumenthal(aes.Aes):
 
         for _ in range(1, rounds):
             localPrivKey += localPrivKey.clone(
-                hashAlgo(localPrivKey.asOctets()).digest())
+                hashAlgo(localPrivKey.asOctets()).digest()
+            )
 
-        return localPrivKey[:self.KEY_SIZE]
+        return localPrivKey[: self.KEY_SIZE]
 
 
 class AbstractAesReeder(aes.Aes):
@@ -64,6 +63,7 @@ class AbstractAesReeder(aes.Aes):
     The difference between the two is that the Reeder draft does key extension by repeating
     the steps in the password to key algorithm (hash phrase, then localize with SNMPEngine ID).
     """
+
     SERVICE_ID = ()
     KEY_SIZE = 0
 
@@ -79,8 +79,7 @@ class AbstractAesReeder(aes.Aes):
             hashAlgo = hmacsha2.HmacSha2.HASH_ALGORITHM[authProtocol]
 
         else:
-            raise error.ProtocolError(
-                'Unknown auth protocol %s' % (authProtocol,))
+            raise error.ProtocolError(f"Unknown auth protocol {authProtocol}")
 
         localPrivKey = localkey.localizeKey(privKey, snmpEngineID, hashAlgo)
 
@@ -90,4 +89,4 @@ class AbstractAesReeder(aes.Aes):
             newKey = localkey.hashPassphrase(localPrivKey, hashAlgo)
             localPrivKey += localkey.localizeKey(newKey, snmpEngineID, hashAlgo)
 
-        return localPrivKey[:self.KEY_SIZE]
+        return localPrivKey[: self.KEY_SIZE]

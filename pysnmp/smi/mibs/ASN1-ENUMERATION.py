@@ -8,13 +8,10 @@
 #
 from pyasn1.type import namedval
 
-if 'mibBuilder' not in globals():
+if "mibBuilder" not in globals():
     import sys
 
     sys.stderr.write(__doc__)
     sys.exit(1)
 
-mibBuilder.exportSymbols(
-    'ASN1-ENUMERATION',
-    NamedValues=namedval.NamedValues
-)
+mibBuilder.exportSymbols("ASN1-ENUMERATION", NamedValues=namedval.NamedValues)

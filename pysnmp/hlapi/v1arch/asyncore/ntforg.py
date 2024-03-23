@@ -12,13 +12,14 @@ from pysnmp.proto.api import v2c
 from pysnmp.proto.proxy import rfc2576
 from pysnmp import error
 
-__all__ = ['sendNotification']
+__all__ = ["sendNotification"]
 
 VB_PROCESSOR = NotificationOriginatorVarBinds()
 
 
-def sendNotification(snmpDispatcher, authData, transportTarget,
-                     notifyType, *varBinds, **options):
+def sendNotification(
+    snmpDispatcher, authData, transportTarget, notifyType, *varBinds, **options
+):
     """Send SNMP notification.
 
     Based on passed parameters, prepares SNMP TRAP or INFORM
@@ -135,8 +136,10 @@ def sendNotification(snmpDispatcher, authData, transportTarget,
                 break
 
         if len(varBinds) < 2:
-            raise error.PySnmpError('SNMP notification PDU requires '
-                                    'SNMPv2-MIB::snmpTrapOID.0 to be present')
+            raise error.PySnmpError(
+                "SNMP notification PDU requires "
+                "SNMPv2-MIB::snmpTrapOID.0 to be present"
+            )
 
         # Search for and reposition snmpTrapOID if it's elsewhere
         for idx, varBind in enumerate(varBinds[2:]):
@@ -150,8 +153,10 @@ def sendNotification(snmpDispatcher, authData, transportTarget,
 
         # Fail on missing snmpTrapOID
         if varBinds[1][0] != snmpTrapOID:
-            raise error.PySnmpError('SNMP notification PDU requires '
-                                    'SNMPv2-MIB::snmpTrapOID.0 to be present')
+            raise error.PySnmpError(
+                "SNMP notification PDU requires "
+                "SNMPv2-MIB::snmpTrapOID.0 to be present"
+            )
 
         return varBinds
 
@@ -160,8 +165,15 @@ def sendNotification(snmpDispatcher, authData, transportTarget,
             return
 
         if errorIndication:
-            cbFun(errorIndication, v2c.Integer(0), v2c.Integer(0), None,
-                  cbCtx=cbCtx, snmpDispatcher=snmpDispatcher, stateHandle=stateHandle)
+            cbFun(
+                errorIndication,
+                v2c.Integer(0),
+                v2c.Integer(0),
+                None,
+                cbCtx=cbCtx,
+                snmpDispatcher=snmpDispatcher,
+                stateHandle=stateHandle,
+            )
             return
 
         errorStatus = v2c.apiTrapPDU.getErrorStatus(rspPdu)
@@ -174,11 +186,16 @@ def sendNotification(snmpDispatcher, authData, transportTarget,
 
         nextStateHandle = v2c.getNextRequestID()
 
-        nextVarBinds = cbFun(errorIndication, errorStatus, errorIndex, varBinds,
-                             cbCtx=cbCtx,
-                             snmpDispatcher=snmpDispatcher,
-                             stateHandle=stateHandle,
-                             nextStateHandle=nextStateHandle)
+        nextVarBinds = cbFun(
+            errorIndication,
+            errorStatus,
+            errorIndex,
+            varBinds,
+            cbCtx=cbCtx,
+            snmpDispatcher=snmpDispatcher,
+            stateHandle=stateHandle,
+            nextStateHandle=nextStateHandle,
+        )
 
         if not nextVarBinds:
             return
@@ -188,12 +205,12 @@ def sendNotification(snmpDispatcher, authData, transportTarget,
 
         return snmpDispatcher.sendPdu(authData, transportTarget, reqPdu, cbFun=_cbFun)
 
-    lookupMib, cbFun, cbCtx = [options.get(x) for x in ('lookupMib', 'cbFun', 'cbCtx')]
+    lookupMib, cbFun, cbCtx = (options.get(x) for x in ("lookupMib", "cbFun", "cbCtx"))
 
     if lookupMib:
         varBinds = VB_PROCESSOR.makeVarBinds(snmpDispatcher.cache, varBinds)
 
-    if notifyType == 'trap':
+    if notifyType == "trap":
         reqPdu = v2c.TrapPDU()
     else:
         reqPdu = v2c.InformRequestPDU()
@@ -209,4 +226,3 @@ def sendNotification(snmpDispatcher, authData, transportTarget,
         reqPdu = rfc2576.v2ToV1(reqPdu)
 
     return snmpDispatcher.sendPdu(authData, transportTarget, reqPdu, cbFun=_cbFun)
-

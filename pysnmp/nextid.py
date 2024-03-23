@@ -9,7 +9,7 @@ import random
 random.seed()
 
 
-class Integer(object):
+class Integer:
     """Return a next value in a reasonably MT-safe manner"""
 
     def __init__(self, maximum, increment=256):
@@ -25,8 +25,7 @@ class Integer(object):
         self._bank = list(range(e, e + self._increment))
 
     def __repr__(self):
-        return '%s(%d, %d)' % (
-            self.__class__.__name__, self._maximum, self._increment)
+        return "%s(%d, %d)" % (self.__class__.__name__, self._maximum, self._increment)
 
     def __call__(self):
         v = self._bank.pop(0)

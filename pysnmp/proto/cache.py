@@ -7,7 +7,7 @@
 from pysnmp.proto import error
 
 
-class Cache(object):
+class Cache:
     def __init__(self):
         self._cacheRepository = {}
 
@@ -25,9 +25,7 @@ class Cache(object):
 
     def update(self, index, **kwargs):
         if index not in self._cacheRepository:
-            raise error.ProtocolError(
-                'Cache miss on update for %s' % kwargs
-            )
+            raise error.ProtocolError("Cache miss on update for %s" % kwargs)
         self._cacheRepository[index].update(kwargs)
 
     def expire(self, cbFun, cbCtx):
