@@ -57,6 +57,16 @@ class CommandGeneratorLcdConfigurator(AbstractLcdConfigurator):
         elif isinstance(authData, UsmUserData):
             authDataKey = authData.userName, authData.securityEngineId
             if authDataKey not in cache["auth"]:
+                add_user = True
+
+            elif self._usm_auth_changed(cache["auth"][authDataKey], authData):
+                config.delV3User(snmpEngine, authData.userName, authData.securityEngineId)
+                add_user = True
+
+            else:
+                add_user = False
+
+            if add_user:
                 config.addV3User(
                     snmpEngine,
                     authData.userName,
@@ -198,6 +208,17 @@ class CommandGeneratorLcdConfigurator(AbstractLcdConfigurator):
                             del cache["tran"][addrKey[1]]
 
         return addrNames, paramsNames
+
+    @staticmethod
+    def _usm_auth_changed(cachedAuthData, newAuthData):
+        changed = False
+
+        changed |= (cachedAuthData.authKey != newAuthData.authKey)
+        changed |= (cachedAuthData.authProtocol != newAuthData.authProtocol)
+        changed |= (cachedAuthData.privKey != newAuthData.privKey)
+        changed |= (cachedAuthData.privProtocol != newAuthData.privProtocol)
+
+        return changed
 
 
 class NotificationOriginatorLcdConfigurator(AbstractLcdConfigurator):
