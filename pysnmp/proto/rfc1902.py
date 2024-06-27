@@ -599,6 +599,7 @@ class Counter64(univ.Integer):
     )
 
 
+from pysnmp.sep_coverage import ari_hit as h
 class Bits(OctetString):
     """Creates an instance of SNMP BITS class.
 
@@ -660,14 +661,18 @@ class Bits(OctetString):
 
     def prettyIn(self, bits):
         if not isinstance(bits, (tuple, list)):
+            h(664)
             return OctetString.prettyIn(self, bits)  # raw bitstring
         octets = []
         for bit in bits:  # tuple of named bits
+            h(668)
             v = self.namedValues.getValue(bit)
             if v is None:
+                h(671)
                 raise error.ProtocolError("Unknown named bit %s" % bit)
             d, m = divmod(v, 8)
             if d >= len(octets):
+                h(675)
                 octets.extend([0] * (d - len(octets) + 1))
             octets[d] |= 0x01 << (7 - m)
         return OctetString.prettyIn(self, octets)
@@ -676,12 +681,16 @@ class Bits(OctetString):
         names = []
         ints = self.__class__(value).asNumbers()
         for i, v in enumerate(ints):
+            h(685)
             v = ints[i]
             j = 7
             while j >= 0:
+                h(688)
                 if v & (0x01 << j):
+                    h(691)
                     name = self.namedValues.getName(i * 8 + 7 - j)
                     if name is None:
+                        h(694)
                         name = f"UnknownBit-{i * 8 + 7 - j}"
                     names.append(name)
                 j -= 1
