@@ -80,7 +80,8 @@ Own tool:
 ![img.png](overage_ari_own_after.png)
 
 
-
+Coverage improvement was from 0% to 100% branch coverage for both functions, as the different tests exercies all 
+tested cases.
 
 
 ### Overall
