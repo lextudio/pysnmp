@@ -9,7 +9,10 @@ from pyasn1.error import PyAsn1Error
 from pysnmp.smi.error import SmiError
 from pysnmp.proto import error
 
-__all__ = [
+from pysnmp.sep_coverage import rares_hit as h
+
+
+_all_ = [
     "Opaque",
     "NetworkAddress",
     "ObjectName",
@@ -38,7 +41,7 @@ class IpAddress(univ.OctetString):
 
     def prettyOut(self, value):
         if value:
-            return ".".join(["%d" % x for x in self.__class__(value).asNumbers()])
+            return ".".join(["%d" % x for x in self._class_(value).asNumbers()])
         else:
             return ""
 
@@ -58,25 +61,29 @@ class NetworkAddress(univ.Choice):
     def clone(self, value=univ.noValue, **kwargs):
         """Clone this instance.
 
-        If *value* is specified, use its tag as the component type selector,
+        If value is specified, use its tag as the component type selector,
         and itself as the component value.
 
         :param value: (Optional) the component value.
-        :type value: :py:obj:`pyasn1.type.base.Asn1ItemBase`
+        :type value: :py:obj:pyasn1.type.base.Asn1ItemBase
         :return: the cloned instance.
-        :rtype: :py:obj:`pysnmp.proto.rfc1155.NetworkAddress`
-        :raise: :py:obj:`pysnmp.smi.error.SmiError`:
-            if the type of *value* is not allowed for this Choice instance.
+        :rtype: :py:obj:pysnmp.proto.rfc1155.NetworkAddress
+        :raise: :py:obj:pysnmp.smi.error.SmiError:
+            if the type of value is not allowed for this Choice instance.
         """
         cloned = univ.Choice.clone(self, **kwargs)
         if value is not univ.noValue:
+            h(76)
             if isinstance(value, NetworkAddress):
+                h(78)
                 value = value.getComponent()
             elif not isinstance(value, IpAddress):
+                h(81)
                 # IpAddress is the only supported type, perhaps forever because
                 # this is SNMPv1.
                 value = IpAddress(value)
             try:
+                h(86)
                 tagSet = value.tagSet
             except AttributeError:
                 raise PyAsn1Error(f"component value {value!r} has no tag set")
@@ -142,10 +149,13 @@ class TypeCoercionHackMixIn:  # XXX keep this old-style class till pyasn1 types 
     def _verifyComponent(self, idx, value, **kwargs):
         componentType = self._componentType
         if componentType:
+            h(151)
             if idx >= len(componentType):
+                h(153)
                 raise PyAsn1Error("Component type error out of range")
             t = componentType[idx].getType()
             if not t.getTagSet().isSuperTagSetOf(value.getTagSet()):
+                h(157)
                 raise PyAsn1Error(f"Component type error {t!r} vs {value!r}")
 
 
