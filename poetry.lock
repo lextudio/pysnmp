@@ -486,13 +486,13 @@ files = [
 
 [[package]]
 name = "exceptiongroup"
-version = "1.2.1"
+version = "1.2.2"
 description = "Backport of PEP 654 (exception groups)"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "exceptiongroup-1.2.1-py3-none-any.whl", hash = "sha256:5258b9ed329c5bbdd31a309f53cbfb0b155341807f6ff7606a1e801a891b29ad"},
-    {file = "exceptiongroup-1.2.1.tar.gz", hash = "sha256:a4785e48b045528f5bfe627b6ad554ff32def154f42372786903b7abcfe1aa16"},
+    {file = "exceptiongroup-1.2.2-py3-none-any.whl", hash = "sha256:3111b9d131c238bec2f8f516e123e14ba243563fb135d3fe885990585aa7795b"},
+    {file = "exceptiongroup-1.2.2.tar.gz", hash = "sha256:47c2edf7c6738fafb49fd34290706d1a1a2f4d1c6df275526b62cbb4aa5393cc"},
 ]
 
 [package.extras]
@@ -835,14 +835,14 @@ files = [
 windows-terminal = ["colorama (>=0.4.6)"]
 
 [[package]]
-name = "pysmi-lextudio"
-version = "1.4.3"
+name = "pysmi"
+version = "1.4.4"
 description = "A pure-Python implementation of SNMP/SMI MIB parsing and conversion library."
 optional = false
 python-versions = "<4.0,>=3.8"
 files = [
-    {file = "pysmi_lextudio-1.4.3-py3-none-any.whl", hash = "sha256:cb629c6386a30c976f83c29fc71e53b06d60f15094d0c0114cf8d095351b76e5"},
-    {file = "pysmi_lextudio-1.4.3.tar.gz", hash = "sha256:7d255fb38669410835acf6c2e8ab41975a6d8e64593b119552e36ecba004054f"},
+    {file = "pysmi-1.4.4-py3-none-any.whl", hash = "sha256:4c961e726e83a88f11b24e3f76a77d1396d827682088f09b8f1d5ca0429e31fa"},
+    {file = "pysmi-1.4.4.tar.gz", hash = "sha256:7c8e7cae880dc56ffca872452023a3aea4e695c67661d5739eb6d718ec91e1f3"},
 ]
 
 [package.dependencies]
@@ -1354,4 +1354,4 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "41c2742b7c8c2c2d348a7c7b6572a38b4db65771727df84431b6dfaa59adf207"
+content-hash = "8626ecfb7b745206c4eb40ef0efcfe2534b46da0eb82a8d73487515be5939bf2"

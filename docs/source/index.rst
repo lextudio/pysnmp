@@ -87,7 +87,7 @@ Best way is usually to install PySNMP using `PySNMP PyPI package`_.
 
 .. code-block:: bash
 
-   $ pip install pysnmp-lextudio
+   $ pip install pysnmp
 
 If that does not work for you for some reason, you might need to read the
 following page.
