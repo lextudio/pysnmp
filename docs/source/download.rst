@@ -6,7 +6,7 @@ Download PySNMP
 
 The PySNMP software is provided under terms and conditions of BSD-style 
 license, and can be freely downloaded from 
-`PyPI <http://pypi.python.org/pypi/pysnmp-lextudio/>`_ or
+`PyPI <http://pypi.python.org/pypi/pysnmp/>`_ or
 GitHub (`master branch <https://github.com/lextudio/pysnmp/archive/master.zip>`_).
 
 
@@ -20,13 +20,13 @@ The best way to obtain PySNMP and dependencies is to run:
 
 .. code-block:: bash
 
-   $ pip install pysnmp-lextudio
+   $ pip install pysnmp
 
 or
 
 .. code-block:: bash
 
-   $ easy_install pysnmp-lextudio
+   $ easy_install pysnmp
 
 In case of any issues, please open a `GitHub issue <https://github.com/lextudio/pysnmp/issues/new>`_ so we could try to help out.
 

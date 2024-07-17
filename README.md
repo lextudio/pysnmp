@@ -2,9 +2,9 @@
 SNMP Library for Python
 -----------------------
 
-[![PyPI](https://img.shields.io/pypi/v/pysnmp-lextudio.svg)](https://pypi.python.org/pypi/pysnmp-lextudio)
-[![PyPI Downloads](https://img.shields.io/pypi/dd/pysnmp-lextudio)](https://pypi.python.org/pypi/pysnmp-lextudio/)
-[![Python Versions](https://img.shields.io/pypi/pyversions/pysnmp-lextudio.svg)](https://pypi.python.org/pypi/pysnmp-lextudio/)
+[![PyPI](https://img.shields.io/pypi/v/pysnmp.svg)](https://pypi.python.org/pypi/pysnmp)
+[![PyPI Downloads](https://img.shields.io/pypi/dd/pysnmp)](https://pypi.python.org/pypi/pysnmp/)
+[![Python Versions](https://img.shields.io/pypi/pyversions/pysnmp.svg)](https://pypi.python.org/pypi/pysnmp/)
 [![GitHub license](https://img.shields.io/badge/license-BSD-blue.svg)](https://raw.githubusercontent.com/lextudio/pysnmp/master/LICENSE.rst)
 
 This is a pure-Python, open source and free implementation of v1/v2c/v3
@@ -13,7 +13,7 @@ SNMP engine distributed under 2-clause [BSD license](https://www.pysnmp.com/pysn
 The PySNMP project was initially sponsored by a [PSF](http://www.python.org/psf/) grant.
 Thank you!
 
-This version is a fork of Ilya Etingof's project [etingof/pysnmp](https://github.com/etingof/pysnmp). Ilya sadly passed away on 10-Aug-2022. Announcement [here](https://lists.openstack.org/pipermail/openstack-discuss/2022-August/030062.html).  His work is still of great use to the Python community and he will be missed.
+This version is derived from Ilya Etingof's project [etingof/pysnmp](https://github.com/etingof/pysnmp). Ilya sadly passed away on 10-Aug-2022. Announcement [here](https://lists.openstack.org/pipermail/openstack-discuss/2022-August/030062.html).  His work is still of great use to the Python community and he will be missed.
 
 Features
 --------
@@ -46,13 +46,13 @@ Features, specific to SNMPv3 model include:
 Download & Install
 ------------------
 
-The PySNMP software is freely available for download from [PyPI](https://pypi.python.org/pypi/pysnmp-lextudio)
+The PySNMP software is freely available for download from [PyPI](https://pypi.python.org/pypi/pysnmp)
 and [GitHub](https://github.com/lextudio/pysnmp.git).
 
 Just run:
 
 ```bash
-$ pip install pysnmp-lextudio
+$ pip install pysnmp
 ```
 
 To download and install PySNMP along with its dependencies:
@@ -67,7 +67,7 @@ Besides the library, command-line [SNMP utilities](https://github.com/lextudio/s
 written in pure-Python could be installed via:
 
 ```bash
-$ pip install snmpclitools-lextudio
+$ pip install snmpclitools
 ```
 
 and used in the very similar manner as conventional Net-SNMP tools:
