@@ -1,3 +1,8 @@
+Revision 6.1.3, released 2024-7-16
+-----------------------------------
+
+- Removed package postfix. A helper release to enable migration.
+
 Revision 6.1.2, released on Mar 25, 2024
 ----------------------------------------
 
@@ -12,6 +17,11 @@ Revision 6.1.0, released on Mar 23, 2024
 ----------------------------------------
 
 - Initial work to support pysmi-lextudio 1.3.0 and above.
+
+Revision 6.0.13, released 2024-7-16
+-----------------------------------
+
+- Removed package postfix. A helper release to enable migration.
 
 Revision 6.0.12, released on Mar 23, 2024
 -----------------------------------------
@@ -82,6 +92,11 @@ Revision 6.0.0, released on Feb 10, 2024
 - Improved asyncio "runDispatcher" method to support timeout.
 - Changed internal defaults to asyncio.
 - Converted asyncore samples to asyncio.
+
+Revision 5.1.0, released 2024-7-16
+-----------------------------------
+
+- Removed package postfix. A helper release to enable migration.
 
 Revision 5.0.34, released on Feb 04, 2024
 -----------------------------------------
