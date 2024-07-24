@@ -79,11 +79,7 @@ class OrderedDict(dict):
 
         keys = self.__keys
 
-        if key in keys:
-            nextIdx = keys.index(key) + 1
-
-        else:
-            nextIdx = bisect(keys, key)
+        nextIdx = bisect(keys, key)
 
         if nextIdx < len(keys):
             return keys[nextIdx]
