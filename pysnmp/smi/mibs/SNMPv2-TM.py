@@ -18,7 +18,6 @@ except ImportError:
     inet_ntop = lambda x, y: inet_ntoa(y)
     inet_pton = lambda x, y: inet_aton(y)
 
-from pyasn1.compat.octets import int2oct, oct2int
 
 (OctetString,) = mibBuilder.importSymbols("ASN1", "OctetString")
 (
@@ -93,8 +92,8 @@ class SnmpUDPAddress(TextualConvention, OctetString):
             # Wild hack -- need to implement TextualConvention.prettyIn
             value = (
                 inet_pton(AF_INET, value[0])
-                + int2oct((value[1] >> 8) & 0xFF)
-                + int2oct(value[1] & 0xFF)
+                + bytes((((value[1] >> 8) & 0xFF),))
+                + bytes(((value[1] & 0xFF),))
             )
         return OctetString.prettyIn(self, value)
 
@@ -104,7 +103,7 @@ class SnmpUDPAddress(TextualConvention, OctetString):
             v = self.asOctets()
             self.__tuple_value = (
                 inet_ntop(AF_INET, v[:4]),
-                oct2int(v[4]) << 8 | oct2int(v[5]),
+                v[4] << 8 | v[5],
             )
         return self.__tuple_value
 

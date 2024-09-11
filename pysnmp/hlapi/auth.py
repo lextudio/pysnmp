@@ -6,7 +6,7 @@
 #
 from pysnmp.entity import config
 from pysnmp import error
-from pyasn1.compat.octets import null
+
 
 __all__ = [
     "CommunityData",
@@ -113,8 +113,8 @@ class CommunityData:
     mpModel = 1  # Default is SMIv2
     securityModel = mpModel + 1
     securityLevel = "noAuthNoPriv"
-    contextName = null
-    tag = null
+    contextName = b""
+    tag = b""
 
     def __init__(
         self,
@@ -381,7 +381,7 @@ class UsmUserData:
     securityLevel = "noAuthNoPriv"
     securityModel = 3
     mpModel = 3
-    contextName = null
+    contextName = b""
 
     def __init__(
         self,

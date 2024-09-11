@@ -5,7 +5,6 @@
 # License: https://www.pysnmp.com/pysnmp/license.html
 #
 import sys
-from pyasn1.compat.octets import null
 from pysnmp.entity.rfc3413 import config
 from pysnmp.proto.proxy import rfc2576
 from pysnmp.proto import rfc3411
@@ -564,7 +563,7 @@ def _sendNotification(
     additionalVarBinds=(),
     cbFun=None,
     cbCtx=None,
-    contextName=null,
+    contextName=b"",
     instanceIndex=None,
 ):
     if self.snmpContext is None:

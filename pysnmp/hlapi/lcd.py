@@ -9,8 +9,6 @@ from pysnmp import nextid, error
 from pysnmp.entity.engine import SnmpEngine
 from pysnmp.hlapi.auth import *
 
-from pyasn1.compat.octets import null
-
 from pysnmp.hlapi.transport import AbstractTransportTarget
 
 __all__ = ["CommandGeneratorLcdConfigurator", "NotificationOriginatorLcdConfigurator"]
@@ -39,7 +37,7 @@ class CommandGeneratorLcdConfigurator(AbstractLcdConfigurator):
     cacheKeys = ["auth", "parm", "tran", "addr"]
 
     def configure(
-        self, snmpEngine, authData, transportTarget, contextName=null, **options
+        self, snmpEngine, authData, transportTarget, contextName=b"", **options
     ):
         cache = self._getCache(snmpEngine)
         if isinstance(authData, CommunityData):
@@ -128,7 +126,7 @@ class CommandGeneratorLcdConfigurator(AbstractLcdConfigurator):
 
         return addrName, paramsName
 
-    def unconfigure(self, snmpEngine, authData=None, contextName=null, **options):
+    def unconfigure(self, snmpEngine, authData=None, contextName=b"", **options):
         cache = self._getCache(snmpEngine)
         if authData:
             if isinstance(authData, CommunityData):
@@ -264,7 +262,7 @@ class NotificationOriginatorLcdConfigurator(AbstractLcdConfigurator):
 
         return notifyName
 
-    def unconfigure(self, snmpEngine, authData=None, contextName=null, **options):
+    def unconfigure(self, snmpEngine, authData=None, contextName=b"", **options):
         cache = self._getCache(snmpEngine)
         if authData:
             authDataKey = (

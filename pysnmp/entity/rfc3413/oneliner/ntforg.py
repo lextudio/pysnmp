@@ -13,7 +13,6 @@ from pysnmp.hlapi.asyncio import *
 from pysnmp.hlapi.asyncio import sync
 from pysnmp.hlapi.varbinds import *
 from pysnmp.hlapi.lcd import *
-from pyasn1.compat.octets import null
 from pysnmp.entity import config
 from pysnmp.entity.rfc3413 import context
 
@@ -82,7 +81,7 @@ class NotificationOriginator:
             self.snmpEngine,
             authData,
             transportTarget,
-            ContextData(kwargs.get("contextEngineId"), kwargs.get("contextName", null)),
+            ContextData(kwargs.get("contextEngineId"), kwargs.get("contextName", b"")),
             notifyType,
             notificationType.addVarBinds(*varBinds),
             **kwargs

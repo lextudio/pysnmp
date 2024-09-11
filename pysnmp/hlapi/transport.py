@@ -5,7 +5,6 @@
 # License: https://www.pysnmp.com/pysnmp/license.html
 #
 from typing import Tuple
-from pyasn1.compat.octets import null
 from pysnmp.carrier.base import AbstractTransport, AbstractTransportAddress
 from pysnmp import error
 from pysnmp.entity.engine import SnmpEngine
@@ -27,7 +26,7 @@ class AbstractTransportTarget:
         transportAddr: Tuple,
         timeout: float = 1,
         retries: int = 5,
-        tagList=null,
+        tagList=b"",
     ):
         self.transportAddr = self._resolveAddr(transportAddr)
         self.timeout = timeout

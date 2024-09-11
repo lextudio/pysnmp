@@ -4,8 +4,6 @@
 # Copyright (c) 2005-2020, Ilya Etingof <etingof@gmail.com>
 # License: https://www.pysnmp.com/pysnmp/license.html
 #
-from pyasn1.compat.octets import null
-
 __all__ = ["ContextData"]
 
 
@@ -46,7 +44,7 @@ class ContextData:
 
     """
 
-    def __init__(self, contextEngineId=None, contextName=null):
+    def __init__(self, contextEngineId=None, contextName=b""):
         self.contextEngineId = contextEngineId
         self.contextName = contextName
 

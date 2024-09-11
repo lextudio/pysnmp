@@ -5,7 +5,8 @@
 # License: https://www.pysnmp.com/pysnmp/license.html
 #
 import logging
-from pyasn1.compat.octets import octs2ints
+
+
 from pysnmp import error
 from pysnmp import __version__
 
@@ -129,6 +130,6 @@ def hexdump(octets):
     return " ".join(
         [
             "{}{:02X}".format(n % 16 == 0 and ("\n%.5d: " % n) or "", x)
-            for n, x in zip(range(len(octets)), octs2ints(octets))
+            for n, x in zip(range(len(octets)), octets)
         ]
     )

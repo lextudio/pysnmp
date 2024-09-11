@@ -13,7 +13,6 @@ from pysnmp.hlapi.asyncio import *
 from pysnmp.hlapi.asyncio import sync
 from pysnmp.hlapi.varbinds import *
 from pysnmp.hlapi.lcd import *
-from pyasn1.compat.octets import null
 from pyasn1.type import univ
 
 __all__ = ["CommandGenerator", "MibVariable"]
@@ -37,7 +36,7 @@ class CommandGenerator:
             self.snmpEngine,
             authData,
             transportTarget,
-            ContextData(kwargs.get("contextEngineId"), kwargs.get("contextName", null)),
+            ContextData(kwargs.get("contextEngineId"), kwargs.get("contextName", b"")),
             *[(x, self._null) for x in varNames],
             **kwargs
         )
@@ -51,7 +50,7 @@ class CommandGenerator:
             self.snmpEngine,
             authData,
             transportTarget,
-            ContextData(kwargs.get("contextEngineId"), kwargs.get("contextName", null)),
+            ContextData(kwargs.get("contextEngineId"), kwargs.get("contextName", b"")),
             *varBinds,
             **kwargs
         )
@@ -69,7 +68,7 @@ class CommandGenerator:
             self.snmpEngine,
             authData,
             transportTarget,
-            ContextData(kwargs.get("contextEngineId"), kwargs.get("contextName", null)),
+            ContextData(kwargs.get("contextEngineId"), kwargs.get("contextName", b"")),
             *[(x, self._null) for x in varNames],
             **kwargs
         ):
@@ -101,7 +100,7 @@ class CommandGenerator:
             self.snmpEngine,
             authData,
             transportTarget,
-            ContextData(kwargs.get("contextEngineId"), kwargs.get("contextName", null)),
+            ContextData(kwargs.get("contextEngineId"), kwargs.get("contextName", b"")),
             nonRepeaters,
             maxRepetitions,
             *[(x, self._null) for x in varNames],
