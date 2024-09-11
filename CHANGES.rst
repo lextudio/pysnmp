@@ -1,3 +1,8 @@
+Revision 6.1.4, released 2024-9-11
+-----------------------------------
+
+- Removed pyasn1.compat dependency. A helper release to enable migration.
+
 Revision 6.1.3, released 2024-7-16
 -----------------------------------
 
