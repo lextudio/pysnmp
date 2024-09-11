@@ -7,7 +7,6 @@
 import random
 from hashlib import md5, sha1
 
-from pyasn1.compat.octets import null
 from pyasn1.type import univ
 
 from pysnmp.proto import errind, error

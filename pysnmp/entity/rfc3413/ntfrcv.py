@@ -6,7 +6,6 @@
 #
 import sys
 
-from pyasn1.compat.octets import null
 
 from pysnmp import debug
 from pysnmp.proto import error, rfc3411
@@ -24,7 +23,7 @@ class NotificationReceiver:
 
     def __init__(self, snmpEngine, cbFun, cbCtx=None):
         snmpEngine.msgAndPduDsp.registerContextEngineId(
-            null, self.SUPPORTED_PDU_TYPES, self.processPdu  # '' is a wildcard
+            b"", self.SUPPORTED_PDU_TYPES, self.processPdu  # '' is a wildcard
         )
 
         self.__snmpTrapCommunity = ""
@@ -39,9 +38,7 @@ class NotificationReceiver:
         )
 
     def close(self, snmpEngine):
-        snmpEngine.msgAndPduDsp.unregisterContextEngineId(
-            null, self.SUPPORTED_PDU_TYPES
-        )
+        snmpEngine.msgAndPduDsp.unregisterContextEngineId(b"", self.SUPPORTED_PDU_TYPES)
         self.__cbFun = self.__cbCtx = None
 
     def processPdu(

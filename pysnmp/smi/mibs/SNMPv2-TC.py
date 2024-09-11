@@ -8,7 +8,7 @@ import inspect
 import string
 import sys
 
-from pyasn1.compat import octets
+
 from pyasn1.type import univ
 from pyasn1.type.base import Asn1Item
 
@@ -117,7 +117,7 @@ class TextualConvention:
             while runningValue and displayHint:
                 # 1
                 if displayHint[0] == "*":
-                    repeatIndicator = repeatCount = octets.oct2int(runningValue[0])
+                    repeatIndicator = repeatCount = runningValue[0]
                     displayHint = displayHint[1:]
                     runningValue = runningValue[1:]
                 else:
@@ -181,7 +181,7 @@ class TextualConvention:
                         while numberString:
                             number <<= 8
                             try:
-                                number |= octets.oct2int(numberString[0])
+                                number |= numberString[0]
                                 numberString = numberString[1:]
                             except Exception:
                                 raise SmiError(
@@ -288,20 +288,20 @@ class TextualConvention:
         ):
             numBase = {"x": 16, "d": 10, "o": 8}
             numDigits = {
-                "x": octets.str2octs(string.hexdigits),
-                "o": octets.str2octs(string.octdigits),
-                "d": octets.str2octs(string.digits),
+                "x": string.hexdigits.encode("iso-8859-1"),
+                "o": string.octdigits.encode("iso-8859-1"),
+                "d": string.digits.encode("iso-8859-1"),
             }
 
             # how do we know if object is initialized with display-hint
             # formatted text? based on "text" input maybe?
             # That boils down to `str` object on Py3 or `unicode` on Py2.
-            if octets.isStringType(value) and not octets.isOctetsType(value):
+            if isinstance(value, str) and not isinstance(value, bytes):
                 value = base.prettyIn(self, value)
             else:
                 return base.prettyIn(self, value)
 
-            outputValue = octets.str2octs("")
+            outputValue = b""
             runningValue = value
             displayHint = self.displayHint
 
@@ -353,7 +353,7 @@ class TextualConvention:
                 elif displayFormat in numBase:
                     if displaySep:
                         guessedOctetLength = runningValue.find(
-                            octets.str2octs(displaySep)
+                            displaySep.encode("iso-8859-1")
                         )
                         if guessedOctetLength == -1:
                             guessedOctetLength = len(runningValue)
@@ -367,7 +367,7 @@ class TextualConvention:
 
                     try:
                         num = int(
-                            octets.octs2str(runningValue[:guessedOctetLength]),
+                            runningValue[:guessedOctetLength].decode("iso-8859-1"),
                             numBase[displayFormat],
                         )
                     except Exception:
@@ -389,7 +389,7 @@ class TextualConvention:
 
                     num_as_bytes.reverse()
 
-                    outputValue += octets.ints2octs(num_as_bytes)
+                    outputValue += bytes(num_as_bytes)
 
                     if displaySep:
                         guessedOctetLength += 1

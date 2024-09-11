@@ -6,7 +6,7 @@
 #
 import sys
 
-from pyasn1.compat.octets import null
+
 from pyasn1.error import PyAsn1Error
 
 from pysnmp import debug, nextid
@@ -107,7 +107,7 @@ class MsgAndPduDispatcher:
         k = (contextEngineId, pduType)
         if k in self.__appsRegistration:
             return self.__appsRegistration[k]
-        k = (null, pduType)
+        k = (b"", pduType)
         if k in self.__appsRegistration:
             return self.__appsRegistration[k]  # wildcard
 
@@ -366,7 +366,7 @@ class MsgAndPduDispatcher:
 
         # 4.2.1.2
         try:
-            restOfWholeMsg = null  # XXX fix decoder non-recursive return
+            restOfWholeMsg = b""  # XXX fix decoder non-recursive return
             msgVersion = verdec.decodeMessageVersion(wholeMsg)
 
         except error.ProtocolError:
@@ -374,7 +374,7 @@ class MsgAndPduDispatcher:
                 "__SNMPv2-MIB", "snmpInASNParseErrs"  # type: ignore
             )
             snmpInASNParseErrs.syntax += 1
-            return null  # n.b the whole buffer gets dropped
+            return b""  # n.b the whole buffer gets dropped
 
         debug.logger & debug.FLAG_DSP and debug.logger(
             "receiveMessage: msgVersion %s, msg decoded" % msgVersion

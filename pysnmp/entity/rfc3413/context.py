@@ -4,7 +4,6 @@
 # Copyright (c) 2005-2020, Ilya Etingof <etingof@gmail.com>
 # License: https://www.pysnmp.com/pysnmp/license.html
 #
-from pyasn1.compat.octets import null
 from pyasn1.type import univ
 
 
@@ -27,7 +26,7 @@ class SnmpContext:
             f'SnmpContext: contextEngineId "{self.contextEngineId!r}"'
         )
         self.contextNames = {
-            null: snmpEngine.msgAndPduDsp.mibInstrumController  # Default name
+            b"": snmpEngine.msgAndPduDsp.mibInstrumController  # Default name
         }
 
     def registerContextName(self, contextName, mibInstrum=None):
@@ -38,7 +37,7 @@ class SnmpContext:
             f"registerContextName: registered contextName {contextName!r}, mibInstrum {mibInstrum!r}"
         )
         if mibInstrum is None:
-            self.contextNames[contextName] = self.contextNames[null]
+            self.contextNames[contextName] = self.contextNames[b""]
         else:
             self.contextNames[contextName] = mibInstrum
 
@@ -50,7 +49,7 @@ class SnmpContext:
             )
             del self.contextNames[contextName]
 
-    def getMibInstrum(self, contextName=null):
+    def getMibInstrum(self, contextName=b""):
         contextName = univ.OctetString(contextName).asOctets()
         if contextName not in self.contextNames:
             debug.logger & debug.FLAG_INS and debug.logger(

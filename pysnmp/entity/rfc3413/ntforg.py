@@ -6,14 +6,13 @@
 #
 import sys
 
-from pyasn1.compat.octets import null
 
 from pysnmp import debug, nextid
 from pysnmp.entity.rfc3413 import config
 from pysnmp.proto import errind, error, rfc3411
 from pysnmp.proto.api import v2c
 from pysnmp.proto.proxy import rfc2576
-from pysnmp.smi import rfc1902, view
+
 
 getNextHandle = nextid.Integer(0x7FFFFFFF)  # noqa: N816
 

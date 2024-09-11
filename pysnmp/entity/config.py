@@ -6,7 +6,6 @@
 #
 import warnings
 
-from pyasn1.compat.octets import null
 
 from pysnmp import debug, error
 from pysnmp.carrier.asyncio.dgram import udp, udp6
@@ -156,7 +155,7 @@ def addV1System(
         contextEngineId = snmpEngineID.syntax.clone(contextEngineId)
 
     if contextName is None:
-        contextName = null
+        contextName = b""
 
     securityName = securityName is not None and securityName or communityIndex
 
@@ -295,7 +294,7 @@ def addV3User(
     masterAuthKey = localAuthKey = authKey
 
     if authKeyType < USM_KEY_TYPE_MASTER:  # pass phrase is given
-        masterAuthKey = AUTH_SERVICES[authProtocol].hashPassphrase(authKey or null)
+        masterAuthKey = AUTH_SERVICES[authProtocol].hashPassphrase(authKey or b"")
 
     if authKeyType < USM_KEY_TYPE_LOCALIZED:  # pass phrase or master key is given
         localAuthKey = AUTH_SERVICES[authProtocol].localizeKey(
@@ -312,7 +311,7 @@ def addV3User(
 
     if privKeyType < USM_KEY_TYPE_MASTER:  # pass phrase is given
         masterPrivKey = PRIV_SERVICES[privProtocol].hashPassphrase(
-            authProtocol, privKey or null
+            authProtocol, privKey or b""
         )
 
     if privKeyType < USM_KEY_TYPE_LOCALIZED:  # pass phrase or master key is given
@@ -505,7 +504,7 @@ def addTargetAddr(
     params: str,
     timeout: "float | None" = None,
     retryCount: "int | None" = None,
-    tagList=null,
+    tagList=b"",
     sourceAddress=None,
 ):
     mibBuilder = snmpEngine.msgAndPduDsp.mibInstrumController.mibBuilder
@@ -815,7 +814,7 @@ def addVacmUser(
     readSubTree=(),
     writeSubTree=(),
     notifySubTree=(),
-    contextName=null,
+    contextName=b"",
 ):
     (groupName, securityLevel, readView, writeView, notifyView) = __cookVacmUserInfo(
         snmpEngine, securityModel, securityName, securityLevel
@@ -834,11 +833,11 @@ def addVacmUser(
         notifyView,
     )
     if readSubTree:
-        addVacmView(snmpEngine, readView, "included", readSubTree, null)
+        addVacmView(snmpEngine, readView, "included", readSubTree, b"")
     if writeSubTree:
-        addVacmView(snmpEngine, writeView, "included", writeSubTree, null)
+        addVacmView(snmpEngine, writeView, "included", writeSubTree, b"")
     if notifySubTree:
-        addVacmView(snmpEngine, notifyView, "included", notifySubTree, null)
+        addVacmView(snmpEngine, notifyView, "included", notifySubTree, b"")
 
 
 def delVacmUser(
@@ -849,7 +848,7 @@ def delVacmUser(
     readSubTree=(),
     writeSubTree=(),
     notifySubTree=(),
-    contextName=null,
+    contextName=b"",
 ):
     (groupName, securityLevel, readView, writeView, notifyView) = __cookVacmUserInfo(
         snmpEngine, securityModel, securityName, securityLevel

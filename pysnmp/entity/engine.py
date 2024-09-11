@@ -10,8 +10,6 @@ import sys
 import tempfile
 from typing import Any, Dict
 
-from pyasn1.compat.octets import str2octs
-
 
 from pysnmp import debug, error
 from pysnmp.carrier.base import AbstractTransportAddress, AbstractTransportDispatcher
@@ -160,7 +158,7 @@ class SnmpEngine:
 
             try:
                 fd, fn = tempfile.mkstemp(dir=persistentPath)
-                os.write(fd, str2octs(snmpEngineBoots.syntax.prettyPrint()))
+                os.write(fd, snmpEngineBoots.syntax.prettyPrint().encode("iso-8859-1"))
                 os.close(fd)
                 shutil.move(fn, f)
             except Exception:
