@@ -21,7 +21,7 @@ from pysnmp import debug
 from pyasn1.type import univ, namedtype, constraint
 from pyasn1.codec.ber import encoder, decoder, eoo
 from pyasn1.error import PyAsn1Error
-from pyasn1.compat.octets import null
+
 
 # API to rfc1905 protocol objects
 pMod = api.protoModules[api.protoVersion2c]
@@ -494,12 +494,12 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
 
         else:
             # 4. (start SNMP engine ID discovery)
-            securityEngineID = securityName = null
+            securityEngineID = securityName = b""
             securityLevel = 1
 
             scopedPDU.setComponentByPosition(
                 0,
-                null,
+                b"",
                 verifyConstraints=False,
                 matchTags=False,
                 matchConstraints=False,
@@ -533,7 +533,7 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
                 matchConstraints=False,
             )
 
-            usmUserName = usmUserSecurityName = null
+            usmUserName = usmUserSecurityName = b""
             usmUserAuthProtocol = noauth.NoAuth.serviceID
             usmUserPrivProtocol = nopriv.NoPriv.serviceID
             usmUserAuthKeyLocalized = usmUserPrivKeyLocalized = None
@@ -955,7 +955,7 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
         contextEngineId = mibBuilder.importSymbols(
             "__SNMP-FRAMEWORK-MIB", "snmpEngineID"
         )[0].syntax
-        contextName = null
+        contextName = b""
 
         snmpEngineID = mibBuilder.importSymbols("__SNMP-FRAMEWORK-MIB", "snmpEngineID")[
             0
@@ -1106,7 +1106,7 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
                 raise error.StatusInformation(errorIndication=errind.invalidMsg)
         else:
             # empty username used for engineID discovery
-            usmUserName = usmUserSecurityName = null
+            usmUserName = usmUserSecurityName = b""
             usmUserAuthProtocol = noauth.NoAuth.serviceID
             usmUserPrivProtocol = nopriv.NoPriv.serviceID
             usmUserAuthKeyLocalized = usmUserPrivKeyLocalized = None

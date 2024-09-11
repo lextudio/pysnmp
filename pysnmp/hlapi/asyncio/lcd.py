@@ -9,8 +9,6 @@ from pysnmp import nextid, error
 from pysnmp.entity.engine import SnmpEngine
 from pysnmp.hlapi.asyncio.auth import *
 
-from pyasn1.compat.octets import null
-
 from pysnmp.hlapi.asyncio.transport import AbstractTransportTarget
 
 __all__ = ["CommandGeneratorLcdConfigurator", "NotificationOriginatorLcdConfigurator"]
@@ -39,7 +37,7 @@ class CommandGeneratorLcdConfigurator(AbstractLcdConfigurator):
     cacheKeys = ["auth", "parm", "tran", "addr"]
 
     def configure(
-        self, snmpEngine, authData, transportTarget, contextName=null, **options
+        self, snmpEngine, authData, transportTarget, contextName=b"", **options
     ):
         cache = self._getCache(snmpEngine)
         if isinstance(authData, CommunityData):
@@ -60,7 +58,9 @@ class CommandGeneratorLcdConfigurator(AbstractLcdConfigurator):
                 add_user = True
 
             elif self._usm_auth_changed(cache["auth"][authDataKey], authData):
-                config.delV3User(snmpEngine, authData.userName, authData.securityEngineId)
+                config.delV3User(
+                    snmpEngine, authData.userName, authData.securityEngineId
+                )
                 add_user = True
 
             else:
@@ -138,7 +138,7 @@ class CommandGeneratorLcdConfigurator(AbstractLcdConfigurator):
 
         return addrName, paramsName
 
-    def unconfigure(self, snmpEngine, authData=None, contextName=null, **options):
+    def unconfigure(self, snmpEngine, authData=None, contextName=b"", **options):
         cache = self._getCache(snmpEngine)
         if authData:
             if isinstance(authData, CommunityData):
@@ -213,10 +213,10 @@ class CommandGeneratorLcdConfigurator(AbstractLcdConfigurator):
     def _usm_auth_changed(cachedAuthData, newAuthData):
         changed = False
 
-        changed |= (cachedAuthData.authKey != newAuthData.authKey)
-        changed |= (cachedAuthData.authProtocol != newAuthData.authProtocol)
-        changed |= (cachedAuthData.privKey != newAuthData.privKey)
-        changed |= (cachedAuthData.privProtocol != newAuthData.privProtocol)
+        changed |= cachedAuthData.authKey != newAuthData.authKey
+        changed |= cachedAuthData.authProtocol != newAuthData.authProtocol
+        changed |= cachedAuthData.privKey != newAuthData.privKey
+        changed |= cachedAuthData.privProtocol != newAuthData.privProtocol
 
         return changed
 
@@ -285,7 +285,7 @@ class NotificationOriginatorLcdConfigurator(AbstractLcdConfigurator):
 
         return notifyName
 
-    def unconfigure(self, snmpEngine, authData=None, contextName=null, **options):
+    def unconfigure(self, snmpEngine, authData=None, contextName=b"", **options):
         cache = self._getCache(snmpEngine)
         if authData:
             authDataKey = (

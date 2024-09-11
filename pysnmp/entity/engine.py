@@ -9,7 +9,6 @@ import shutil
 import sys
 import tempfile
 from typing import Any
-from pyasn1.compat.octets import str2octs
 from pysnmp.carrier.base import AbstractTransportAddress, AbstractTransportDispatcher
 from pysnmp.proto.rfc1902 import OctetString
 from pysnmp.proto.rfc3412 import MsgAndPduDispatcher
@@ -157,7 +156,7 @@ class SnmpEngine:
 
             try:
                 fd, fn = tempfile.mkstemp(dir=persistentPath)
-                os.write(fd, str2octs(snmpEngineBoots.syntax.prettyPrint()))
+                os.write(fd, snmpEngineBoots.syntax.prettyPrint().encode("iso-8859-1"))
                 os.close(fd)
                 shutil.move(fn, f)
             except Exception:
