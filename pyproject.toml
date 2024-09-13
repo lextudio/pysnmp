@@ -45,6 +45,7 @@ black = "23.1.0"
 pre-commit = "2.21.0"
 doc8 = "^1.0.0"
 sphinx-notfound-page = "^1.0.0"
+sphinx-polyversion = "^1.0.0"
 
 [tool.poetry_bumpversion.file."pysnmp/__init__.py"]
 

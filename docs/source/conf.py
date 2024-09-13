@@ -13,6 +13,14 @@
 
 import os
 
+from sphinx_polyversion import load
+from sphinx_polyversion.git import GitRef
+
+# -- Load versioning data ----------------------------------------------------
+
+data = load(globals())  # adds variables `current` and `revisions`
+current: GitRef = data["current"]
+
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
@@ -56,7 +64,7 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # General information about the project.
-project = "SNMP Library for Python 6.1"
+project = "SNMP Library for Python"
 copyright = "2005-2020, Ilya Etingof. © Copyright 2022-2024, LeXtudio Inc."
 author = "LeXtudio Inc. <support@lextudio.com>"
 
@@ -143,7 +151,14 @@ html_css_files = [
     "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/fontawesome.min.css",
     "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/solid.min.css",
     "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/brands.min.css",
+    #
+    # load the open source bootstrap icon set
+    "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css",
+    #
+    # style the version selector
+    "css/version-selector.css",
 ]
+
 
 # html_theme_path = []
 
@@ -182,7 +197,16 @@ html_static_path = ["_static"]
 # html_use_smartypants = True
 
 # Custom sidebar templates, maps document names to template names.
-# html_sidebars = {}
+html_sidebars = {
+    "**": [
+        "sidebar/brand.html",  # override `furo/sidebar/brand.html`
+        "sidebar/search.html",
+        "sidebar/scroll-start.html",
+        "sidebar/navigation.html",
+        "sidebar/scroll-end.html",
+        "versioning.html",
+    ],
+}
 
 # Additional templates that should be rendered to pages, maps page names to
 # template names.
