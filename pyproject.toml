@@ -49,6 +49,7 @@ flake8 = "5.0.4"
 flake8-import-order = "^0.18.2"
 flake8-docstrings = "^1.7.0"
 flake8-rst-docstrings = "^0.3.0"
+sphinx-polyversion = "^1.0.0"
 
 [tool.poetry_bumpversion.file."pysnmp/__init__.py"]
 
