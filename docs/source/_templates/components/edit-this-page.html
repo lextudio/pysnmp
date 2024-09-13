@@ -1,0 +1,41 @@
+{# Adjust link of `edit source` button The furo theme adds an `edit source`
+button to the top of the page that opens the page viewed on github in edit mode.
+However we prefer opening the file in the standards view mode. The furo theme is
+based on the `basic-ng` theme which defines a view-this-page button. We reuse
+its code to determine the page link but extend it to use the meta field
+`edit_path` that can be set in every .rst file to change the path the edit
+button links to. See
+https://www.sphinx-doc.org/en/master/usage/restructuredtext/field-lists.html#file-wide-metadata
+#} {% extends "furo/components/edit-this-page.html" %} {% from
+"furo/components/edit-this-page.html" import furo_edit_button with context %} {%
+from "basic-ng/components/edit-this-page.html" import sanitise_trailing_slash
+with context %} {#- Modified from
+https://github.com/pradyunsg/sphinx-basic-ng/blob/main/src/sphinx_basic_ng/theme/basic-ng/components/view-this-page.html#L5
+#} {%- macro determine_page_view_link() -%} {%- if theme_source_view_link -%} {{
+theme_source_view_link.format(filename=pagename+page_source_suffix) }} {%- elif
+theme_source_repository -%} {#- First, sanitise the trailing slashes. -#} {%-
+set repo = sanitise_trailing_slash(theme_source_repository) -%} {%- set branch =
+theme_source_branch -%} {%- set subdirectory =
+sanitise_trailing_slash(theme_source_directory) -%} {#- Figure out the
+document's source file path. -#} {% if meta.edit_path %} {# Modify path based on
+the meta field `edit_path` #} {% if meta.edit_path.startswith("/") %} {%- set
+relative_path = meta.edit_path[1:] -%} {%- set subdirectory = "" -%} {%- else
+-%} {%- set relative_path = meta.edit_path -%} {%- endif -%} {%- else -%} {%-
+set relative_path = pagename + page_source_suffix -%} {%- endif -%} {%- if not
+subdirectory -%} {%- set document_path = relative_path -%} {%- else -%} {%- set
+document_path = subdirectory + "/" + relative_path -%} {%- endif -%} {#- Don't
+allow http:// URLs -#} {%- if repo.startswith( ( "http://github.com/",
+"http://gitlab.com/", "http://bitbucket.org/", ) ) -%} {{ warning("Could not use
+`source_repository` provided. Please use https:// links in your `conf.py` file's
+`html_theme_options`.") }} {#- Handle the relevant cases -#} {%- elif
+repo.startswith("https://github.com/") -%} {{ repo }}/blob/{{ branch }}/{{
+document_path }} {%- elif repo.startswith("https://gitlab.com/") -%} {{ repo
+}}/blob/{{ branch }}/{{ document_path }} {%- elif
+repo.startswith("https://bitbucket.org/") -%} {{ repo }}/src/{{ branch }}/{{
+document_path }} {#- Fail with a warning -#} {%- else -%} {{ warning( "Could not
+understand `source_repository` provided: " + repo + "\n" + "You should set
+`source_view_link`, so that the view link is presented." ) }} {%- endif -%} {%-
+elif show_source and has_source -%} {{ pathto('_sources/' + sourcename, true) }}
+{%- endif -%} {%- endmacro -%} {# use the edit button code by furo but use above
+macro to determine URL #} {% block link_available -%} {{
+furo_edit_button(determine_page_view_link()) }} {%- endblock %}
