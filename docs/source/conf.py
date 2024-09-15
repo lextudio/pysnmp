@@ -45,7 +45,6 @@ extensions = [
 
 notfound_urls_prefix = "/pysnmp/"
 
-html_baseurl = "https://docs.lextudio.com/pysnmp/"
 sitemap_url_scheme = "{link}"
 sitemap_suffix_included = False
 
@@ -125,6 +124,9 @@ pygments_dark_style = "monokai"
 
 # -- Options for HTML output ----------------------------------------------
 
+html_baseurl = f"https://docs.lextudio.com/pysnmp/v{version}"
+repo = "https://github.com/lextudio/pysnmp"
+
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 html_theme = "furo"
@@ -134,13 +136,13 @@ html_theme = "furo"
 # documentation.
 
 html_theme_options = {
-    "source_repository": "https://github.com/lextudio/pysnmp",
-    "source_branch": "main",
+    "source_repository": repo,
+    "source_branch": f"release-{version}",
     "source_directory": "docs/source/",
     "footer_icons": [
         {
             "name": "GitHub",
-            "url": "https://github.com/lextudio/pysnmp",
+            "url": repo,
             "html": "",
             "class": "fa-brands fa-solid fa-github fa-2x",
         },
@@ -344,7 +346,7 @@ texinfo_documents = [
 
 # Configuration for Intersphinx
 intersphinx_mapping = {
-    "python": ("https://docs.python.org/3.7/", None),
+    "python": ("https://docs.python.org/3.8/", None),
     "pyasn1": ("https://pyasn1.readthedocs.io/en/latest/", None),
     "pysmi": ("https://docs.lextudio.com/pysmi/", None),
 }
