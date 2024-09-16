@@ -25,15 +25,15 @@ initialize a folder for us,
    $ cd test-field
    $ pyenv local 3.12
    $ pip install pipenv
-   $ pipenv install pysnmp-lextudio
+   $ pipenv install pysnmp
    $ pipenv run pip list
 
 Here we created a virtual environment using ``pipenv`` for this folder, and
-installed ``pysnmp-lextudio`` so that you can move on with the following
+installed ``pysnmp`` so that you can move on with the following
 sections.
 
 The final command should print out the dependencies and you should be able to
-see ``pysnmp-lextudio`` version 5.0+ there.
+see ``pysnmp`` version 6.0+ there.
 
 .. note::
 

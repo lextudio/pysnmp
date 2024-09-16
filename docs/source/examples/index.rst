@@ -146,7 +146,7 @@ Using these examples
    It is difficult to cover all examples on this site, so you might want to
    visit the ``examples`` folder in `PySNMP GitHub repository`_.
 
-Before using the sample code, make sure ``pysnmp-lextudio`` and its
+Before using the sample code, make sure ``pysnmp`` and its
 dependencies are installed. You might refer to :doc:`/quick-start` for
 details.
 
