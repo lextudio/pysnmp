@@ -33,7 +33,7 @@ installed ``pysnmp`` so that you can move on with the following
 sections.
 
 The final command should print out the dependencies and you should be able to
-see ``pysnmp`` version 5.0+ there.
+see ``pysnmp`` version 6.0+ there.
 
 .. note::
 
