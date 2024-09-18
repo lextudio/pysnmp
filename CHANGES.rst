@@ -1,3 +1,8 @@
+Revision 7.0.4, released on Sep 18, 2024
+----------------------------------------
+
+- Removed pyasn1.compat dependency.
+
 Revision 7.0.3, released on Aug 26, 2024
 ----------------------------------------
 
