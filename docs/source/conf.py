@@ -124,7 +124,7 @@ pygments_dark_style = "monokai"
 
 # -- Options for HTML output ----------------------------------------------
 
-html_baseurl = f"https://docs.lextudio.com/pysnmp/v{version}"
+html_baseurl = f"https://docs.lextudio.com/pysnmp/v{version}/"
 repo = "https://github.com/lextudio/pysnmp"
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
