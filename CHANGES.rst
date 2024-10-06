@@ -1,3 +1,9 @@
+Revision 6.3.0, released on Oct 06, 2024
+----------------------------------------
+
+- This release deprecates the 'pysnmp-lextudio'.
+- Users are encouraged to migrate to 'pysnmp' version 6.2.x.
+
 Revision 6.2.1, released on Jul 14, 2024
 ----------------------------------------
 
