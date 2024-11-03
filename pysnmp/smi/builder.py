@@ -18,6 +18,9 @@ from importlib.util import MAGIC_NUMBER as PY_MAGIC_NUMBER
 from pysnmp import debug, version as pysnmp_version
 from pysnmp.smi import error
 
+if __debug__:
+    import runpy
+
 
 PY_SUFFIXES = SOURCE_SUFFIXES + BYTECODE_SUFFIXES
 
@@ -354,7 +357,12 @@ class MibBuilder:
             g = {"mibBuilder": self, "userCtx": userCtx}
 
             try:
-                exec(codeObj, g)
+                if __debug__:
+                    runpy.run_path(
+                        modPath, g
+                    )  # IMPORTANT: enable break points in loaded MIBs
+                else:
+                    exec(codeObj, g)
 
             except Exception:
                 self.__modPathsSeen.remove(modPath)
@@ -412,11 +420,6 @@ class MibBuilder:
                         if x in ("failed", "missing")
                     ]
                 )
-                if errs:
-                    raise error.MibNotFoundError(
-                        f"{modName} compilation error(s): {errs}"
-                    )
-
                 if errs:
                     raise error.MibNotFoundError(
                         f"{modName} compilation error(s): {errs}"

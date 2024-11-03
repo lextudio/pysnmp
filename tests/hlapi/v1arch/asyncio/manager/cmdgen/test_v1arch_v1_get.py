@@ -201,3 +201,71 @@ async def test_v1_get_physaddress_object():
         assert (
             varBinds[0][1].prettyPrint() == "00:11:22:33:44:55"
         )  # IMPORTANT: test PhysAddress display hint.
+
+
+@pytest.mark.asyncio
+async def test_v1_get_scaled_integer_object():
+    async with AgentContextManager(enable_custom_objects=True):
+        snmpDispatcher = SnmpDispatcher()
+        # Step 1: Set up MIB builder and add custom MIB directory
+        mibBuilder = builder.MibBuilder()
+        compiler.addMibCompiler(mibBuilder)
+        mibViewController = view.MibViewController(mibBuilder)
+
+        # Load the custom MIB
+        mibBuilder.loadModules("LEXTUDIO-TEST-MIB")
+        snmpDispatcher.cache["mibViewController"] = mibViewController
+
+        errorIndication, errorStatus, errorIndex, varBinds = await get_cmd(
+            snmpDispatcher,
+            CommunityData("public", mpModel=0),
+            await UdpTransportTarget.create(
+                ("localhost", AGENT_PORT), timeout=1, retries=0
+            ),
+            ObjectType(
+                ObjectIdentity("LEXTUDIO-TEST-MIB", "testScaledInteger", 0)
+            ),  # "1.3.6.1.4.1.60069.9.7.0"
+        )
+        assert errorIndication is None
+        assert errorIndication is None
+        assert errorStatus == 0
+        assert errorIndex == 0
+        assert len(varBinds) == 1
+        assert varBinds[0][0].prettyPrint() == "LEXTUDIO-TEST-MIB::testScaledInteger.0"
+        assert (
+            varBinds[0][1].prettyPrint() == "5.0"
+        )  # IMPORTANT: test display hint "d-1".
+
+
+@pytest.mark.asyncio
+async def test_v1_get_scaled_unsigned_object():
+    async with AgentContextManager(enable_custom_objects=True):
+        snmpDispatcher = SnmpDispatcher()
+        # Step 1: Set up MIB builder and add custom MIB directory
+        mibBuilder = builder.MibBuilder()
+        compiler.addMibCompiler(mibBuilder)
+        mibViewController = view.MibViewController(mibBuilder)
+
+        # Load the custom MIB
+        mibBuilder.loadModules("LEXTUDIO-TEST-MIB")
+        snmpDispatcher.cache["mibViewController"] = mibViewController
+
+        errorIndication, errorStatus, errorIndex, varBinds = await get_cmd(
+            snmpDispatcher,
+            CommunityData("public", mpModel=0),
+            await UdpTransportTarget.create(
+                ("localhost", AGENT_PORT), timeout=1, retries=0
+            ),
+            ObjectType(
+                ObjectIdentity("LEXTUDIO-TEST-MIB", "testScaledUnsigned", 0)
+            ),  # "1.3.6.1.4.1.60069.9.8.0"
+        )
+        assert errorIndication is None
+        assert errorIndication is None
+        assert errorStatus == 0
+        assert errorIndex == 0
+        assert len(varBinds) == 1
+        assert varBinds[0][0].prettyPrint() == "LEXTUDIO-TEST-MIB::testScaledUnsigned.0"
+        assert (
+            varBinds[0][1].prettyPrint() == "50"  # GitHub issue #139
+        )  # IMPORTANT: test display hint "d-1".
