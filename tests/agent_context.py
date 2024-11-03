@@ -83,6 +83,19 @@ async def start_agent(
             "SNMPv2-SMI", "MibScalar", "MibScalarInstance"
         )
 
+        (
+            DisplayString,
+            PhysAddress,
+            DateAndTime,
+            TextualConvention,
+        ) = mibBuilder.importSymbols(
+            "SNMPv2-TC",
+            "DisplayString",
+            "PhysAddress",
+            "DateAndTime",
+            "TextualConvention",
+        )
+
         class SlowMibScalarInstance(MibScalarInstance):
             def getValue(self, name, **context):
                 time.sleep(2)  # Add a 2-second sleep
@@ -92,6 +105,26 @@ async def start_agent(
             def setValue(self, value, name, **context):
                 print(f"SET operation received. New value: {value}")
                 return self.getSyntax().clone(value)
+
+        # Define a fixed date and time in the DateAndTime format
+        def get_fixed_date_and_time():
+            # Fixed date: 2024-11-03, 19:52:40.0, UTC offset +0:0
+            return [
+                2024 // 256,
+                2024 % 256,  # Year (2024)
+                11,  # Month (November)
+                3,  # Day
+                19,  # Hour (7 PM UTC)
+                52,  # Minute
+                40,  # Second
+                0,  # Deciseconds (0 for simplicity)
+                ord("+"),  # UTC offset direction ('+')
+                0,  # Hours offset from UTC
+                0,  # Minutes offset from UTC
+            ]
+
+        # Initialize the PhysAddress object with a sample MAC address (e.g., 00:11:22:33:44:55)
+        initial_phys_address = [0x00, 0x11, 0x22, 0x33, 0x44, 0x55]
 
         mibBuilder.export_symbols(
             "__MY_MIB",
@@ -105,6 +138,20 @@ async def start_agent(
             MibScalar((1, 3, 6, 1, 4, 1, 60069, 9, 4), v2c.OctetString()).setMaxAccess(
                 "readonly"
             ),  # PySMI <1.3.0 generates such objects
+            MibScalar((1, 3, 6, 1, 4, 1, 60069, 9, 5), DateAndTime()).setMaxAccess(
+                "read-write"
+            ),
+            MibScalarInstance(
+                (1, 3, 6, 1, 4, 1, 60069, 9, 5),
+                (0,),
+                DateAndTime(get_fixed_date_and_time()),
+            ),
+            MibScalar((1, 3, 6, 1, 4, 1, 60069, 9, 6), PhysAddress()).setMaxAccess(
+                "read-write"
+            ),
+            MibScalarInstance(
+                (1, 3, 6, 1, 4, 1, 60069, 9, 6), (0,), PhysAddress(initial_phys_address)
+            ),
         )
 
         # --- end of Managed Object Instance initialization ----

@@ -6,6 +6,7 @@
 #
 import warnings
 from time import time
+from typing import Any
 
 from pyasn1.codec.ber import decoder, encoder
 from pysnmp import debug
@@ -38,6 +39,7 @@ class AbstractSnmpDispatcher:
 
     PROTO_DISPATCHER = None
     transport_dispatcher: AbstractTransportDispatcher
+    cache: dict[str, Any]
 
     def __init__(self, transportDispatcher: AbstractTransportDispatcher = None):  # type: ignore
         if transportDispatcher:

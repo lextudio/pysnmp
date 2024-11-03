@@ -35,6 +35,7 @@ jobs:
         run: |
           poetry run mibdump NET-SNMP-EXAMPLES-MIB
           poetry run mibdump IF-MIB
+          poetry run mibdump LEXTUDIO-TEST-MIB
           poetry run pytest --junitxml=junit/test-results-${{ matrix.python-version }}.xml --cov=com --cov-report=xml --cov-report=html
       - name: Test summary
         uses: test-summary/action@v2
