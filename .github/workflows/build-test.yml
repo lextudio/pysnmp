@@ -33,10 +33,10 @@ jobs:
           poetry build
       - name: Test
         run: |
-          poetry run mibdump NET-SNMP-EXAMPLES-MIB
-          poetry run mibdump IF-MIB
-          poetry run mibdump LEXTUDIO-TEST-MIB
-          poetry run mibdump CISCO-ENHANCED-IPSEC-FLOW-MIB
+          poetry run mibdump --generate-mib-texts NET-SNMP-EXAMPLES-MIB
+          poetry run mibdump --generate-mib-texts IF-MIB
+          poetry run mibdump --generate-mib-texts LEXTUDIO-TEST-MIB
+          poetry run mibdump --generate-mib-texts CISCO-ENHANCED-IPSEC-FLOW-MIB
           poetry run pytest --junitxml=junit/test-results-${{ matrix.python-version }}.xml --cov=com --cov-report=xml --cov-report=html
       - name: Test summary
         uses: test-summary/action@v2
