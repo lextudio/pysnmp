@@ -8,7 +8,7 @@ import sys
 import warnings
 
 from pyasn1.error import PyAsn1Error
-from pyasn1.type.base import AbstractSimpleAsn1Item
+from pyasn1.type.base import AbstractSimpleAsn1Item, SimpleAsn1Type
 from pysnmp import debug
 from pysnmp.proto import rfc1902, rfc1905
 from pysnmp.proto.api import v2c
@@ -1052,11 +1052,14 @@ class ObjectType:
             return self
 
         try:
-            old_value = self.__args[1]._value
+            keep_old_value = isinstance(self.__args[1], SimpleAsn1Type)
+            if keep_old_value:
+                old_value = self.__args[1]._value
             self.__args[1] = (
                 object_identity.get_mib_node().getSyntax().clone(self.__args[1])
             )
-            self.__args[1]._value = old_value  # force to keep the original value
+            if keep_old_value:
+                self.__args[1]._value = old_value  # force to keep the original value
         except PyAsn1Error:
             err = "MIB object %r having type %r failed to cast value " "%r: %s" % (
                 object_identity.prettyPrint(),
