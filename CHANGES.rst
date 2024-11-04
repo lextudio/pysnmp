@@ -1,3 +1,8 @@
+Revision 7.1.10, released on Nov 04, 2024
+-----------------------------------------
+
+- Reimplemented getReference in a few MIB objects.
+
 Revision 7.1.9, released on Nov 02, 2024
 ----------------------------------------
 
