@@ -233,7 +233,7 @@ async def test_v1_get_scaled_integer_object():
         assert len(varBinds) == 1
         assert varBinds[0][0].prettyPrint() == "LEXTUDIO-TEST-MIB::testScaledInteger.0"
         assert (
-            varBinds[0][1].prettyPrint() == "0.5"
+            varBinds[0][1].prettyPrint() == "5.0"
         )  # IMPORTANT: test display hint "d-1".
 
 

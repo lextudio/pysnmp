@@ -156,7 +156,7 @@ async def start_agent(
             MibScalar((1, 3, 6, 1, 4, 1, 60069, 9, 7), v2c.Integer32()).setMaxAccess(
                 "read-write"
             ),
-            MibScalarInstance((1, 3, 6, 1, 4, 1, 60069, 9, 7), (0,), v2c.Integer32(5)),
+            MibScalarInstance((1, 3, 6, 1, 4, 1, 60069, 9, 7), (0,), v2c.Integer32(50)),
             MibScalar((1, 3, 6, 1, 4, 1, 60069, 9, 8), v2c.Unsigned32()).setMaxAccess(
                 "read-write"
             ),

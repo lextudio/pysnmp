@@ -6,6 +6,7 @@
 #
 import sys
 import warnings
+from typing import TYPE_CHECKING
 
 from pyasn1.error import PyAsn1Error
 from pyasn1.type.base import AbstractSimpleAsn1Item, SimpleAsn1Type
@@ -18,6 +19,12 @@ from pysnmp.smi.error import SmiError
 from pysnmp.smi.view import MibViewController
 
 __all__ = ["ObjectIdentity", "ObjectType", "NotificationType"]
+
+if TYPE_CHECKING:
+
+    class MibNode:
+        def getSyntax(self) -> SimpleAsn1Type:
+            pass
 
 
 class ObjectIdentity:
@@ -190,7 +197,7 @@ class ObjectIdentity:
         else:
             raise SmiError("%s object not fully initialized" % self.__class__.__name__)
 
-    def get_mib_node(self):
+    def get_mib_node(self) -> "MibNode":
         """Returns MIB node object representing this MIB variable.
 
         Returns
@@ -1055,11 +1062,12 @@ class ObjectType:
             keep_old_value = isinstance(self.__args[1], SimpleAsn1Type)
             if keep_old_value:
                 old_value = self.__args[1]._value
-            self.__args[1] = (
-                object_identity.get_mib_node().getSyntax().clone(self.__args[1])
-            )
-            if keep_old_value:
+                self.__args[1] = object_identity.get_mib_node().getSyntax().clone()
                 self.__args[1]._value = old_value  # force to keep the original value
+            else:
+                self.__args[1] = (
+                    object_identity.get_mib_node().getSyntax().clone(self.__args[1])
+                )
         except PyAsn1Error:
             err = "MIB object %r having type %r failed to cast value " "%r: %s" % (
                 object_identity.prettyPrint(),
