@@ -1052,9 +1052,11 @@ class ObjectType:
             return self
 
         try:
+            old_value = self.__args[1]._value
             self.__args[1] = (
                 object_identity.get_mib_node().getSyntax().clone(self.__args[1])
             )
+            self.__args[1]._value = old_value  # force to keep the original value
         except PyAsn1Error:
             err = "MIB object %r having type %r failed to cast value " "%r: %s" % (
                 object_identity.prettyPrint(),

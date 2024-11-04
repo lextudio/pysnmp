@@ -10,6 +10,7 @@ import struct
 import sys
 import time
 import traceback
+from typing import Any
 import warnings
 from errno import ENOENT
 from importlib.machinery import BYTECODE_SUFFIXES, SOURCE_SUFFIXES
@@ -447,7 +448,7 @@ class MibBuilder:
 
         return self
 
-    def import_symbols(self, modName, *symNames, **userCtx):
+    def import_symbols(self, modName, *symNames, **userCtx) -> "tuple[Any, ...]":
         """Import MIB symbols."""
         if not modName:
             raise error.SmiError("importSymbols: empty MIB module name")

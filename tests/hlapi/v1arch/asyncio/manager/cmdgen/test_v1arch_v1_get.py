@@ -233,7 +233,7 @@ async def test_v1_get_scaled_integer_object():
         assert len(varBinds) == 1
         assert varBinds[0][0].prettyPrint() == "LEXTUDIO-TEST-MIB::testScaledInteger.0"
         assert (
-            varBinds[0][1].prettyPrint() == "5.0"
+            varBinds[0][1].prettyPrint() == "0.5"
         )  # IMPORTANT: test display hint "d-1".
 
 
@@ -267,5 +267,5 @@ async def test_v1_get_scaled_unsigned_object():
         assert len(varBinds) == 1
         assert varBinds[0][0].prettyPrint() == "LEXTUDIO-TEST-MIB::testScaledUnsigned.0"
         assert (
-            varBinds[0][1].prettyPrint() == "50"  # GitHub issue #139
+            varBinds[0][1].prettyPrint() == "0.5"  # GitHub issue #139
         )  # IMPORTANT: test display hint "d-1".

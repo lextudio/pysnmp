@@ -293,7 +293,7 @@ class TextualConvention:
 
         if self.displayHint and (
             self.__integer.isSuperTypeOf(self, matchConstraints=False)
-            and self.getNamedValues()
+            and not self.getNamedValues()
             or self.__unsigned32.isSuperTypeOf(self, matchConstraints=False)
             or self.__timeticks.isSuperTypeOf(self, matchConstraints=False)
         ):
