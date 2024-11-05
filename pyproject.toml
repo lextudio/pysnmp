@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pysnmp"
-version = "7.1.10"
+version = "7.1.11"
 description = "A Python library for SNMP"
 authors = ["Ilya Etingof <etingof@gmail.com>", "LeXtudio Inc. <support@lextudio.com>"]
 license = "BSD-2-Clause"

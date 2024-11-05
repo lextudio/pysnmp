@@ -1,3 +1,8 @@
+Revision 7.1.11, released on Nov 04, 2024
+-----------------------------------------
+
+- Reverted some changes in fixed length support.
+
 Revision 7.1.10, released on Nov 04, 2024
 -----------------------------------------
 
