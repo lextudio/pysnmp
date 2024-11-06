@@ -1,3 +1,8 @@
+Revision 7.1.12, released on Nov 06, 2024
+-----------------------------------------
+
+- Reverted some changes in named values support.
+
 Revision 7.1.11, released on Nov 04, 2024
 -----------------------------------------
 
