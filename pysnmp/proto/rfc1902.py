@@ -177,7 +177,7 @@ class Integer(Integer32):
         enums.update(values.items())
 
         class X(cls):
-            named_values = namedval.NamedValues(*enums)
+            namedValues = namedval.NamedValues(*enums)
             subtypeSpec = cls.subtypeSpec + constraint.SingleValueConstraint(
                 *values.values()
             )  # noqa: N815
@@ -683,7 +683,7 @@ class Bits(OctetString):
 
     """
 
-    named_values = namedval.NamedValues()
+    namedValues: namedval.NamedValues = namedval.NamedValues()
 
     def __new__(cls, *args, **kwargs):
         """Create a new instance of the class."""
@@ -699,7 +699,7 @@ class Bits(OctetString):
             return OctetString.prettyIn(self, bits)  # raw bitstring
         octets = []
         for bit in bits:  # tuple of named bits
-            v = self.named_values.getValue(bit)
+            v = self.namedValues.getValue(bit)
             if v is None:
                 raise error.ProtocolError("Unknown named bit %s" % bit)
             d, m = divmod(v, 8)
@@ -717,7 +717,7 @@ class Bits(OctetString):
             j = 7
             while j >= 0:
                 if v & (0x01 << j):
-                    name = self.named_values.getName(i * 8 + 7 - j)
+                    name = self.namedValues.getName(i * 8 + 7 - j)
                     if name is None:
                         name = f"UnknownBit-{i * 8 + 7 - j}"
                     names.append(name)
@@ -730,11 +730,11 @@ class Bits(OctetString):
 
         Reduce fully duplicate enumerations along the way.
         """
-        enums = set(cls.named_values.items())
+        enums = set(cls.namedValues.items())
         enums.update(values.items())
 
         class X(cls):
-            named_values = namedval.NamedValues(*enums)
+            namedValues = namedval.NamedValues(*enums)
 
         X.__name__ = cls.__name__
         return X
