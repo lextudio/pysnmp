@@ -416,6 +416,9 @@ class SnmpV3MessageProcessingModel(AbstractMessageProcessingModel):
                 or pduType is not None
                 and pduType not in rfc3411.CONFIRMED_CLASS_PDUS
             ):
+                if securityModel in snmpEngine.security_models:
+                    smHandler = snmpEngine.security_models[securityModel]
+                    smHandler.release_state_information(securityStateReference)
                 raise error.StatusInformation(errorIndication=errind.loopTerminated)
 
             # 7.1.3c
