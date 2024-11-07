@@ -118,3 +118,4 @@ class ManagerContextManager:
 
         self.manager.transport_dispatcher.job_finished(1)
         self.manager.close_dispatcher()
+        self.manager._close()
