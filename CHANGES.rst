@@ -1,3 +1,8 @@
+Revision 7.1.13, released on Nov 07, 2024
+-----------------------------------------
+
+- Fixed a resource leak issue.
+
 Revision 7.1.12, released on Nov 06, 2024
 -----------------------------------------
 
