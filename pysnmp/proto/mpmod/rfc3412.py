@@ -658,11 +658,11 @@ class SnmpV3MessageProcessingModel(AbstractMessageProcessingModel):
 
         # 7.2.5
         if msgFlags & 0x03 == 0x00:
-            securityLevel = 1
+            securityLevel = 1  # noAuthNoPriv
         elif (msgFlags & 0x03) == 0x01:
-            securityLevel = 2
+            securityLevel = 2  # authNoPriv
         elif (msgFlags & 0x03) == 0x03:
-            securityLevel = 3
+            securityLevel = 3  # authPriv
         else:
             (snmpInvalidMsgs,) = snmpEngine.get_mib_builder().import_symbols(
                 "__SNMP-MPD-MIB", "snmpInvalidMsgs"
