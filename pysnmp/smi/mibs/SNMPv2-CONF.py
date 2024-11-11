@@ -14,6 +14,7 @@ class ObjectGroup(MibNode):
     status = "current"
     objects = ()
     description = ""
+    reference = ""
 
     def getStatus(self):
         return self.status
@@ -39,13 +40,23 @@ class ObjectGroup(MibNode):
         self.description = v
         return self
 
+    def getReference(self):
+        return self.reference
+
+    def setReference(self, v):
+        self.reference = v
+        return self
+
     def asn1Print(self):
         return """\
 OBJECT-GROUP
   OBJECTS {{ {} }}
+  STATUS "{}"
   DESCRIPTION "{}"
 """.format(
-            ", ".join([x for x in self.getObjects()]), self.getDescription()
+            ", ".join([x for x in self.getObjects()]),
+            self.status,
+            self.getDescription(),
         )
 
 
@@ -53,6 +64,7 @@ class NotificationGroup(MibNode):
     status = "current"
     objects = ()
     description = ""
+    reference = ""
 
     def getStatus(self):
         return self.status
@@ -78,13 +90,23 @@ class NotificationGroup(MibNode):
         self.description = v
         return self
 
+    def getReference(self):
+        return self.reference
+
+    def setReference(self, v):
+        self.reference = v
+        return self
+
     def asn1Print(self):
         return """\
 NOTIFICATION-GROUP
   NOTIFICATIONS {{ {} }}
+  STATUS "{}"
   DESCRIPTION "{}"
 """.format(
-            ", ".join([x for x in self.getObjects()]), self.getDescription()
+            ", ".join([x for x in self.getObjects()]),
+            self.getStatus(),
+            self.getDescription(),
         )
 
 
@@ -117,13 +139,23 @@ class ModuleCompliance(MibNode):
         self.description = v
         return self
 
+    def getReference(self):
+        return self.reference
+
+    def setReference(self, v):
+        self.reference = v
+        return self
+
     def asn1Print(self):
         return """\
 MODULE-COMPLIANCE
-  OBJECT {{ {} }}
+  STATUS "{}"
   DESCRIPTION "{}"
+  OBJECT {{ {} }}
 """.format(
-            ", ".join([x for x in self.getObjects()]), self.getDescription()
+            self.getStatus(),
+            self.getDescription(),
+            ", ".join([x for x in self.getObjects()]),
         )
 
 
@@ -166,11 +198,11 @@ class AgentCapabilities(MibNode):
     def asn1Print(self):
         return """\
 AGENT-CAPABILITIES
-  STATUS "{}"
   PRODUCT-RELEASE "{}"
+  STATUS "{}"
   DESCRIPTION "{}"
 """.format(
-            self.getStatus(), self.getProductRelease(), self.getDescription()
+            self.getProductRelease(), self.getStatus(), self.getDescription()
         )
 
 

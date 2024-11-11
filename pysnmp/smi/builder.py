@@ -10,6 +10,7 @@ import struct
 import sys
 import time
 import traceback
+from typing import Any
 import warnings
 from errno import ENOENT
 from importlib.machinery import BYTECODE_SUFFIXES, SOURCE_SUFFIXES
@@ -17,6 +18,9 @@ from importlib.util import MAGIC_NUMBER as PY_MAGIC_NUMBER
 
 from pysnmp import debug, version as pysnmp_version
 from pysnmp.smi import error
+
+if __debug__:
+    import runpy
 
 
 PY_SUFFIXES = SOURCE_SUFFIXES + BYTECODE_SUFFIXES
@@ -354,7 +358,12 @@ class MibBuilder:
             g = {"mibBuilder": self, "userCtx": userCtx}
 
             try:
-                exec(codeObj, g)
+                if __debug__:
+                    runpy.run_path(
+                        modPath, g
+                    )  # IMPORTANT: enable break points in loaded MIBs
+                else:
+                    exec(codeObj, g)
 
             except Exception:
                 self.__modPathsSeen.remove(modPath)
@@ -417,11 +426,6 @@ class MibBuilder:
                         f"{modName} compilation error(s): {errs}"
                     )
 
-                if errs:
-                    raise error.MibNotFoundError(
-                        f"{modName} compilation error(s): {errs}"
-                    )
-
                 # compilation succeeded, MIB might load now
                 self.load_module(modName, **userCtx)
 
@@ -444,7 +448,7 @@ class MibBuilder:
 
         return self
 
-    def import_symbols(self, modName, *symNames, **userCtx):
+    def import_symbols(self, modName, *symNames, **userCtx) -> "tuple[Any, ...]":
         """Import MIB symbols."""
         if not modName:
             raise error.SmiError("importSymbols: empty MIB module name")

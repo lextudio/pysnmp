@@ -98,3 +98,37 @@ def test_configure_mib_viewer_and_resolve_pdu_varbinds_full():
     for i, varBind in enumerate(varBinds):
         assert isinstance(varBind, rfc1902.ObjectType)
         assert varBind.prettyPrint() == expected_varbinds[i]
+
+
+def test_syntax_integer():
+    # Create MIB builder
+    mib_builder = builder.MibBuilder()
+
+    # Load MIB modules
+    compiler.addMibCompiler(mib_builder)
+    mib_builder.loadModules("LEXTUDIO-TEST-MIB")
+
+    # Get MIB object
+    (mib_object,) = mib_builder.import_symbols("LEXTUDIO-TEST-MIB", "testScaledInteger")
+
+    # Print MIB object syntax
+    assert (1, 3, 6, 1, 4, 1, 60069, 9, 7) == mib_object.getName()
+    assert "ScaledInteger" == mib_object.syntax.__class__.__name__
+
+
+def test_syntax_unsigned():
+    # Create MIB builder
+    mib_builder = builder.MibBuilder()
+
+    # Load MIB modules
+    compiler.addMibCompiler(mib_builder)
+    mib_builder.loadModules("LEXTUDIO-TEST-MIB")
+
+    # Get MIB object
+    (mib_object,) = mib_builder.import_symbols(
+        "LEXTUDIO-TEST-MIB", "testScaledUnsigned"
+    )
+
+    # Print MIB object syntax
+    assert (1, 3, 6, 1, 4, 1, 60069, 9, 8) == mib_object.getName()
+    assert "ScaledUnsigned" == mib_object.syntax.__class__.__name__

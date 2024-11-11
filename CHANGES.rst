@@ -1,3 +1,23 @@
+Revision 7.1.13, released on Nov 07, 2024
+-----------------------------------------
+
+- Fixed a resource leak issue.
+
+Revision 7.1.12, released on Nov 06, 2024
+-----------------------------------------
+
+- Reverted some changes in named values support.
+
+Revision 7.1.11, released on Nov 04, 2024
+-----------------------------------------
+
+- Reverted some changes in fixed length support.
+
+Revision 7.1.10, released on Nov 04, 2024
+-----------------------------------------
+
+- Reimplemented getReference in a few MIB objects.
+
 Revision 7.1.9, released on Nov 02, 2024
 ----------------------------------------
 

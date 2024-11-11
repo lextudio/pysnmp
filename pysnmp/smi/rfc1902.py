@@ -6,9 +6,10 @@
 #
 import sys
 import warnings
+from typing import TYPE_CHECKING
 
 from pyasn1.error import PyAsn1Error
-from pyasn1.type.base import AbstractSimpleAsn1Item
+from pyasn1.type.base import AbstractSimpleAsn1Item, SimpleAsn1Type
 from pysnmp import debug
 from pysnmp.proto import rfc1902, rfc1905
 from pysnmp.proto.api import v2c
@@ -18,6 +19,9 @@ from pysnmp.smi.error import SmiError
 from pysnmp.smi.view import MibViewController
 
 __all__ = ["ObjectIdentity", "ObjectType", "NotificationType"]
+
+if TYPE_CHECKING:
+    from pysnmp.smi.types import MibNode
 
 
 class ObjectIdentity:
@@ -84,6 +88,10 @@ class ObjectIdentity:
     """
 
     ST_DIRTY, ST_CLEAN = 1, 2
+    __mibNode: "MibNode"
+    __label: tuple[str, ...]
+    __modName: str
+    __symName: str
 
     def __init__(self, *args, **kwargs):
         """Create an ObjectIdentity instance."""
@@ -94,7 +102,7 @@ class ObjectIdentity:
         self.__state = self.ST_DIRTY
         self.__indices = self.__oid = self.__label = ()
         self.__modName = self.__symName = ""
-        self.__mibNode = None
+        self.__mibNode = None  # type: ignore
 
     def get_mib_symbol(self):
         """Returns MIB variable symbolic identification.
@@ -154,7 +162,7 @@ class ObjectIdentity:
         else:
             raise SmiError("%s object not fully initialized" % self.__class__.__name__)
 
-    def get_label(self):
+    def get_label(self) -> tuple[str, ...]:
         """Returns symbolic path to this MIB variable.
 
         Meaning a sequence of symbolic identifications for each of parent
@@ -190,7 +198,7 @@ class ObjectIdentity:
         else:
             raise SmiError("%s object not fully initialized" % self.__class__.__name__)
 
-    def get_mib_node(self):
+    def get_mib_node(self) -> "MibNode":
         """Returns MIB node object representing this MIB variable.
 
         Returns
@@ -516,18 +524,18 @@ class ObjectIdentity:
         elif len(self.__args) > 1:  # MIB, symbol[, index, index ...]
             # MIB, symbol, index, index
             if self.__args[0] and self.__args[1]:
-                self.__modName = self.__args[0]
+                self.__modName = self.__args[0].__str__()
                 self.__symName = self.__args[1]
             # MIB, ''
             elif self.__args[0]:
                 mibViewController.mibBuilder.load_modules(self.__args[0])
                 if self.__kwargs.get("last"):
                     prefix, label, suffix = mibViewController.get_last_node_name(
-                        self.__args[0]
+                        self.__args[0].__str__()
                     )
                 else:
                     prefix, label, suffix = mibViewController.get_first_node_name(
-                        self.__args[0]
+                        self.__args[0].__str__()
                     )
                 self.__modName, self.__symName, _ = mibViewController.get_node_location(
                     prefix
@@ -853,7 +861,9 @@ class ObjectType:
 
     ST_DIRTY, ST_CLEAN = 1, 2
 
-    def __init__(self, objectIdentity, objectSyntax=rfc1905.unSpecified):
+    def __init__(
+        self, objectIdentity, objectSyntax: SimpleAsn1Type = rfc1905.unSpecified
+    ):
         """Create an ObjectType instance."""
         if not isinstance(objectIdentity, ObjectIdentity):
             raise SmiError(
@@ -1052,9 +1062,15 @@ class ObjectType:
             return self
 
         try:
-            self.__args[1] = (
-                object_identity.get_mib_node().getSyntax().clone(self.__args[1])
-            )
+            keep_old_value = isinstance(self.__args[1], SimpleAsn1Type)
+            if keep_old_value:
+                old_value = self.__args[1]._value
+                self.__args[1] = object_identity.get_mib_node().getSyntax().clone()
+                self.__args[1]._value = old_value  # force to keep the original value
+            else:
+                self.__args[1] = (
+                    object_identity.get_mib_node().getSyntax().clone(self.__args[1])
+                )
         except PyAsn1Error:
             err = "MIB object %r having type %r failed to cast value " "%r: %s" % (
                 object_identity.prettyPrint(),
@@ -1187,7 +1203,7 @@ class NotificationType:
 
     ST_DIRTY, ST_CLEAN = 1, 2
 
-    def __init__(self, objectIdentity, instanceIndex=(), objects={}):
+    def __init__(self, objectIdentity: ObjectIdentity, instanceIndex=(), objects={}):
         """Create a NotificationType instance."""
         if not isinstance(objectIdentity, ObjectIdentity):
             raise SmiError(
