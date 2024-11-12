@@ -707,11 +707,12 @@ async def walk_cmd(
     Examples
     --------
     >>> from pysnmp.hlapi.v3arch.asyncio import *
-    >>> g = await walk_cmd(SnmpEngine(),
+    >>> objects = walk_cmd(SnmpEngine(),
     ...             CommunityData('public'),
     ...             await UdpTransportTarget.create(('demo.pysnmp.com', 161)),
     ...             ContextData(),
     ...             ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr')))
+    ... g = [item async for item in objects]
     >>> next(g)
     (None, 0, 0, [ObjectType(ObjectIdentity(ObjectName('1.3.6.1.2.1.1.1.0')), DisplayString('SunOS zeus.pysnmp.com 4.1.3_U1 1 sun4m'))])
     >>> g.send( [ ObjectType(ObjectIdentity('IF-MIB', 'ifInOctets')) ] )
@@ -910,12 +911,13 @@ async def bulk_walk_cmd(
     Examples
     --------
     >>> from pysnmp.hlapi.v3arch.asyncio import *
-    >>> g = await bulk_walk_cmd(SnmpEngine(),
+    >>> objects = bulk_walk_cmd(SnmpEngine(),
     ...             CommunityData('public'),
     ...             await UdpTransportTarget.create(('demo.pysnmp.com', 161)),
     ...             ContextData(),
     ...             0, 25,
     ...             ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr')))
+    ... g = [item async for item in objects]
     >>> next(g)
     (None, 0, 0, [ObjectType(ObjectIdentity(ObjectName('1.3.6.1.2.1.1.1.0')), DisplayString('SunOS zeus.pysnmp.com 4.1.3_U1 1 sun4m'))])
     >>> g.send( [ ObjectType(ObjectIdentity('IF-MIB', 'ifInOctets')) ] )
