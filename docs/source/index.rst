@@ -29,16 +29,20 @@ and behavior of popular Net-SNMP snmpget/snmpset/snmpwalk utilities.
 They may be useful in a cross-platform situations as well as a testing
 and prototyping instrument for pysnmp users.
 
-Quick Start
------------
+Quick Start and Samples
+-----------------------
 
 You already know something about SNMP and have no courage to dive into
 this implementation? Try out quick start page!
+
+We also have a collection of sample scripts to help you learn more about
+every aspects of PySNMP.
 
 .. toctree::
    :maxdepth: 1
 
    /quick-start
+   /examples/index
 
 Documentation
 -------------
@@ -71,26 +75,19 @@ Conceptual and API documentation are in the following section.
 
    Documentation about the SNMP protocol can be found on `PySNMP Homepage`_.
 
-Samples
--------
-
-We have a collection of sample scripts to help you get started with PySNMP.
-
-.. toctree::
-   :maxdepth: 2
-
-   /examples/index
-
 Troubleshooting
 ---------------
 
-If you are having trouble with PySNMP, please check the following section.
+If you are having trouble with PySNMP, please check the following section
+to learn troubleshooting tips, upgrade guides, and performance tuning
+advice.
 
 .. toctree::
    :maxdepth: 1
 
    /troubleshooting
    /upgrade
+   /performance
 
 Downloads
 ---------

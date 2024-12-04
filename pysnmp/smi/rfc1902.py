@@ -9,7 +9,7 @@ import warnings
 from typing import TYPE_CHECKING
 
 from pyasn1.error import PyAsn1Error
-from pyasn1.type.base import AbstractSimpleAsn1Item, SimpleAsn1Type
+from pyasn1.type.base import AbstractSimpleAsn1Item, SimpleAsn1Type, NoValue
 from pysnmp import debug
 from pysnmp.proto import rfc1902, rfc1905
 from pysnmp.proto.api import v2c
@@ -1065,7 +1065,11 @@ class ObjectType:
             keep_old_value = isinstance(self.__args[1], SimpleAsn1Type)
             if keep_old_value:
                 old_value = self.__args[1]._value
-                self.__args[1] = object_identity.get_mib_node().getSyntax().clone()
+                self.__args[1] = (
+                    object_identity.get_mib_node()
+                    .getSyntax()
+                    .clone(NoValue(), tagSet=self.__args[1].getTagSet())
+                )
                 self.__args[1]._value = old_value  # force to keep the original value
             else:
                 self.__args[1] = (

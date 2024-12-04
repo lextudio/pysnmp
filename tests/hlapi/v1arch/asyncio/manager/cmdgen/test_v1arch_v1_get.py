@@ -269,3 +269,37 @@ async def test_v1_get_scaled_unsigned_object():
         assert (
             varBinds[0][1].prettyPrint() == "0.5"  # GitHub issue #139
         )  # IMPORTANT: test display hint "d-1".
+
+
+@pytest.mark.asyncio
+async def test_v1_get_multiple_objects():
+    async with AgentContextManager(enable_custom_objects=True):
+        snmpDispatcher = SnmpDispatcher()
+        # # Step 1: Set up MIB builder and add custom MIB directory
+        # mibBuilder = builder.MibBuilder()
+        # compiler.addMibCompiler(mibBuilder)
+        # mibViewController = view.MibViewController(mibBuilder)
+
+        # # Load the custom MIB
+        # mibBuilder.loadModules("LEXTUDIO-TEST-MIB")
+        # snmpDispatcher.cache["mibViewController"] = mibViewController
+
+        netiftable = [
+            ObjectIdentity("IF-MIB", "ifDescr", 1),
+            ObjectIdentity("IF-MIB", "ifDescr", 2),
+        ]
+
+        errorIndication, errorStatus, errorIndex, varBinds = await get_cmd(
+            snmpDispatcher,
+            CommunityData("public", mpModel=0),
+            await UdpTransportTarget.create(
+                ("demo.pysnmp.com", 161), timeout=1, retries=0
+            ),
+            *[ObjectType(x) for x in netiftable]
+        )
+        assert errorIndication is None
+        assert errorIndication is None
+        assert errorStatus == 0
+        assert errorIndex == 0
+        assert len(varBinds) == 2
+        assert varBinds[0][1].prettyPrint() != varBinds[1][1].prettyPrint()

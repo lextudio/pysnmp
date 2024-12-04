@@ -1,6 +1,6 @@
 .. include:: /includes/_links.rst
 
-Further development
+Further Development
 -------------------
 
 Although PySNMP is already a mature software and it is being used at many

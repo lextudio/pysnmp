@@ -1,3 +1,8 @@
+Revision 7.1.14, released on Dec 03, 2024
+-----------------------------------------
+
+- Fixed shadow cloning issue.
+
 Revision 7.1.13, released on Nov 07, 2024
 -----------------------------------------
 
