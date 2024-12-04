@@ -1,5 +1,6 @@
 import subprocess
 import sys
+import re
 
 
 def run_command(command):
@@ -29,12 +30,27 @@ def create_and_push_tag(tag, branch):
     run_command(f"git push origin {tag}")
 
 
+def get_largest_release_version():
+    """Get the largest release version from the branches."""
+    branches = run_command("git branch -r")
+    release_branches = re.findall(r"release-(\d+\.\d+)", branches)
+    if not release_branches:
+        print("No release branches found.")
+        sys.exit(1)
+    largest_version = max(release_branches, key=lambda v: list(map(int, v.split("."))))
+    return largest_version
+
+
 def main():
-    if len(sys.argv) != 2:
-        print("Usage: python move-tag.py <version>")
+    if len(sys.argv) > 2:
+        print("Usage: python move-tag.py [<version>]")
         sys.exit(1)
 
-    version = sys.argv[1]
+    if len(sys.argv) == 2:
+        version = sys.argv[1]
+    else:
+        version = get_largest_release_version()
+
     tag = f"v{version}"
     branch = f"release-{version}"
 
