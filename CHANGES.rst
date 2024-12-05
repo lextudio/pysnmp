@@ -1,3 +1,9 @@
+Revision 7.1.15, released on Dec 05, 2024
+-----------------------------------------
+
+- Improved shadow cloning patch.
+- Fixed v1arch local address issue.
+
 Revision 7.1.14, released on Dec 03, 2024
 -----------------------------------------
 
