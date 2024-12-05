@@ -9,7 +9,7 @@ import warnings
 from typing import TYPE_CHECKING
 
 from pyasn1.error import PyAsn1Error
-from pyasn1.type.base import AbstractSimpleAsn1Item, SimpleAsn1Type, NoValue
+from pyasn1.type.base import AbstractSimpleAsn1Item, SimpleAsn1Type
 from pysnmp import debug
 from pysnmp.proto import rfc1902, rfc1905
 from pysnmp.proto.api import v2c
@@ -1068,7 +1068,7 @@ class ObjectType:
                 self.__args[1] = (
                     object_identity.get_mib_node()
                     .getSyntax()
-                    .clone(NoValue(), tagSet=self.__args[1].getTagSet())
+                    .clone(tagSet=self.__args[1].getTagSet())
                 )
                 self.__args[1]._value = old_value  # force to keep the original value
             else:
