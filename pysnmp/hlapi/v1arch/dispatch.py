@@ -90,7 +90,9 @@ class AbstractSnmpDispatcher:
         ):
             self.transport_dispatcher.register_transport(
                 transportTarget.TRANSPORT_DOMAIN,
-                transportTarget.PROTO_TRANSPORT().open_client_mode(),
+                transportTarget.PROTO_TRANSPORT().open_client_mode(
+                    transportTarget.iface
+                ),
             )
             self._configuredTransports.add(transportTarget.TRANSPORT_DOMAIN)
 
