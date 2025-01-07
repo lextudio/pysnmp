@@ -28,7 +28,7 @@ include = ["docs", "tests", "examples"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-pyasn1 = ">=0.4.8, !=0.5.0"
+pyasn1 = ">=0.4.8, !=0.5.0, <=0.6.0"
 
 [tool.poetry.group.dev.dependencies]
 codecov = "^2.1.12"
