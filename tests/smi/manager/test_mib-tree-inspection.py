@@ -1,9 +1,10 @@
+import os
 import pytest
 from pysnmp.smi import builder, compiler, view
 
 mibBuilder = builder.MibBuilder()
 mibBuilder.loadTexts = True
-compiler.addMibCompiler(mibBuilder)
+mibBuilder.add_mib_sources(builder.DirMibSource(os.path.expanduser("~/.pysnmp/mibs"))),
 mibView = view.MibViewController(mibBuilder)
 
 mibBuilder.load_modules(
@@ -11,6 +12,7 @@ mibBuilder.load_modules(
     "SNMP-FRAMEWORK-MIB",
     "SNMP-COMMUNITY-MIB",
     "CISCO-ENHANCED-IPSEC-FLOW-MIB",
+    "PYSNMP-MIB",
 )
 
 
