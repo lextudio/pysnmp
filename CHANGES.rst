@@ -1,3 +1,8 @@
+Revision 7.1.16, released on Jan 15, 2025
+-----------------------------------------
+
+- Fixed a few MIB related issues.
+
 Revision 7.1.15, released on Dec 05, 2024
 -----------------------------------------
 
