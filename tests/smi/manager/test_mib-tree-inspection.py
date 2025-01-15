@@ -4,7 +4,7 @@ from pysnmp.smi import builder, compiler, view
 
 mibBuilder = builder.MibBuilder()
 mibBuilder.loadTexts = True
-mibBuilder.add_mib_sources(builder.DirMibSource(os.path.expanduser("~/.pysnmp/mibs"))),
+mibBuilder.add_mib_sources(builder.DirMibSource(compiler.DEFAULT_DEST))
 mibView = view.MibViewController(mibBuilder)
 
 mibBuilder.load_modules(
