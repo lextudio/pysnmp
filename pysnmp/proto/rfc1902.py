@@ -234,20 +234,20 @@ class OctetString(univ.OctetString):
     # having zero-range size constraint applied. The following is
     # supposed to be used for setting and querying this property.
 
-    fixedLength = None
+    fixed_length = None
 
     def set_fixed_length(self, value):
         """Set fixed length."""
-        self.fixedLength = value
+        self.fixed_length = value
         return self
 
     def is_fixed_length(self):
         """Return if fixed length."""
-        return self.fixedLength is not None
+        return self.fixed_length is not None
 
     def get_fixed_length(self):
         """Return fixed length."""
-        return self.fixedLength
+        return self.fixed_length
 
     def clone(self, *args, **kwargs):
         """Clone the data."""
@@ -367,7 +367,7 @@ class IpAddress(OctetString):
     subtypeSpec = OctetString.subtypeSpec + constraint.ValueSizeConstraint(
         4, 4
     )  # noqa: N815
-    fixedLength = 4
+    fixed_length = 4
 
     def prettyIn(self, value):  # noqa: N802
         """Convert string to IP address."""
