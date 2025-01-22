@@ -1228,8 +1228,8 @@ class MibTableRow(MibTree):
             # rfc1902, 7.7
             if impliedFlag:
                 return obj.clone(tuple(value)), ()
-            elif obj.isFixedLength():
-                fixed_length = obj.getFixedLength()
+            elif obj.is_fixed_length():
+                fixed_length = obj.get_fixed_length()
                 return obj.clone(tuple(value[:fixed_length])), value[fixed_length:]
             else:
                 return obj.clone(tuple(value[1 : value[0] + 1])), value[value[0] + 1 :]
@@ -1256,7 +1256,7 @@ class MibTableRow(MibTree):
         elif self.__ipaddrTagSet.isSuperTagSetOf(obj.getTagSet()):
             return obj.asNumbers()
         elif baseTag == self.__strBaseTag:
-            if impliedFlag or obj.isFixedLength():
+            if impliedFlag or obj.is_fixed_length():
                 initial = ()
             else:
                 initial = (len(obj),)
