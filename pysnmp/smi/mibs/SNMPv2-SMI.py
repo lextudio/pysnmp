@@ -1229,8 +1229,8 @@ class MibTableRow(MibTree):
             if impliedFlag:
                 return obj.clone(tuple(value)), ()
             elif obj.isFixedLength():
-                value = obj.getFixedLength()
-                return obj.clone(tuple(value[:value])), value[value:]
+                fixed_length = obj.getFixedLength()
+                return obj.clone(tuple(value[:fixed_length])), value[fixed_length:]
             else:
                 return obj.clone(tuple(value[1 : value[0] + 1])), value[value[0] + 1 :]
         elif baseTag == self.__oidBaseTag:
