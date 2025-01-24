@@ -138,7 +138,7 @@ class SnmpUDPAddress(TextualConvention, OctetString):
     subtypeSpec += ConstraintsUnion(
         ValueSizeConstraint(6, 6),
     )
-    fixedLength = 6
+    fixed_length = 6
 
     if mibBuilder.loadTexts:
         description = "Represents a UDP over IPv4 address: octets contents encoding 1-4 IP-address network-byte order 5-6 UDP-port network-byte order "
@@ -202,7 +202,7 @@ class SnmpIPXAddress(TextualConvention, OctetString):
     subtypeSpec += ConstraintsUnion(
         ValueSizeConstraint(12, 12),
     )
-    fixedLength = 12
+    fixed_length = 12
 
     if mibBuilder.loadTexts:
         description = "Represents an IPX address: octets contents encoding 1-4 network-number network-byte order 5-10 physical-address network-byte order 11-12 socket-number network-byte order "
