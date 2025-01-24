@@ -292,7 +292,7 @@ class TransportAddressIPv4(TextualConvention, OctetString):
     subtypeSpec += ConstraintsUnion(
         ValueSizeConstraint(6, 6),
     )
-    fixedLength = 6
+    fixed_length = 6
 
     if mibBuilder.loadTexts:
         description = "Represents a transport address consisting of an IPv4 address and a port number (as used for example by UDP, TCP and SCTP): octets contents encoding 1-4 IPv4 address network-byte order 5-6 port number network-byte order This textual convention SHOULD NOT be used directly in object definitions since it restricts addresses to a specific format. However, if it is used, it MAY be used either on its own or in conjunction with TransportAddressType or TransportDomain as a pair."
@@ -331,7 +331,7 @@ class TransportAddressIPv6(TextualConvention, OctetString):
     subtypeSpec += ConstraintsUnion(
         ValueSizeConstraint(18, 18),
     )
-    fixedLength = 18
+    fixed_length = 18
 
     if mibBuilder.loadTexts:
         description = "Represents a transport address consisting of an IPv6 address and a port number (as used for example by UDP, TCP and SCTP): octets contents encoding 1-16 IPv6 address network-byte order 17-18 port number network-byte order This textual convention SHOULD NOT be used directly in object definitions since it restricts addresses to a specific format. However, if it is used, it MAY be used either on its own or in conjunction with TransportAddressType or TransportDomain as a pair."
@@ -375,7 +375,7 @@ class TransportAddressIPv4z(TextualConvention, OctetString):
     subtypeSpec += ConstraintsUnion(
         ValueSizeConstraint(10, 10),
     )
-    fixedLength = 10
+    fixed_length = 10
 
     if mibBuilder.loadTexts:
         description = "Represents a transport address consisting of an IPv4 address, a zone index and a port number (as used for example by UDP, TCP and SCTP): octets contents encoding 1-4 IPv4 address network-byte order 5-8 zone index network-byte order 9-10 port number network-byte order This textual convention SHOULD NOT be used directly in object definitions since it restricts addresses to a specific format. However, if it is used, it MAY be used either on its own or in conjunction with TransportAddressType or TransportDomain as a pair."
@@ -388,7 +388,7 @@ class TransportAddressIPv6z(TextualConvention, OctetString):
     subtypeSpec += ConstraintsUnion(
         ValueSizeConstraint(22, 22),
     )
-    fixedLength = 22
+    fixed_length = 22
 
     if mibBuilder.loadTexts:
         description = "Represents a transport address consisting of an IPv6 address, a zone index and a port number (as used for example by UDP, TCP and SCTP): octets contents encoding 1-16 IPv6 address network-byte order 17-20 zone index network-byte order 21-22 port number network-byte order This textual convention SHOULD NOT be used directly in object definitions since it restricts addresses to a specific format. However, if it is used, it MAY be used either on its own or in conjunction with TransportAddressType or TransportDomain as a pair."
