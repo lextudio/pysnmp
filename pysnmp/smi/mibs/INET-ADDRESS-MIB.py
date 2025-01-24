@@ -151,7 +151,7 @@ class InetAddressIPv4(TextualConvention, OctetString):
     subtypeSpec += ConstraintsUnion(
         ValueSizeConstraint(4, 4),
     )
-    fixedLength = 4
+    fixed_length = 4
 
     if mibBuilder.loadTexts:
         description = "Represents an IPv4 network address: Octets Contents Encoding 1-4 IPv4 address network-byte order The corresponding InetAddressType value is ipv4(1). This textual convention SHOULD NOT be used directly in object definitions, as it restricts addresses to a specific format. However, if it is used, it MAY be used either on its own or in conjunction with InetAddressType, as a pair."
@@ -164,7 +164,7 @@ class InetAddressIPv6(TextualConvention, OctetString):
     subtypeSpec += ConstraintsUnion(
         ValueSizeConstraint(16, 16),
     )
-    fixedLength = 16
+    fixed_length = 16
 
     if mibBuilder.loadTexts:
         description = "Represents an IPv6 network address: Octets Contents Encoding 1-16 IPv6 address network-byte order The corresponding InetAddressType value is ipv6(2). This textual convention SHOULD NOT be used directly in object definitions, as it restricts addresses to a specific format. However, if it is used, it MAY be used either on its own or in conjunction with InetAddressType, as a pair."
@@ -177,7 +177,7 @@ class InetAddressIPv4z(TextualConvention, OctetString):
     subtypeSpec += ConstraintsUnion(
         ValueSizeConstraint(8, 8),
     )
-    fixedLength = 8
+    fixed_length = 8
 
     if mibBuilder.loadTexts:
         description = "Represents a non-global IPv4 network address, together with its zone index: Octets Contents Encoding 1-4 IPv4 address network-byte order 5-8 zone index network-byte order The corresponding InetAddressType value is ipv4z(3). The zone index (bytes 5-8) is used to disambiguate identical address values on nodes that have interfaces attached to different zones of the same scope. The zone index may contain the special value 0, which refers to the default zone for each scope. This textual convention SHOULD NOT be used directly in object definitions, as it restricts addresses to a specific format. However, if it is used, it MAY be used either on its own or in conjunction with InetAddressType, as a pair."
@@ -190,7 +190,7 @@ class InetAddressIPv6z(TextualConvention, OctetString):
     subtypeSpec += ConstraintsUnion(
         ValueSizeConstraint(20, 20),
     )
-    fixedLength = 20
+    fixed_length = 20
 
     if mibBuilder.loadTexts:
         description = "Represents a non-global IPv6 network address, together with its zone index: Octets Contents Encoding 1-16 IPv6 address network-byte order 17-20 zone index network-byte order The corresponding InetAddressType value is ipv6z(4). The zone index (bytes 17-20) is used to disambiguate identical address values on nodes that have interfaces attached to different zones of the same scope. The zone index may contain the special value 0, which refers to the default zone for each scope. This textual convention SHOULD NOT be used directly in object definitions, as it restricts addresses to a specific format. However, if it is used, it MAY be used either on its own or in conjunction with InetAddressType, as a pair."
