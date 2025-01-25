@@ -80,8 +80,19 @@ async def start_agent(
         # --- create custom Managed Object Instances ---
         mibBuilder = snmpContext.get_mib_instrum().get_mib_builder()
 
-        MibScalar, MibScalarInstance = mibBuilder.import_symbols(
-            "SNMPv2-SMI", "MibScalar", "MibScalarInstance"
+        (
+            MibScalar,
+            MibScalarInstance,
+            MibTable,
+            MibTableRow,
+            MibTableColumn,
+        ) = mibBuilder.import_symbols(
+            "SNMPv2-SMI",
+            "MibScalar",
+            "MibScalarInstance",
+            "MibTable",
+            "MibTableRow",
+            "MibTableColumn",
         )
 
         (
@@ -89,6 +100,7 @@ async def start_agent(
             PhysAddress,
             MacAddress,
             DateAndTime,
+            RowStatus,
             TextualConvention,
         ) = mibBuilder.importSymbols(
             "SNMPv2-TC",
@@ -96,6 +108,7 @@ async def start_agent(
             "PhysAddress",
             "MacAddress",
             "DateAndTime",
+            "RowStatus",
             "TextualConvention",
         )
 
@@ -172,6 +185,43 @@ async def start_agent(
             MibScalarInstance(
                 (1, 3, 6, 1, 4, 1, 60069, 9, 9), (0,), MacAddress(initial_mac_address)
             ),
+            # table object
+            exampleTable=MibTable((1, 3, 6, 1, 4, 1, 60069, 9, 101)).setMaxAccess(
+                "read-create"
+            ),
+            # table row object, also carries references to table indices
+            exampleTableEntry=MibTableRow((1, 3, 6, 1, 4, 1, 60069, 9, 101, 1))
+            .setMaxAccess("read-create")
+            .setIndexNames((0, "__MY_MIB", "exampleTableColumn1")),
+            # table column: string index
+            exampleTableColumn1=MibTableColumn(
+                (1, 3, 6, 1, 4, 1, 60069, 9, 101, 1, 1), MacAddress()
+            ).setMaxAccess("read-create"),
+            # table column: string value
+            exampleTableColumn2=MibTableColumn(
+                (1, 3, 6, 1, 4, 1, 60069, 9, 101, 1, 2), v2c.OctetString()
+            ).setMaxAccess("read-create"),
+            exampleTableStatus=MibTableColumn(
+                (1, 3, 6, 1, 4, 1, 60069, 9, 101, 1, 3), RowStatus("notExists")
+            ).setMaxAccess("read-create"),
+        )
+
+        (
+            exampleTableEntry,
+            exampleTableColumn2,
+            exampleTableStatus,
+        ) = mibBuilder.import_symbols(
+            "__MY_MIB",
+            "exampleTableEntry",
+            "exampleTableColumn2",
+            "exampleTableStatus",
+        )
+        rowInstanceId = (0, 17, 34, 51, 68, 85)
+        # rowInstanceId = exampleTableEntry.getInstIdFromIndices("example record one")
+        mibInstrumentation = snmpContext.get_mib_instrum()
+        mibInstrumentation.write_variables(
+            (exampleTableColumn2.name + rowInstanceId, "my string value"),
+            (exampleTableStatus.name + rowInstanceId, "createAndGo"),
         )
 
         # --- end of Managed Object Instance initialization ----

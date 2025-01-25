@@ -145,3 +145,56 @@ async def test_v1_set_table_creation():
         assert len(objects_list) == object_counts + 4
 
         snmpDispatcher.transport_dispatcher.close_dispatcher()
+
+
+@pytest.mark.asyncio
+async def test_v1_set_mac_address_table_creation():
+    async with AgentContextManager(
+        enable_table_creation=True, enable_custom_objects=True
+    ):
+        snmpDispatcher = SnmpDispatcher()
+
+        # Perform a SNMP walk to get all object counts
+        objects = walk_cmd(
+            snmpDispatcher,
+            CommunityData("public", mpModel=0),
+            await UdpTransportTarget.create(("localhost", AGENT_PORT)),
+            ObjectType(ObjectIdentity("1.3.6")),
+        )
+
+        objects_list = [item async for item in objects]
+        assert len(objects_list) > 0
+
+        object_counts = len(objects_list)
+
+        errorIndication, errorStatus, errorIndex, varBinds = await set_cmd(
+            snmpDispatcher,
+            CommunityData("public", mpModel=0),
+            await UdpTransportTarget.create(("localhost", AGENT_PORT)),
+            ObjectType(
+                ObjectIdentity("1.3.6.1.4.1.60069.9.101.2.0.17.34.51.68.85"),
+                OctetString("My value"),
+            ),
+        )
+
+        assert errorIndication is None
+        assert errorStatus == 0
+        assert len(varBinds) == 1
+        assert varBinds[0][0].prettyPrint() == "SNMPv2-SMI::dod.6.1.5.2.97.98.99"
+        assert varBinds[0][1].prettyPrint() == "My value"
+        assert type(varBinds[0][1]).__name__ == "OctetString"
+
+        # Perform a SNMP walk to get all object counts
+        objects = walk_cmd(
+            snmpDispatcher,
+            CommunityData("public", mpModel=0),
+            await UdpTransportTarget.create(("localhost", AGENT_PORT)),
+            ObjectType(ObjectIdentity("1.3.6")),
+        )
+
+        objects_list = [item async for item in objects]
+        assert len(objects_list) > 0
+
+        assert len(objects_list) == object_counts + 4
+
+        snmpDispatcher.transport_dispatcher.close_dispatcher()
