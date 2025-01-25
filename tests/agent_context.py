@@ -87,12 +87,14 @@ async def start_agent(
         (
             DisplayString,
             PhysAddress,
+            MacAddress,
             DateAndTime,
             TextualConvention,
         ) = mibBuilder.importSymbols(
             "SNMPv2-TC",
             "DisplayString",
             "PhysAddress",
+            "MacAddress",
             "DateAndTime",
             "TextualConvention",
         )
@@ -126,6 +128,9 @@ async def start_agent(
 
         # Initialize the PhysAddress object with a sample MAC address (e.g., 00:11:22:33:44:55)
         initial_phys_address = [0x00, 0x11, 0x22, 0x33, 0x44, 0x55]
+
+        # Initialize the MacAddress object with a sample MAC address (e.g., 00:11:22:33:44:55)
+        initial_mac_address = [0x00, 0x11, 0x22, 0x33, 0x44, 0x55]
 
         mibBuilder.export_symbols(
             "__MY_MIB",
@@ -161,6 +166,12 @@ async def start_agent(
                 "read-write"
             ),
             MibScalarInstance((1, 3, 6, 1, 4, 1, 60069, 9, 8), (0,), v2c.Unsigned32(5)),
+            MibScalar((1, 3, 6, 1, 4, 1, 60069, 9, 9), MacAddress()).setMaxAccess(
+                "read-write"
+            ),
+            MibScalarInstance(
+                (1, 3, 6, 1, 4, 1, 60069, 9, 9), (0,), MacAddress(initial_mac_address)
+            ),
         )
 
         # --- end of Managed Object Instance initialization ----
