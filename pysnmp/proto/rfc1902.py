@@ -278,6 +278,7 @@ class OctetString(univ.OctetString):
         "setFixedLength": "set_fixed_length",
         "isFixedLength": "is_fixed_length",
         "getFixedLength": "get_fixed_length",
+        "fixedLength": "fixed_length",
     }
 
     def __getattr__(self, attr: str):

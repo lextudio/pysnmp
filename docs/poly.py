@@ -11,7 +11,7 @@ from sphinx_polyversion.sphinx import SphinxBuilder
 BRANCH_REGEX = r"rel-.*"  # intentionally broken to skip branches
 
 #: Regex matching the tags to build docs for
-TAG_REGEX = r"v7.1|v7.0|v6.2|v6.1"
+TAG_REGEX = r"v7.1|v7.0|v6.2"
 
 #: Output dir relative to project root
 OUTPUT_DIR = "docs/build"
