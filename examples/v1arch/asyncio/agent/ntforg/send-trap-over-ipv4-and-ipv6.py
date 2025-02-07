@@ -37,8 +37,8 @@ pMod.apiTrapPDU.set_defaults(trapPDU)
 
 # Traps have quite different semantics across proto versions
 if pMod == api.PROTOCOL_MODULES[api.SNMP_VERSION_1]:
-    pMod.apiTrapPDU.setEnterprise(trapPDU, (1, 3, 6, 1, 1, 2, 3, 4, 1))
-    pMod.apiTrapPDU.setGenericTrap(trapPDU, "coldStart")
+    pMod.apiTrapPDU.set_enterprise(trapPDU, (1, 3, 6, 1, 1, 2, 3, 4, 1))
+    pMod.apiTrapPDU.set_generic_trap(trapPDU, "coldStart")
 
 # Build message
 trapMsg = pMod.Message()
@@ -57,12 +57,14 @@ transportDispatcher.send_message(
 )
 
 # UDP/IPv6
-transportDispatcher.registerTransport(
+transportDispatcher.register_transport(
     udp6.DOMAIN_NAME, udp6.Udp6AsyncioTransport().open_client_mode()
 )
-transportDispatcher.sendMessage(encoder.encode(trapMsg), udp6.DOMAIN_NAME, ("::1", 162))
+transportDispatcher.send_message(
+    encoder.encode(trapMsg), udp6.DOMAIN_NAME, ("::1", 162)
+)
 
 # Dispatcher will finish as all scheduled messages are sent
-transportDispatcher.runDispatcher(3)
+transportDispatcher.run_dispatcher(3)
 
 transportDispatcher.close_dispatcher()

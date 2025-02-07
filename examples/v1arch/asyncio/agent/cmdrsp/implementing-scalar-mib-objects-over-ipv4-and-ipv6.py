@@ -138,7 +138,7 @@ def __callback(transportDispatcher, transportDomain, transportAddress, wholeMsg)
         # Commit possible error indices to response PDU
         for f, i in pendingErrors:
             f(rspPDU, i)
-        transportDispatcher.sendMessage(
+        transportDispatcher.send_message(
             encoder.encode(rspMsg), transportDomain, transportAddress
         )
     return wholeMsg
