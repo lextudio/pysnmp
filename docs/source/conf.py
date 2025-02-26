@@ -13,12 +13,12 @@
 
 import os
 
-from sphinx_polyversion import load
-from sphinx_polyversion.git import GitRef
-
 # -- Load versioning data ----------------------------------------------------
 
 if "POLYVERSION_DATA" in os.environ:
+    from sphinx_polyversion import load
+    from sphinx_polyversion.git import GitRef
+
     # This is the case when polyversion documentation is built
     data = load(globals())  # adds variables `current` and `revisions`
     current: GitRef = data["current"]

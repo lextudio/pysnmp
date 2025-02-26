@@ -7,8 +7,5 @@
     "editor.rulers": [
         75
     ],
-    "esbonio.sphinx.buildCommand": ["sphinx-build", "-M", "dirhtml", "docs/source", "docs/build"],
-    "esbonio.sphinx.pythonCommand": ["/Users/lextm/Library/Caches/pypoetry/virtualenvs/pysnmp-Aul61iac-py3.9/bin/python"],
-    "esbonio.server.pythonPath": "/Users/lextm/Library/Caches/pypoetry/virtualenvs/pysnmp-Aul61iac-py3.9/bin/python",
-    //"esbonio.logging.level": "debug"
+    "esbonio.sphinx.buildCommand": ["sphinx-build", "-M", "dirhtml", "docs/source", "docs/build"]
 }
