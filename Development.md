@@ -4,6 +4,7 @@
 
 ```bash
 poetry init
+poetry self add poetry-bumpversion
 poetry add --group dev pre-commit=2.21.0
 poetry run pre-commit install
 ```
