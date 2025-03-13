@@ -85,6 +85,31 @@ def test_getNodeName_by_symbol_description_with_module_name():
     assert "" != mibNode.syntax.prettyPrint()
 
 
+def test_getUnits_by_symbol_description_with_module_name():
+    oid, label, suffix = mibView.get_node_name(
+        ("snmpEngineTime",), "SNMP-FRAMEWORK-MIB"
+    )
+    assert oid == (1, 3, 6, 1, 6, 3, 10, 2, 1, 3)
+    assert label == (
+        "iso",
+        "org",
+        "dod",
+        "internet",
+        "snmpV2",
+        "snmpModules",
+        "snmpFrameworkMIB",
+        "snmpFrameworkMIBObjects",
+        "snmpEngine",
+        "snmpEngineTime",
+    )
+    assert suffix == ()
+
+    (mibNode,) = mibBuilder.import_symbols("SNMP-FRAMEWORK-MIB", "snmpEngineTime")
+    # assert "" != mibNode.syntax.prettyPrint()
+
+    assert mibNode.getUnits() == "seconds"
+
+
 def test_getNodeName_by_symbol_location_lookup_by_name():
     modName, symName, suffix = mibView.get_node_location(("snmpCommunityEntry",))
     assert modName == "SNMP-COMMUNITY-MIB"
