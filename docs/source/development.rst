@@ -72,6 +72,18 @@ Stand-alone PySNMP-based tools
    and putting all the details into a database and possibly triggering
    external events.
 
+   **Partially implemented:** Basic trap receiving functionality is
+   available in the unit test cases.
+
+#. Container-based deployment solutions. With the rise of containerization
+   technologies like Docker and Kubernetes, providing official container images
+   and deployment templates would make PySNMP more accessible for modern
+   infrastructure environments, especially for the standalone tools like
+   SNMP Simulator and SNMP Proxy Forwarder.
+
+   **Partially implemented:** Docker images are available for `the SNMP
+   Simulator on GitHub <https://github.com/lextudio/docker-snmpsim>`_.
+
 #. Database backend for SNMP Simulator. We have already built a tool for
    simulating SNMP Agents based on a snapshot of their Management
    Instrumentation state. Current implementation uses a plain-text file
@@ -85,12 +97,13 @@ Stand-alone PySNMP-based tools
    **Done:** since `snmpsim`_ 0.2.4.
 
 If you need some particular feature - please,
-open a feature request via a `GitHub issue`_ . Once we
+open a feature request via a `GitHub issue`_. Once we
 see a greater demand in particular area, we would re-arrange our
 development resources to meet it sooner.
 
-You could greater speed up the development of particular feature by
-sponsoring it. Please contact `LeXtudio Inc.`_ to discuss details.
+You can help speed up the development of a particular feature by
+sponsoring it or contributing code yourself. Please contact `LeXtudio Inc.`_
+to discuss sponsorship details or submit pull requests on GitHub.
 
 Related Resources
 -----------------
