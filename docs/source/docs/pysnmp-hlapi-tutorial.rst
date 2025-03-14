@@ -7,9 +7,17 @@ Common Operations with High-Level API
 =====================================
 
 In this tutorial we will gradually build and run a few different
-SNMP command requests and notifications. We will be using PySNMP
+SNMP command requests and notifications. We will primarily use the PySNMP
 asyncio based :doc:`high-level API </docs/api-reference>`
 which is the simplest to use.
+
+.. note::
+   PySNMP offers two different high-level API architectures:
+
+   * v3arch - Complete implementation of SNMPv3 architecture supporting all SNMP versions (v1, v2c, v3)
+   * v1arch - Simplified architecture primarily for SNMPv1 and SNMPv2c operations with less complexity
+
+   This tutorial uses the v3arch API. For simpler v1/v2c operations, consider using v1arch API.
 
 Creating SNMP Engine
 --------------------

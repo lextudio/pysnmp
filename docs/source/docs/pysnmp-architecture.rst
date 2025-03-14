@@ -1,4 +1,3 @@
-
 .. toctree::
    :maxdepth: 2
 
@@ -10,6 +9,9 @@ SNMP protocol evolution. SNMP was evolving for many years from
 a relatively simple way to structure and retrieve data (SNMPv1/v2c)
 all the way to extensible and modularized framework that supports
 strong SNMPv3 crypto (if cryptography package presents).
+
+API Layers
+----------
 
 In the order from most ancient SNMP services to the most current ones,
 what follows are different layers of PySNMP APIs:
@@ -37,6 +39,9 @@ what follows are different layers of PySNMP APIs:
   PySNMP comes with a high-level API to core SNMP applications and some
   of SNMP engine services. This API is known under the name *pysnmp.hlapi*
   and should be used whenever possible.
+
+Component Architecture
+----------------------
 
 Another view to PySNMP internals could be from the code standpoint:
 PySNMP consists of a handful of large, self-contained components
