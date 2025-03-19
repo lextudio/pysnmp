@@ -1,3 +1,8 @@
+Revision 7.1.17, released on Mar 19, 2025
+-----------------------------------------
+
+- Fixed an SNMPv2-SMI issue.
+
 Revision 7.1.16, released on Jan 15, 2025
 -----------------------------------------
 
