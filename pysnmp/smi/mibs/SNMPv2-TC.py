@@ -519,7 +519,7 @@ class MacAddress(TextualConvention, OctetString):
     subtypeSpec += ConstraintsUnion(
         ValueSizeConstraint(6, 6),
     )
-    fixedLength = 6
+    fixed_length = 6
 
     if mibBuilder.loadTexts:
         description = "Represents an 802 MAC address represented in the `canonical' order defined by IEEE 802.1a, i.e., as if it were transmitted least significant bit first, even though 802.5 (in contrast to other 802.x protocols) requires MAC addresses to be transmitted most significant bit first."
