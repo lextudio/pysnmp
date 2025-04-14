@@ -18,6 +18,20 @@ releases from old releases such as 4.x and 5.x.
    We already deprecated the ``-lextudio`` packages so users must migrate
    to the official packages as soon as possible.
 
+Commercial Support for Migration
+--------------------------------
+
+.. important::
+
+   **LeXtudio Inc. offers commercial support services** specifically to help organizations
+   migrate from legacy 4.4.x releases to the latest versions. Professional assistance
+   can significantly reduce migration time, ensure compatibility, and avoid common pitfalls.
+
+   If you're managing critical infrastructure using older PySNMP releases, consider
+   reaching out for expert guidance through the migration process.
+
+   For more information on commercial support options, please visit `Support Options`_.
+
 Upgrade to 5.x Releases
 -----------------------
 
