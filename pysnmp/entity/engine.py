@@ -281,6 +281,15 @@ class SnmpEngine:
         except KeyError:
             pass
 
+    def __enter__(self, *args, **kwargs):
+        """Open the SNMP engine."""
+        return self
+
+    def __exit__(self, *args, **kwargs):
+        """Close the SNMP engine."""
+        if self.transport_dispatcher:
+            self.transport_dispatcher.close_dispatcher()
+
     # compatibility with legacy code
     # Old to new attribute mapping
     deprecated_attributes = {
