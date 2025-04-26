@@ -138,6 +138,9 @@ class DgramAsyncioProtocol(asyncio.DatagramProtocol, AbstractAsyncioTransport):
         self, iface: "tuple[str, int] | None" = None, allow_broadcast: bool = False
     ):
         """Open client mode."""
+        if self.loop.is_closed():
+            raise error.CarrierError("Event loop is closed")
+
         try:
             c = self.loop.create_datagram_endpoint(
                 lambda: self,
@@ -160,6 +163,9 @@ class DgramAsyncioProtocol(asyncio.DatagramProtocol, AbstractAsyncioTransport):
         """Open server mode."""
         if iface is None and sock is None:
             raise error.CarrierError("either iface or sock is required")
+
+        if self.loop.is_closed():
+            raise error.CarrierError("Event loop is closed")
 
         try:
             if sock:

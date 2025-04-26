@@ -23,6 +23,7 @@ async def test_usm_no_auth_no_priv():
         assert varBinds[0][0].prettyPrint() == "SNMPv2-MIB::sysDescr.0"
         assert varBinds[0][1].prettyPrint().startswith("PySNMP engine version")
         isinstance(varBinds[0][1], OctetString)
+        snmpEngine.close_dispatcher()
 
 
 @pytest.mark.asyncio

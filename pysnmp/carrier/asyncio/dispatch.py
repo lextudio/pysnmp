@@ -60,10 +60,14 @@ class AsyncioDispatcher(AbstractTransportDispatcher):
         self.loop = kwargs.pop("loop", asyncio.get_event_loop())
 
     async def handle_timeout(self):
-        """Handle timeout event."""
-        while True:
-            await asyncio.sleep(self.get_timer_resolution())
-            self.handle_timer_tick(time())
+        """Handle timeout event with proper error handling."""
+        try:
+            while True:
+                await asyncio.sleep(self.get_timer_resolution())
+                self.handle_timer_tick(time())
+        except asyncio.CancelledError:
+            # Gracefully handle cancellation
+            pass
 
     def run_dispatcher(self, timeout: float = 0.0):
         """Run the dispatcher loop."""
