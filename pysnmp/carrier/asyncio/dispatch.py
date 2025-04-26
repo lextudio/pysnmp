@@ -52,7 +52,7 @@ class AsyncioDispatcher(AbstractTransportDispatcher):
 
     def __init__(self, *args, **kwargs):
         """Create an asyncio dispatcher object."""
-        AbstractTransportDispatcher.__init__(self)
+        super().__init__()
         self.__transport_count = 0
         if "timeout" in kwargs:
             self.set_timer_resolution(kwargs["timeout"])
@@ -84,28 +84,43 @@ class AsyncioDispatcher(AbstractTransportDispatcher):
     def __close_dispatcher(self):
         if self.loop.is_running():
             self.loop.stop()
+        self.close_dispatcher()
+
+    def close_dispatcher(self):
         super().close_dispatcher()
+        self.__transport_count = 0
+        self._cancel_loopingcall()
 
     def register_transport(
         self, tDomain: Tuple[int, ...], transport: AbstractTransport
     ):
         """Register transport associated with given transport domain."""
         if self.loopingcall is None and self.get_timer_resolution() > 0:
-            self.loopingcall = asyncio.ensure_future(self.handle_timeout())
-        AbstractTransportDispatcher.register_transport(self, tDomain, transport)
+            self.loopingcall = asyncio.ensure_future(self.handle_timeout(), loop=self.loop)
+        super().register_transport(tDomain, transport)
         self.__transport_count += 1
 
     def unregister_transport(self, tDomain: Tuple[int, ...]):
         """Unregister transport associated with given transport domain."""
-        t = AbstractTransportDispatcher.get_transport(self, tDomain)
+        t = self.get_transport(tDomain)
         if t is not None:
-            AbstractTransportDispatcher.unregister_transport(self, tDomain)
+            super().unregister_transport(tDomain)
             self.__transport_count -= 1
 
-        # The last transport has been removed, stop the timeout
-        if self.__transport_count == 0 and not self.loopingcall.done():
-            self.loopingcall.cancel()
+        if self.__transport_count == 0:
+            # The last transport has been removed, stop the timeout
+            self._cancel_loopingcall()
+
+    def _cancel_loopingcall(self):
+        if self.loopingcall is not None:
+            if not self.loopingcall.done():
+                self.loopingcall.cancel()
+                loop = self.loopingcall.get_loop()
+                loop.run_until_complete(self.loopingcall)
             self.loopingcall = None
+
+    def __del__(self):
+        self._cancel_loopingcall()
 
     # compatibility with legacy code
     # Old to new attribute mapping
