@@ -89,3 +89,4 @@ async def test_v1_set_table_creation():
         assert len(objects_list) > 0
 
         assert len(objects_list) == object_counts + 4
+        snmpEngine.close_dispatcher()

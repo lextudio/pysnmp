@@ -75,6 +75,7 @@ async def test_v2c_bulk_multiple_input():
         assert errorIndication is None
         assert errorStatus == 0
         assert len(varBinds) == 5
+        snmpEngine.close_dispatcher()
 
 
 # snmpbulkget -v2c -c public -C n1 -C r2 localhost 1.3.6.1.2.1.1.4 1.3.6.1.2.1.1.9.1.1 1.3.6.1.2.1.1.9.1.3

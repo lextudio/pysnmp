@@ -79,3 +79,4 @@ async def test_usm_auth_cache_cleared(delete_v3_user, add_v3_user):
             authKeyType=authData.authKeyType,
             privKeyType=authData.privKeyType,
         )
+    snmpEngine.close_dispatcher()
