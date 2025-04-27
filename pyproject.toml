@@ -52,6 +52,7 @@ dev = [
     "pep8-naming>=0.14.1",
     "cryptography>=43.0.1",
     "pysmi>=1.6.1",
+    "bump2version>=1.0.1",
 ]
 
 [tool.flit.sdist]

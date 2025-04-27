@@ -1,3 +1,8 @@
+Revision 7.1.18, released on Apr 26, 2025
+-----------------------------------------
+
+- Upgraded pysmi dependency to 1.6.1.
+
 Revision 7.1.17, released on Mar 19, 2025
 -----------------------------------------
 
