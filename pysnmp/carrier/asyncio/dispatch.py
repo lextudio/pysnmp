@@ -113,7 +113,6 @@ class AsyncioDispatcher(AbstractTransportDispatcher):
                 loop = self.loopingcall.get_loop()
                 if not loop.is_closed():
                     self.loopingcall.cancel()
-                    loop.run_until_complete(self.loopingcall)
             self.loopingcall = None
 
     def __del__(self):
