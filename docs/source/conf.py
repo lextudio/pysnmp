@@ -66,7 +66,7 @@ master_doc = "index"
 
 # General information about the project.
 project = "SNMP Library for Python"
-copyright = "2005-2020, Ilya Etingof. © Copyright 2022-2024, LeXtudio Inc."
+copyright = "2005-2020, Ilya Etingof. © Copyright 2022-2025, LeXtudio Inc."
 author = "LeXtudio Inc. <support@lextudio.com>"
 
 # The version info for the project you're documenting, acts as replacement for
