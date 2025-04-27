@@ -39,7 +39,6 @@ import traceback
 import warnings
 from time import time
 from typing import Tuple
-
 from pysnmp.carrier.base import AbstractTransport, AbstractTransportDispatcher
 from pysnmp.error import PySnmpError
 
