@@ -59,6 +59,19 @@ OBJECT-GROUP
             self.getDescription(),
         )
 
+    ## compatibility with legacy code
+    def set_objects(self, *args, **kwargs):
+        return self.setObjects(*args, **kwargs)
+
+    def set_description(self, v):
+        return self.setDescription(v)
+
+    def set_status(self, v):
+        return self.setStatus(v)
+
+    def set_reference(self, v):
+        return self.setReference(v)
+
 
 class NotificationGroup(MibNode):
     status = "current"
@@ -109,6 +122,19 @@ NOTIFICATION-GROUP
             self.getDescription(),
         )
 
+    ## compatibility with legacy code
+    def set_objects(self, *args, **kwargs):
+        return self.setObjects(*args, **kwargs)
+
+    def set_description(self, v):
+        return self.setDescription(v)
+
+    def set_status(self, v):
+        return self.setStatus(v)
+
+    def set_reference(self, v):
+        return self.setReference(v)
+
 
 class ModuleCompliance(MibNode):
     status = "current"
@@ -157,6 +183,16 @@ MODULE-COMPLIANCE
             self.getDescription(),
             ", ".join([x for x in self.getObjects()]),
         )
+
+    ## compatibility with legacy code
+    def set_objects(self, *args, **kwargs):
+        return self.setObjects(*args, **kwargs)
+
+    def set_status(self, v):
+        return self.setStatus(v)
+
+    def set_description(self, v):
+        return self.setDescription(v)
 
 
 class AgentCapabilities(MibNode):

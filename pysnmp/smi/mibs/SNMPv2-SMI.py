@@ -144,6 +144,26 @@ MODULE-IDENTITY
             "".join(['REVISION "%s"\n' % x for x in self.getRevisions()]),
         )
 
+    ## compatibility with legacy code
+    def set_revisions(self, *args):
+        return self.setRevisions(args)
+
+    def set_last_updated(self, lastUpdated):
+        self.setLastUpdated(lastUpdated)
+        return self
+
+    def set_organization(self, organization):
+        self.setOrganization(organization)
+        return self
+
+    def set_contact_info(self, contactInfo):
+        self.setContactInfo(contactInfo)
+        return self
+
+    def set_description(self, description):
+        self.setDescription(description)
+        return self
+
 
 class ObjectIdentity(MibNode):
     status = "current"
@@ -180,6 +200,19 @@ OBJECT-IDENTITY
 """.format(
             self.getStatus(), self.getDescription(), self.getReference()
         )
+
+    ## compatibility with legacy code
+    def set_status(self, status):
+        self.setStatus(status)
+        return self
+
+    def set_description(self, description):
+        self.setDescription(description)
+        return self
+
+    def set_reference(self, reference):
+        self.setReference(reference)
+        return self
 
 
 # definition for objects
@@ -235,6 +268,18 @@ NOTIFICATION-TYPE
             self.getDescription(),
             self.getReference(),
         )
+
+    ## compatibility with legacy code
+    def set_objects(self, *args, **kwargs):
+        return self.setObjects(*args, **kwargs)
+
+    def set_status(self, status):
+        self.setStatus(status)
+        return self
+
+    def set_description(self, description):
+        self.setDescription(description)
+        return self
 
 
 class MibIdentifier(MibNode):
@@ -334,6 +379,29 @@ OBJECT-TYPE
             self.getDescription(),
             self.getReference(),
         )
+
+    ## compatibility with legacy code
+    def set_status(self, status):
+        self.setStatus(status)
+        return self
+
+    def set_description(self, description):
+        self.setDescription(description)
+        return self
+
+        ## compatibility with legacy code
+
+    def set_max_access(self, access):
+        self.setMaxAccess(access)
+        return self
+
+    def set_units(self, units):
+        self.setUnits(units)
+        return self
+
+    def set_reference(self, reference):
+        self.setReference(reference)
+        return self
 
 
 class MibTree(ObjectType):
@@ -1523,6 +1591,18 @@ class MibTableRow(MibTree):
             instNames.append(self.getInstNameByIndex(*(columnName[-1],) + indices))
 
         return tuple(instNames)
+
+    ## compatibility with legacy code
+    def get_index_names(self):
+        return self.getIndexNames()
+
+    def set_index_names(self, *names):
+        self.setIndexNames(*names)
+        return self
+
+    def register_augmentions(self, *names):
+        self.registerAugmentions(*names)
+        return self
 
 
 class MibTable(MibTree):

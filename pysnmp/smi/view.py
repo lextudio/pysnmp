@@ -55,7 +55,7 @@ class MibViewController:
                 m = b.mibSymbols[x][b.module_id]
                 r = m.getRevisions()
                 if r:
-                    return r[0]
+                    return r[0][0]
 
             return "1970-01-01 00:00"
 
