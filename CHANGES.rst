@@ -1,3 +1,8 @@
+Revision 7.1.19, released on Apr 27, 2025
+-----------------------------------------
+
+- Resolved dispatcher resource leak issue.
+
 Revision 7.1.18, released on Apr 26, 2025
 -----------------------------------------
 
