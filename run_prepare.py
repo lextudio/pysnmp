@@ -69,8 +69,11 @@ def main():
         python_path = get_python_path(python_version)
         subprocess.run(["uv", "venv", f"--python={python_path}"], check=True)
 
-    print("Installing dependencies...")
-    subprocess.run(["uv", "pip", "install", "-e", ".[dev]"], check=True)
+        print("Installing dependencies...")
+        subprocess.run(["uv", "pip", "install", "-e", ".[dev]"], check=True)
+    else:
+        print(f"Already using Python {python_version}")
+        subprocess.run(["uv", "sync", "--extra", "dev"], check=True)
 
     print(f"Successfully switched to Python {python_version}")
     print("To activate this environment manually, run:")

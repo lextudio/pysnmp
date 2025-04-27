@@ -111,18 +111,18 @@ def get_sendto(addressType):
 
     def sendto(s, _data, _to):
         ancdata = []
-        if type(_to) == addressType:
+        if isinstance(_to, addressType):
             addr = ipaddress.ip_address(_to.getLocalAddress()[0])
 
         else:
             addr = ipaddress.ip_address(s.getsockname()[0])
 
-        if type(addr) == ipaddress.IPv4Address:
+        if isinstance(addr, ipaddress.IPv4Address):
             _f = in_pktinfo()
             _f.ipi_spec_dst = in_addr.from_buffer_copy(addr.packed)
             ancdata = [(socket.SOL_IP, socket.IP_PKTINFO, memoryview(_f).tobytes())]
 
-        elif s.family == socket.AF_INET6 and type(addr) == ipaddress.IPv6Address:
+        elif s.family == socket.AF_INET6 and isinstance(addr, ipaddress.IPv6Address):
             _f = in6_pktinfo()
             _f.ipi6_addr = in6_addr.from_buffer_copy(addr.packed)
             ancdata = [(socket.SOL_IPV6, socket.IPV6_PKTINFO, memoryview(_f).tobytes())]

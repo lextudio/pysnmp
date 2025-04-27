@@ -42,17 +42,14 @@ dev = [
     "sphinx-sitemap-lextudio>=2.5.2",
     "sphinx-polyversion>=1.0.0",
     "furo>=2023.1.1",
-    "black==23.1.0",
     "pre-commit==2.21.0",
     "doc8>=1.0.0",
-    "flake8>=5.0.4",
-    "flake8-import-order>=0.18.2",
-    "flake8-docstrings>=1.7.0",
-    "flake8-rst-docstrings>=0.3.0",
+    "flake8>=7.0.0",
     "pep8-naming>=0.14.1",
     "cryptography>=43.0.1",
     "pysmi>=1.6.1",
     "bump2version>=1.0.1",
+    "ruff>=0.11.7",
 ]
 
 [tool.flit.sdist]
@@ -65,3 +62,7 @@ exclude = [
 [build-system]
 requires = ["flit_core>=3.9.0"]
 build-backend = "flit_core.buildapi"
+
+[tool.ruff]
+lint.ignore = ["F401"]
+preview = true
