@@ -88,6 +88,15 @@ wheels = [
 ]
 
 [[package]]
+name = "bump2version"
+version = "1.0.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/29/2a/688aca6eeebfe8941235be53f4da780c6edee05dbbea5d7abaa3aab6fad2/bump2version-1.0.1.tar.gz", hash = "sha256:762cb2bfad61f4ec8e2bdf452c7c267416f8c70dd9ecb1653fd0bbb01fa936e6", size = 36236 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/1d/e3/fa60c47d7c344533142eb3af0b73234ef8ea3fb2da742ab976b947e717df/bump2version-1.0.1-py2.py3-none-any.whl", hash = "sha256:37f927ea17cde7ae2d7baf832f8e80ce3777624554a653006c9144f8017fe410", size = 22030 },
+]
+
+[[package]]
 name = "certifi"
 version = "2025.4.26"
 source = { registry = "https://pypi.org/simple" }
@@ -838,7 +847,7 @@ wheels = [
 
 [[package]]
 name = "pysnmp"
-version = "7.1.17"
+version = "7.1.18"
 source = { editable = "." }
 dependencies = [
     { name = "pyasn1" },
@@ -847,6 +856,7 @@ dependencies = [
 [package.optional-dependencies]
 dev = [
     { name = "black" },
+    { name = "bump2version" },
     { name = "codecov" },
     { name = "cryptography" },
     { name = "doc8" },
@@ -874,6 +884,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "black", marker = "extra == 'dev'", specifier = "==23.1.0" },
+    { name = "bump2version", marker = "extra == 'dev'", specifier = ">=1.0.1" },
     { name = "codecov", marker = "extra == 'dev'", specifier = ">=2.1.12" },
     { name = "cryptography", marker = "extra == 'dev'", specifier = ">=43.0.1" },
     { name = "doc8", marker = "extra == 'dev'", specifier = ">=1.0.0" },

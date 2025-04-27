@@ -23,21 +23,18 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           cache: 'pip'
-      - name: Run image
-        uses: abatilo/actions-poetry@v2
-        with:
-          poetry-version: "1.6.1"
       - name: Build
         run: |
-          poetry install
-          poetry build
+          pip install uv
+          uv venv
+          uv pip install -e .[dev]
       - name: Test
         run: |
-          poetry run mibdump --generate-mib-texts NET-SNMP-EXAMPLES-MIB
-          poetry run mibdump --generate-mib-texts IF-MIB
-          poetry run mibdump --generate-mib-texts LEXTUDIO-TEST-MIB
-          poetry run mibdump --generate-mib-texts CISCO-ENHANCED-IPSEC-FLOW-MIB
-          poetry run pytest --junitxml=junit/test-results-${{ matrix.python-version }}.xml --cov=com --cov-report=xml --cov-report=html
+          uv run mibdump --generate-mib-texts NET-SNMP-EXAMPLES-MIB
+          uv run mibdump --generate-mib-texts IF-MIB
+          uv run mibdump --generate-mib-texts LEXTUDIO-TEST-MIB
+          uv run mibdump --generate-mib-texts CISCO-ENHANCED-IPSEC-FLOW-MIB
+          uv run pytest --junitxml=junit/test-results-${{ matrix.python-version }}.xml --cov=com --cov-report=xml --cov-report=html
       - name: Test summary
         uses: test-summary/action@v2
         with:
