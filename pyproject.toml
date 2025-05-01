@@ -64,5 +64,5 @@ requires = ["flit_core>=3.9.0"]
 build-backend = "flit_core.buildapi"
 
 [tool.ruff]
-lint.ignore = ["F401"]
+lint.ignore = ["F401", "F403", "F405"]
 preview = true

@@ -14,7 +14,7 @@ from pysnmp.carrier.base import AbstractTransportDispatcher
 from pysnmp.entity.engine import SnmpEngine
 from pysnmp.hlapi.transport import AbstractTransportTarget
 from pysnmp.proto import api
-from pysnmp.proto import error
+from pysnmp.proto import errind, error
 from pysnmp.proto.api import verdec
 
 __all__ = []
@@ -185,7 +185,7 @@ class AbstractSnmpDispatcher:
                     cbFun(
                         self,
                         requestId,
-                        "Request #%d timed out" % requestId,
+                        errind.requestTimedOut,
                         None,
                         cbCtx,
                     )

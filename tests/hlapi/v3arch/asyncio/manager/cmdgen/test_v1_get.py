@@ -49,8 +49,8 @@ async def test_v1_get_ipv6():
             assert isinstance(varBinds[0][1], OctetString)
 
 
-def test_v1_get_timeout_invalid_target():
-    loop = asyncio.get_event_loop()
+@pytest.mark.asyncio
+async def test_v1_get_timeout_invalid_target():
     with SnmpEngine() as snmpEngine:
 
         async def run_get():
@@ -62,10 +62,13 @@ def test_v1_get_timeout_invalid_target():
                 ObjectType(ObjectIdentity("1.3.6.1.4.1.60069.9.1.0")),
             )
             assert isinstance(errorIndication, RequestTimedOut)
+            assert errorStatus == 0
+            assert errorIndex == 0
+            assert len(varBinds) == 0
 
         start = datetime.now()
         try:
-            loop.run_until_complete(asyncio.wait_for(run_get(), timeout=3))
+            await asyncio.wait_for(run_get(), timeout=3)
             end = datetime.now()
             elapsed_time = (end - start).total_seconds()
             assert (

@@ -124,6 +124,10 @@ async def get_cmd(
         if future.cancelled():
             return
 
+        if isinstance(errorIndication, errind.RequestTimedOut):
+            future.set_result((errorIndication, 0, 0, ()))
+            return
+
         errorStatus = pMod.apiPDU.get_error_status(rspPdu)
         errorIndex = pMod.apiPDU.get_error_index(rspPdu)
 
@@ -136,9 +140,12 @@ async def get_cmd(
         except Exception as e:
             future.set_exception(e)
         else:
-            future.set_result(
-                (errorIndication, errorStatus, errorIndex, varBindsUnmade)
-            )
+            future.set_result((
+                errorIndication,
+                errorStatus,
+                errorIndex,
+                varBindsUnmade,
+            ))
 
     lookupMib = options.get("lookupMib")
 
@@ -267,9 +274,12 @@ async def set_cmd(
         except Exception as e:
             future.set_exception(e)
         else:
-            future.set_result(
-                (errorIndication, errorStatus, errorIndex, varBindsUnmade)
-            )
+            future.set_result((
+                errorIndication,
+                errorStatus,
+                errorIndex,
+                varBindsUnmade,
+            ))
 
     lookupMib = options.get("lookupMib")
 
@@ -415,9 +425,12 @@ async def next_cmd(
         except Exception as e:
             future.set_exception(e)
         else:
-            future.set_result(
-                (errorIndication, errorStatus, errorIndex, varBindsUnmade)
-            )
+            future.set_result((
+                errorIndication,
+                errorStatus,
+                errorIndex,
+                varBindsUnmade,
+            ))
 
     lookupMib = options.get("lookupMib")
 
@@ -587,9 +600,12 @@ async def bulk_cmd(
         except Exception as e:
             future.set_exception(e)
         else:
-            future.set_result(
-                (errorIndication, errorStatus, errorIndex, varBindsUnmade)
-            )
+            future.set_result((
+                errorIndication,
+                errorStatus,
+                errorIndex,
+                varBindsUnmade,
+            ))
 
     lookupMib = options.get("lookupMib")
 
@@ -777,8 +793,8 @@ async def walk_cmd(
             errorIndication = errorStatus = errorIndex = None
             varBind = None  # type: ignore
 
-        initialVarBinds: "tuple[ObjectType, ...]|None" = (
-            yield errorIndication,
+        initialVarBinds: "tuple[ObjectType, ...]|None" = yield (
+            errorIndication,
             errorStatus,
             errorIndex,
             (varBind,),
@@ -1005,8 +1021,8 @@ async def bulk_walk_cmd(
             errorIndication = errorStatus = errorIndex = None
             varBinds = ()
 
-        initialVarBinds: "tuple[ObjectType, ...]|None" = (
-            yield errorIndication,
+        initialVarBinds: "tuple[ObjectType, ...]|None" = yield (
+            errorIndication,
             errorStatus,
             errorIndex,
             varBinds,

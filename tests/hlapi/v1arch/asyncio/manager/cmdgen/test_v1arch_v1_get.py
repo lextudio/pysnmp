@@ -2,6 +2,7 @@ import asyncio
 from datetime import datetime
 import pytest
 from pysnmp.hlapi.v1arch.asyncio import *
+from pysnmp.proto.errind import RequestTimedOut
 from pysnmp.proto.rfc1905 import errorStatus as pysnmp_errorStatus
 from pysnmp.smi import builder, compiler, view
 
@@ -62,60 +63,61 @@ async def test_v1_get_ipv6():
         snmpDispatcher.transport_dispatcher.close_dispatcher()
 
 
-# TODO:
-# def test_v1_get_timeout_invalid_target():
-#     loop = asyncio.get_event_loop()
-#     snmpDispatcher = SnmpDispatcher()
+@pytest.mark.asyncio
+async def test_v1_get_timeout_invalid_target():
+    snmpDispatcher = SnmpDispatcher()
 
-#     async def run_get():
-#         errorIndication, errorStatus, errorIndex, varBinds = await get_cmd(
-#             snmpDispatcher,
-#             CommunityData("community_string"),
-#             await UdpTransportTarget.create(("1.2.3.4", 161), timeout=1, retries=0),
-#             ObjectType(ObjectIdentity("1.3.6.1.4.1.60069.9.1.0")),
-#         )
-#         for varBind in varBinds:
-#             print([str(varBind[0]), varBind[1]])
+    async def run_get():
+        errorIndication, errorStatus, errorIndex, varBinds = await get_cmd(
+            snmpDispatcher,
+            CommunityData("community_string"),
+            await UdpTransportTarget.create(("1.2.3.4", 161), timeout=1, retries=0),
+            ObjectType(ObjectIdentity("1.3.6.1.4.1.60069.9.1.0")),
+        )
+        assert isinstance(errorIndication, RequestTimedOut)
+        assert errorStatus == 0
+        assert errorIndex == 0
+        assert len(varBinds) == 0
 
-#     start = datetime.now()
-#     try:
-#         loop.run_until_complete(asyncio.wait_for(run_get(), timeout=3))
-#         end = datetime.now()
-#         elapsed_time = (end - start).total_seconds()
-#         assert elapsed_time >= 1 and elapsed_time <= 3
-#     except asyncio.TimeoutError:
-#         assert False, "Test case timed out"
-#     finally:
-#         snmpDispatcher.transport_dispatcher.close_dispatcher()
+    start = datetime.now()
+    try:
+        await asyncio.wait_for(run_get(), timeout=3)
+        end = datetime.now()
+        elapsed_time = (end - start).total_seconds()
+        assert elapsed_time >= 1 and elapsed_time <= 3
+    except asyncio.TimeoutError:
+        assert False, "Test case timed out"
+    finally:
+        snmpDispatcher.transport_dispatcher.close_dispatcher()
 
 
-# @pytest.mark.asyncio
-# async def test_v1_get_timeout_slow_object():
-#     async with AgentContextManager(enable_custom_objects=True):
-#         snmpDispatcher = SnmpDispatcher()
+@pytest.mark.asyncio
+async def test_v1_get_timeout_slow_object():
+    async with AgentContextManager(enable_custom_objects=True):
+        snmpDispatcher = SnmpDispatcher()
 
-#         async def run_get():
-#             errorIndication, errorStatus, errorIndex, varBinds = await get_cmd(
-#                 snmpDispatcher,
-#                 CommunityData("public", mpModel=0),
-#                 await UdpTransportTarget.create(
-#                     ("localhost", AGENT_PORT), timeout=1, retries=0
-#                 ),
-#                 ObjectType(ObjectIdentity("1.3.6.1.4.1.60069.9.1.0")),
-#             )
-#             for varBind in varBinds:
-#                 print([str(varBind[0]), varBind[1]])
+        async def run_get():
+            errorIndication, errorStatus, errorIndex, varBinds = await get_cmd(
+                snmpDispatcher,
+                CommunityData("public", mpModel=0),
+                await UdpTransportTarget.create(
+                    ("localhost", AGENT_PORT), timeout=1, retries=0
+                ),
+                ObjectType(ObjectIdentity("1.3.6.1.4.1.60069.9.1.0")),
+            )
+            for varBind in varBinds:
+                print([str(varBind[0]), varBind[1]])
 
-#         start = datetime.now()
-#         try:
-#             await asyncio.wait_for(run_get(), timeout=3)
-#             end = datetime.now()
-#             elapsed_time = (end - start).total_seconds()
-#             assert elapsed_time >= 1 and elapsed_time <= 3
-#         except asyncio.TimeoutError:
-#             assert False, "Test case timed out"
-#         finally:
-#             snmpDispatcher.transport_dispatcher.close_dispatcher()
+        start = datetime.now()
+        try:
+            await asyncio.wait_for(run_get(), timeout=3)
+            end = datetime.now()
+            elapsed_time = (end - start).total_seconds()
+            assert elapsed_time >= 1 and elapsed_time <= 3
+        except asyncio.TimeoutError:
+            assert False, "Test case timed out"
+        finally:
+            snmpDispatcher.transport_dispatcher.close_dispatcher()
 
 
 @pytest.mark.asyncio
@@ -295,7 +297,7 @@ async def test_v1_get_multiple_objects():
             await UdpTransportTarget.create(
                 ("demo.pysnmp.com", 161), timeout=1, retries=0
             ),
-            *[ObjectType(x) for x in netiftable]
+            *[ObjectType(x) for x in netiftable],
         )
         assert errorIndication is None
         assert errorIndication is None
