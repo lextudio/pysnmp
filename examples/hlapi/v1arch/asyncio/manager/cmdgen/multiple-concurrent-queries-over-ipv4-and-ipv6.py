@@ -17,6 +17,7 @@ Functionally similar to:
 | $ snmpget -v2c -c public demo.pysnmp.com:161 SNMPv2-MIB::sysDescr.0
 
 """  #
+
 import asyncio
 from pysnmp.hlapi.v1arch.asyncio import *
 
@@ -47,12 +48,12 @@ async def getone(snmpDispatcher, hostname):
 
 
 async def main():
-    snmpDispatcher = SnmpDispatcher()
-    await asyncio.gather(
-        getone(snmpDispatcher, ("demo.pysnmp.com", 161)),
-        getone(snmpDispatcher, ("demo.pysnmp.com", 161)),
-        getone(snmpDispatcher, ("demo.pysnmp.com", 161)),
-    )
+    with SnmpDispatcher() as snmpDispatcher:
+        await asyncio.gather(
+            getone(snmpDispatcher, ("demo.pysnmp.com", 161)),
+            getone(snmpDispatcher, ("demo.pysnmp.com", 161)),
+            getone(snmpDispatcher, ("demo.pysnmp.com", 161)),
+        )
 
 
 asyncio.run(main())

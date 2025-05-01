@@ -65,7 +65,7 @@ class AbstractSnmpDispatcher:
         self.transport_dispatcher.unregister_recv_callback()
         self.transport_dispatcher.unregister_timer_callback()
         if self._automaticDispatcher:
-            self.transport_dispatcher.close()
+            self.transport_dispatcher.close_dispatcher()
 
         for requestId, stateInfo in self._pendingReqs.items():
             cbFun = stateInfo["cbFun"]
@@ -221,3 +221,11 @@ class AbstractSnmpDispatcher:
         raise AttributeError(
             f"'{self.__class__.__name__}' object has no attribute '{attr}'"
         )
+
+    def __enter__(self):
+        """Open the SNMP dispatcher."""
+        return self
+
+    def __exit__(self, *args, **kwargs):
+        """Close the SNMP dispatcher."""
+        self.close()

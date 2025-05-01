@@ -17,45 +17,43 @@ Functionally similar to:
 |                demo.pysnmp.com  SNMPv2-MIB::system
 
 """  #
+
 import asyncio
 from pysnmp.hlapi.v1arch.asyncio import *
 
 
 async def run(varBinds):
-    snmpDispatcher = SnmpDispatcher()
-
-    while True:
-        iterator = await bulk_cmd(
-            snmpDispatcher,
-            CommunityData("public"),
-            await UdpTransportTarget.create(("demo.pysnmp.com", 161)),
-            0,
-            50,
-            *varBinds
-        )
-
-        errorIndication, errorStatus, errorIndex, varBindTable = iterator
-
-        if errorIndication:
-            print(errorIndication)
-            break
-
-        elif errorStatus:
-            print(
-                "{} at {}".format(
-                    errorStatus.prettyPrint(),
-                    errorIndex and varBinds[int(errorIndex) - 1][0] or "?",
-                )
+    with SnmpDispatcher() as snmpDispatcher:
+        while True:
+            iterator = await bulk_cmd(
+                snmpDispatcher,
+                CommunityData("public"),
+                await UdpTransportTarget.create(("demo.pysnmp.com", 161)),
+                0,
+                50,
+                *varBinds,
             )
-        else:
-            for varBind in varBindTable:
-                print(" = ".join([x.prettyPrint() for x in varBind]))
 
-        varBinds = varBindTable
-        if is_end_of_mib(varBinds):
-            break
+            errorIndication, errorStatus, errorIndex, varBindTable = iterator
 
-    snmpDispatcher.transport_dispatcher.close_dispatcher()
+            if errorIndication:
+                print(errorIndication)
+                break
+
+            elif errorStatus:
+                print(
+                    "{} at {}".format(
+                        errorStatus.prettyPrint(),
+                        errorIndex and varBinds[int(errorIndex) - 1][0] or "?",
+                    )
+                )
+            else:
+                for varBind in varBindTable:
+                    print(" = ".join([x.prettyPrint() for x in varBind]))
+
+            varBinds = varBindTable
+            if is_end_of_mib(varBinds):
+                break
 
 
 asyncio.run(run([ObjectType(ObjectIdentity("SNMPv2-MIB", "sysDescr"))]))

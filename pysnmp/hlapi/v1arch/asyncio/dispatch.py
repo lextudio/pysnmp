@@ -25,6 +25,16 @@ class SnmpDispatcher(AbstractSnmpDispatcher):
     It is possible to run multiple instances of `SnmpDispatcher` in the
     application. In a multithreaded environment, each thread that
     works with SNMP must have its own `SnmpDispatcher` instance.
+
+    The `SnmpDispatcher` class supports context manager protocol,
+    so it can be used with the `with` statement for automatic
+    resource management:
+
+    .. code-block:: python
+
+       with SnmpDispatcher() as dispatcher:
+           # use dispatcher
+           pass  # dispatcher.close() is called automatically
     """
 
     PROTO_DISPATCHER = AsyncioDispatcher
