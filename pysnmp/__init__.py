@@ -10,8 +10,9 @@ Attributes:
 Notes:
     - For backward compatibility, if the version string contains "beta", the string part is removed before converting to a tuple.
 """
+
 # http://www.python.org/dev/peps/pep-0396/
-__version__ = "7.1.19"
+__version__ = "7.1.20"
 # another variable is required to prevent semantic release from updating version in more than one place
 main_version = __version__
 # backward compatibility

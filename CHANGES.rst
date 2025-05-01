@@ -1,3 +1,8 @@
+Revision 7.1.20, released on May 01, 2025
+-----------------------------------------
+
+- Implemented v1arch dispatcher timeout support.
+
 Revision 7.1.19, released on Apr 27, 2025
 -----------------------------------------
 
