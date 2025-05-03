@@ -714,7 +714,7 @@ wheels = [
 
 [[package]]
 name = "pysnmp"
-version = "7.1.19"
+version = "7.1.20"
 source = { editable = "." }
 dependencies = [
     { name = "pyasn1" },
@@ -728,6 +728,7 @@ dev = [
     { name = "doc8" },
     { name = "flake8" },
     { name = "furo" },
+    { name = "jinja2" },
     { name = "pep8-naming" },
     { name = "pre-commit" },
     { name = "pysmi" },
@@ -747,10 +748,11 @@ dev = [
 requires-dist = [
     { name = "bump2version", marker = "extra == 'dev'", specifier = ">=1.0.1" },
     { name = "codecov", marker = "extra == 'dev'", specifier = ">=2.1.12" },
-    { name = "cryptography", marker = "extra == 'dev'", specifier = ">=43.0.1" },
+    { name = "cryptography", marker = "extra == 'dev'", specifier = ">=44.0.1" },
     { name = "doc8", marker = "extra == 'dev'", specifier = ">=1.0.0" },
     { name = "flake8", marker = "extra == 'dev'", specifier = ">=7.0.0" },
     { name = "furo", marker = "extra == 'dev'", specifier = ">=2023.1.1" },
+    { name = "jinja2", marker = "extra == 'dev'", specifier = ">=3.1.6" },
     { name = "pep8-naming", marker = "extra == 'dev'", specifier = ">=0.14.1" },
     { name = "pre-commit", marker = "extra == 'dev'", specifier = "==2.21.0" },
     { name = "pyasn1", specifier = ">=0.4.8,!=0.5.0" },
