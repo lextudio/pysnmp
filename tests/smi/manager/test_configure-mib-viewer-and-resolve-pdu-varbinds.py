@@ -106,7 +106,9 @@ def test_syntax_integer():
 
     # Load MIB modules
     compiler.addMibCompiler(mib_builder)
-    mib_builder.loadModules("LEXTUDIO-TEST-MIB")
+    mib_builder.loadModules(
+        "LEXTUDIO-TEST-MIB"
+    )  # IMPORTANT: compile LEXTUDIO-TEST-MIB.mib in advance.
 
     # Get MIB object
     (mib_object,) = mib_builder.import_symbols("LEXTUDIO-TEST-MIB", "testScaledInteger")
@@ -132,3 +134,21 @@ def test_syntax_unsigned():
     # Print MIB object syntax
     assert (1, 3, 6, 1, 4, 1, 60069, 9, 8) == mib_object.getName()
     assert "ScaledUnsigned" == mib_object.syntax.__class__.__name__
+
+
+def test_syntax_fixed_length_octet_string():
+    # Create MIB builder
+    mib_builder = builder.MibBuilder()
+
+    # Load MIB modules
+    compiler.addMibCompiler(mib_builder)
+    mib_builder.loadModules(
+        "LEXTUDIO-TEST-MIB"
+    )  # IMPORTANT: compile LEXTUDIO-TEST-MIB.mib in advance.
+
+    # Get MIB object
+    (mib_object,) = mib_builder.import_symbols("LEXTUDIO-TEST-MIB", "testMacAddress")
+
+    # Print MIB object syntax
+    assert (1, 3, 6, 1, 4, 1, 60069, 9, 9) == mib_object.getName()
+    assert "MacAddress" == mib_object.syntax.__class__.__name__
