@@ -84,6 +84,54 @@ def test_getNodeName_by_symbol_description_with_module_name():
     (mibNode,) = mibBuilder.import_symbols("SNMP-FRAMEWORK-MIB", "snmpEngineID")
     assert "" != mibNode.syntax.prettyPrint()
 
+    # Method 1: Assert that mibNode.syntax is an instance of OctetString
+    from pysnmp.proto.rfc1902 import OctetString
+
+    assert isinstance(mibNode.syntax, OctetString), (
+        "mibNode.syntax is not an instance of OctetString"
+    )
+
+    # Method 2: When you don't know the base class in advance
+    # Extract and print the class hierarchy of mibNode.syntax
+    syntax_type = type(mibNode.syntax)
+    class_hierarchy = []
+    for base in syntax_type.__mro__:
+        class_hierarchy.append(base.__name__)
+
+    # Check if 'OctetString' is in the class hierarchy
+    assert "OctetString" in class_hierarchy, (
+        f"OctetString not found in class hierarchy: {class_hierarchy}"
+    )
+
+    # Print the class hierarchy for reference
+    print(f"Class hierarchy of mibNode.syntax: {class_hierarchy}")
+
+    # Method 3: Find the immediate subclass of SimpleAsn1Type
+    from pyasn1.type.base import SimpleAsn1Type
+
+    # Get the full MRO as classes, not just names
+    full_mro = syntax_type.__mro__
+
+    # Find SimpleAsn1Type in the MRO
+    simple_asn_index = None
+    for i, cls in enumerate(full_mro):
+        if cls is SimpleAsn1Type:
+            simple_asn_index = i
+            break
+
+    # If found, the direct subclass is at index - 1, and the subclass above that is at index - 2
+    assert simple_asn_index is not None, "SimpleAsn1Type not found in class hierarchy"
+
+    # The class at index - 1 is the immediate subclass of SimpleAsn1Type
+    # The class at index - 2 is the subclass above the immediate subclass (i.e., the essential SMI/SNMP data type)
+    essential_type = full_mro[simple_asn_index - 2]
+    print(f"Essential SMI/SNMP data type: {essential_type.__name__}")
+
+    # Assert that the essential type is OctetString
+    assert essential_type is OctetString, (
+        f"Essential type is {essential_type.__name__}, not OctetString"
+    )
+
 
 def test_getUnits_by_symbol_description_with_module_name():
     oid, label, suffix = mibView.get_node_name(
