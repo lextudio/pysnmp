@@ -96,10 +96,9 @@ Stand-alone PySNMP-based tools
 
    **Done:** since `snmpsim`_ 0.2.4.
 
-If you need some particular feature - please,
-open a feature request via a `GitHub issue`_. Once we
-see a greater demand in particular area, we would re-arrange our
-development resources to meet it sooner.
+If you need some particular feature, please open a feature request via a
+`GitHub issue`_. Once we see a greater demand in particular area, we would
+re-arrange our development resources to meet it sooner.
 
 You can help speed up the development of a particular feature by
 sponsoring it or contributing code yourself. Please contact `LeXtudio Inc.`_
