@@ -18,6 +18,7 @@ Functionally similar to:
 | $ snmptrap -v2c -c public demo.pysnmp.com 0 1.3.6.1.6.3.1.1.5.1
 
 """  #
+
 from pysnmp.entity import engine, config
 from pysnmp.carrier.asyncio.dgram import udp
 from pysnmp.entity.rfc3413 import ntforg
@@ -99,4 +100,4 @@ ntfOrg.send_pdu(
 print("Notification is scheduled to be sent")
 
 # Run I/O dispatcher which would send pending message and process response
-snmpEngine.oepn_dispatcher()
+snmpEngine.open_dispatcher()
