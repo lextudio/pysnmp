@@ -55,7 +55,7 @@ class Uv(VirtualPythonEnvironment):
         self,
         path: Path,
         name: str,
-        venv: str | Path,
+        venv: "str | Path",
         *,
         creator=None,
         env=None,
