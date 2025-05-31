@@ -138,8 +138,10 @@ it from 6.2 release.
 Alternatively, several options are there,
 
 * You might copy the sync wrappers from 6.1 release and use
-them in your code if you still need them.
-* You might use other packages like [this one](https://pypi.prg/project/pysnmp-sync-adapter) which contains sync wrappers.
+  them in your code if you still need them.
+- You might use other packages like
+  `pysnmp-sync-adapter <https://pypi.org/project/pysnmp-sync-adapter>`_,
+  which contains sync wrappers.
 
 However, we are not maintaining those and will provide no support on them.
 
