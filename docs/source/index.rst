@@ -54,9 +54,9 @@ Documentation
 
 .. warning::
 
-   PySNMP 4.x, 5.x, and 6.0 are no longer supported. Materials about such
-   deprecated versions have been removed, but can still be found in the
-   `PySNMP GitHub repository`_.
+   PySNMP 4.x, 5.x, 6.0, 6.1, and 7.0 are no longer supported. Materials
+   about such deprecated versions have been removed, but can still be found
+   in the `PySNMP GitHub repository`_.
 
    If you are using one of these versions, please consider upgrading to a
    supported version. You can find more information about supported

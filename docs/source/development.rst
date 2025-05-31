@@ -22,7 +22,7 @@ PySNMP library
    be to write another MIB parser and code generator which would produce
    PySNMP compliant Python code right from MIB text files all by itself.
 
-   **Done:** see `PySMI`_` project in conjunction with the latest PySNMP codebase.
+   **Done:** see `PySMI`_ project in conjunction with the latest PySNMP codebase.
 
 #. Reverse MIB index. The variable-bindings received by the system whilst
    in Manager role could be post-processed using the information kept in
