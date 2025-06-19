@@ -164,9 +164,12 @@ async def get_cmd(
         except Exception as e:
             future.set_exception(e)
         else:
-            future.set_result(
-                (errorIndication, errorStatus, errorIndex, varBindsUnmade)
-            )
+            future.set_result((
+                errorIndication,
+                errorStatus,
+                errorIndex,
+                varBindsUnmade,
+            ))
 
     addrName, paramsName = LCD.configure(
         snmpEngine, authData, transportTarget, contextData.contextName
@@ -285,9 +288,12 @@ async def set_cmd(
         except Exception as e:
             future.set_exception(e)
         else:
-            future.set_result(
-                (errorIndication, errorStatus, errorIndex, varBindsUnmade)
-            )
+            future.set_result((
+                errorIndication,
+                errorStatus,
+                errorIndex,
+                varBindsUnmade,
+            ))
 
     addrName, paramsName = LCD.configure(
         snmpEngine, authData, transportTarget, contextData.contextName
@@ -422,9 +428,12 @@ async def next_cmd(
         except Exception as e:
             future.set_exception(e)
         else:
-            future.set_result(
-                (errorIndication, errorStatus, errorIndex, varBindsUnmade)
-            )
+            future.set_result((
+                errorIndication,
+                errorStatus,
+                errorIndex,
+                varBindsUnmade,
+            ))
 
     addrName, paramsName = LCD.configure(
         snmpEngine, authData, transportTarget, contextData.contextName
@@ -590,9 +599,12 @@ async def bulk_cmd(
         except Exception as e:
             future.set_exception(e)
         else:
-            future.set_result(
-                (errorIndication, errorStatus, errorIndex, varBindsUnmade)
-            )
+            future.set_result((
+                errorIndication,
+                errorStatus,
+                errorIndex,
+                varBindsUnmade,
+            ))
 
     addrName, paramsName = LCD.configure(
         snmpEngine, authData, transportTarget, contextData.contextName
@@ -781,8 +793,8 @@ async def walk_cmd(
             errorIndication = errorStatus = errorIndex = None
             varBind = None
 
-        initialVarBinds: "tuple[ObjectType, ...]|None" = (
-            yield errorIndication,
+        initialVarBinds: "tuple[ObjectType, ...]|None" = yield (
+            errorIndication,
             errorStatus,
             errorIndex,
             (varBind,),
@@ -941,6 +953,10 @@ async def bulk_walk_cmd(
             maxRepetitions = min(maxRepetitions, maxRows - totalRows)
 
         if varBinds:
+            # Create a simple tuple with the OID from the previous response and Null value
+            # This approach matches walk_cmd() and works with both lookupMib=True and False
+            nextVarBinds = [(varBinds[-1][0], Null(""))]
+
             errorIndication, errorStatus, errorIndex, varBindTable = await bulk_cmd(
                 snmpEngine,
                 authData,
@@ -948,7 +964,7 @@ async def bulk_walk_cmd(
                 contextData,
                 nonRepeaters,
                 maxRepetitions,
-                *[ObjectType(varBinds[-1][0], Null(""))],
+                *nextVarBinds,
                 **dict(lookupMib=options.get("lookupMib", True)),
             )
 
@@ -1015,8 +1031,8 @@ async def bulk_walk_cmd(
             errorIndication = errorStatus = errorIndex = None
             varBinds = ()
 
-        initialVarBinds: "tuple[ObjectType, ...]|None" = (
-            yield errorIndication,
+        initialVarBinds: "tuple[ObjectType, ...]|None" = yield (
+            errorIndication,
             errorStatus,
             errorIndex,
             varBinds,

@@ -947,13 +947,17 @@ async def bulk_walk_cmd(
             maxRepetitions = min(maxRepetitions, maxRows - totalRows)
 
         if varBinds:
+            # Create a simple tuple with the OID from the previous response and Null value
+            # This approach matches walk_cmd() and works with both lookupMib=True and False
+            nextVarBinds = [(varBinds[-1][0], Null(""))]
+
             errorIndication, errorStatus, errorIndex, varBindTable = await bulk_cmd(
                 dispatcher,
                 authData,
                 transportTarget,
                 nonRepeaters,
                 maxRepetitions,
-                *[ObjectType(varBinds[-1][0], Null(""))],
+                *nextVarBinds,
                 **dict(lookupMib=options.get("lookupMib", True)),
             )
 

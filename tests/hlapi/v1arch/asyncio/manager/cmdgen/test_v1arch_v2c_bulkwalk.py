@@ -318,3 +318,73 @@ async def test_v2c_get_table_bulk_0_6_subtree():
             assert len(varBinds) == 4
 
             assert len(objects_list) == 3
+
+
+@pytest.mark.asyncio
+async def test_bulk_walk_lookupmib_true():
+    """
+    Test that bulk_walk_cmd() works correctly with lookupMib=True.
+    This tests the default behavior.
+    """
+    async with AgentContextManager():
+        with SnmpDispatcher() as snmpDispatcher:
+            count = 0
+            objects = bulk_walk_cmd(
+                snmpDispatcher,
+                CommunityData("public"),
+                await UdpTransportTarget.create(("localhost", AGENT_PORT)),
+                0,
+                1,  # Small max_repetitions to ensure multiple queries
+                ObjectType(ObjectIdentity("SNMPv2-MIB", "system")),
+                lookupMib=True,
+            )
+
+            # This should work fine
+            async for errorIndication, errorStatus, errorIndex, varBinds in objects:
+                assert errorIndication is None, (
+                    f"Error with lookupMib=True: {errorIndication}"
+                )
+                count += 1
+                if count >= 5:  # Process at least some responses
+                    break
+
+            assert count > 0, "No lookupMib=True responses processed"
+
+
+@pytest.mark.asyncio
+async def test_bulk_walk_lookupmib_false():
+    """
+    Test that bulk_walk_cmd() works correctly with lookupMib=False.
+
+    Previously this might have failed because when lookupMib=False, the unmake_varbinds() helper
+    function returns plain ObjectName objects instead of ObjectIdentity objects,
+    which would cause a type mismatch when creating the next query.
+
+    This test confirms the v1arch implementation correctly handles lookupMib=False.
+    """
+    async with AgentContextManager():
+        with SnmpDispatcher() as snmpDispatcher:
+            count = 0
+
+            objects = bulk_walk_cmd(
+                snmpDispatcher,
+                CommunityData("public"),
+                await UdpTransportTarget.create(("localhost", AGENT_PORT)),
+                0,
+                1,  # Small max_repetitions to ensure multiple queries
+                ObjectType(ObjectIdentity("SNMPv2-MIB", "system")),
+                lookupMib=False,
+            )
+
+            # This should work correctly
+            async for errorIndication, errorStatus, errorIndex, varBinds in objects:
+                assert errorIndication is None, (
+                    f"Error with lookupMib=False: {errorIndication}"
+                )
+                count += 1
+                if count >= 5:  # Process at least some responses to confirm it works
+                    break
+
+            # We should be able to process multiple responses without error
+            assert count > 0, "No responses processed with lookupMib=False"
+            assert count >= 2, "Expected multiple responses with lookupMib=False"
