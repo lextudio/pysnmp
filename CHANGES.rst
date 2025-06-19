@@ -1,3 +1,8 @@
+Revision 7.1.21, released on Jun 19, 2025
+-----------------------------------------
+
+- Fixed a bug in bulk walk command when lookupMib is set to False.
+
 Revision 7.1.20, released on May 01, 2025
 -----------------------------------------
 
