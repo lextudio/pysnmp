@@ -17,6 +17,7 @@ This script performs similar to the following Net-SNMP command:
 | $ snmpget -v3 -l authNoPriv -u usr-md5-none -A authkey1 -E 80004fb805636c6f75644dab22cc -n da761cfc8c94d3aceef4f60f049105ba -ObentU 127.0.0.1:161  1.3.6.1.2.1.1.1.0
 
 """  #
+
 from pysnmp.entity import engine, config
 from pysnmp.carrier.asyncio.dgram import udp
 from pysnmp.entity.rfc3413 import cmdgen
@@ -82,6 +83,6 @@ cmdgen.GetCommandGenerator().send_varbinds(
 )
 
 # Run I/O dispatcher which would send pending queries and process responses
-snmpEngine.oepn_dispatcher(3)
+snmpEngine.open_dispatcher(3)
 
 snmpEngine.close_dispatcher()
