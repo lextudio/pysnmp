@@ -59,8 +59,8 @@ class UvEnv(VirtualPythonEnvironment):
         path: Path,
         name: str,
         *,
-        args=None,
-        env=None,
+        args: "Iterable[str]",
+        env: "dict[str, str] | None" = None,
     ):
         """Initialize UV environment provider.
 
@@ -76,7 +76,7 @@ class UvEnv(VirtualPythonEnvironment):
             path / ".venv",  # venv path is determined from project path
             env=env,
         )
-        self.args = args if args is not None else []
+        self.args = args
 
     @classmethod
     def factory(cls, args=None, **kwargs):
@@ -179,7 +179,7 @@ def root_data(driver):
 
 
 # Function to find the closest tag for a given version
-def closest_tag(ref: GitRef, available_keys=None) -> str | None:
+def closest_tag(ref: GitRef, available_keys=None) -> "str | None":
     """Find the closest tag for a given version.
 
     Args:
