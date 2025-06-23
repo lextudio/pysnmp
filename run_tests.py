@@ -43,7 +43,7 @@ def main():
     print("Running tests for this project...", file=sys.stderr)
 
     # Build the command
-    command = ["uv", "run", "pytest"]
+    command = ["uv", "run", "python", "-m", "pytest"]
 
     if args.verbose:
         command.append("-v")

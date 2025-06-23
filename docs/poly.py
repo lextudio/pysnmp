@@ -4,6 +4,8 @@ import subprocess
 from pathlib import Path
 import sys
 from inspect import isawaitable
+from functools import partial
+from typing import Iterable
 
 from sphinx_polyversion.api import apply_overrides
 from sphinx_polyversion.driver import DefaultDriver
@@ -45,47 +47,44 @@ MOCK_DATA = {
     "current": GitRef("local", "", "", GitRefType.TAG, datetime.fromtimestamp(6)),
 }
 MOCK = False
+SEQUENTIAL = False  # Set to True to build docs sequentially (one version at a time)
 
 
 # Custom UV environment provider
-class Uv(VirtualPythonEnvironment):
-    """Python environment using uv."""
+class UvEnv(VirtualPythonEnvironment):
+    """Python environment using uv as the package manager."""
 
     def __init__(
         self,
         path: Path,
         name: str,
-        venv: "str | Path",
         *,
-        creator=None,
-        env=None,
         args=None,
+        env=None,
     ):
         """Initialize UV environment provider.
 
         Args:
             path: Path to the project
             name: Name of the environment
-            venv: Path to the virtual environment
-            creator: Function to create the virtual environment
-            env: Environment variables to set
             args: Arguments to pass to `uv pip install`
+            env: Environment variables to set
         """
         super().__init__(
             path,
             name,
-            venv,
-            creator=creator,
+            path / ".venv",  # venv path is determined from project path
             env=env,
         )
         self.args = args if args is not None else []
 
     @classmethod
-    def factory(cls, args=None):
+    def factory(cls, args=None, **kwargs):
         """Create a factory that produces UV environments.
 
         Args:
             args: Arguments to pass to `uv pip install`
+            **kwargs: Additional keyword arguments
 
         Returns:
             A factory function that creates UV environments
@@ -93,8 +92,7 @@ class Uv(VirtualPythonEnvironment):
         args_list = args if isinstance(args, list) else (args.split() if args else [])
 
         def create_env(path, name):
-            venv = path / ".venv"
-            return cls(path, name, venv, args=args_list)
+            return cls(path, name, args=args_list, **kwargs)
 
         return create_env
 
@@ -152,20 +150,11 @@ class Uv(VirtualPythonEnvironment):
         pass
 
 
-# Function to choose the right environment provider based on version
-def get_env_provider(version):
-    """Get the appropriate environment provider based on the version.
-
-    Args:
-        version: Version string
-
-    Returns:
-        An environment provider factory function
-    """
-    if version.startswith("v7.1"):
-        return Uv.factory(args=UV_ARGS)
-    else:
-        return Poetry.factory(args=POETRY_ARGS.split())
+# Mapping of revisions to environment parameters
+ENVIRONMENT = {
+    None: Poetry.factory(args=POETRY_ARGS.split()),  # Default environment
+    "v7.1": UvEnv.factory(args=UV_ARGS.split()),  # Use UvEnv for v7.1
+}
 
 
 #: Data passed to templates
@@ -189,26 +178,21 @@ def root_data(driver):
     return {"revisions": revisions, "latest": latest}
 
 
-# Custom handler for different versions
-class VersionBasedDriver(DefaultDriver):
-    async def init_environment(self, path, rev):
-        """Initialize the environment for a specific revision.
+# Function to find the closest tag for a given version
+def closest_tag(ref: GitRef, available_keys=None) -> str | None:
+    """Find the closest tag for a given version.
 
-        Args:
-            path: Path to create the environment at
-            rev: Git reference
+    Args:
+        ref: Git reference
+        available_keys: Available keys in the environment mapping
 
-        Returns:
-            The prepared environment
-        """
-        # Create the environment provider for the specific version
-        env_provider = get_env_provider(rev.name)
-        env = env_provider(path=path, name=rev.name)
-
-        # Create the environment
-        await env.__aenter__()
-
-        return env
+    Returns:
+        The closest tag name that should be used to select the environment
+    """
+    # For v7.1, use "v7.1", for all other tags, use None (default)
+    if ref.name.startswith("v7.1"):
+        return "v7.1"
+    return None
 
 
 # Load overrides read from commandline to global scope
@@ -218,7 +202,7 @@ root = Git.root(Path(__file__).parent)
 
 # Setup driver and run it
 src = Path(SOURCE_DIR)
-VersionBasedDriver(
+DefaultDriver(
     root,
     OUTPUT_DIR,
     vcs=Git(
@@ -228,10 +212,11 @@ VersionBasedDriver(
         predicate=file_predicate([src]),  # exclude refs without source dir
     ),
     builder=SphinxBuilder(src / "source", args=SPHINX_ARGS.split()),
-    env=None,  # We'll select the environment provider based on version
+    env=ENVIRONMENT,  # Use environment mapping to select the right environment
+    selector=closest_tag,  # Use the closest_tag function to select the environment
     template_dir=root / src / "templates",
     static_dir=root / src / "static",
     data_factory=data,
     root_data_factory=root_data,
     mock=MOCK_DATA,
-).run(MOCK)
+).run(MOCK, SEQUENTIAL)
