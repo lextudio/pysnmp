@@ -600,6 +600,55 @@ object OIDs to current values.
    >>> g
    (None, 0, 0, [ObjectType(ObjectIdentity('1.3.6.1.2.1.1.3.0'), TimeTicks(0)), ObjectType(ObjectIdentity('1.3.6.1.6.3.1.1.4.1.0'), ObjectIdentity('1.3.6.1.6.3.1.1.5.4')), ObjectType(ObjectName('1.3.6.1.2.1.2.2.1.1.123'), InterfaceIndex(123)), ObjectType(ObjectIdentity('1.3.6.1.2.1.2.2.1.7.123'), Integer(3)), ObjectType(ObjectIdentity('1.3.6.1.2.1.2.2.1.8.123'), Integer(1))])
 
+The above examples use SNMPv2c for simplicity. When working with SNMPv3
+notifications, additional security considerations apply.
+
+SNMPv3 Notifications
++++++++++++++++++++++
+
+SNMPv3 notifications (both TRAPs and INFORMs) use the same User-based Security
+Model (USM) as other SNMPv3 operations, but TRAPs have special requirements due
+to their unsolicited nature.
+
+For SNMPv3 TRAPs specifically, the **SnmpEngineId** has critical requirements:
+
+* Must be **locally unique** on the sending system
+* Must be **known to the receiving party** before any TRAPs are sent
+* Must be **configured in the receiver's VACM users table**
+
+This differs from SNMPv1/v2c TRAPs where only community string matching is
+required.
+
+.. code-block:: python
+
+   from pysnmp.entity import engine, config
+   from pysnmp.proto.api import v2c
+
+   # Create SNMP engine with specific SnmpEngineId
+   # This ID must be pre-configured on the receiving side
+   snmpEngine = engine.SnmpEngine(
+       snmpEngineID=v2c.OctetString(hexValue="8000000001020304")
+   )
+
+   # Configure USM user for authentication and privacy
+   config.add_v3_user(
+       snmpEngine,
+       "usr-md5-des",                    # Username
+       config.USM_AUTH_HMAC96_MD5,       # Authentication protocol
+       "authkey1",                       # Authentication key
+       config.USM_PRIV_CBC56_DES,        # Privacy protocol (optional)
+       "privkey1",                       # Privacy key (optional)
+   )
+
+The receiving SNMP manager must have corresponding USM user entries and VACM
+authorization configured for the sending engine to process the notifications
+successfully.
+
+.. note::
+
+   For complete SNMPv3 TRAP examples with full configuration, see
+   :doc:`/examples/hlapi/v1arch/asyncio/agent/ntforg/common-notifications`.
+
 High-volume Messaging
 ---------------------
 
