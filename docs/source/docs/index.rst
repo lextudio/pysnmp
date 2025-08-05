@@ -25,4 +25,4 @@ Documentation
 
    /faq/index
    /examples/index
-   /download/index
+   /download

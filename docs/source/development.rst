@@ -55,6 +55,13 @@ PySNMP library
    SMI/MIB subsystem into a database. PySNMP engine would talk to it
    through its simple and well defined SMI API.
 
+
+#. Agent-Side Functionality. PySNMP has never offered a complete or
+   production-grade SNMP agent implementation. Agent-side APIs and examples
+   are provided as-is, with no guarantee of completeness or ongoing feature
+   development. Agent functionality is only maintained as needed for
+   PySNMP's own unit tests and for compatibility with snmpsim.
+
 Stand-alone PySNMP-based tools
 ++++++++++++++++++++++++++++++
 
