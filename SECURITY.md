@@ -8,7 +8,7 @@ We provide security updates for each version until its End-of-Life (EOL) date. B
 | ------- | -------------- | ----------- | ---------------------------------- |
 | 7.1     | 7.1.21         | TBD         | EOL to be determined               |
 | 7.0     | 7.0.4          | 2025-03-11  | Reached EOL                        |
-| 6.2     | 6.2.6          | 2025-08-22  | Supported for 1 year after 7.0.0   |
+| 6.2     | 6.2.6          | 2025-08-22  | Reached EOL                        |
 | 6.1     | 6.1.4          | 2025-01-12  | Reached EOL                        |
 | 6.0     | 6.0.13         | 2024-09-23  | Reached EOL                        |
 | 5.1     | 5.1.0          | 2024-08-31  | Reached EOL                        |
