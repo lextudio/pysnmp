@@ -299,30 +299,16 @@ class Slim:
         errorIndex : int
             Non-zero value refers to `varBinds[errorIndex-1]`
         varBindTable : tuple
-            A sequence of sequences (e.g. 2-D array) of
-            :py:class:`~pysnmp.smi.rfc1902.ObjectType` class instances
-            representing a table of MIB variables returned in SNMP response, with
-            up to ``maxRepetitions`` rows, i.e.
-            ``len(varBindTable) <= maxRepetitions``.
+            A flat sequence of :py:class:`~pysnmp.smi.rfc1902.ObjectType`
+            instances returned by the SNMP GetBulk response in wire order.
+            The order is: non-repeaters first (at most one each), followed
+            by up to ``maxRepetitions`` groups of the repeaters in request
+            order. The maximum length is
+            ``nonRepeaters + maxRepetitions * (len(varBinds) - nonRepeaters)``,
+            but the agent can return fewer items (e.g., due to
+            :py:obj:`~pysnmp.proto.rfc1905.endOfMibView` or truncation).
 
-            For ``0 <= i < len(varBindTable)`` and ``0 <= j < len(varBinds)``,
-            ``varBindTable[i][j]`` represents:
-
-            - For non-repeaters (``j < nonRepeaters``), the first lexicographic
-              successor of ``varBinds[j]``, regardless the value of ``i``, or an
-              :py:class:`~pysnmp.smi.rfc1902.ObjectType` instance with the
-              :py:obj:`~pysnmp.proto.rfc1905.endOfMibView` value if no such
-              successor exists;
-            - For repeaters (``j >= nonRepeaters``), the ``i``-th lexicographic
-              successor of ``varBinds[j]``, or an
-              :py:class:`~pysnmp.smi.rfc1902.ObjectType` instance with the
-              :py:obj:`~pysnmp.proto.rfc1905.endOfMibView` value if no such
-              successor exists.
-
-            See :rfc:`3416#section-4.2.3` for details on the underlying
-            ``GetBulkRequest-PDU`` and the associated ``GetResponse-PDU``, such as
-            specific conditions under which the server may truncate the response,
-            causing ``varBindTable`` to have less than ``maxRepetitions`` rows.
+            See :rfc:`3416#section-4.2.3` for protocol details.
 
         Raises
         ------
