@@ -57,7 +57,7 @@ class AsyncioDispatcher(AbstractTransportDispatcher):
         if "timeout" in kwargs:
             self.set_timer_resolution(kwargs["timeout"])
         self.loopingcall = None
-        self.loop = kwargs.pop("loop", asyncio.get_event_loop())
+        self.loop = kwargs.pop("loop", None) or asyncio.get_event_loop()
 
     async def handle_timeout(self):
         """Handle timeout event with proper error handling."""
