@@ -18,11 +18,3 @@ Documentation
    :caption: API Reference
 
    /docs/api-reference
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Additional Resources
-
-   /faq/index
-   /examples/index
-   /download
