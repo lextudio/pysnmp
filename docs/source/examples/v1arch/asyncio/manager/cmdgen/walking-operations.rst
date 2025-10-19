@@ -1,7 +1,7 @@
 .. toctree::
    :maxdepth: 2
 
-MIB walking operations
+MIB Walking Operations
 ----------------------
 
 .. include:: /../../examples/v1arch/asyncio/manager/cmdgen/getnext-pull-whole-mib.py

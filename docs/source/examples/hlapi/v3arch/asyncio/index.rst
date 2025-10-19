@@ -1,6 +1,6 @@
 
-Asynchronous SNMP (asynio, v3arch)
-==================================
+Asynchronous SNMP (v3arch)
+==========================
 
 The :mod:`asyncio` module first appeared in standard library since
 Python 3.3 (in provisional basis). Its main design feature is that it

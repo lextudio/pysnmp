@@ -1,8 +1,8 @@
 .. toctree::
    :maxdepth: 2
 
-Transport tweaks
-----------------
+Transport Tweaks (Agent Side, v1arch)
+-------------------------------------
 
 .. include:: /../../examples/v1arch/asyncio/agent/ntforg/send-trap-over-ipv4-and-ipv6.py
    :start-after: """

@@ -1,7 +1,7 @@
 .. toctree::
    :maxdepth: 2
 
-Fetching variables
+Fetching Variables
 ------------------
 
 .. include:: /../../examples/v1arch/asyncio/manager/cmdgen/fetch-scalar-value.py

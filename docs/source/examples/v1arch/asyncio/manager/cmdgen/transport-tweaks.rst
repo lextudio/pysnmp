@@ -1,8 +1,8 @@
 .. toctree::
    :maxdepth: 2
 
-Transport tweaks
-----------------
+Transport Tweaks (Manager Side, v1arch)
+---------------------------------------
 
 .. TODO: rework this section
 .. .. include:: /../../examples/v1arch/asyncio/manager/cmdgen/spoof-source-address.py

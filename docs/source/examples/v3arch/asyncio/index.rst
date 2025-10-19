@@ -1,7 +1,7 @@
 .. include:: /includes/_links.rst
 
-Asynchronous SNMP (asyncio, v3arch)
-===================================
+Asynchronous SNMP (v3arch)
+==========================
 
 Python 3.4 introduced a new module - `asyncio` (former Tulip,
 PEP 3156) featuring infrastructure for writing single-threaded concurrent

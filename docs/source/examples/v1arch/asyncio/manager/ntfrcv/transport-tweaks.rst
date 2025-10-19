@@ -1,8 +1,8 @@
 .. toctree::
    :maxdepth: 2
 
-Transport tweaks
-----------------
+Transport Tweaks (Manager Side, v1arch)
+---------------------------------------
 
 .. include:: /../../examples/v1arch/asyncio/manager/ntfrcv/listen-on-ipv4-and-ipv6-interfaces.py
    :start-after: """

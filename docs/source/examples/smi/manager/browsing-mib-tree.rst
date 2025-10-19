@@ -1,8 +1,8 @@
 .. toctree::
    :maxdepth: 2
 
-Manager side
-------------
+Browsing MIB Tree (Manager Side)
+--------------------------------
 
 .. include:: /../../examples/smi/manager/configure-mib-viewer-and-resolve-pdu-varbinds.py
    :start-after: """

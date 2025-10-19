@@ -1,8 +1,8 @@
 .. toctree::
    :maxdepth: 2
 
-Transport tweaks
-----------------
+Transport Tweaks (Manager Side, v3arch)
+---------------------------------------
 
 .. include:: /../../examples/v3arch/asyncio/manager/ntfrcv/multiple-network-interfaces.py
    :start-after: """

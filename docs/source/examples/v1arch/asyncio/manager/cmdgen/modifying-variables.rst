@@ -1,7 +1,7 @@
 .. toctree::
    :maxdepth: 2
 
-Modifying variables
+Modifying Variables
 -------------------
 
 .. include:: /../../examples/v1arch/asyncio/manager/cmdgen/v2c-set.py

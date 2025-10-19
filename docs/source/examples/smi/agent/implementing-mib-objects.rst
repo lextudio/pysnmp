@@ -1,8 +1,8 @@
 .. toctree::
    :maxdepth: 2
 
-Agent side
-----------
+Implementing MIB Objects (Agent Side)
+-------------------------------------
 
 .. include:: /../../examples/smi/agent/custom-managed-object.py
    :start-after: """
