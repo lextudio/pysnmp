@@ -1,52 +1,101 @@
 # Commands for Development
 
-## Initialize Poetry
+## Environment Setup (uv-based)
+
+We no longer use Poetry or pyenv for local development. The workflow relies on
+`uv` for pinning Python versions, managing the virtual environment, syncing
+dependencies, and installing standalone tools.
+
+### 1. Pin desired Python version & (re)create venv
+
+Use the helper script (preferred):
 
 ```bash
-poetry init
-poetry self add poetry-bumpversion
-poetry add --group dev pre-commit=2.21.0
-poetry run pre-commit install
+uv run ./run_prepare.py 3.14    # or 3.10, 3.13, etc.
 ```
 
-## Change Poetry Venv Python Version
+This will:
+
+* `uv python pin 3.14` (updates `.python-version`)
+* Reuse or recreate `.venv` targeting that version
+* Install editable package + dev extras
+
+Manual (alternative):
 
 ```bash
-pyenv local 3.11
-poetry env use 3.11
-poetry env info --path
-poetry env list
+uv python pin 3.14
+uv venv --python=3.14
+uv pip install -e .[dev]
 ```
 
-## Bump Version Number
+### 2. Install pre-commit (global tool) & set up hooks
 
-1. Bump the version
+We install `pre-commit` as a uv tool so it's always on PATH without activating
+the venv:
 
-   ```bash
-   poetry lock
-   poetry version patch
-   ```
+```bash
+uv tool install pre-commit
+pre-commit install --overwrite
+```
 
-1. Edit `CHANGES.rst`
+Run checks manually:
 
-1. Edit `docs/poly.py` if the new version tag needs to be added to the list.
+```bash
+pre-commit run --all-files
+```
 
-1. Modify nginx rule to route traffic to the latest version.
+If you prefer the venv-scoped binary:
 
-1. Update Roadmap in `ROADMAP.md`.
+```bash
+uv run pre-commit install --overwrite
+```
+
+### 3. Sync dependencies after changes
+
+When `pyproject.toml` or extras change:
+
+```bash
+uv sync --extra dev
+```
+
+### 4. Updating Python version later
+
+```bash
+uv run ./run_prepare.py 3.10    # switches pin & reconciles venv
+```
+
+## Version Bumping
+
+Use `run_bump.py` (bump2version under uv) with patch default:
+
+```bash
+uv run ./run_bump.py          # patch bump
+uv run ./run_bump.py --minor  # minor bump
+uv run ./run_bump.py --major  # major bump
+```
+
+It will show current -> next version (sourced from `.bumpversion.cfg`). After
+that:
+
+1. Edit `CHANGES.rst`.
+2. Edit `docs/poly.py` if the new version tag needs to be added.
+3. Modify nginx rule to route traffic to the latest version.
+4. Update `ROADMAP.md` as needed.
+
+## Documentation Build
 
 ## Build Documentation
 
 Build current version documentation to find and fix issues:
 
 ```bash
-poetry run make html -C docs
+uv run make -C docs html
 ```
 
 Build multiple versions documentation for deployment:
 
 ```bash
-poetry run sphinx-polyversion docs/poly.py
+uv run sphinx-polyversion docs/poly.py
 ```
 
 ## Check Port number
@@ -55,8 +104,18 @@ poetry run sphinx-polyversion docs/poly.py
 netstat -anp udp | grep 1611
 ```
 
-## Test Coverage
+## Test & Coverage
+
+Run tests:
 
 ```bash
-poetry run pytest --cov=pysnmp --cov-report=xml:coverage.xml
+uv run pytest
 ```
+
+With coverage:
+
+```bash
+uv run pytest --cov=pysnmp --cov-report=xml:coverage.xml
+```
+
+## Misc
