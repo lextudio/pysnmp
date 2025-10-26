@@ -348,7 +348,7 @@ texinfo_documents = [
 
 # Configuration for Intersphinx
 intersphinx_mapping = {
-    "python": ("https://docs.python.org/3.9/", None),
+    "python": ("https://docs.python.org/3.14/", None),
     "pyasn1": ("https://pyasn1.readthedocs.io/en/latest/", None),
     "pysmi": ("https://docs.lextudio.com/pysmi/", None),
 }

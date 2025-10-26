@@ -28,7 +28,7 @@ Features
   compilation
 * Built-in instrumentation exposing protocol engine operations
 * Python eggs and py2exe friendly
-* 100% Python, works with Python 3.9+
+* 100% Python, works with Python 3.10+ (tested on 3.10–3.14)
 * MT-safe (if SnmpEngine is thread-local)
 
 Features, specific to SNMPv3 model include:
@@ -52,7 +52,7 @@ The PySNMP package is freely available for download from
 Just run:
 
 ```bash
-$ pip install pysnmp
+pip install pysnmp
 ```
 
 To download and install PySNMP along with its dependencies:
