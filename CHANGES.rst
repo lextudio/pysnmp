@@ -1,3 +1,9 @@
+Revision 7.1.22, released on Oct 26, 2025
+-----------------------------------------
+
+- Dropped support for Python 3.9.
+- Added Python 3.14 to test matrix.
+
 Revision 7.1.21, released on Jun 19, 2025
 -----------------------------------------
 

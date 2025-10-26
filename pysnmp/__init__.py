@@ -12,7 +12,7 @@ Notes:
 """
 
 # http://www.python.org/dev/peps/pep-0396/
-__version__ = "7.1.21"
+__version__ = "7.1.22"
 # another variable is required to prevent semantic release from updating version in more than one place
 main_version = __version__
 # backward compatibility
