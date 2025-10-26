@@ -5,11 +5,11 @@ repos:
   - id: check-yaml
   - id: end-of-file-fixer
   - id: trailing-whitespace
-- repo: https://github.com/asottile/pyupgrade
-  rev: v2.29.0
-  hooks:
-  - id: pyupgrade
-    args: [--py37-plus]
+# - repo: https://github.com/asottile/pyupgrade
+#   rev: v2.29.0
+#   hooks:
+#   - id: pyupgrade
+#     args: [--py37-plus]
 - repo: https://github.com/astral-sh/ruff-pre-commit
   # Ruff version.
   rev: v0.11.7
