@@ -57,6 +57,7 @@ __all__ = [
     "bulk_cmd",
     "walk_cmd",
     "bulk_walk_cmd",
+    "multi_bulk_walk_cmd",
     "is_end_of_mib",
 ]
 
@@ -1191,22 +1192,18 @@ async def multi_bulk_walk_cmd(
     totalRows = 0
     totalCalls = 0
 
-    # Continue until all varbinds are exhausted
     while True:
 
+        # Used to keep valid varbinds to yield.
         valid_results = []
         if varBinds:
-            # Adjust maxRepetitions if approaching maxRows limit
             if maxRows and totalRows < maxRows:
-                adjusted_max_reps = min(maxRepetitions, maxRows - totalRows)
-            else:
-                adjusted_max_reps = maxRepetitions
+                maxRepetitions = min(maxRepetitions, maxRows - totalRows)
 
             # Build request varbinds from currently active (non-completed) varbinds
             active_indices = [i for i in range(num_varbinds) if not completed[i]]
 
             if not active_indices:
-                # All varbinds have completed their walk
                 return
 
             # Create request varbinds using last known OIDs for active varbinds
@@ -1228,7 +1225,7 @@ async def multi_bulk_walk_cmd(
                 transportTarget,
                 contextData,
                 nonRepeaters,
-                adjusted_max_reps,
+                maxRepetitions,
                 *request_varbinds,
                 **dict(lookupMib=options.get("lookupMib", True)),
             )
@@ -1265,63 +1262,33 @@ async def multi_bulk_walk_cmd(
                 )
                 return
             else:
-                # Successful response - process the varBindTable
                 if not varBindTable:
                     return
 
-                # Group responses by source varbind
-                # bulk_cmd returns: [vb0_r0, vb1_r0, ..., vbN_r0, vb0_r1, vb1_r1, ...]
-                # Which regroup to: [[vb0_r0, vb0_r1, ...], [vb1_r0, vb1_r1, ...]]
                 num_active = len(active_indices)
-                responses_per_varbind = [[] for _ in range(num_active)]
+                stopFlag = True
 
                 for idx, response_vb in enumerate(varBindTable):
                     active_vb_idx = idx % num_active
-                    responses_per_varbind[active_vb_idx].append(response_vb)
+                    original_idx = active_indices[active_vb_idx]
+                    name, val = response_vb
 
-                # Collect all valid responses from this bulk_cmd call
-                stopFlag = True
+                    # Check if beyond initial scope (when lexicographicMode=False)
+                    foundEnding = isinstance(val, (Null, EndOfMibView))
+                    foundBeyond = not lexicographicMode and not initialVars[
+                        original_idx
+                    ].isPrefixOf(name)
 
-                for active_idx, original_idx in enumerate(active_indices):
-                    responses = responses_per_varbind[active_idx]
+                    is_end_of_mib_val = val is endOfMibView
 
-                    if not responses:
+                    if foundEnding or foundBeyond or is_end_of_mib_val:
                         completed[original_idx] = True
                         continue
 
-                    # Track last valid OID for this varbind
-                    last_valid_oid = None
-                    varbind_still_active = False
-
-                    # Process all responses for this varbind
-                    for response_vb in responses:
-                        name, val = response_vb
-                        foundEnding = isinstance(val, Null) or isinstance(
-                            val, EndOfMibView
-                        )
-
-                        # Check if beyond initial scope (when lexicographicMode=False)
-                        foundBeyond = not lexicographicMode and not initialVars[
-                            original_idx
-                        ].isPrefixOf(name)
-
-                        # Check for endOfMibView sentinel
-                        is_end_of_mib_val = val is endOfMibView
-
-                        if foundEnding or foundBeyond or is_end_of_mib_val:
-                            # This response is beyond scope or end - mark varbind as completed and stop processing
-                            completed[original_idx] = True
-                            break
-
-                        # Valid response - add to results
-                        valid_results.append(response_vb)
-                        last_valid_oid = name
-                        varbind_still_active = True
-                        stopFlag = False
-
-                    # Update last OID for next iteration if we have valid responses
-                    if last_valid_oid is not None and varbind_still_active:
-                        last_oids[original_idx] = last_valid_oid
+                    # Valid response - add to results
+                    valid_results.append(response_vb)
+                    last_oids[original_idx] = name
+                    stopFlag = False
 
                 totalRows += len(valid_results)
                 totalCalls += 1
@@ -1342,8 +1309,21 @@ async def multi_bulk_walk_cmd(
                 if not valid_results:
                     return
 
+                if maxRows and totalRows > maxRows:
+                    excess = totalRows - maxRows
+                    keep_count = len(valid_results) - excess
+                    
+                    if keep_count > 0:
+                        valid_results = valid_results[:keep_count]
+                        totalRows = maxRows
+                    else:
+                        # This entire batch exceeds the limit
+                        return
+
         else:
-            errorIndication = errorStatus = errorIndex = None
+            errorIndication = None
+            errorStatus = None
+            errorIndex = None
             varBinds = ()
 
         # Yield all collected valid varBinds for this batch
