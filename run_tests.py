@@ -22,6 +22,11 @@ def main():
     parser.add_argument(
         "--verbose", action="store_true", help="Run with verbose output"
     )
+    parser.add_argument(
+        "--generate-mibs",
+        action="store_true",
+        help="Generate MIBs before running the tests",
+    )
     parser.add_argument("--test-file", default="", help="Specific test file to run")
     parser.add_argument("--test-path", default="tests", help="Path to test directory")
     parser.add_argument("--args", default="", help="Additional pytest arguments")
@@ -39,6 +44,20 @@ def main():
 
         print("Installing dependencies...", file=sys.stderr)
         subprocess.run(["uv", "pip", "install", "-e", ".[dev]"], check=True)
+
+    if args.generate_mibs:
+        print("Generating MIBs for tests...", file=sys.stderr)
+        for mib_name in (
+            "NET-SNMP-EXAMPLES-MIB",
+            "IF-MIB",
+            "LEXTUDIO-TEST-MIB",
+            "CISCO-ENHANCED-IPSEC-FLOW-MIB",
+        ):
+            subprocess.run(
+                ["uv", "run", "mibdump", "--generate-mib-texts", mib_name],
+                check=True,
+                capture_output=True,
+            )
 
     print("Running tests for this project...", file=sys.stderr)
 
