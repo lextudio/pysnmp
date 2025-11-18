@@ -229,7 +229,7 @@ class InetAddress(TextualConvention, OctetString):
     }
 
     @classmethod
-    def cloneFromName(cls, value, impliedFlag, parentRow, parentIndices):
+    def clone_from_name(cls, value, impliedFlag, parentRow, parentIndices):
         for parentIndex in reversed(parentIndices):
             if isinstance(parentIndex, InetAddressType):
                 try:
