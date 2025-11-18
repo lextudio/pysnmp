@@ -703,7 +703,7 @@ if mibBuilder.loadTexts:
     atPhysAddress.setStatus("deprecated")
 if mibBuilder.loadTexts:
     atPhysAddress.setDescription("The media-dependent `physical' address. Setting this object to a null string (one of zero length) has the effect of invaliding the corresponding entry in the atTable object. That is, it effectively dissasociates the interface identified with said entry from the mapping identified with said entry. It is an implementation-specific matter as to whether the agent removes an invalidated entry from the table. Accordingly, management stations must be prepared to receive tabular information from agents that corresponds to entries not currently in use. Proper interpretation of such entries requires examination of the relevant atPhysAddress object.")
-_AtNetAddress_Type = IpAddress
+_AtNetAddress_Type = NetworkAddress
 _AtNetAddress_Object = MibTableColumn
 atNetAddress = _AtNetAddress_Object(
     (1, 3, 6, 1, 2, 1, 3, 1, 1, 3),
