@@ -243,7 +243,7 @@ class InetAddress(TextualConvention, OctetString):
             f"{cls.__name__} object encountered without preceding InetAddressType-like index: {value!r}"
         )
 
-    def cloneAsName(self, impliedFlag, parentRow, parentIndices):
+    def clone_as_name(self, impliedFlag, parentRow, parentIndices):
         for parentIndex in reversed(parentIndices):
             if isinstance(parentIndex, InetAddressType):
                 try:
