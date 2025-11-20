@@ -3,7 +3,7 @@ from pyasn1.type.namedtype import NamedType
 
 from pysnmp.hlapi.v3arch.asyncio import ObjectIdentity, ObjectType, SnmpEngine
 from pysnmp.proto.rfc1155 import NetworkAddress, IpAddress, TypeCoercionHackMixIn
-from pysnmp.smi import view
+from pysnmp.smi import builder, compiler, view
 
 
 def test_clone_none():
@@ -60,4 +60,20 @@ def test_network_address_resolv():
             == '''RFC1213-MIB::atNetAddress.5."NetworkAddress:
  internet=192.168.43.33
 "'''
+        )
+
+
+def test_inet_address_resolv():
+    with SnmpEngine():
+        mib_builder = builder.MibBuilder()
+        compiler.addMibCompiler(mib_builder)
+        mib_view_controller = view.MibViewController(mib_builder)
+        mib_builder.load_modules("TCP-MIB")
+        object_type = ObjectType(
+            ObjectIdentity("1.3.6.1.2.1.6.20.1.4.1.4.127.0.0.1.2002")
+        )
+        resolved = object_type.resolve_with_mib(mib_view_controller)
+        assert (
+            resolved[0].prettyPrint()
+            == 'TCP-MIB::tcpListenerProcess.ipv4."127.0.0.1".2002'
         )

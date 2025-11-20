@@ -50,6 +50,7 @@ def main():
         for mib_name in (
             "NET-SNMP-EXAMPLES-MIB",
             "IF-MIB",
+            "TCP-MIB",
             "LEXTUDIO-TEST-MIB",
             "CISCO-ENHANCED-IPSEC-FLOW-MIB",
         ):
