@@ -1283,8 +1283,8 @@ class MibTableRow(MibTree):
     def setFromName(self, obj, value, impliedFlag=None, parentIndices=None):
         if not value:
             raise error.SmiError(f"Short OID for index {obj!r}")
-        if hasattr(obj, "cloneFromName"):
-            return obj.cloneFromName(
+        if hasattr(obj, "clone_from_name"):
+            return obj.clone_from_name(
                 value, impliedFlag, parentRow=self, parentIndices=parentIndices
             )
         baseTag = obj.getTagSet().getBaseTag()
@@ -1313,8 +1313,8 @@ class MibTableRow(MibTree):
             raise error.SmiError(f"Unknown value type for index {obj!r}")
 
     def getAsName(self, obj, impliedFlag=None, parentIndices=None):
-        if hasattr(obj, "cloneAsName"):
-            return obj.cloneAsName(
+        if hasattr(obj, "clone_as_name"):
+            return obj.clone_as_name(
                 impliedFlag, parentRow=self, parentIndices=parentIndices
             )
         baseTag = obj.getTagSet().getBaseTag()
