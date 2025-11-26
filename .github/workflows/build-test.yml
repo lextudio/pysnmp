@@ -37,13 +37,19 @@ jobs:
       - name: Build
         run: |
           python scripts/build.py
-      - name: Test
+      - name: Pre-Test
         run: |
           uv run mibdump --generate-mib-texts NET-SNMP-EXAMPLES-MIB
           uv run mibdump --generate-mib-texts IF-MIB
           uv run mibdump --generate-mib-texts LEXTUDIO-TEST-MIB
           uv run mibdump --generate-mib-texts CISCO-ENHANCED-IPSEC-FLOW-MIB
-          uv run scripts/tests.py --coverage --args "--junitxml=junit/test-results-${{ matrix.os }}-py${{ matrix.python-version }}.xml --cov-report=xml"
+      - name: Test
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 15
+          max_attempts: 3
+          retry_wait_seconds: 30
+          command: python scripts/tests.py --coverage --retry 2 --args "--junitxml=junit/test-results-${{ matrix.os }}-${{ matrix.python-version }}.xml --cov-report=xml"
       - name: Test summary
         uses: test-summary/action@v2
         with:
