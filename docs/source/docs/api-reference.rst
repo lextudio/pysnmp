@@ -70,10 +70,10 @@ saves its configuration for the lifetime of SNMP engine object.
    :maxdepth: 2
 
 .. autoclass:: pysnmp.hlapi.v3arch.asyncio.UdpTransportTarget
-   :members: setLocalAddress
+   :members: set_local_address
 
 .. autoclass:: pysnmp.hlapi.v3arch.asyncio.Udp6TransportTarget
-   :members: setLocalAddress
+   :members: set_local_address
 
 High-level v3arch SNMP Engine
 -----------------------------
@@ -222,10 +222,10 @@ Transport configuration
    :maxdepth: 2
 
 .. autoclass:: pysnmp.hlapi.v1arch.asyncio.UdpTransportTarget
-   :members: setLocalAddress
+   :members: set_local_address
 
 .. autoclass:: pysnmp.hlapi.v1arch.asyncio.Udp6TransportTarget
-   :members: setLocalAddress
+   :members: set_local_address
 
 High-level v1arch SNMP Dispatcher
 ---------------------------------
