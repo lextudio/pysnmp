@@ -18,6 +18,8 @@ jobs:
         python-version: ['3.10', '3.11', '3.12', '3.13', '3.14']
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: true
       - name: Setup python
         uses: actions/setup-python@v5
         with:
@@ -26,25 +28,16 @@ jobs:
       - name: Build
         run: |
           pip install uv
-          uv venv
-          uv pip install -e .[dev]
+          uv run scripts/prepare.py ${{ matrix.python-version }}
       - name: Test
         run: |
           uv run mibdump --generate-mib-texts NET-SNMP-EXAMPLES-MIB
           uv run mibdump --generate-mib-texts IF-MIB
           uv run mibdump --generate-mib-texts LEXTUDIO-TEST-MIB
           uv run mibdump --generate-mib-texts CISCO-ENHANCED-IPSEC-FLOW-MIB
-          uv run pytest --junitxml=junit/test-results-${{ matrix.python-version }}.xml --cov=com --cov-report=xml --cov-report=html
+          uv run scripts/tests.py --coverage --args "--junitxml=junit/test-results-${{ matrix.os }}-py${{ matrix.python-version }}.xml --cov-report=xml"
       - name: Test summary
         uses: test-summary/action@v2
         with:
           paths: "junit/*.xml"
         if: always()
-      # - uses: actions/upload-artifact@v4
-      #   with:
-      #     name: dist
-      #     path: dist
-      # - uses: actions/upload-artifact@v4
-      #   with:
-      #     name: output
-      #     path: output

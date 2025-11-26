@@ -11,7 +11,7 @@ dependencies, and installing standalone tools.
 Use the helper script (preferred):
 
 ```bash
-uv run ./run_prepare.py 3.14    # or 3.10, 3.13, etc.
+uv run python scripts/prepare.py 3.14    # or 3.10, 3.13, etc.
 ```
 
 This will:
@@ -50,28 +50,20 @@ If you prefer the venv-scoped binary:
 uv run pre-commit install --overwrite
 ```
 
-### 3. Sync dependencies after changes
-
-When `pyproject.toml` or extras change:
+### 3. Updating Python version later
 
 ```bash
-uv sync --extra dev
-```
-
-### 4. Updating Python version later
-
-```bash
-uv run ./run_prepare.py 3.10    # switches pin & reconciles venv
+uv run python scripts/prepare.py 3.10    # switches pin & reconciles venv
 ```
 
 ## Version Bumping
 
-Use `run_bump.py` (bump2version under uv) with patch default:
+Use `scripts/bump.py` (bump2version under uv) with patch default:
 
 ```bash
-uv run ./run_bump.py          # patch bump
-uv run ./run_bump.py --minor  # minor bump
-uv run ./run_bump.py --major  # major bump
+uv run python scripts/bump.py          # patch bump
+uv run python scripts/bump.py --minor  # minor bump
+uv run python scripts/bump.py --major  # major bump
 ```
 
 It will show current -> next version (sourced from `.bumpversion.cfg`). After
