@@ -216,7 +216,7 @@ class ObjectIdentity:
         else:
             raise SmiError("%s object not fully initialized" % self.__class__.__name__)
 
-    def is_fully_resolved(self):
+    def is_fully_resolved(self) -> bool:
         """Returns `True` if MIB variable conversion has been performed.
 
         Returns
@@ -235,7 +235,7 @@ class ObjectIdentity:
         >>>
 
         """
-        return self.__state & self.ST_CLEAN
+        return bool(self.__state & self.ST_CLEAN)
 
     #
     # A gateway to MIBs manipulation routines
@@ -889,7 +889,7 @@ class ObjectType:
             self.__class__.__name__, ", ".join([repr(x) for x in self.__args])
         )
 
-    def is_fully_resolved(self):
+    def is_fully_resolved(self) -> bool:
         """Returns `True` if MIB variable conversion has been performed.
 
         Returns
@@ -897,7 +897,7 @@ class ObjectType:
         bool
             `True` if MIB variable conversion has been performed.
         """
-        return self.__state & self.ST_CLEAN
+        return bool(self.__state & self.ST_CLEAN)
 
     def add_asn1_mib_source(self, *asn1Sources, **kwargs):
         """Adds path to a repository to search ASN.1 MIB files.
