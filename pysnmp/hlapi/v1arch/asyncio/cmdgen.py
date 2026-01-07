@@ -262,6 +262,10 @@ async def set_cmd(
         if future.cancelled():
             return
 
+        if isinstance(errorIndication, errind.RequestTimedOut):
+            future.set_result((errorIndication, 0, 0, ()))
+            return
+
         errorStatus = pMod.apiPDU.get_error_status(rspPdu)
         errorIndex = pMod.apiPDU.get_error_index(rspPdu)
 
@@ -403,6 +407,10 @@ async def next_cmd(
     ):
         lookupMib, future = cbCtx
         if future.cancelled():
+            return
+
+        if isinstance(errorIndication, errind.RequestTimedOut):
+            future.set_result((errorIndication, 0, 0, ()))
             return
 
         if (
@@ -567,6 +575,10 @@ async def bulk_cmd(
     ):
         lookupMib, future = cbCtx
         if future.cancelled():
+            return
+
+        if isinstance(errorIndication, errind.RequestTimedOut):
+            future.set_result((errorIndication, 0, 0, ()))
             return
 
         if (
