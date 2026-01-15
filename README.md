@@ -71,7 +71,7 @@ Documentation
 PySNMP documentation is hosted at the [docs site](https://www.pysnmp.com/pysnmp/).
 
 * Copyright (c) 1999-2020, [Ilya Etingof](https://lists.openstack.org/pipermail/openstack-discuss/2022-August/030062.html)
-* Copyright (c) 2022-2025, [LeXtudio Inc.](mailto:support@lextudio.com)
-* Copyright (c) 1999-2025, [Other PySNMP contributors](https://github.com/lextudio/pysnmp/THANKS.txt)
+* Copyright (c) 2022-2026, [LeXtudio Inc.](mailto:support@lextudio.com)
+* Copyright (c) 1999-2026, [Other PySNMP contributors](https://github.com/lextudio/pysnmp/THANKS.txt)
 
 All rights reserved.
