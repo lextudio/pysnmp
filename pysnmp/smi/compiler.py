@@ -20,13 +20,13 @@ else:
 DEFAULT_BORROWERS = []
 
 try:
-    from pysmi.reader.url import getReadersFromUrls
+    from pysmi.reader.url import get_readers_from_urls
     from pysmi.searcher.pypackage import PyPackageSearcher
     from pysmi.searcher.stub import StubSearcher
     from pysmi.borrower.pyfile import PyFileBorrower
     from pysmi.writer.pyfile import PyFileWriter
     from pysmi.parser.smi import parserFactory
-    from pysmi.parser.dialect import smiV1Relaxed
+    from pysmi.parser.dialect import smi_v1_relaxed
     from pysmi.codegen.pysnmp import PySnmpCodeGen, baseMibs
     from pysmi.compiler import MibCompiler
 
@@ -52,13 +52,13 @@ else:
             return
 
         compiler = MibCompiler(
-            parserFactory(**smiV1Relaxed)(),
+            parserFactory(**smi_v1_relaxed)(),
             PySnmpCodeGen(),
             PyFileWriter(kwargs.get("destination") or DEFAULT_DEST),
         )
 
         compiler.addSources(
-            *getReadersFromUrls(*kwargs.get("sources") or DEFAULT_SOURCES)
+            *get_readers_from_urls(*kwargs.get("sources") or DEFAULT_SOURCES)
         )
 
         compiler.addSearchers(StubSearcher(*baseMibs))
@@ -68,7 +68,7 @@ else:
         compiler.addBorrowers(
             *[
                 PyFileBorrower(x, genTexts=mibBuilder.loadTexts)
-                for x in getReadersFromUrls(
+                for x in get_readers_from_urls(
                     *kwargs.get("borrowers") or DEFAULT_BORROWERS,
                     **dict(lowcaseMatching=False),
                 )
