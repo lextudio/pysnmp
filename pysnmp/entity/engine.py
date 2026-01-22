@@ -29,6 +29,7 @@ from pysnmp.proto.secmod.base import AbstractSecurityModel
 from pysnmp.proto.secmod.rfc2576 import SnmpV1SecurityModel, SnmpV2cSecurityModel
 from pysnmp.proto.secmod.rfc3414 import SnmpUSMSecurityModel
 from pysnmp.smi.builder import MibBuilder
+from pysnmp.smi.view import MibViewController
 
 __all__ = ["SnmpEngine"]
 
@@ -121,6 +122,8 @@ class SnmpEngine:
         (origSnmpEngineID,) = self.get_mib_builder().import_symbols(  # type: ignore
             "__SNMP-FRAMEWORK-MIB", "snmpEngineID"
         )
+        mibViewController = MibViewController(self.get_mib_builder())
+        self.cache["mibViewController"] = mibViewController
 
         if snmpEngineID is None:
             self.snmpEngineID = origSnmpEngineID.syntax
