@@ -432,7 +432,7 @@ class MsgAndPduDispatcher:
 
         except error.StatusInformation:
             statusInformation = sys.exc_info()[1]
-            if "sendPduHandle" in statusInformation:  # type: ignore
+            if "sendPduHandle" in statusInformation and "errorIndication" in statusInformation:  # type: ignore
                 # Dropped REPORT -- re-run pending reqs queue as some
                 # of them may be waiting for this REPORT
                 debug.logger & debug.FLAG_DSP and debug.logger(
