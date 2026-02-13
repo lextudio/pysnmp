@@ -91,12 +91,17 @@ def get_target_address(snmpEngine: SnmpEngine, snmpTargetAddrName):
             snmpTargetAddrTDomain[: len(config.SNMP_UDP6_DOMAIN)]
             == config.SNMP_UDP6_DOMAIN
         ):
-            (TransportAddressIPv6,) = snmpEngine.get_mib_builder().import_symbols(  # type: ignore
-                "TRANSPORT-ADDRESS-MIB", "TransportAddressIPv6"
+            (TransportAddressIPv6, TransportAddressIPv6z) = snmpEngine.get_mib_builder().import_symbols(  # type: ignore
+                "TRANSPORT-ADDRESS-MIB", "TransportAddressIPv6", "TransportAddressIPv6z"
             )
-            addr = transport.ADDRESS_TYPE(  # type: ignore
-                TransportAddressIPv6(snmpTargetAddrTAddress)
-            ).set_local_address(TransportAddressIPv6(snmpSourceAddrTAddress))
+            if len(snmpTargetAddrTAddress) == TransportAddressIPv6.fixed_length:
+                addr = transport.ADDRESS_TYPE(  # type: ignore
+                    TransportAddressIPv6(snmpTargetAddrTAddress)
+                    ).set_local_address(TransportAddressIPv6(snmpSourceAddrTAddress))
+            else: # len(snmpTargetAddrTAddress) == TransportAddressIPv6z.fixed_length
+                addr = transport.ADDRESS_TYPE(  # type: ignore
+                    TransportAddressIPv6z(snmpTargetAddrTAddress)
+                    ).set_local_address(TransportAddressIPv6z(snmpSourceAddrTAddress))
 
         nameToTargetMap[snmpTargetAddrName] = (
             snmpTargetAddrTDomain,

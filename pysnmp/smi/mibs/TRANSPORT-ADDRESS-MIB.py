@@ -393,6 +393,37 @@ class TransportAddressIPv6z(TextualConvention, OctetString):
     if mibBuilder.loadTexts:
         description = "Represents a transport address consisting of an IPv6 address, a zone index and a port number (as used for example by UDP, TCP and SCTP): octets contents encoding 1-16 IPv6 address network-byte order 17-20 zone index network-byte order 21-22 port number network-byte order This textual convention SHOULD NOT be used directly in object definitions since it restricts addresses to a specific format. However, if it is used, it MAY be used either on its own or in conjunction with TransportAddressType or TransportDomain as a pair."
 
+    def prettyIn(self, value):
+        if not has_ipv6:
+            raise error.PySnmpError("IPv6 not supported by platform")
+        if isinstance(value, tuple):
+            value = (
+                inet_pton(socket.AF_INET6, value[0])
+                + bytes(((value[3]  & 0xFF), 0, 0, 0)) # scope id
+                + bytes((((value[1] >> 8) & 0xFF),))
+                + bytes(((value[1] & 0xFF),))
+            )
+        return OctetString.prettyIn(self, value)
+
+    # Socket address syntax coercion
+    def __asSocketAddress(self):
+        if not hasattr(self, "__tuple_value"):
+            if not has_ipv6:
+                raise error.PySnmpError("IPv6 not supported by platform")
+            v = self.asOctets()
+            self.__tuple_value = (
+                inet_ntop(socket.AF_INET6, v[:16]),
+                v[20] << 8 | v[21],
+                0,  # flowinfo
+                v[16], # scopeid
+            )
+        return self.__tuple_value
+
+    def __iter__(self):
+        return iter(self.__asSocketAddress())
+
+    def __getitem__(self, item):
+        return self.__asSocketAddress()[item]
 
 class TransportAddressLocal(TextualConvention, OctetString):
     status = "current"
