@@ -132,7 +132,7 @@ class Udp6TransportTarget(AbstractTransportTarget):
                     type=socket.SOCK_DGRAM,
                     proto=socket.IPPROTO_UDP,
                 )
-            )[0][4][:2]
+            )[0][4]
         except socket.gaierror as exc:
             raise PySnmpError(
                 "Bad IPv6/UDP transport address {}: {}".format(

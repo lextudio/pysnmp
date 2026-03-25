@@ -519,13 +519,19 @@ def add_target_address(
             sourceAddress = ("0.0.0.0", 0)
         sourceAddress = SnmpUDPAddress(sourceAddress)
     elif transportDomain[: len(SNMP_UDP6_DOMAIN)] == SNMP_UDP6_DOMAIN:
-        (TransportAddressIPv6,) = mibBuilder.import_symbols(  # type: ignore
-            "TRANSPORT-ADDRESS-MIB", "TransportAddressIPv6"
+        (TransportAddressIPv6, TransportAddressIPv6z) = mibBuilder.import_symbols(  # type: ignore
+            "TRANSPORT-ADDRESS-MIB", "TransportAddressIPv6", "TransportAddressIPv6z"
         )
-        transportAddress = TransportAddressIPv6(transportAddress)
-        if sourceAddress is None:
-            sourceAddress = ("::", 0)
-        sourceAddress = TransportAddressIPv6(sourceAddress)
+        if len(transportAddress) == 4: # Tuple with zone id and flow
+            transportAddress = TransportAddressIPv6z(transportAddress)
+            if sourceAddress is None:
+                sourceAddress = ("::", 0, 0, 0)
+            sourceAddress = TransportAddressIPv6z(sourceAddress)
+        else: # Tuple with ip and port only
+            transportAddress = TransportAddressIPv6(transportAddress)
+            if sourceAddress is None:
+                sourceAddress = ("::", 0)
+            sourceAddress = TransportAddressIPv6(sourceAddress)
 
     snmpEngine.message_dispatcher.mib_instrum_controller.write_variables(
         (snmpTargetAddrEntry.name + (9,) + tblIdx, "destroy"),
