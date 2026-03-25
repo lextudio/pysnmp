@@ -33,9 +33,9 @@ class SnmpV1SecurityModel(base.AbstractSecurityModel):
 
     def __init__(self):
         """Create SNMPv1 security model instance."""
-        self.__transportBranchId = (
-            self.__paramsBranchId
-        ) = self.__communityBranchId = self.__securityBranchId = -1
+        self.__transportBranchId = self.__paramsBranchId = self.__communityBranchId = (
+            self.__securityBranchId
+        ) = -1
         base.AbstractSecurityModel.__init__(self)
 
     def _close(self):
@@ -54,10 +54,10 @@ class SnmpV1SecurityModel(base.AbstractSecurityModel):
             "SNMP-TARGET-MIB", "snmpTargetParamsSecurityName"
         )
         if self.__paramsBranchId != snmpTargetParamsSecurityName.branchVersionId:
-            (
-                snmpTargetParamsSecurityModel,
-            ) = snmpEngine.get_mib_builder().import_symbols(
-                "SNMP-TARGET-MIB", "snmpTargetParamsSecurityModel"
+            (snmpTargetParamsSecurityModel,) = (
+                snmpEngine.get_mib_builder().import_symbols(
+                    "SNMP-TARGET-MIB", "snmpTargetParamsSecurityModel"
+                )
             )
 
             self.__nameToModelMap = {}
@@ -213,12 +213,21 @@ class SnmpV1SecurityModel(base.AbstractSecurityModel):
                     targetAddrTDomain[: len(udp6.SNMP_UDP6_DOMAIN)]
                     == udp6.SNMP_UDP6_DOMAIN
                 ):
-                    (
-                        TransportAddressIPv6,
-                    ) = snmpEngine.get_mib_builder().import_symbols(
-                        "TRANSPORT-ADDRESS-MIB", "TransportAddressIPv6"
+                    (TransportAddressIPv6, TransportAddressIPv6z) = (
+                        snmpEngine.get_mib_builder().import_symbols(
+                            "TRANSPORT-ADDRESS-MIB",
+                            "TransportAddressIPv6",
+                            "TransportAddressIPv6z",
+                        )
                     )
-                    targetAddrTAddress = tuple(TransportAddressIPv6(targetAddrTAddress))
+                    if len(targetAddrTAddress) == TransportAddressIPv6.fixed_length:
+                        targetAddrTAddress = tuple(
+                            TransportAddressIPv6(targetAddrTAddress)
+                        )
+                    else:
+                        targetAddrTAddress = tuple(
+                            TransportAddressIPv6z(targetAddrTAddress)
+                        )
                 targetAddr = targetAddrTDomain, targetAddrTAddress
                 targetAddrTagList = snmpTargetAddrTagList.getNode(
                     snmpTargetAddrTagList.name + instId
@@ -229,12 +238,10 @@ class SnmpV1SecurityModel(base.AbstractSecurityModel):
 
                 try:
                     if targetAddrTagList:
-                        self.__transportToTagMap[targetAddr].update(
-                            [
-                                SnmpTagValue(x)
-                                for x in targetAddrTagList.asOctets().split()
-                            ]
-                        )
+                        self.__transportToTagMap[targetAddr].update([
+                            SnmpTagValue(x)
+                            for x in targetAddrTagList.asOctets().split()
+                        ])
 
                     else:
                         self.__transportToTagMap[targetAddr].add(self.__emptyTag)
@@ -260,10 +267,10 @@ class SnmpV1SecurityModel(base.AbstractSecurityModel):
         )
 
         if self.__paramsBranchId != snmpTargetParamsSecurityName.branchVersionId:
-            (
-                snmpTargetParamsSecurityModel,
-            ) = snmpEngine.get_mib_builder().import_symbols(
-                "SNMP-TARGET-MIB", "snmpTargetParamsSecurityModel"
+            (snmpTargetParamsSecurityModel,) = (
+                snmpEngine.get_mib_builder().import_symbols(
+                    "SNMP-TARGET-MIB", "snmpTargetParamsSecurityModel"
+                )
             )
 
             self.__nameToModelMap = {}
@@ -363,9 +370,11 @@ class SnmpV1SecurityModel(base.AbstractSecurityModel):
                     if _tagAndCommunity not in self.__tagAndCommunityToSecurityMap:
                         self.__tagAndCommunityToSecurityMap[_tagAndCommunity] = set()
 
-                    self.__tagAndCommunityToSecurityMap[_tagAndCommunity].add(
-                        (securityName, contextEngineId, contextName)
-                    )
+                    self.__tagAndCommunityToSecurityMap[_tagAndCommunity].add((
+                        securityName,
+                        contextEngineId,
+                        contextName,
+                    ))
 
                     if nextMibNode.syntax not in self.__communityToTagMap:
                         self.__communityToTagMap[nextMibNode.syntax] = set()
