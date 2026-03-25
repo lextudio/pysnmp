@@ -138,6 +138,7 @@ html_theme = "furo"
 # documentation.
 
 html_theme_options = {
+    "announcement": 'Try <strong>SNMP Studio</strong>: <a href="https://www.sharpsnmp.com/#section-studio" target="_blank">Explore the smart IDE for SNMP professionals.</a>.',
     "source_repository": repo,
     "source_branch": f"release-{version}",
     "source_directory": "docs/source/",
