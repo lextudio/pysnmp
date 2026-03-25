@@ -76,4 +76,8 @@ build-backend = "flit_core.buildapi"
 
 [tool.ruff]
 lint.ignore = ["F401", "F403", "F405"]
+lint.per-file-ignores = { "pysnmp/smi/mibs/**/*.py" = ["E731", "F821"] }
 preview = true
+
+[tool.ruff.format]
+exclude = ["pysnmp/smi/mibs/**/*.py"]

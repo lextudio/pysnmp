@@ -397,9 +397,17 @@ class TransportAddressIPv6z(TextualConvention, OctetString):
         if not has_ipv6:
             raise error.PySnmpError("IPv6 not supported by platform")
         if isinstance(value, tuple):
+            scopeid = value[3]
             value = (
                 inet_pton(socket.AF_INET6, value[0])
-                + bytes(((value[3]  & 0xFF), 0, 0, 0)) # scope id
+                + bytes(
+                    (
+                        (scopeid >> 24) & 0xFF,
+                        (scopeid >> 16) & 0xFF,
+                        (scopeid >> 8) & 0xFF,
+                        scopeid & 0xFF,
+                    )
+                )
                 + bytes((((value[1] >> 8) & 0xFF),))
                 + bytes(((value[1] & 0xFF),))
             )
@@ -415,7 +423,7 @@ class TransportAddressIPv6z(TextualConvention, OctetString):
                 inet_ntop(socket.AF_INET6, v[:16]),
                 v[20] << 8 | v[21],
                 0,  # flowinfo
-                v[16], # scopeid
+                v[16] << 24 | v[17] << 16 | v[18] << 8 | v[19],
             )
         return self.__tuple_value
 
