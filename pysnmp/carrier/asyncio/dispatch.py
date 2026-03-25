@@ -57,7 +57,10 @@ class AsyncioDispatcher(AbstractTransportDispatcher):
         if "timeout" in kwargs:
             self.set_timer_resolution(kwargs["timeout"])
         self.loopingcall = None
-        self.loop = kwargs.pop("loop", None) or asyncio.get_event_loop()
+        if "loop" in kwargs:
+            self.loop = kwargs.pop("loop")
+        else:
+            self.loop = asyncio.get_event_loop()
 
     async def handle_timeout(self):
         """Handle timeout event with proper error handling."""
@@ -96,7 +99,9 @@ class AsyncioDispatcher(AbstractTransportDispatcher):
     ):
         """Register transport associated with given transport domain."""
         if self.loopingcall is None and self.get_timer_resolution() > 0:
-            self.loopingcall = asyncio.ensure_future(self.handle_timeout(), loop=self.loop)
+            self.loopingcall = asyncio.ensure_future(
+                self.handle_timeout(), loop=self.loop
+            )
         super().register_transport(tDomain, transport)
         self.__transport_count += 1
 
