@@ -1,3 +1,14 @@
+Revision 7.1.23, released on Mar 25, 2026
+-----------------------------------------
+
+- Bumped `pyasn1` dependency to 0.6.3.
+- Fixed `smi.rfc1902` boolean return values to match documentation.
+- Added type hints and tests for `is_fully_resolved()` to improve correctness.
+- Refactored `AsyncioDispatcher` to avoid creating event loop unexpectedly and
+  improve loop initialization.
+- Improved IPv6 handling (zone ID support).
+- Implemented v1arch command timeouts for `{set,next,bulk}_cmd` operations.
+
 Revision 7.1.22, released on Oct 26, 2025
 -----------------------------------------
 
