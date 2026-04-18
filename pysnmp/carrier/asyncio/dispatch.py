@@ -49,11 +49,13 @@ class AsyncioDispatcher(AbstractTransportDispatcher):
 
     loop: asyncio.AbstractEventLoop
     __transport_count: int
+    __run_dispatcher_started_loop: bool
 
     def __init__(self, *args, **kwargs):
         """Create an asyncio dispatcher object."""
         super().__init__()
         self.__transport_count = 0
+        self.__run_dispatcher_started_loop = False
         if "timeout" in kwargs:
             self.set_timer_resolution(kwargs["timeout"])
         self.loopingcall = None
@@ -76,6 +78,7 @@ class AsyncioDispatcher(AbstractTransportDispatcher):
         """Run the dispatcher loop."""
         if not self.loop.is_running():
             try:
+                self.__run_dispatcher_started_loop = True
                 if timeout > 0:
                     self.loop.call_later(timeout, self.__close_dispatcher)
                 self.loop.run_forever()
@@ -83,6 +86,8 @@ class AsyncioDispatcher(AbstractTransportDispatcher):
                 raise
             except Exception:
                 raise PySnmpError(";".join(traceback.format_exception(*sys.exc_info())))
+            finally:
+                self.__run_dispatcher_started_loop = False
 
     def __close_dispatcher(self):
         if self.loop.is_running():
@@ -93,14 +98,19 @@ class AsyncioDispatcher(AbstractTransportDispatcher):
         """Close the dispatcher and stop the event loop.
 
         This method closes all registered transports, cancels pending timers,
-        and stops the event loop if it is currently running. This allows
-        any blocking run_dispatcher() call to return.
+        and stops the event loop if it is currently running and was started
+        by run_dispatcher(). This allows any blocking run_dispatcher() call
+        to return. Safe to call from async code.
         """
         super().close_dispatcher()
         self.__transport_count = 0
         self._cancel_loopingcall()
-        if self.loop.is_running():
-            self.loop.stop()
+        if self.__run_dispatcher_started_loop and self.loop.is_running():
+            try:
+                if asyncio.current_task(self.loop) is None:
+                    self.loop.stop()
+            except RuntimeError:
+                pass
 
     def register_transport(
         self, tDomain: Tuple[int, ...], transport: AbstractTransport

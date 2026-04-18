@@ -40,13 +40,19 @@ def test_asyncio_dispatcher_preserves_explicit_none_loop():
 
 
 def test_close_dispatcher_stops_running_event_loop():
-    loop = mock.Mock(spec=asyncio.AbstractEventLoop)
-    loop.is_running.return_value = True
+    """Test that close_dispatcher stops the loop when run_dispatcher started it."""
+    loop = asyncio.new_event_loop()
     dispatcher = AsyncioDispatcher(loop=loop)
 
-    dispatcher.close_dispatcher()
+    # Simulate run_dispatcher having started the loop
+    dispatcher._AsyncioDispatcher__run_dispatcher_started_loop = True  # type: ignore[attr-defined]
 
-    loop.stop.assert_called_once()
+    # Mock current_task to return None (we're not in the event loop)
+    with mock.patch("asyncio.current_task", return_value=None):
+        dispatcher.close_dispatcher()
+
+    assert not loop.is_running()
+    loop.close()
 
 
 def test_close_dispatcher_multiple_times_is_safe():
