@@ -149,8 +149,8 @@ async def get_cmd(
         snmpEngine: SnmpEngine,
         sendRequestHandle,
         errorIndication: errind.ErrorIndication,
-        errorStatus: "Integer32 | int",
-        errorIndex: "Integer32 | int",
+        errorStatus: Integer32,
+        errorIndex: Integer32,
         varBinds,
         cbCtx,
     ):
@@ -196,7 +196,7 @@ async def set_cmd(
     contextData: ContextData,
     *varBinds: ObjectType,
     **options,
-) -> "tuple[errind.ErrorIndication, Integer32 | int, Integer32 | int, tuple[ObjectType, ...]]":
+) -> "tuple[errind.ErrorIndication, Integer32, Integer32, tuple[ObjectType, ...]]":
     r"""Creates a generator to perform SNMP SET query.
 
     When iterator gets advanced by :py:mod:`asyncio` main loop,
@@ -273,8 +273,8 @@ async def set_cmd(
         snmpEngine: SnmpEngine,
         sendRequestHandle,
         errorIndication: errind.ErrorIndication,
-        errorStatus: "Integer32 | int",
-        errorIndex: "Integer32 | int",
+        errorStatus: Integer32,
+        errorIndex: Integer32,
         varBinds,
         cbCtx,
     ):
@@ -405,8 +405,8 @@ async def next_cmd(
         snmpEngine: SnmpEngine,
         sendRequestHandle,
         errorIndication: errind.ErrorIndication,
-        errorStatus: "Integer32 | int",
-        errorIndex: "Integer32 | int",
+        errorStatus: Integer32,
+        errorIndex: Integer32,
         varBinds,
         cbCtx,
     ):
@@ -569,8 +569,8 @@ async def bulk_cmd(
         snmpEngine: SnmpEngine,
         sendRequestHandle,
         errorIndication: errind.ErrorIndication,
-        errorStatus: "Integer32 | int",
-        errorIndex: "Integer32 | int",
+        errorStatus: Integer32,
+        errorIndex: Integer32,
         varBinds,
         cbCtx,
     ):

@@ -481,8 +481,7 @@ class SetCommandResponder(CommandResponderBase):
 
         else:
             self.send_varbinds(snmpEngine, stateReference, 0, 0, rspVarBinds)
-
-        self.release_state_information(stateReference)
+            self.release_state_information(stateReference)
 
         if instrumError:
             raise instrumError

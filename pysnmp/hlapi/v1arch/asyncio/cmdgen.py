@@ -38,7 +38,7 @@ async def get_cmd(
     transportTarget: AbstractTransportTarget,
     *varBinds: ObjectType,
     **options,
-) -> "tuple[errind.ErrorIndication | None, Integer32 | str | int | None, Integer32 | int | None, tuple[ObjectType, ...]]":
+) -> "tuple[errind.ErrorIndication, Integer32, Integer32, tuple[ObjectType, ...]]":
     r"""Creates a generator to perform SNMP GET query.
 
     When iterator gets advanced by :py:mod:`asyncio` main loop,
@@ -176,7 +176,7 @@ async def set_cmd(
     transportTarget: AbstractTransportTarget,
     *varBinds: ObjectType,
     **options,
-) -> "tuple[errind.ErrorIndication | None, Integer32 | str | int | None, Integer32 | int | None, tuple[ObjectType, ...]]":
+) -> "tuple[errind.ErrorIndication, Integer32, Integer32, tuple[ObjectType, ...]]":
     r"""Creates a generator to perform SNMP SET query.
 
     When iterator gets advanced by :py:mod:`asyncio` main loop,
@@ -314,7 +314,7 @@ async def next_cmd(
     transportTarget: AbstractTransportTarget,
     *varBinds: ObjectType,
     **options,
-) -> "tuple[errind.ErrorIndication | None, Integer32 | str | int | None, Integer32 | int | None, tuple[ObjectType, ...]]":
+) -> "tuple[errind.ErrorIndication, Integer32, Integer32, tuple[ObjectType, ...]]":
     r"""Creates a generator to perform SNMP GETNEXT query.
 
     When iterator gets advanced by :py:mod:`asyncio` main loop,
@@ -470,7 +470,7 @@ async def bulk_cmd(
     maxRepetitions: int,
     *varBinds: ObjectType,
     **options,
-) -> "tuple[errind.ErrorIndication | None, Integer32 | str | int | None, Integer32 | int | None, tuple[ObjectType, ...]]":
+) -> "tuple[errind.ErrorIndication, Integer32, Integer32, tuple[ObjectType, ...]]":
     r"""Creates a generator to perform SNMP GETBULK query.
 
     When iterator gets advanced by :py:mod:`asyncio` main loop,

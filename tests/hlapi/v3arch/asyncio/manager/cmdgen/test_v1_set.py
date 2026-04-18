@@ -1,5 +1,15 @@
 import pytest
-from pysnmp.hlapi.v3arch.asyncio import *
+from pysnmp.hlapi.v3arch.asyncio import (
+    CommunityData,
+    ContextData,
+    SnmpEngine,
+    set_cmd,
+    UdpTransportTarget,
+    walk_cmd,
+)
+from pysnmp.proto.api.v1 import OctetString
+from pysnmp.proto.rfc1902 import Integer32
+from pysnmp.smi.rfc1902 import ObjectIdentity, ObjectType
 from tests.agent_context import AGENT_PORT, AgentContextManager
 
 
@@ -12,7 +22,10 @@ async def test_v1_set():
                 CommunityData("public", mpModel=0),
                 await UdpTransportTarget.create(("localhost", AGENT_PORT)),
                 ContextData(),
-                ObjectType(ObjectIdentity("SNMPv2-MIB", "sysLocation", 0), "Shanghai"),
+                ObjectType(
+                    ObjectIdentity("SNMPv2-MIB", "sysLocation", 0),
+                    OctetString("Shanghai"),
+                ),
             )
 
             assert errorIndication is None
@@ -21,6 +34,24 @@ async def test_v1_set():
             assert varBinds[0][0].prettyPrint() == "SNMPv2-MIB::sysLocation.0"
             assert varBinds[0][1].prettyPrint() == "Shanghai"
             assert isinstance(varBinds[0][1], OctetString)
+
+
+@pytest.mark.asyncio
+async def test_v1_set_nonexistent_oid_returns_no_such_name():
+    """Test that SNMPv1 SET to non-existent OID returns noSuchName error (issue #230)."""
+    async with AgentContextManager():
+        with SnmpEngine() as snmpEngine:
+            errorIndication, errorStatus, errorIndex, varBinds = await set_cmd(
+                snmpEngine,
+                CommunityData("public", mpModel=0),
+                await UdpTransportTarget.create(("localhost", AGENT_PORT)),
+                ContextData(),
+                ObjectType(ObjectIdentity("1.3.6.1.4.1.60069.9.99.0"), Integer32(42)),
+            )
+
+            assert errorIndication is None
+            # SNMPv1 wire format maps notWritable to noSuchName
+            assert errorStatus.prettyPrint() == "noSuchName"
 
 
 @pytest.mark.asyncio
@@ -63,7 +94,7 @@ async def test_v1_set_table_creation():
                 CommunityData("public", mpModel=0),
                 await UdpTransportTarget.create(("localhost", AGENT_PORT)),
                 ContextData(),
-                ObjectType(ObjectIdentity("1.3.6.6.1.5.4.97.98.99"), Integer(4)),
+                ObjectType(ObjectIdentity("1.3.6.6.1.5.4.97.98.99"), Integer32(4)),
             )
 
             assert errorIndication is None
