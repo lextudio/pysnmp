@@ -115,7 +115,7 @@ class SysUpTime(TimeTicks):
 
     def clone(self, **kwargs):
         if "value" not in kwargs:
-            kwargs["value"] = int((time() - self.createdAt) * 100)
+            kwargs["value"] = int((time() - self.createdAt) * 100) & 0xFFFFFFFF
         return TimeTicks.clone(self, **kwargs)
 
 

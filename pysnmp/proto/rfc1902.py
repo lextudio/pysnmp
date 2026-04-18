@@ -103,9 +103,7 @@ class Integer32(univ.Integer):
         """Creates a subclass with discreet values constraint."""
 
         class X(cls):
-            subtypeSpec = cls.subtypeSpec + constraint.SingleValueConstraint(
-                *values
-            )  # noqa: N815
+            subtypeSpec = cls.subtypeSpec + constraint.SingleValueConstraint(*values)  # noqa: N815
 
         X.__name__ = cls.__name__
         return X
@@ -365,9 +363,7 @@ class IpAddress(OctetString):
     tagSet = OctetString.tagSet.tagImplicitly(  # noqa: N815
         tag.Tag(tag.tagClassApplication, tag.tagFormatSimple, 0x00)
     )
-    subtypeSpec = OctetString.subtypeSpec + constraint.ValueSizeConstraint(
-        4, 4
-    )  # noqa: N815
+    subtypeSpec = OctetString.subtypeSpec + constraint.ValueSizeConstraint(4, 4)  # noqa: N815
     fixed_length = 4
 
     def prettyIn(self, value):  # noqa: N802
@@ -375,7 +371,7 @@ class IpAddress(OctetString):
         if isinstance(value, str) and len(value) != 4:
             try:
                 value = [int(x) for x in value.split(".")]
-            except:
+            except (ValueError, AttributeError):
                 raise error.ProtocolError("Bad IP address syntax %s" % value)
         value = OctetString.prettyIn(self, value)
         if len(value) != 4:
@@ -428,6 +424,12 @@ class Counter32(univ.Integer):
     subtypeSpec = univ.Integer.subtypeSpec + constraint.ValueRangeConstraint(
         0, 4294967295
     )  # noqa: N815
+
+    def __add__(self, value):
+        return self.clone((int(self._value) + value) & 0xFFFFFFFF)
+
+    def __iadd__(self, value):
+        return self.clone((int(self._value) + value) & 0xFFFFFFFF)
 
 
 class Gauge32(univ.Integer):
@@ -546,6 +548,12 @@ class TimeTicks(univ.Integer):
     subtypeSpec = univ.Integer.subtypeSpec + constraint.ValueRangeConstraint(
         0, 4294967295
     )  # noqa: N815
+
+    def __add__(self, value):
+        return self.clone((int(self._value) + value) & 0xFFFFFFFF)
+
+    def __iadd__(self, value):
+        return self.clone((int(self._value) + value) & 0xFFFFFFFF)
 
 
 class Opaque(univ.OctetString):
