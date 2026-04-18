@@ -90,9 +90,17 @@ class AsyncioDispatcher(AbstractTransportDispatcher):
         self.close_dispatcher()
 
     def close_dispatcher(self):
+        """Close the dispatcher and stop the event loop.
+
+        This method closes all registered transports, cancels pending timers,
+        and stops the event loop if it is currently running. This allows
+        any blocking run_dispatcher() call to return.
+        """
         super().close_dispatcher()
         self.__transport_count = 0
         self._cancel_loopingcall()
+        if self.loop.is_running():
+            self.loop.stop()
 
     def register_transport(
         self, tDomain: Tuple[int, ...], transport: AbstractTransport

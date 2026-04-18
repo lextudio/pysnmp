@@ -316,7 +316,11 @@ class AbstractTransportDispatcher:
         raise error.CarrierError("Method not implemented")
 
     def close_dispatcher(self):
-        """Close the dispatcher."""
+        """Close the dispatcher.
+
+        Unregisters all transports and callbacks. Subclasses may override
+        to also stop the event loop or perform dispatcher-specific cleanup.
+        """
         for tDomain in list(self.__transports):
             self.__transports[tDomain].close_transport()
             self.unregister_transport(tDomain)
