@@ -1,3 +1,14 @@
+Revision 7.1.24, released on Apr 18, 2026
+-----------------------------------------
+
+- Fixed Counter32 and TimeTicks overflow handling
+- Improved type hints and test coverage for SET command functions.
+- Improved `AsyncioDispatcher` to track loop state and ensure proper event
+  loop closure.
+- Refined `MibBuilder` error handling and added tests for MIB compilation
+  errors.
+- Fixed dispatcher close handling to avoid event loop/resource leaks.
+
 Revision 7.1.23, released on Mar 25, 2026
 -----------------------------------------
 
