@@ -259,9 +259,10 @@ class DirMibSource(__AbstractMibSource):
 class MibBuilder:
     """MIB builder."""
 
-    DEFAULT_CORE_MIBS = os.pathsep.join(
-        ("pysnmp.smi.mibs.instances", "pysnmp.smi.mibs")
-    )
+    DEFAULT_CORE_MIBS = os.pathsep.join((
+        "pysnmp.smi.mibs.instances",
+        "pysnmp.smi.mibs",
+    ))
     DEFAULT_MISC_MIBS = "pysnmp_mibs"
 
     module_id = "PYSNMP_MODULE_ID"
@@ -414,16 +415,20 @@ class MibBuilder:
                     "loadModules: calling MIB compiler for %s" % modName
                 )
                 status = self.__mibCompiler.compile(modName, genTexts=self.loadTexts)
-                errs = "; ".join(
-                    [
-                        hasattr(x, "error") and str(x.error) or x
-                        for x in status.values()
-                        if x in ("failed", "missing")
-                    ]
-                )
+                errs = []
+                for mib_name, mib_status in status.items():
+                    if mib_status in ("failed", "missing"):
+                        error_attr = getattr(mib_status, "error", None)
+                        errs.append(
+                            str(error_attr)
+                            if error_attr
+                            else f"{mib_name}: {mib_status}"
+                        )
+                    elif mib_status == "unprocessed":
+                        errs.append(f"{mib_name}: not compiled (dependency error)")
                 if errs:
                     raise error.MibNotFoundError(
-                        f"{modName} compilation error(s): {errs}"
+                        f"{modName} compilation error(s): {'; '.join(errs)}"
                     )
 
                 # compilation succeeded, MIB might load now
