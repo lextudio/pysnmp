@@ -760,6 +760,8 @@ async def walk_cmd(
                     # from SNMPv1 Agent through internal pysnmp proxy.
                     errorStatus = 0
                     errorIndex = 0
+                    return
+                yield (errorIndication, errorStatus, errorIndex, (varBind,))
                 return
             else:
                 stopFlag = True

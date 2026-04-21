@@ -1,5 +1,15 @@
 import pytest
-from pysnmp.hlapi.v3arch.asyncio import *
+from unittest.mock import AsyncMock, patch
+from pysnmp.hlapi.v3arch.asyncio import (
+    SnmpEngine,
+    CommunityData,
+    ContextData,
+    UdpTransportTarget,
+    ObjectType,
+    ObjectIdentity,
+    Integer32,
+    walk_cmd,
+)
 from tests.agent_context import AGENT_PORT, AgentContextManager
 
 total_count = 212  # 267
@@ -66,3 +76,31 @@ async def test_v2_walk_subtree():
             assert varBinds[0][0].prettyPrint() == "SNMPv2-MIB::sysObjectID.0"
 
             assert len(objects_list) == 8
+
+
+@pytest.mark.asyncio
+async def test_v2_walk_yields_error_status():
+    """Regression test for issue #236: walk_cmd must yield errorStatus before terminating."""
+    with patch(
+        "pysnmp.hlapi.v3arch.asyncio.cmdgen.next_cmd",
+        new=AsyncMock(return_value=(None, Integer32(3), Integer32(1), [])),
+    ):
+        with SnmpEngine() as snmpEngine:
+            objects = walk_cmd(
+                snmpEngine,
+                CommunityData("public"),
+                await UdpTransportTarget.create(("localhost", AGENT_PORT)),
+                ContextData(),
+                ObjectType(ObjectIdentity("SNMPv2-MIB", "sysDescr", 0)),
+            )
+            objects_list = [item async for item in objects]
+
+    assert len(objects_list) == 1, (
+        "walk_cmd must yield the error rather than silently terminating"
+    )
+    errorIndication, errorStatus, errorIndex, varBinds = objects_list[0]
+    assert errorIndication is None
+    assert errorStatus is not None
+    assert errorIndex is not None
+    assert int(errorStatus) == 3
+    assert int(errorIndex) == 1
