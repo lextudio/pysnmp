@@ -1,7 +1,12 @@
+Revision 7.1.25, released on Apr 23, 2026
+-----------------------------------------
+
+- Fixed an error handling bug in walk_cmd.
+
 Revision 7.1.24, released on Apr 18, 2026
 -----------------------------------------
 
-- Fixed Counter32 and TimeTicks overflow handling
+- Fixed Counter32 and TimeTicks overflow handling.
 - Improved type hints and test coverage for SET command functions.
 - Improved `AsyncioDispatcher` to track loop state and ensure proper event
   loop closure.
