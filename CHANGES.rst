@@ -1,3 +1,8 @@
+Revision 7.1.26, released on Apr 26, 2026
+-----------------------------------------
+
+- Lifted pysmi dependency restriction up to 2.0.0 and above.
+
 Revision 7.1.25, released on Apr 23, 2026
 -----------------------------------------
 

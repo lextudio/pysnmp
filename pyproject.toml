@@ -1,6 +1,6 @@
 [project]
 name = "pysnmp"
-version = "7.1.25"
+version = "7.1.26"
 description = "A Python library for SNMP"
 authors = [
     {name = "Ilya Etingof", email = "etingof@gmail.com"},
@@ -57,7 +57,7 @@ dev = [
     "flake8>=7.0.0",
     "pep8-naming>=0.14.1",
     "cryptography>=44.0.1",
-    "pysmi>=1.6.1",
+    "pysmi>=2.0.0",
     "bump2version>=1.0.1",
     "ruff>=0.11.7",
     "jinja2>=3.1.6"
