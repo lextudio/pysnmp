@@ -1,3 +1,5 @@
+.. current-version: 7.1.26 (managed by bump2version)
+
 Revision 7.1.26, released on Apr 26, 2026
 -----------------------------------------
 
