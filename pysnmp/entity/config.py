@@ -9,6 +9,7 @@ import warnings
 
 from pysnmp import debug, error
 from pysnmp.carrier.asyncio.dgram import udp, udp6
+from pysnmp.carrier.asyncio.stream import tcp
 from pysnmp.carrier.base import AbstractTransport
 from pysnmp.entity.engine import SnmpEngine
 from pysnmp.proto import rfc1902, rfc1905
@@ -75,6 +76,7 @@ def __getattr__(attr: str):
 # Transports
 SNMP_UDP_DOMAIN = udp.SNMP_UDP_DOMAIN
 SNMP_UDP6_DOMAIN = udp6.SNMP_UDP6_DOMAIN
+SNMP_TCP_DOMAIN = tcp.SNMP_TCP_DOMAIN
 
 # Auth protocol
 USM_AUTH_HMAC96_MD5 = hmacmd5.HmacMd5.SERVICE_ID
