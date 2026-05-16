@@ -6,7 +6,7 @@ authors = [
     {name = "Ilya Etingof", email = "etingof@gmail.com"},
     {name = "LeXtudio Inc.", email = "support@lextudio.com"}
 ]
-license = "BSD-2-Clause"
+license = { text = "BSD-2-Clause" }
 readme = "README.md"
 requires-python = ">=3.10"
 classifiers = [
