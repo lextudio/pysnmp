@@ -111,6 +111,10 @@ def test_fixed_length_index_no_length_prefix():
 
 
 def test_network_address_resolv():
+    """
+    etingof/pysnmp#352: NetworkAddress index must prettyPrint as a plain IP
+    address string, not as a pyasn1 CHOICE dump with newlines.
+    """
     with SnmpEngine() as snmp_engine:
         mib_builder = snmp_engine.get_mib_builder()
         mib_view_controller = view.MibViewController(mib_builder)
@@ -120,8 +124,15 @@ def test_network_address_resolv():
         )
         resolved = object_type.resolve_with_mib(mib_view_controller)
         assert (
-            resolved[0].prettyPrint()
-            == '''RFC1213-MIB::atNetAddress.5."NetworkAddress:
- internet=192.168.43.33
-"'''
+            resolved[0].prettyPrint() == 'RFC1213-MIB::atNetAddress.5."192.168.43.33"'
         )
+
+
+def test_network_address_pretty_print():
+    """
+    etingof/pysnmp#352: NetworkAddress.prettyPrint() must return the plain IP
+    address, not the pyasn1 CHOICE verbose dump.
+    """
+    na = NetworkAddress()
+    na["internet"] = IpAddress("10.0.0.1")
+    assert na.prettyPrint() == "10.0.0.1"
