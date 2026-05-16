@@ -228,6 +228,21 @@ class InetAddress(TextualConvention, OctetString):
         InetAddressType.namedValues.getValue("dns"): InetAddressDNS(),
     }
 
+    # Length-based fallback for MIBs that omit InetAddressType from INDEX
+    # (non-compliant with RFC 4001 but common in the wild, e.g. MPLS-VPN-MIB).
+    _lengthTypeMap = {4: InetAddressType.namedValues.getValue("ipv4"),
+                     8: InetAddressType.namedValues.getValue("ipv4z"),
+                     16: InetAddressType.namedValues.getValue("ipv6"),
+                     20: InetAddressType.namedValues.getValue("ipv6z")}
+
+    @classmethod
+    def _specific_from_length(cls, length):
+        """Return the InetAddress subtype object for *length* bytes, or None."""
+        addrType = cls._lengthTypeMap.get(length)
+        if addrType is None:
+            return None
+        return cls.typeMap.get(addrType)
+
     @classmethod
     def clone_from_name(cls, value, impliedFlag, parentRow, parentIndices):
         for parentIndex in reversed(parentIndices):
@@ -246,6 +261,13 @@ class InetAddress(TextualConvention, OctetString):
                 else:
                     return parentRow.setFromName(specific, value, impliedFlag, parentIndices)
 
+        # Fallback: no InetAddressType in INDEX — infer type from the length prefix.
+        if not impliedFlag and value:
+            length = value[0]
+            specific = cls._specific_from_length(length)
+            if specific is not None:
+                return specific.clone(tuple(value[1 : 1 + length])), value[1 + length :]
+
         raise error.SmiError(
             f"{cls.__name__} object encountered without preceding InetAddressType-like index: {value!r}"
         )
@@ -262,6 +284,15 @@ class InetAddress(TextualConvention, OctetString):
                         return (len(typed_obj),) + typed_obj.asNumbers()
                 except KeyError:
                     pass
+
+        # Fallback: infer type from byte length.
+        specific = self._specific_from_length(len(self))
+        if specific is not None:
+            typed_obj = specific.clone(self.asOctets())
+            if impliedFlag:
+                return typed_obj.asNumbers()
+            else:
+                return (len(typed_obj),) + typed_obj.asNumbers()
 
         raise error.SmiError(
             f"{self.__class__.__name__} object encountered without preceding InetAddressType-like index: {self!r}"
