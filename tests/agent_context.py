@@ -103,7 +103,7 @@ async def start_agent(
             def getValue(self, name, **context):
                 time.sleep(2)  # Add a 2-second sleep
                 print("sleep ended")
-                return self.getSyntax().clone(f"Test agent")
+                return self.getSyntax().clone("Test agent")
 
             def setValue(self, value, name, **context):
                 print(f"SET operation received. New value: {value}")
@@ -136,7 +136,7 @@ async def start_agent(
             "__MY_MIB",
             MibScalar((1, 3, 6, 1, 4, 1, 60069, 9, 1), v2c.OctetString()),
             SlowMibScalarInstance(
-                (1, 3, 6, 1, 4, 1, 60069, 9, 1), (0,), v2c.OctetString()
+                (1, 3, 6, 1, 4, 1, 60069, 9, 1), (0,), v2c.OctetString("")
             ),
             MibScalar((1, 3, 6, 1, 4, 1, 60069, 9, 3), v2c.OctetString()).setMaxAccess(
                 "not-accessible"
