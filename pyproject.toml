@@ -70,6 +70,9 @@ exclude = [
     "examples/"
 ]
 
+[tool.publish]
+remote = "public"
+
 [build-system]
 requires = ["flit_core>=3.9.0"]
 build-backend = "flit_core.buildapi"
