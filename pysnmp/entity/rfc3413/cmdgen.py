@@ -75,7 +75,9 @@ class CommandGenerator:
                 f"processResponsePdu: sendPduHandle {sendPduHandle}, statusInformation {statusInformation}"
             )
 
-            errorIndication = statusInformation["errorIndication"]
+            errorIndication = statusInformation.get(
+                "errorIndication", errind.requestTimedOut
+            )
 
             if errorIndication in (errind.notInTimeWindow, errind.unknownEngineID):
                 origDiscoveryRetries += 1
@@ -152,7 +154,7 @@ class CommandGenerator:
                 cbFun(
                     snmpEngine,
                     origSendRequestHandle,
-                    statusInformation["errorIndication"],  # type: ignore
+                    statusInformation.get("errorIndication", errind.requestTimedOut),  # type: ignore
                     None,
                     cbCtx,
                 )
