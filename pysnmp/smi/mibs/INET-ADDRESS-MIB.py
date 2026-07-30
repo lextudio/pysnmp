@@ -228,10 +228,26 @@ class InetAddress(TextualConvention, OctetString):
         InetAddressType.namedValues.getValue("dns"): InetAddressDNS(),
     }
 
+    # RFC 4001 defines no textual convention for unknown(0), because the paired
+    # InetAddress is always zero-length. typeMap therefore has no entry for it,
+    # so it has to be handled explicitly: a missing entry must not be treated as
+    # "wrong index column", or a row carrying more than one
+    # InetAddressType/InetAddress pair (e.g. inetCidrRouteEntry) would fall
+    # through to an unrelated type column.
+    unknownAddressType = InetAddressType.namedValues.getValue("unknown")
+
     @classmethod
     def clone_from_name(cls, value, impliedFlag, parentRow, parentIndices):
         for parentIndex in reversed(parentIndices):
             if isinstance(parentIndex, InetAddressType):
+                if int(parentIndex) == cls.unknownAddressType:
+                    # unknown(0) is encoded as a single length sub-identifier of
+                    # 0 and carries no address octets.
+                    if impliedFlag:
+                        return cls(""), value
+                    length = value[0]
+                    return cls(tuple(value[1 : 1 + length])), value[1 + length :]
+
                 try:
                     specific = cls.typeMap[int(parentIndex)]
                 except KeyError:
@@ -253,6 +269,13 @@ class InetAddress(TextualConvention, OctetString):
     def clone_as_name(self, impliedFlag, parentRow, parentIndices):
         for parentIndex in reversed(parentIndices):
             if isinstance(parentIndex, InetAddressType):
+                if int(parentIndex) == self.unknownAddressType:
+                    # unknown(0) carries no address octets; emit just the
+                    # zero length prefix (or nothing at all when implied).
+                    if impliedFlag:
+                        return self.asNumbers()
+                    return (len(self),) + self.asNumbers()
+
                 try:
                     typed_obj = self.typeMap[int(parentIndex)].clone(self.asOctets())
                     # InetAddress always uses length-prefix encoding in OIDs (RFC 4001).
