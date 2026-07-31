@@ -357,9 +357,7 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
         mibBuilder = snmpEngine.get_mib_builder()
         snmpEngineID = mibBuilder.import_symbols(
             "__SNMP-FRAMEWORK-MIB", "snmpEngineID"
-        )[
-            0
-        ].syntax  # type: ignore
+        )[0].syntax  # type: ignore
         msg = globalData
 
         # 3.1.1
@@ -1001,16 +999,12 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
         # Used for error reporting
         contextEngineId = mibBuilder.import_symbols(
             "__SNMP-FRAMEWORK-MIB", "snmpEngineID"
-        )[
-            0
-        ].syntax  # type: ignore
+        )[0].syntax  # type: ignore
         contextName = b""
 
         snmpEngineID = mibBuilder.import_symbols(
             "__SNMP-FRAMEWORK-MIB", "snmpEngineID"
-        )[
-            0
-        ].syntax  # type: ignore
+        )[0].syntax  # type: ignore
 
         # 3.2.3
         if (
@@ -1251,7 +1245,7 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
 
         # 3.2.6
         if securityLevel in (1, 2, 3):
-            if usmUserName:
+            if securityLevel in (2, 3) and usmUserName:
                 if usmUserAuthProtocol in self.AUTH_SERVICES:
                     authHandler = self.AUTH_SERVICES[usmUserAuthProtocol]
                 else:
@@ -1259,31 +1253,28 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
                         errorIndication=errind.authenticationFailure
                     )
 
-                hash = securityParameters.getComponentByPosition(4)
+                authenticationParameters = securityParameters.getComponentByPosition(4)
                 try:
                     authHandler.authenticate_incoming_message(
-                        usmUserAuthKeyLocalized, hash, wholeMsg
+                        usmUserAuthKeyLocalized, authenticationParameters, wholeMsg
                     )
 
                 except error.StatusInformation:
-                    if (
-                        len(hash) != 0
-                    ):  # don't throw error if hash is empty (and agent returned REPORT)
-                        (usmStatsWrongDigests,) = mibBuilder.import_symbols(  # type: ignore
-                            "__SNMP-USER-BASED-SM-MIB", "usmStatsWrongDigests"
-                        )
-                        usmStatsWrongDigests.syntax += 1
-                        raise error.StatusInformation(
-                            errorIndication=errind.authenticationFailure,
-                            oid=usmStatsWrongDigests.name,
-                            val=usmStatsWrongDigests.syntax,
-                            securityStateReference=securityStateReference,
-                            securityLevel=securityLevel,
-                            contextEngineId=contextEngineId,
-                            contextName=contextName,
-                            msgUserName=msgUserName,
-                            maxSizeResponseScopedPDU=maxSizeResponseScopedPDU,
-                        )
+                    (usmStatsWrongDigests,) = mibBuilder.import_symbols(  # type: ignore
+                        "__SNMP-USER-BASED-SM-MIB", "usmStatsWrongDigests"
+                    )
+                    usmStatsWrongDigests.syntax += 1
+                    raise error.StatusInformation(
+                        errorIndication=errind.authenticationFailure,
+                        oid=usmStatsWrongDigests.name,
+                        val=usmStatsWrongDigests.syntax,
+                        securityStateReference=securityStateReference,
+                        securityLevel=securityLevel,
+                        contextEngineId=contextEngineId,
+                        contextName=contextName,
+                        msgUserName=msgUserName,
+                        maxSizeResponseScopedPDU=maxSizeResponseScopedPDU,
+                    )
 
                 debug.logger & debug.FLAG_SM and debug.logger(
                     "processIncomingMsg: incoming msg authenticated"
