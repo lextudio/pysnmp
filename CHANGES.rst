@@ -1,4 +1,9 @@
-.. current-version: 7.1.27 (managed by bump2version)
+.. current-version: 7.1.28 (managed by bump2version)
+
+Revision 7.1.28, released on Jul 31, 2026
+-----------------------------------------
+
+- Fixed a security issue in authentication parameter handling.
 
 Revision 7.1.27, released on May 16, 2026
 -----------------------------------------
