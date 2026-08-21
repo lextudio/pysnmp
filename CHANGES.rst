@@ -1,4 +1,10 @@
-.. current-version: 7.1.28 (managed by bump2version)
+.. current-version: 7.1.29 (managed by bump2version)
+
+Revision 7.1.29, released on Aug 20, 2026
+-----------------------------------------
+
+- Bumped cryptography dependency to 50.0.0 and above.
+- Fixed a regression where cryptography dependency is optional.
 
 Revision 7.1.28, released on Jul 31, 2026
 -----------------------------------------
