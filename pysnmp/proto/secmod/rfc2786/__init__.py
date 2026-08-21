@@ -15,19 +15,33 @@ Oakley Group 2 (RFC 2409) is used as the default DH group:
 """
 
 import os
+from dataclasses import dataclass
 
-from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives.asymmetric.dh import (
-    DHParameterNumbers,
-    DHPrivateNumbers,
-    DHPublicNumbers,
-)
 from pyasn1.codec.ber import decoder as ber_decoder, encoder as ber_encoder
 from pyasn1.type import namedtype, univ
+
+
+@dataclass(frozen=True)
+class DHParameters:
+    """Internal representation of DH parameters.
+
+    This avoids depending on ``cryptography`` for parameter representation.
+    The ``cryptography`` library is only imported when actual cryptographic
+    operations (key generation) are performed.
+    """
+
+    p: int
+    g: int
+
+    def bit_length(self) -> int:
+        """Return the bit length of the prime *p*."""
+        return self.p.bit_length()
+
 
 __all__ = [
     "OAKLEY_GROUP2_PRIME",
     "OAKLEY_GROUP2_GENERATOR",
+    "DHParameters",
     "get_default_parameters",
     "decode_parameters",
     "encode_parameters",
@@ -99,23 +113,21 @@ class _DHParameter(univ.Sequence):
 # ---------------------------------------------------------------------------
 
 
-def get_default_parameters() -> DHParameterNumbers:
-    """Return DHParameterNumbers for Oakley Group 2."""
-    return DHParameterNumbers(OAKLEY_GROUP2_PRIME, OAKLEY_GROUP2_GENERATOR)
+def get_default_parameters() -> DHParameters:
+    """Return DHParameters for Oakley Group 2."""
+    return DHParameters(OAKLEY_GROUP2_PRIME, OAKLEY_GROUP2_GENERATOR)
 
 
-def decode_parameters(der_bytes: bytes) -> DHParameterNumbers:
-    """Decode a PKCS#3 DER-encoded DHParameter SEQUENCE into DHParameterNumbers."""
+def decode_parameters(der_bytes: bytes) -> DHParameters:
+    """Decode a PKCS#3 DER-encoded DHParameter SEQUENCE into DHParameters."""
     asn1, _ = ber_decoder.decode(der_bytes, asn1Spec=_DHParameter())
     p = int(asn1["prime"])
     g = int(asn1["base"])
-    return DHParameterNumbers(p, g)
+    return DHParameters(p, g)
 
 
-def encode_parameters(
-    params: DHParameterNumbers, private_value_length: int = 0
-) -> bytes:
-    """Encode DHParameterNumbers as a PKCS#3 DER DHParameter SEQUENCE."""
+def encode_parameters(params: DHParameters, private_value_length: int = 0) -> bytes:
+    """Encode DHParameters as a PKCS#3 DER DHParameter SEQUENCE."""
     asn1 = _DHParameter()
     asn1["prime"] = params.p
     asn1["base"] = params.g
@@ -159,23 +171,36 @@ def bytes_to_int(b: bytes) -> int:
 
 
 def generate_key_pair(
-    params: DHParameterNumbers | None = None,
+    params: DHParameters | None = None,
 ) -> tuple[int, int]:
     """Generate a DH key pair using *params* (defaults to Oakley Group 2).
 
     Returns *(private_int, public_int)*.
+
+    Raises ImportError if ``cryptography`` is not installed.
     """
+    try:
+        from cryptography.hazmat.backends import default_backend
+        from cryptography.hazmat.primitives.asymmetric.dh import (
+            DHParameterNumbers,
+        )
+    except ImportError as exc:
+        raise ImportError(
+            "DH key generation requires the 'cryptography' package. "
+            "Install it with: pip install pysnmp[crypto]"
+        ) from exc
+
     if params is None:
         params = get_default_parameters()
-    dh_params = params.parameters(default_backend())
-    private_key = dh_params.generate_private_key()
+    crypto_params = DHParameterNumbers(params.p, params.g).parameters(default_backend())
+    private_key = crypto_params.generate_private_key()
     private_int = private_key.private_numbers().x
     public_int = private_key.public_key().public_numbers().y
     return private_int, public_int
 
 
 def compute_shared_secret(
-    params: DHParameterNumbers,
+    params: DHParameters,
     agent_private_int: int,
     manager_public_bytes: bytes,
 ) -> bytes:
