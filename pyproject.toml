@@ -30,7 +30,7 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 dependencies = [
-    "pyasn1>=0.6.3",
+    "pyasn1>=0.6.4",
 ]
 
 [project.urls]
