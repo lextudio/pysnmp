@@ -18,7 +18,8 @@ The best way to obtain PySNMP from PyPI is to run:
 This Python package has the following dependencies:
 
 * ``pyasn1`` package from PyASN1
-* If ``pysmi`` package from PySMI presents, MIB services are enabled.
+* If ``pysmi`` package (2.0.0 and above) from PySMI presents, MIB services
+  are enabled.
 * If ``cryptography`` package presents, strong SNMPv3 encryption is enabled.
 
 .. note::
