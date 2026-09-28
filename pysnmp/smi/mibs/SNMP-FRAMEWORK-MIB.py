@@ -285,7 +285,13 @@ class _SnmpEngineTime_Type(Integer32):
     def clone(self, *args, **kwargs):
         if not args:
             try:
-                args = (time.time() - self,)
+                # Seconds elapsed since the base captured at engine start.
+                # int() on both operands is required: subtracting a pyasn1
+                # object goes through __rsub__, which calls clone() again and
+                # raises ValueConstraintError on an out-of-range result --
+                # which the except below would silently swallow, leaving the
+                # raw base served as the engine time. #205
+                args = ((int(time.time()) - int(self)) % 2147483647,)
             except Exception:
                 pass
         return Integer32.clone(self, *args, **kwargs)
