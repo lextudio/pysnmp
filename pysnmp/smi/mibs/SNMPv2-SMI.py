@@ -527,7 +527,7 @@ class MibTree(ObjectType):
 
     depthFirst, breadthFirst = 0, 1
 
-    def readTestNext(self, varBind, **context):
+    def _read_next(self, varBind, methodName, endOfMib, **context):
         name, val = varBind
 
         topOfTheMib = context.get("oName") is None
@@ -552,6 +552,8 @@ class MibTree(ObjectType):
 
                 except (error.NoSuchInstanceError, error.NoSuchObjectError):
                     if topOfTheMib:
+                        if endOfMib is not None:
+                            return name, endOfMib
                         return
                     raise
 
@@ -559,7 +561,7 @@ class MibTree(ObjectType):
                 nextName = node.name
 
             try:
-                return node.readTestNext(varBind, **context)
+                return getattr(node, methodName)((nextName, val), **context)
 
             except (
                 error.NoAccessError,
@@ -567,47 +569,12 @@ class MibTree(ObjectType):
                 error.NoSuchObjectError,
             ):
                 pass
+
+    def readTestNext(self, varBind, **context):
+        return self._read_next(varBind, "readTestNext", None, **context)
 
     def readGetNext(self, varBind, **context):
-        name, val = varBind
-
-        topOfTheMib = context.get("oName") is None
-        if topOfTheMib:
-            context["oName"] = name
-
-        nextName = name
-        direction = self.depthFirst
-
-        while True:  # NOTE(etingof): linear search ahead!
-            if direction == self.depthFirst:
-                direction = self.breadthFirst
-                try:
-                    node = self.getBranch(nextName, **context)
-
-                except (error.NoSuchInstanceError, error.NoSuchObjectError):
-                    continue
-
-            else:
-                try:
-                    node = self.getNextBranch(nextName, **context)
-
-                except (error.NoSuchInstanceError, error.NoSuchObjectError):
-                    if topOfTheMib:
-                        return name, exval.endOfMib
-                    raise
-
-                direction = self.depthFirst
-                nextName = node.name
-
-            try:
-                return node.readGetNext((nextName, val), **context)
-
-            except (
-                error.NoAccessError,
-                error.NoSuchInstanceError,
-                error.NoSuchObjectError,
-            ):
-                pass
+        return self._read_next(varBind, "readGetNext", exval.endOfMib, **context)
 
     # Write operation
 
