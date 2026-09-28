@@ -62,7 +62,15 @@ class AsyncioDispatcher(AbstractTransportDispatcher):
         if "loop" in kwargs:
             self.loop = kwargs.pop("loop")
         else:
-            self.loop = asyncio.get_event_loop()
+            try:
+                self.loop = asyncio.get_event_loop()
+            except RuntimeError:
+                # Python 3.14 stopped creating an event loop implicitly.
+                # Restore the pre-3.14 behaviour for callers that build a
+                # dispatcher outside a running loop, e.g. a multiprocessing
+                # child process. #240
+                self.loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(self.loop)
 
     async def handle_timeout(self):
         """Handle timeout event with proper error handling."""

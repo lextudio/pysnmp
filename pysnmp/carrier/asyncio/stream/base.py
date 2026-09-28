@@ -110,7 +110,12 @@ class StreamAsyncioProtocol(AbstractAsyncioTransport):
         self._pending_writes: "list[tuple[bytes, tuple]]" = []
         self._lport = None
         if loop is None:
-            loop = asyncio.get_event_loop()
+            try:
+                loop = asyncio.get_event_loop()
+            except RuntimeError:
+                # Python 3.14 stopped creating an event loop implicitly. #240
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
         self.loop = loop
 
     def _register_connection(self, addr, proto: _TcpConnectionProtocol):

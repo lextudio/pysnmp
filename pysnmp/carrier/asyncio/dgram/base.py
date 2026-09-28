@@ -70,6 +70,7 @@ Methods:
     normalize_address(transportAddress):
         Returns a transport address object.
 """
+
 import asyncio
 import sys
 import traceback
@@ -97,7 +98,12 @@ class DgramAsyncioProtocol(asyncio.DatagramProtocol, AbstractAsyncioTransport):
         self._writeQ = []
         self._lport = None
         if loop is None:
-            loop = asyncio.get_event_loop()
+            try:
+                loop = asyncio.get_event_loop()
+            except RuntimeError:
+                # Python 3.14 stopped creating an event loop implicitly. #240
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
         self.loop = loop
 
     def datagram_received(self, datagram, transportAddress: AbstractTransportAddress):
@@ -121,7 +127,8 @@ class DgramAsyncioProtocol(asyncio.DatagramProtocol, AbstractAsyncioTransport):
             )
             try:
                 self.transport.sendto(
-                    outgoingMessage, self.normalize_address(transportAddress)  # type: ignore
+                    outgoingMessage,
+                    self.normalize_address(transportAddress),  # type: ignore
                 )
             except Exception:
                 raise error.CarrierError(
@@ -208,7 +215,8 @@ class DgramAsyncioProtocol(asyncio.DatagramProtocol, AbstractAsyncioTransport):
         else:
             try:
                 self.transport.sendto(
-                    outgoingMessage, self.normalize_address(transportAddress)  # type: ignore
+                    outgoingMessage,
+                    self.normalize_address(transportAddress),  # type: ignore
                 )
             except Exception:
                 raise error.CarrierError(
