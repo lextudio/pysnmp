@@ -124,6 +124,9 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
         self.__securityParametersSpec = UsmSecurityParameters()
         self.__timeline = {}
         self.__timelineExpQueue = {}
+        # Authoritative expireAt per engine ID, so a stale expiry registration
+        # can be recognised and cancelled when the timeline is refreshed
+        self.__timelineExpiry = {}
         self.__expirationTimer = 0
         self.__paramsBranchId = -1
 
@@ -1288,15 +1291,7 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
                 int(time.time()),
             )
 
-            timerResolution = (
-                snmpEngine.transport_dispatcher is None
-                and 1.0
-                or snmpEngine.transport_dispatcher.get_timer_resolution()  # type: ignore
-            )
-            expireAt = int(self.__expirationTimer + 300 / timerResolution)
-            if expireAt not in self.__timelineExpQueue:
-                self.__timelineExpQueue[expireAt] = []
-            self.__timelineExpQueue[expireAt].append(msgAuthoritativeEngineId)
+            self.__schedule_timeline_expiry(msgAuthoritativeEngineId, snmpEngine)
 
             debug.logger & debug.FLAG_SM and debug.logger(
                 f"processIncomingMsg: store timeline for securityEngineID {msgAuthoritativeEngineId!r}"
@@ -1380,15 +1375,9 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
                         int(time.time()),
                     )
 
-                    timerResolution = (
-                        snmpEngine.transport_dispatcher is None
-                        and 1.0
-                        or snmpEngine.transport_dispatcher.get_timer_resolution()  # type: ignore
+                    self.__schedule_timeline_expiry(
+                        msgAuthoritativeEngineId, snmpEngine
                     )
-                    expireAt = int(self.__expirationTimer + 300 / timerResolution)
-                    if expireAt not in self.__timelineExpQueue:
-                        self.__timelineExpQueue[expireAt] = []
-                    self.__timelineExpQueue[expireAt].append(msgAuthoritativeEngineId)
 
                     debug.logger & debug.FLAG_SM and debug.logger(
                         "processIncomingMsg: stored timeline msgAuthoritativeEngineBoots {} msgAuthoritativeEngineTime {} for msgAuthoritativeEngineId {!r}".format(
@@ -1538,9 +1527,45 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
             securityStateReference,
         )
 
+    def __schedule_timeline_expiry(self, securityEngineId, snmpEngine):
+        """Register expiry of the cached timeline for *securityEngineId*.
+
+        The timeline is refreshed on every authenticated message, so any
+        pending expiry has to be cancelled before a new one is registered.
+        Otherwise the stale registration keeps firing and expires a freshly
+        refreshed entry, and the timeline never survives past its first
+        deadline. Cancelling also keeps the expiry queue from growing by one
+        bucket per received message.
+        """
+        timerResolution = (
+            snmpEngine.transport_dispatcher is None
+            and 1.0
+            or snmpEngine.transport_dispatcher.get_timer_resolution()  # type: ignore
+        )
+        expireAt = int(self.__expirationTimer + 300 / timerResolution)
+
+        staleExpireAt = self.__timelineExpiry.pop(securityEngineId, None)
+        if staleExpireAt is not None:
+            staleQueue = self.__timelineExpQueue.get(staleExpireAt)
+            if staleQueue is not None:
+                if securityEngineId in staleQueue:
+                    staleQueue.remove(securityEngineId)
+                if not staleQueue:
+                    del self.__timelineExpQueue[staleExpireAt]
+
+        self.__timelineExpiry[securityEngineId] = expireAt
+        if expireAt not in self.__timelineExpQueue:
+            self.__timelineExpQueue[expireAt] = []
+        self.__timelineExpQueue[expireAt].append(securityEngineId)
+
     def __expire_timeline_info(self):
         if self.__expirationTimer in self.__timelineExpQueue:
             for engineIdKey in self.__timelineExpQueue[self.__expirationTimer]:
+                # Skip stale registrations: this engine's timeline has been
+                # refreshed since, and its expiry rescheduled to a later tick
+                if self.__timelineExpiry.get(engineIdKey) != self.__expirationTimer:
+                    continue
+                del self.__timelineExpiry[engineIdKey]
                 if engineIdKey in self.__timeline:
                     del self.__timeline[engineIdKey]
                     debug.logger & debug.FLAG_SM and debug.logger(
