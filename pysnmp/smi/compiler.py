@@ -57,23 +57,21 @@ else:
             PyFileWriter(kwargs.get("destination") or DEFAULT_DEST),
         )
 
-        compiler.addSources(
+        compiler.add_sources(
             *get_readers_from_urls(*kwargs.get("sources") or DEFAULT_SOURCES)
         )
 
-        compiler.addSearchers(StubSearcher(*baseMibs))
-        compiler.addSearchers(
-            *[PyPackageSearcher(x.full_path()) for x in mibBuilder.get_mib_sources()]
-        )
-        compiler.addBorrowers(
-            *[
-                PyFileBorrower(x, genTexts=mibBuilder.loadTexts)
-                for x in get_readers_from_urls(
-                    *kwargs.get("borrowers") or DEFAULT_BORROWERS,
-                    **dict(lowcaseMatching=False),
-                )
-            ]
-        )
+        compiler.add_searchers(StubSearcher(*baseMibs))
+        compiler.add_searchers(*[
+            PyPackageSearcher(x.full_path()) for x in mibBuilder.get_mib_sources()
+        ])
+        compiler.add_borrowers(*[
+            PyFileBorrower(x, genTexts=mibBuilder.loadTexts)
+            for x in get_readers_from_urls(
+                *kwargs.get("borrowers") or DEFAULT_BORROWERS,
+                **dict(lowcaseMatching=False),
+            )
+        ])
 
         mibBuilder.set_mib_compiler(compiler, kwargs.get("destination") or DEFAULT_DEST)
 
