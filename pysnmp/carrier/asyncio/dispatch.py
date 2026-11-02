@@ -112,7 +112,7 @@ class AsyncioDispatcher(AbstractTransportDispatcher):
         """
         super().close_dispatcher()
         self.__transport_count = 0
-        self._cancel_loopingcall()
+        self._cancel_loopingcall(drain=True)
         if self.__run_dispatcher_started_loop and self.loop.is_running():
             try:
                 if asyncio.current_task(self.loop) is None:
@@ -140,15 +140,35 @@ class AsyncioDispatcher(AbstractTransportDispatcher):
 
         if self.__transport_count == 0:
             # The last transport has been removed, stop the timeout
-            self._cancel_loopingcall()
+            self._cancel_loopingcall(drain=True)
 
-    def _cancel_loopingcall(self):
-        if self.loopingcall is not None:
-            if not self.loopingcall.done():
-                loop = self.loopingcall.get_loop()
+    def _cancel_loopingcall(self, drain: bool = False):
+        task = self.loopingcall
+        if task is not None:
+            if not task.done():
+                loop = task.get_loop()
                 if not loop.is_closed():
-                    self.loopingcall.cancel()
+                    task.cancel()
+                    if drain:
+                        self._drain_cancelled(task)
             self.loopingcall = None
+
+    def _drain_cancelled(self, task):
+        """Let a cancelled timer task finish when the loop is not running.
+
+        ``Task.cancel()`` only takes effect on the next loop iteration. If the
+        loop is idle and never runs again, the task is destroyed while still
+        pending ("Task was destroyed but it is pending!"). #256
+        """
+        if task is None or task.done():
+            return
+        loop = task.get_loop()
+        if loop.is_running() or loop.is_closed():
+            return
+        try:
+            loop.run_until_complete(task)
+        except (asyncio.CancelledError, RuntimeError):
+            pass
 
     def __del__(self):
         self._cancel_loopingcall()

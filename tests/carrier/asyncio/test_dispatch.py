@@ -91,3 +91,21 @@ def test_run_dispatcher_exits_when_closed():
 
     assert not loop.is_running()
     loop.close()
+
+
+def test_close_dispatcher_does_not_leave_pending_timer_task():
+    """#256: the timer task must be finished, not left in 'cancelling'."""
+    loop = asyncio.new_event_loop()
+    try:
+        dispatcher = AsyncioDispatcher(loop=loop)
+        dispatcher.register_transport((1, 3, 6, 1), mock.MagicMock())
+        loop.run_until_complete(asyncio.sleep(0))
+        task = dispatcher.loopingcall
+        assert task is not None
+
+        dispatcher.close_dispatcher()
+
+        assert task.done()
+        assert not [t for t in asyncio.all_tasks(loop) if not t.done()]
+    finally:
+        loop.close()
