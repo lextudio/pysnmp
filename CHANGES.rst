@@ -1,4 +1,9 @@
-.. current-version: 7.1.30 (managed by bump2version)
+.. current-version: 7.1.31 (managed by bump2version)
+
+Revision 7.1.31, released on Nov 03, 2026
+-----------------------------------------
+
+- Fix a cancel and drain issue.
 
 Revision 7.1.30, released on Sep 28, 2026
 -----------------------------------------
