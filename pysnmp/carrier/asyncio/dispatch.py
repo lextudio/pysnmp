@@ -44,6 +44,25 @@ from pysnmp.carrier.base import AbstractTransport, AbstractTransportDispatcher
 from pysnmp.error import PySnmpError
 
 
+def cancel_and_drain(task):
+    """Cancel a task and let it finish if its loop is not running.
+
+    ``Task.cancel()`` only takes effect on the next loop iteration. If the
+    loop is idle and never runs again, the task is destroyed while still
+    pending ("Task was destroyed but it is pending!"). #256
+    """
+    if task is None or task.done():
+        return
+    task.cancel()
+    loop = task.get_loop()
+    if loop.is_running() or loop.is_closed():
+        return
+    try:
+        loop.run_until_complete(task)
+    except (asyncio.CancelledError, RuntimeError):
+        pass
+
+
 class AsyncioDispatcher(AbstractTransportDispatcher):
     """AsyncioDispatcher based on asyncio event loop."""
 
@@ -148,27 +167,11 @@ class AsyncioDispatcher(AbstractTransportDispatcher):
             if not task.done():
                 loop = task.get_loop()
                 if not loop.is_closed():
-                    task.cancel()
                     if drain:
-                        self._drain_cancelled(task)
+                        cancel_and_drain(task)
+                    else:
+                        task.cancel()
             self.loopingcall = None
-
-    def _drain_cancelled(self, task):
-        """Let a cancelled timer task finish when the loop is not running.
-
-        ``Task.cancel()`` only takes effect on the next loop iteration. If the
-        loop is idle and never runs again, the task is destroyed while still
-        pending ("Task was destroyed but it is pending!"). #256
-        """
-        if task is None or task.done():
-            return
-        loop = task.get_loop()
-        if loop.is_running() or loop.is_closed():
-            return
-        try:
-            loop.run_until_complete(task)
-        except (asyncio.CancelledError, RuntimeError):
-            pass
 
     def __del__(self):
         self._cancel_loopingcall()

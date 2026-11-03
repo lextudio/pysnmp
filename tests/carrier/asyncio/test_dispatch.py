@@ -109,3 +109,20 @@ def test_close_dispatcher_does_not_leave_pending_timer_task():
         assert not [t for t in asyncio.all_tasks(loop) if not t.done()]
     finally:
         loop.close()
+
+
+def test_close_transport_does_not_leave_pending_listener_task():
+    """#256: closing a transport before the loop ran must not leave a pending task."""
+    from pysnmp.carrier.asyncio.dgram.udp import UdpAsyncioTransport
+
+    loop = asyncio.new_event_loop()
+    try:
+        transport = UdpAsyncioTransport(loop=loop).open_server_mode(("127.0.0.1", 0))
+        task = transport._lport
+        assert not task.done()
+
+        transport.close_transport()
+
+        assert task.done()
+    finally:
+        loop.close()

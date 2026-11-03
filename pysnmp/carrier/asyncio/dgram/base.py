@@ -80,6 +80,7 @@ from socket import socket
 from pysnmp import debug
 from pysnmp.carrier import error
 from pysnmp.carrier.asyncio.base import AbstractAsyncioTransport
+from pysnmp.carrier.asyncio.dispatch import cancel_and_drain
 from pysnmp.carrier.base import AbstractTransportAddress
 
 
@@ -192,7 +193,7 @@ class DgramAsyncioProtocol(asyncio.DatagramProtocol, AbstractAsyncioTransport):
     def close_transport(self):
         """Close the transport."""
         if self._lport is not None:
-            self._lport.cancel()
+            cancel_and_drain(self._lport)
         if self.transport is not None:
             self.transport.close()
         AbstractAsyncioTransport.close_transport(self)

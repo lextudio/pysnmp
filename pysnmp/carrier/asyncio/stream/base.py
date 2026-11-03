@@ -19,6 +19,7 @@ import warnings
 from pysnmp import debug
 from pysnmp.carrier import error
 from pysnmp.carrier.asyncio.base import AbstractAsyncioTransport
+from pysnmp.carrier.asyncio.dispatch import cancel_and_drain
 from pysnmp.carrier.base import AbstractTransportAddress
 
 
@@ -109,6 +110,7 @@ class StreamAsyncioProtocol(AbstractAsyncioTransport):
         self._client_proto: "_TcpConnectionProtocol | None" = None
         self._pending_writes: "list[tuple[bytes, tuple]]" = []
         self._lport = None
+        self._connect_tasks: set = set()
         if loop is None:
             try:
                 loop = asyncio.get_event_loop()
@@ -160,9 +162,12 @@ class StreamAsyncioProtocol(AbstractAsyncioTransport):
     def close_transport(self):
         """Close all connections and the server."""
         if self._lport is not None:
-            self._lport.cancel()
+            cancel_and_drain(self._lport)
         if self._server is not None:
             self._server.close()
+        for task in list(self._connect_tasks):
+            cancel_and_drain(task)
+        self._connect_tasks.clear()
         for proto in list(self._connections.values()):
             if proto._transport:
                 proto._transport.close()
@@ -189,7 +194,9 @@ class StreamAsyncioProtocol(AbstractAsyncioTransport):
                     port=addr[1],
                     family=self.SOCK_FAMILY,
                 )
-                asyncio.ensure_future(coro)
+                task = asyncio.ensure_future(coro)
+                self._connect_tasks.add(task)
+                task.add_done_callback(self._connect_tasks.discard)
             except Exception:
                 raise error.CarrierError(
                     ";".join(traceback.format_exception(*sys.exc_info()))
