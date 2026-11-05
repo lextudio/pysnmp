@@ -67,13 +67,9 @@ class AbstractSnmpDispatcher:
         if self._automaticDispatcher:
             self.transport_dispatcher.close_dispatcher()
 
-        for requestId, stateInfo in self._pendingReqs.items():
-            cbFun = stateInfo["cbFun"]
-            cbCtx = stateInfo["cbCtx"]
-
-            if cbFun:
-                cbFun(self, "Request #%d terminated" % requestId, None, cbCtx)
-
+        # Like the v3arch dispatcher, do not call back pending requests: their
+        # callbacks expect a response or a timeout, and the awaiting futures
+        # are cancelled by their owners. #258
         self._pendingReqs.clear()
 
     def send_pdu(
