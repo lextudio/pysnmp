@@ -16,7 +16,7 @@
 1. Commit the changes (including `uv.lock`).
 2. `git tag vX.Y.Z` and push the branch and tag to the `public` remote.
 3. `uv run scripts/publish.py` (try `--dry-run` first).
-4. `uv run move-tag.py X.Y` to move the `vX.Y` tag.
+4. `uv run move-tag.py X.Y` to move the `vX.Y` tag. Push the updated tag to the `public` remote.
 5. Fast-forward `main` and then `docs` to `release-X.Y` and push both to `public`.
 
 Confirm with the maintainer before pushing tags or publishing.
