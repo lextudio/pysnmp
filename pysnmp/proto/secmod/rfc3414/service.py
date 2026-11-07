@@ -244,6 +244,19 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
             pysnmpUsmKeyPrivLocalized,
         )
 
+    @staticmethod
+    def __clear_auth_priv_flags(msg):
+        """Clear the auth/priv flags, keeping the reportableFlag (RFC 3412 §6.4)."""
+        headerData = msg.getComponentByPosition(1)
+        (msgFlags,) = headerData.getComponentByPosition(2).asNumbers()
+        headerData.setComponentByPosition(
+            2,
+            univ.OctetString((msgFlags & 0x04,)),
+            verifyConstraints=False,
+            matchTags=False,
+            matchConstraints=False,
+        )
+
     def __clone_user_info(self, snmpEngine: "SnmpEngine", securityEngineID, userName):
         (snmpEngineID,) = snmpEngine.get_mib_builder().import_symbols(  # type: ignore
             "__SNMP-FRAMEWORK-MIB", "snmpEngineID"
@@ -550,16 +563,7 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
                 matchConstraints=False,
             )
 
-            headerData = msg.getComponentByPosition(1)
-
-            # Clear possible auth&priv flags
-            headerData.setComponentByPosition(
-                2,
-                univ.OctetString(hexValue="04"),
-                verifyConstraints=False,
-                matchTags=False,
-                matchConstraints=False,
-            )
+            self.__clear_auth_priv_flags(msg)
 
             emptyPdu = scopedPDU.getComponentByPosition(2).getComponent()
 
@@ -617,16 +621,7 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
                     % ctx
                 )
                 securityLevel = 1
-                headerData = msg.getComponentByPosition(1)
-
-                # Clear possible auth&priv flags
-                headerData.setComponentByPosition(
-                    2,
-                    univ.OctetString(hexValue="04"),
-                    verifyConstraints=False,
-                    matchTags=False,
-                    matchConstraints=False,
-                )
+                self.__clear_auth_priv_flags(msg)
 
         if securityLevel == 3:
             if (
