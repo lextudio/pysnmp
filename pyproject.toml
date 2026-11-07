@@ -1,6 +1,6 @@
 [project]
 name = "pysnmp"
-version = "7.1.31"
+version = "7.1.32"
 description = "A Python library for SNMP"
 authors = [
     {name = "Ilya Etingof", email = "etingof@gmail.com"},

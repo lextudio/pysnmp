@@ -1,9 +1,25 @@
-.. current-version: 7.1.31 (managed by bump2version)
+.. current-version: 7.1.32 (managed by bump2version)
+
+Revision 7.1.32, released on Nov 07, 2026
+-----------------------------------------
+
+- Fixed a TypeError when closing a v1arch dispatcher with pending requests.
+- Fixed transport creation without a current event loop on Python 3.15.
+- Added Python 3.15 support.
+- Dropped Python 3.10 support.
 
 Revision 7.1.31, released on Nov 03, 2026
 -----------------------------------------
 
-- Fix a cancel and drain issue.
+- Fixed cancelled timer and transport tasks not being drained when the
+  event loop is idle.
+- Restored implicit event loop creation on Python 3.14.
+- Kept snmpEngineTime inside Integer32 range after 2038.
+- Gave empty Report-PDUs an errorIndication.
+- Fixed stale USM timeline expiry registrations not being cancelled.
+- Finished the PySMI deprecation cleanup, so MIB compilation no longer emits
+  DeprecationWarnings.
+- Documented that PySMI 2.x is required.
 
 Revision 7.1.30, released on Sep 28, 2026
 -----------------------------------------

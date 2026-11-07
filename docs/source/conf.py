@@ -74,7 +74,7 @@ author = "LeXtudio Inc. <support@lextudio.com>"
 # built documents.
 #
 # The full version, including alpha/beta/rc tags.
-release = "7.1.31"
+release = "7.1.32"
 # The short X.Y version.
 version = ".".join(release.split(".")[:2])
 
