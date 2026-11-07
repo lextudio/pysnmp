@@ -152,7 +152,7 @@ class StreamAsyncioProtocol(AbstractAsyncioTransport):
                 sock=sock,
                 family=self.SOCK_FAMILY,
             )
-            self._lport = asyncio.ensure_future(coro)
+            self._lport = asyncio.ensure_future(coro, loop=self.loop)
         except Exception:
             raise error.CarrierError(
                 ";".join(traceback.format_exception(*sys.exc_info()))
@@ -194,7 +194,7 @@ class StreamAsyncioProtocol(AbstractAsyncioTransport):
                     port=addr[1],
                     family=self.SOCK_FAMILY,
                 )
-                task = asyncio.ensure_future(coro)
+                task = asyncio.ensure_future(coro, loop=self.loop)
                 self._connect_tasks.add(task)
                 task.add_done_callback(self._connect_tasks.discard)
             except Exception:

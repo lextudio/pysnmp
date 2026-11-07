@@ -157,7 +157,7 @@ class DgramAsyncioProtocol(asyncio.DatagramProtocol, AbstractAsyncioTransport):
                 allow_broadcast=allow_broadcast,
             )
             # Avoid deprecation warning for asyncio.async()
-            self._lport = asyncio.ensure_future(c)
+            self._lport = asyncio.ensure_future(c, loop=self.loop)
 
         except Exception:
             raise error.CarrierError(
@@ -183,7 +183,7 @@ class DgramAsyncioProtocol(asyncio.DatagramProtocol, AbstractAsyncioTransport):
                     lambda: self, local_addr=iface, family=self.SOCK_FAMILY
                 )
             # Avoid deprecation warning for asyncio.async()
-            self._lport = asyncio.ensure_future(c)
+            self._lport = asyncio.ensure_future(c, loop=self.loop)
         except Exception:
             raise error.CarrierError(
                 ";".join(traceback.format_exception(*sys.exc_info()))
