@@ -20,13 +20,13 @@ else:
 DEFAULT_BORROWERS = []
 
 try:
-    from pysmi.reader.url import getReadersFromUrls
+    from pysmi.reader.url import get_readers_from_urls
     from pysmi.searcher.pypackage import PyPackageSearcher
     from pysmi.searcher.stub import StubSearcher
     from pysmi.borrower.pyfile import PyFileBorrower
     from pysmi.writer.pyfile import PyFileWriter
     from pysmi.parser.smi import parserFactory
-    from pysmi.parser.dialect import smiV1Relaxed
+    from pysmi.parser.dialect import smi_v1_relaxed
     from pysmi.codegen.pysnmp import PySnmpCodeGen, baseMibs
     from pysmi.compiler import MibCompiler
 
@@ -52,28 +52,26 @@ else:
             return
 
         compiler = MibCompiler(
-            parserFactory(**smiV1Relaxed)(),
+            parserFactory(**smi_v1_relaxed)(),
             PySnmpCodeGen(),
             PyFileWriter(kwargs.get("destination") or DEFAULT_DEST),
         )
 
-        compiler.addSources(
-            *getReadersFromUrls(*kwargs.get("sources") or DEFAULT_SOURCES)
+        compiler.add_sources(
+            *get_readers_from_urls(*kwargs.get("sources") or DEFAULT_SOURCES)
         )
 
-        compiler.addSearchers(StubSearcher(*baseMibs))
-        compiler.addSearchers(
-            *[PyPackageSearcher(x.full_path()) for x in mibBuilder.get_mib_sources()]
-        )
-        compiler.addBorrowers(
-            *[
-                PyFileBorrower(x, genTexts=mibBuilder.loadTexts)
-                for x in getReadersFromUrls(
-                    *kwargs.get("borrowers") or DEFAULT_BORROWERS,
-                    **dict(lowcaseMatching=False),
-                )
-            ]
-        )
+        compiler.add_searchers(StubSearcher(*baseMibs))
+        compiler.add_searchers(*[
+            PyPackageSearcher(x.full_path()) for x in mibBuilder.get_mib_sources()
+        ])
+        compiler.add_borrowers(*[
+            PyFileBorrower(x, genTexts=mibBuilder.loadTexts)
+            for x in get_readers_from_urls(
+                *kwargs.get("borrowers") or DEFAULT_BORROWERS,
+                **dict(lowcaseMatching=False),
+            )
+        ])
 
         mibBuilder.set_mib_compiler(compiler, kwargs.get("destination") or DEFAULT_DEST)
 

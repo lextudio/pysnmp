@@ -26,9 +26,7 @@ class IpAddress(univ.OctetString):
     tagSet = univ.OctetString.tagSet.tagImplicitly(  # noqa: N815
         tag.Tag(tag.tagClassApplication, tag.tagFormatSimple, 0x00)
     )
-    subtypeSpec = univ.OctetString.subtypeSpec + constraint.ValueSizeConstraint(
-        4, 4
-    )  # noqa: N815
+    subtypeSpec = univ.OctetString.subtypeSpec + constraint.ValueSizeConstraint(4, 4)  # noqa: N815
 
     def prettyIn(self, value):  # noqa: N802
         """Return a pretty-formatted IP address."""
@@ -111,6 +109,14 @@ class NetworkAddress(univ.Choice):
             return clone, value[5:]
         else:
             raise SmiError(f"unknown NetworkAddress type {kind!r}")
+
+    def prettyPrint(self, scope=0):  # noqa: N802
+        """Return the address value as a human-friendly string."""
+        try:
+            component = self.getComponent()
+            return component.prettyPrint()
+        except PyAsn1Error:
+            return univ.Choice.prettyPrint(self, scope)
 
     def clone_as_name(self, impliedFlag, parentRow, parentIndices):
         """Return a tuple of sub-identifiers representing this instance.

@@ -70,6 +70,7 @@ Methods:
     normalize_address(transportAddress):
         Returns a transport address object.
 """
+
 import asyncio
 import sys
 import traceback
@@ -79,6 +80,7 @@ from socket import socket
 from pysnmp import debug
 from pysnmp.carrier import error
 from pysnmp.carrier.asyncio.base import AbstractAsyncioTransport
+from pysnmp.carrier.asyncio.dispatch import cancel_and_drain
 from pysnmp.carrier.base import AbstractTransportAddress
 
 
@@ -97,7 +99,12 @@ class DgramAsyncioProtocol(asyncio.DatagramProtocol, AbstractAsyncioTransport):
         self._writeQ = []
         self._lport = None
         if loop is None:
-            loop = asyncio.get_event_loop()
+            try:
+                loop = asyncio.get_event_loop()
+            except RuntimeError:
+                # Python 3.14 stopped creating an event loop implicitly. #240
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
         self.loop = loop
 
     def datagram_received(self, datagram, transportAddress: AbstractTransportAddress):
@@ -121,7 +128,8 @@ class DgramAsyncioProtocol(asyncio.DatagramProtocol, AbstractAsyncioTransport):
             )
             try:
                 self.transport.sendto(
-                    outgoingMessage, self.normalize_address(transportAddress)  # type: ignore
+                    outgoingMessage,
+                    self.normalize_address(transportAddress),  # type: ignore
                 )
             except Exception:
                 raise error.CarrierError(
@@ -149,7 +157,7 @@ class DgramAsyncioProtocol(asyncio.DatagramProtocol, AbstractAsyncioTransport):
                 allow_broadcast=allow_broadcast,
             )
             # Avoid deprecation warning for asyncio.async()
-            self._lport = asyncio.ensure_future(c)
+            self._lport = asyncio.ensure_future(c, loop=self.loop)
 
         except Exception:
             raise error.CarrierError(
@@ -175,7 +183,7 @@ class DgramAsyncioProtocol(asyncio.DatagramProtocol, AbstractAsyncioTransport):
                     lambda: self, local_addr=iface, family=self.SOCK_FAMILY
                 )
             # Avoid deprecation warning for asyncio.async()
-            self._lport = asyncio.ensure_future(c)
+            self._lport = asyncio.ensure_future(c, loop=self.loop)
         except Exception:
             raise error.CarrierError(
                 ";".join(traceback.format_exception(*sys.exc_info()))
@@ -185,7 +193,7 @@ class DgramAsyncioProtocol(asyncio.DatagramProtocol, AbstractAsyncioTransport):
     def close_transport(self):
         """Close the transport."""
         if self._lport is not None:
-            self._lport.cancel()
+            cancel_and_drain(self._lport)
         if self.transport is not None:
             self.transport.close()
         AbstractAsyncioTransport.close_transport(self)
@@ -208,7 +216,8 @@ class DgramAsyncioProtocol(asyncio.DatagramProtocol, AbstractAsyncioTransport):
         else:
             try:
                 self.transport.sendto(
-                    outgoingMessage, self.normalize_address(transportAddress)  # type: ignore
+                    outgoingMessage,
+                    self.normalize_address(transportAddress),  # type: ignore
                 )
             except Exception:
                 raise error.CarrierError(

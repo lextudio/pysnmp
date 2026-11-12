@@ -17,7 +17,8 @@ from pysnmp.proto.secmod.rfc7860.auth import hmacsha2
 PysnmpCryptoError = False
 try:
     from cryptography.hazmat.backends import default_backend
-    from cryptography.hazmat.primitives.ciphers import algorithms, Cipher, modes
+    from cryptography.hazmat.decrepit.ciphers.modes import CFB
+    from cryptography.hazmat.primitives.ciphers import algorithms, Cipher
 
 except ImportError:
     PysnmpCryptoError = True
@@ -171,5 +172,5 @@ def _cryptography_cipher(key, iv):
     :rtype: cryptography.hazmat.primitives.ciphers.Cipher
     """
     return Cipher(
-        algorithm=algorithms.AES(key), mode=modes.CFB(iv), backend=default_backend()
+        algorithm=algorithms.AES(key), mode=CFB(iv), backend=default_backend()
     )

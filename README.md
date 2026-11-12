@@ -1,4 +1,3 @@
-
 SNMP Library for Python
 =======================
 
@@ -28,7 +27,7 @@ Features
   compilation
 * Built-in instrumentation exposing protocol engine operations
 * Python eggs and py2exe friendly
-* 100% Python, works with Python 3.10+ (tested on 3.10–3.14)
+* 100% Python, works with Python 3.11+ (tested on 3.11–3.15)
 * MT-safe (if SnmpEngine is thread-local)
 
 Features, specific to SNMPv3 model include:
@@ -58,9 +57,9 @@ pip install pysnmp
 To download and install PySNMP along with its dependencies:
 
 * `pyasn1` package from [PyASN1](https://pyasn1.readthedocs.io)
-* If `pysmi` package from [PySMI](https://www.pysnmp.com/pysmi/) presents,
-  MIB services are enabled.
-* If `cryptography` package (43.0.x and above) presents, strong SNMPv3 encryption is enabled.
+* If `pysmi` package (2.0.0 and above) from [PySMI](https://www.pysnmp.com/pysmi/)
+  presents, MIB services are enabled.
+* If `cryptography` package (50.0.x and above) presents, strong SNMPv3 encryption is enabled.
 
 Make sure you check out other sibling projects of PySNMP from
 [the home page](https://www.pysnmp.com/).

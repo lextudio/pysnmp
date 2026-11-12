@@ -1,4 +1,44 @@
-.. current-version: 7.1.27 (managed by bump2version)
+.. current-version: 7.1.32 (managed by bump2version)
+
+Revision 7.1.32, released on Nov 07, 2026
+-----------------------------------------
+
+- Fixed a TypeError when closing a v1arch dispatcher with pending requests.
+- Fixed transport creation without a current event loop on Python 3.15.
+- Added Python 3.15 support.
+- Dropped Python 3.10 support.
+
+Revision 7.1.31, released on Nov 03, 2026
+-----------------------------------------
+
+- Fixed cancelled timer and transport tasks not being drained when the
+  event loop is idle.
+- Restored implicit event loop creation on Python 3.14.
+- Kept snmpEngineTime inside Integer32 range after 2038.
+- Gave empty Report-PDUs an errorIndication.
+- Fixed stale USM timeline expiry registrations not being cancelled.
+- Finished the PySMI deprecation cleanup, so MIB compilation no longer emits
+  DeprecationWarnings.
+- Documented that PySMI 2.x is required.
+
+Revision 7.1.30, released on Sep 28, 2026
+-----------------------------------------
+
+- Bump pyasn1 dependency to 0.6.4.
+- Bump cryptography dependency to 50.0.1.
+- Fix a few SNMP v3 warnings.
+- Fix OID traversal performance issue.
+
+Revision 7.1.29, released on Aug 20, 2026
+-----------------------------------------
+
+- Bumped cryptography dependency to 50.0.0 and above.
+- Fixed a regression where cryptography dependency is optional.
+
+Revision 7.1.28, released on Jul 31, 2026
+-----------------------------------------
+
+- Fixed a security issue in authentication parameter handling.
 
 Revision 7.1.27, released on May 16, 2026
 -----------------------------------------

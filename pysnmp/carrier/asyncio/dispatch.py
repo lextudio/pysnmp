@@ -44,6 +44,25 @@ from pysnmp.carrier.base import AbstractTransport, AbstractTransportDispatcher
 from pysnmp.error import PySnmpError
 
 
+def cancel_and_drain(task):
+    """Cancel a task and let it finish if its loop is not running.
+
+    ``Task.cancel()`` only takes effect on the next loop iteration. If the
+    loop is idle and never runs again, the task is destroyed while still
+    pending ("Task was destroyed but it is pending!"). #256
+    """
+    if task is None or task.done():
+        return
+    task.cancel()
+    loop = task.get_loop()
+    if loop.is_running() or loop.is_closed():
+        return
+    try:
+        loop.run_until_complete(task)
+    except (asyncio.CancelledError, RuntimeError):
+        pass
+
+
 class AsyncioDispatcher(AbstractTransportDispatcher):
     """AsyncioDispatcher based on asyncio event loop."""
 
@@ -62,7 +81,15 @@ class AsyncioDispatcher(AbstractTransportDispatcher):
         if "loop" in kwargs:
             self.loop = kwargs.pop("loop")
         else:
-            self.loop = asyncio.get_event_loop()
+            try:
+                self.loop = asyncio.get_event_loop()
+            except RuntimeError:
+                # Python 3.14 stopped creating an event loop implicitly.
+                # Restore the pre-3.14 behaviour for callers that build a
+                # dispatcher outside a running loop, e.g. a multiprocessing
+                # child process. #240
+                self.loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(self.loop)
 
     async def handle_timeout(self):
         """Handle timeout event with proper error handling."""
@@ -104,7 +131,7 @@ class AsyncioDispatcher(AbstractTransportDispatcher):
         """
         super().close_dispatcher()
         self.__transport_count = 0
-        self._cancel_loopingcall()
+        self._cancel_loopingcall(drain=True)
         if self.__run_dispatcher_started_loop and self.loop.is_running():
             try:
                 if asyncio.current_task(self.loop) is None:
@@ -132,14 +159,18 @@ class AsyncioDispatcher(AbstractTransportDispatcher):
 
         if self.__transport_count == 0:
             # The last transport has been removed, stop the timeout
-            self._cancel_loopingcall()
+            self._cancel_loopingcall(drain=True)
 
-    def _cancel_loopingcall(self):
-        if self.loopingcall is not None:
-            if not self.loopingcall.done():
-                loop = self.loopingcall.get_loop()
+    def _cancel_loopingcall(self, drain: bool = False):
+        task = self.loopingcall
+        if task is not None:
+            if not task.done():
+                loop = task.get_loop()
                 if not loop.is_closed():
-                    self.loopingcall.cancel()
+                    if drain:
+                        cancel_and_drain(task)
+                    else:
+                        task.cancel()
             self.loopingcall = None
 
     def __del__(self):

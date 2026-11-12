@@ -872,7 +872,14 @@ class SnmpV3MessageProcessingModel(AbstractMessageProcessingModel):
                     sendPduHandle=sendPduHandle,
                 )
             else:
-                statusInformation = error.StatusInformation(sendPduHandle=sendPduHandle)
+                # A Report-PDU must carry exactly one varbind naming the error
+                # (RFC 3412 §7.2.11a). Honour the malformed case rather than
+                # raising a StatusInformation that has no errorIndication --
+                # every consumer below assumes one is present. #241
+                statusInformation = error.StatusInformation(
+                    errorIndication=errind.ReportPduReceived(""),
+                    sendPduHandle=sendPduHandle,
+                )
 
             # 7.2.11b (incomplete implementation)
 
