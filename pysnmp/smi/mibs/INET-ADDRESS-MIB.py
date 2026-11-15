@@ -12,6 +12,8 @@
 #
 # IMPORTANT: customization
 
+from pysnmp.smi import error
+
 # Import base ASN.1 objects even if this MIB does not use it
 
 (Integer,
@@ -250,7 +252,16 @@ class InetAddress(TextualConvention, OctetString):
                 try:
                     specific = cls.typeMap[int(parentIndex)]
                 except KeyError:
-                    continue
+                    # RFC 4001 defines no textual convention for unknown(0),
+                    # and a future InetAddressType value may also be absent.
+                    # A missing entry means "decode as a generic InetAddress",
+                    # not "this is the wrong index column": continuing the scan
+                    # would apply an earlier, unrelated InetAddressType from the
+                    # same INDEX (e.g. inetCidrRouteEntry has two).
+                    if impliedFlag:
+                        return cls(tuple(value)), ()
+                    length = value[0]
+                    return cls(tuple(value[1 : 1 + length])), value[1 + length :]
 
                 if not impliedFlag and specific.is_fixed_length():
                     # InetAddress is variable-length, so the OID encoding always
@@ -277,13 +288,16 @@ class InetAddress(TextualConvention, OctetString):
             if isinstance(parentIndex, InetAddressType):
                 try:
                     typed_obj = self.typeMap[int(parentIndex)].clone(self.asOctets())
-                    # InetAddress always uses length-prefix encoding in OIDs (RFC 4001).
-                    if impliedFlag:
-                        return typed_obj.asNumbers()
-                    else:
-                        return (len(typed_obj),) + typed_obj.asNumbers()
                 except KeyError:
-                    pass
+                    # Unknown InetAddressType: encode the generic address.
+                    if impliedFlag:
+                        return self.asNumbers()
+                    return (len(self),) + self.asNumbers()
+                # InetAddress always uses length-prefix encoding in OIDs (RFC 4001).
+                if impliedFlag:
+                    return typed_obj.asNumbers()
+                else:
+                    return (len(typed_obj),) + typed_obj.asNumbers()
 
         # Fallback: infer type from byte length.
         specific = self._specific_from_length(len(self))
