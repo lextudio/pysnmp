@@ -1,5 +1,6 @@
 from datetime import datetime
 import os
+import re
 import subprocess
 from pathlib import Path
 import sys
@@ -13,11 +14,19 @@ from sphinx_polyversion.git import Git, GitRef, GitRefType, file_predicate, refs
 from sphinx_polyversion.pyvenv import VirtualPythonEnvironment, Poetry
 from sphinx_polyversion.sphinx import SphinxBuilder
 
-#: Regex matching the branches to build docs for
-BRANCH_REGEX = r"rel-.*"  # intentionally broken to skip branches
+#: Release branches to build docs for, mapped to the version label shown in
+#: the version switcher. Building from the branch keeps the current docs up
+#: to date without moving a floating minor-version tag.
+DOC_BRANCHES = {
+    "release-7.1": "v7.1",
+}
 
-#: Regex matching the tags to build docs for
-TAG_REGEX = r"v7.1"  # r"v7.1|v6.2"
+#: Regex matching the branches to build docs for
+BRANCH_REGEX = "|".join(re.escape(branch) for branch in DOC_BRANCHES)
+
+#: Only patch release tags are kept in the repository, and none of them is
+#: built individually; minor version labels come from the branches above.
+TAG_REGEX = r"(?!)"
 
 #: Output dir relative to project root
 OUTPUT_DIR = "docs/build"
@@ -157,6 +166,26 @@ ENVIRONMENT = {
 }
 
 
+class DocsGit(Git):
+    """Build release branches, presenting each as its minor version label."""
+
+    async def retrieve(self, root):
+        refs = await super().retrieve(root)
+        revisions = []
+        for ref in refs:
+            version = (
+                DOC_BRANCHES.get(ref.name) if ref.type_ == GitRefType.BRANCH else None
+            )
+            if version:
+                # Keep the branch tip commit but label it like a release tag,
+                # so the output lands in e.g. docs/build/v7.1.
+                ref = GitRef(
+                    version, ref.obj, ref.ref, GitRefType.TAG, ref.date, ref.remote
+                )
+            revisions.append(ref)
+        return tuple(revisions)
+
+
 #: Data passed to templates
 def data(driver, rev, env):
     revisions = driver.targets
@@ -205,10 +234,9 @@ src = Path(SOURCE_DIR)
 DefaultDriver(
     root,
     OUTPUT_DIR,
-    vcs=Git(
+    vcs=DocsGit(
         branch_regex=BRANCH_REGEX,
         tag_regex=TAG_REGEX,
-        buffer_size=1 * 10**9,  # 1 GB
         predicate=file_predicate([src]),  # exclude refs without source dir
     ),
     builder=SphinxBuilder(src / "source", args=SPHINX_ARGS.split()),
