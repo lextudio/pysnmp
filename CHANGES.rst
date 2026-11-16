@@ -1,4 +1,12 @@
-.. current-version: 7.1.32 (managed by bump2version)
+.. current-version: 7.1.33 (managed by bump2version)
+
+Revision 7.1.33, released on Nov 15, 2026
+-----------------------------------------
+
+- Fixed InetAddress index decoding when the governing InetAddressType is
+  unknown(0), so rows such as inetCidrRouteEntry resolve correctly.
+- Raised the minimum Python version to 3.11.5 and updated soupsieve to
+  4.1.1 to address security advisories.
 
 Revision 7.1.32, released on Nov 07, 2026
 -----------------------------------------

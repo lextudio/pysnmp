@@ -18,6 +18,6 @@
 3. `uv run scripts/publish.py` (try `--dry-run` first).
 4. Fast-forward `main` and then `docs` to `release-X.Y` and push both to `public`.
 
-The docs build follows the `release-X.Y` branches and labels them as `vX.Y`; no floating `vX.Y` tag exists or needs moving.
+The docs build follows the `release-X.Y` branches.
 
 Confirm with the maintainer before pushing tags or publishing.
