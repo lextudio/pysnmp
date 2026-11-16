@@ -32,7 +32,7 @@ jobs:
       - name: Sync dependencies
         run: |
           uv --version
-          uv python pin ${{ matrix.python-version }}
+          python -c "import subprocess, sys; subprocess.run(['uv', 'python', 'pin', '.'.join(map(str, sys.version_info[:3]))], check=True)"
           python scripts/prepare.py
       - name: Build
         run: |
