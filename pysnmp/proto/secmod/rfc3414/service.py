@@ -1045,6 +1045,7 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
                             "processIncomingMsg: scopedPduData not plaintext %s"
                             % scopedPduData.prettyPrint()
                         )
+                        self._cache.pop(securityStateReference)
                         raise error.StatusInformation(
                             errorIndication=errind.unknownEngineID
                         )
@@ -1070,6 +1071,7 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
                         "processIncomingMsg: will not discover EngineID"
                     )
                     # free securityStateReference XXX
+                    self._cache.pop(securityStateReference)
                     raise error.StatusInformation(
                         errorIndication=errind.unknownEngineID
                     )
@@ -1151,6 +1153,7 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
                     "__SNMPv2-MIB", "snmpInGenErrs"
                 )
                 snmpInGenErrs.syntax += 1
+                self._cache.pop(securityStateReference)
                 raise error.StatusInformation(errorIndication=errind.invalidMsg)
         else:
             # empty username used for engineID discovery
@@ -1252,6 +1255,7 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
                 if usmUserAuthProtocol in self.AUTH_SERVICES:
                     authHandler = self.AUTH_SERVICES[usmUserAuthProtocol]
                 else:
+                    self._cache.pop(securityStateReference)
                     raise error.StatusInformation(
                         errorIndication=errind.authenticationFailure
                     )
@@ -1332,6 +1336,7 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
                         )
                     )
                 else:
+                    self._cache.pop(securityStateReference)
                     raise error.ProtocolError("Peer SNMP engine info missing")
 
             # 3.2.7a
@@ -1397,6 +1402,7 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
                     )
                     > 150
                 ):
+                    self._cache.pop(securityStateReference)
                     raise error.StatusInformation(
                         errorIndication=errind.notInTimeWindow, msgUserName=msgUserName
                     )
@@ -1406,11 +1412,13 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
             if usmUserPrivProtocol in self.PRIV_SERVICES:
                 privHandler = self.PRIV_SERVICES[usmUserPrivProtocol]
             else:
+                self._cache.pop(securityStateReference)
                 raise error.StatusInformation(
                     errorIndication=errind.decryptionError, msgUserName=msgUserName
                 )
             encryptedPDU = scopedPduData.getComponentByPosition(1)
             if encryptedPDU is None:  # no ciphertext
+                self._cache.pop(securityStateReference)
                 raise error.StatusInformation(
                     errorIndication=errind.decryptionError, msgUserName=msgUserName
                 )
@@ -1474,6 +1482,7 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
                 )
 
             if eoo.endOfOctets.isSameTypeWith(scopedPDU):
+                self._cache.pop(securityStateReference)
                 raise error.StatusInformation(
                     errorIndication=errind.decryptionError, msgUserName=msgUserName
                 )
@@ -1481,6 +1490,7 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
             # 3.2.8b
             scopedPDU = scopedPduData.getComponentByPosition(0)
             if scopedPDU is None:  # no plaintext
+                self._cache.pop(securityStateReference)
                 raise error.StatusInformation(
                     errorIndication=errind.decryptionError, msgUserName=msgUserName
                 )

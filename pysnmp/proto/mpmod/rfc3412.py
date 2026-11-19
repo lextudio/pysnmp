@@ -526,6 +526,9 @@ class SnmpV3MessageProcessingModel(AbstractMessageProcessingModel):
         elif securityLevel == 3:
             msgFlags |= 0x03
         else:
+            if securityModel in snmpEngine.security_models:
+                smHandler = snmpEngine.security_models[securityModel]
+                smHandler.release_state_information(securityStateReference)
             raise error.ProtocolError("Unknown securityLevel %s" % securityLevel)
 
         if pdu.tagSet in rfc3411.CONFIRMED_CLASS_PDUS:  # XXX not needed?
