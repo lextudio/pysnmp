@@ -225,6 +225,10 @@ class SnmpV1MessageProcessingModel(AbstractMessageProcessingModel):
             # rfc3412: 7.1.3a (N/A)
 
             # rfc3412: 7.1.3b (always discard)
+            k = int(securityModel)
+            if k in snmpEngine.security_models:
+                smHandler = snmpEngine.security_models[k]
+                smHandler.release_state_information(securityStateReference)
             raise error.StatusInformation(errorIndication=errind.nonReportable)
 
         # rfc3412: 7.1.4
