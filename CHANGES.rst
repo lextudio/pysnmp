@@ -1,4 +1,15 @@
-.. current-version: 7.1.33 (managed by bump2version)
+.. current-version: 7.1.34 (managed by bump2version)
+
+Revision 7.1.34, released on Nov 24, 2026
+-----------------------------------------
+
+- Fixed a memory leak of the community-based security model's state for
+  SNMPv1/v2c requests that no application handles, such as GET or SET
+  requests reaching a notification receiver.
+- Fixed memory leaks of the USM security state when SNMPv3 messages were
+  rejected without a Report, such as messages with an undiscoverable engine
+  ID, unusable user info, or an unsupported authentication or privacy
+  protocol.
 
 Revision 7.1.33, released on Nov 15, 2026
 -----------------------------------------
