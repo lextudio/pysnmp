@@ -1416,7 +1416,6 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
                 )
             encryptedPDU = scopedPduData.getComponentByPosition(1)
             if encryptedPDU is None:  # no ciphertext
-                self._cache.pop(securityStateReference)
                 raise error.StatusInformation(
                     errorIndication=errind.decryptionError, msgUserName=msgUserName
                 )
@@ -1480,7 +1479,6 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
                 )
 
             if eoo.endOfOctets.isSameTypeWith(scopedPDU):
-                self._cache.pop(securityStateReference)
                 raise error.StatusInformation(
                     errorIndication=errind.decryptionError, msgUserName=msgUserName
                 )
@@ -1488,7 +1486,6 @@ class SnmpUSMSecurityModel(AbstractSecurityModel):
             # 3.2.8b
             scopedPDU = scopedPduData.getComponentByPosition(0)
             if scopedPDU is None:  # no plaintext
-                self._cache.pop(securityStateReference)
                 raise error.StatusInformation(
                     errorIndication=errind.decryptionError, msgUserName=msgUserName
                 )
