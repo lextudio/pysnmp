@@ -10,8 +10,8 @@ such request with a valid community stayed in the cache of the
 community-based security model forever.
 """
 
-from pyasn1.codec.ber import encoder
 import pytest
+from pyasn1.codec.ber import encoder
 
 from pysnmp.entity import config, engine
 from pysnmp.proto import api
@@ -22,7 +22,7 @@ TRANSPORT_ADDRESS = ("127.0.0.1", 162)
 
 def _build_request(version, pdu_type) -> bytes:
     """A request of the given type from the "public" community."""
-    pMod = api.PROTOCOL_MODULES[version]  # noqa: N806
+    pMod = api.PROTOCOL_MODULES[version]
     pdu = getattr(pMod, pdu_type)()
     pMod.apiPDU.set_defaults(pdu)
     message = pMod.Message()
